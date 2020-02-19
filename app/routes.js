@@ -3,7 +3,7 @@ const router = express.Router()
 
 //
 //
-//Create standards data
+//GENERATE standards data
 //
 //
 // var Request = require("request"),
@@ -41,32 +41,59 @@ const router = express.Router()
 //     });
 // }
 
+// NOTE - FIXES AFTER GENERATING: 
+// 1..... these need overwriting in genereated data to match actual SSAs - OR just change ssas in json
+//          1.2 Nursing, and subjects and vocations allied to medicine
+//          6 Information and Communication Technology (ICT)
+//          15 Business, Administration, Finance and Law
+// 2. Add in missing SSAs if used - refer to excel spreadhseet for them
+
+
+
 // Base session data
 var _myData = {
     "standards": require(__dirname + '/data/standards.json'),
-    "ssa": require(__dirname + '/data/ssa.json')
+    "ssa": require(__dirname + '/data/ssa.json'),
+    "routes": require(__dirname + '/data/routes.json')
 }
 
-// Set ssa counts
-var _ssaCounts = {}
+//Sort standards
+_myData.standards.list.sort(function(a,b){
+    // if (a.title.toUpperCase() < b.title.toUpperCase()){
+    if (a.larsCode < b.larsCode){
+        return -1
+    // } else if(a.title.toUpperCase() > b.title.toUpperCase()){
+    } else if(a.larsCode > b.larsCode){
+        return 1
+    }
+    return 0;
+});
 
+// Sort routes
+_myData.routes.list.sort(function(a,b){
+    if (a.name.toUpperCase() < b.name.toUpperCase()){
+        return -1
+    } else if(a.name.toUpperCase() > b.name.toUpperCase()){
+        return 1
+    }
+    return 0;
+});
 
+// Set ssa + route counts
+var _routeCounts = {},
+    _ssaCounts = {}
 _myData.standards.list.forEach(function(_standard, index) {
+    _routeCounts[_standard.route.toLowerCase()] = (_routeCounts[_standard.route.toLowerCase()] || 0) + 1
     _ssaCounts[_standard.ssa1.toLowerCase()] = (_ssaCounts[_standard.ssa1.toLowerCase()] || 0) + 1
     _ssaCounts[_standard.ssa2.toLowerCase()] = (_ssaCounts[_standard.ssa2.toLowerCase()] || 0) + 1
 });
-
-// 1.2 Nursing, and subjects and vocations allied to medicine
-// 6 Information and Communication Technology (ICT)
-// 15 Business, Administration, Finance and Law
-
-
+_myData.routes.list.forEach(function(_route, index) {
+    _route.standardsCount = _routeCounts[_route.name.toLowerCase()] || 0;
+});
 _myData.ssa.list.forEach(function(_ssa1, index) {
-    var _ssa1Name = _ssa1.code.toString() + " " + _ssa1.name.toLowerCase()
-    _ssa1.standardsCount = _ssaCounts[_ssa1Name] || 0;
+    _ssa1.standardsCount = _ssaCounts[_ssa1.code.toString() + " " + _ssa1.name.toLowerCase()] || 0;
     _ssa1.ssa2s.forEach(function(_ssa2, index) {
-        var _ssa2Name = _ssa2.code.toString() + " " + _ssa2.name.toLowerCase()
-        _ssa2.standardsCount = _ssaCounts[_ssa2Name] || 0;
+        _ssa2.standardsCount = _ssaCounts[_ssa2.code.toString() + " " + _ssa2.name.toLowerCase()] || 0;
     });
 });
 

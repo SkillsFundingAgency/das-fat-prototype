@@ -18,16 +18,6 @@ module.exports = function (router,_myData) {
 
     // Standards test
     router.get('/' + version + '/standards', function (req, res) {
-        req.session.myData.standards.list.sort(function(a,b){
-            // if (a.title.toUpperCase() < b.title.toUpperCase()){
-            if (a.larsCode < b.larsCode){
-                return -1
-            // } else if(a.title.toUpperCase() > b.title.toUpperCase()){
-            } else if(a.larsCode > b.larsCode){
-                return 1
-            }
-            return 0;
-        });
         res.render(version + '/standards', {
             myData:req.session.myData
         });

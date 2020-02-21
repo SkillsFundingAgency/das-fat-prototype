@@ -1,48 +1,63 @@
 { 
     "list": [
         {
+            "code": 1,
             "name": "Engineering and manufacturing"
         },
         {
+            "code": 2,
             "name": "Sales, marketing and procurement"
         },
         {
+            "code": 3,
             "name": "Health and science"
         },
         {
+            "code": 4,
             "name": "Transport and logistics"
         },
         {
+            "code": 5,
             "name": "Legal, finance and accounting"
         },
         {
+            "code": 6,
             "name": "Construction"
         },
         {
+            "code": 7,
             "name": "Digital"
         },
         {
+            "code": 8,
             "name": "Care services"
         },
         {
+            "code": 9,
             "name": "Agriculture, environmental and animal care"
         },
         {
+            "code": 10,
             "name": "Business and administration"
         },
         {
+            "code": 11,
             "name": "Creative and design"
         },
         {
+            "code": 12,
             "name": "Protective services"
         },
         {
+            "code": 13,
             "name": "Education and childcare"
         },
         {
+            "code": 14,
             "name": "Hair and beauty"
         },
         {
+            "code": 15,
             "name": "Catering and hospitality"
         }
     ]

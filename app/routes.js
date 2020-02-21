@@ -88,7 +88,7 @@ _myData.standards.list.forEach(function(_standard, index) {
     _ssaCounts[_standard.ssa2.toLowerCase()] = (_ssaCounts[_standard.ssa2.toLowerCase()] || 0) + 1
 });
 _myData.routes.list.forEach(function(_route, index) {
-    _route.code = _route.name.toLowerCase().replace(/,/g, "").replace(/ /g, "-")
+    // _route.code = _route.name.toLowerCase().replace(/,/g, "").replace(/ /g, "-")
     _route.standardsCount = _routeCounts[_route.name.toLowerCase()] || 0;
 });
 _myData.ssa.list.forEach(function(_ssa1, index) {

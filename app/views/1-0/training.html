@@ -36,9 +36,15 @@
             {% endif %}
         </h1>
 
-        {% if _selectedRoute.name %}
-            <h2 class="govuk-heading-m" >{{_selectedRoute.standardsCount}} apprenticeships</h2>
-        {% endif %}
+        
+            <h2 class="govuk-heading-m" >
+                {% if _selectedRoute.name %}
+                    {{_selectedRoute.standardsCount}} apprenticeships
+                {% else %}
+                    {{myData.standards.list | length}} apprenticeships
+                {% endif %}
+            </h2>
+        
 
         <table class="govuk-table">
             <thead class="govuk-table__head" >
@@ -70,8 +76,7 @@
 
         <ul class="govuk-list">
             {% for _route in myData.routes.list %}
-            {% set _routeCode = _route.name | lower | replace(" ", "-") | replace(",", "") %}
-            <li><a href="training?route={{_routeCode}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a></li>
+            <li><a href="training?route={{_route.code}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a></li>
             {% endfor %}
         </ul>
         <p class="govuk-body"><a href="training?route=all" class="govuk-link govuk-link--no-visited-state">Browse all</a></p>

@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block beforeContent %}
+    {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+
+    {{ govukBreadcrumbs({
+    items: [
+        {
+            text: "Home: find apprenticeship training",
+            href: "home"
+        }
+    ]
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+<style>
+    @media (min-width: 641px) {
+        .routeslist {
+            columns: 3;
+            -webkit-columns: 3;
+            -moz-columns: 3;
+        }
+    }
+</style>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl" >[Browse apprenticeship training]</h1>
+
+        <p class="govuk-body" style="color:red">[search box here]</p>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <h2 class="govuk-heading-s">[Explore by apprenticeship category]</h2>
+
+        <ul class="govuk-list routeslist">
+            {% for _route in myData.routes.list %}
+            {% set _routeCode = _route.name | lower | replace(" ", "-") | replace(",", "") %}
+            <li><a href="training?route={{_routeCode}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a></li>
+            {% endfor %}
+        </ul>
+        <p class="govuk-body"><a href="training?st=all" class="govuk-link govuk-link--no-visited-state">Browse all</a></p>
+
+    </div>
+
+    <div class="govuk-grid-column-one-third" >
+        &nbsp;
+    </div>
+</div>
+
+
+{% endblock %}

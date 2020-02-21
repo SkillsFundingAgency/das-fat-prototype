@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-m">Prototype {{myData.version}} setup</h1>
+
+        <p class="govuk-body" >
+              <a href="setup?r=true" class="govuk-link govuk-link--no-visited-state">Reset</a>
+          </p>  
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+    </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+
+        <!-- Prototype version -->
+        <div class="govuk-form-group">
+            <label class="govuk-label" >
+              Version
+            </label>
+            <select class="govuk-select" style="min-width: 100%" id="ptVersion" name="ptVersion" data-option="ptVersion">
+                <option {% if myData.ptVersion == 'mvs' %}selected{% endif %} value="mvs">MVS</option>
+            </select>
+        </div>
+
+        <!-- Start from -->
+        <div class="govuk-form-group">
+          <label class="govuk-label" >
+            Start from
+          </label>
+          <select class="govuk-select" style="min-width: 100%" id="start" name="start" data-option="start">
+              <option {% if myData.start == 'start' %}selected{% endif %} value="start">Service start page</option>
+          </select>
+      </div>
+
+    </div>
+
+    <div class="govuk-grid-column-one-half" >
+
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <p class="govuk-body" id="start-url" style="display:none">
+            <a href="#" role="button" draggable="false" class="govuk-button">Start prototype</a>
+        </p>
+
+        <p class="govuk-body" >
+            <span class="govuk-!-font-weight-bold">Shareable link:</span><br>
+            <span class="govuk-body" id="start-url-label" style="display:none"></span>
+        </p>
+
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <h2 class="govuk-heading-m">Full page list</h2>
+
+        <table class="govuk-table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Page</th>
+                <th scope="col" class="govuk-table__header">Link</th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">    
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">_Setup prototype</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="setup">/setup</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">_Display test data</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="standards">/standards</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <p class="govuk-body" >{{myData.apiData|dump|safe}}</p>
+    </div>
+</div> -->
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+    $(document).ready(function(){
+
+        var _startURL = $("#start-url a"),
+            _startURLLabel = $("#start-url-label"),
+            _options = $("[data-option]")
+
+        _options.change(function(){
+            setValues()
+        }).trigger("change");
+
+        //SET VALUES
+        function setValues(){
+            //Base URL
+            var _urlBase = "https://das-fat-prototype.herokuapp.com/" + {{myData.version|dump|safe}} + "/";
+            //Queries
+            var _urlReset = "r=t",
+                _urlPage = _options.filter("#start").val() + "?",
+                _urlStart = "&s=" + _options.filter("#start").val(),
+                _urlptVersion = "&p=" + _options.filter("#ptVersion").val();
+           
+            //Queries combined
+            var _urlPageQueries = _urlPage + _urlReset + _urlStart + _urlptVersion;
+
+            //URL text
+            var _startURLText = _urlBase + _urlPageQueries,
+                _startURLHREF =  _urlPageQueries;
+            // update label
+            _startURLLabel
+                .text(_startURLText)
+                .show()
+            //update link
+            _startURL
+                .attr("href", _startURLHREF)
+                .parent().show()
+        }
+
+    });
+</script>
+{% endblock %}

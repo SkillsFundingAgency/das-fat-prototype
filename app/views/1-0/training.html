@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% set _selectedRoute = {} %}
+{% for _route in myData.routes.list %}
+    {% if myData.route == _route.code %}
+        {% set _selectedRoute = _route %}
+    {% endif %}
+{% endfor %}
+
+{% block beforeContent %}
+    {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+
+    {{ govukBreadcrumbs({
+    items: [
+        {
+            text: "Home: find apprenticeship training",
+            href: "home"
+        },
+        {
+            text: "Apprenticeships"
+        }
+    ]
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl" >
+            {% if _selectedRoute.name %}
+                {{_selectedRoute.name}}
+            {% else %}
+                Apprenticeships
+            {% endif %}
+        </h1>
+
+        {% if _selectedRoute.name %}
+            <h2 class="govuk-heading-m" >{{_selectedRoute.standardsCount}} apprenticeships</h2>
+        {% endif %}
+
+        <table class="govuk-table">
+            <thead class="govuk-table__head" >
+              <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header"></th>
+                <!-- <th scope="col" class="govuk-table__header"></th> -->
+              </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+            {% for _standard in myData.standards.list %}
+                {% if _selectedRoute.name == undefined or _standard.route == _selectedRoute.name %}
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">
+                        {{_standard.title}} - level {{_standard.level}}
+                        <!-- <a href="#" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} - level {{_standard.level}}</a> -->
+                    </td>
+                    <!-- <td class="govuk-table__cell">
+                        Level {{_standard.level}}
+                    </td> -->
+                </tr>
+                {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+
+    </div>
+    <div class="govuk-grid-column-one-third">
+        <h2 class="govuk-heading-s">[Explore by apprenticeship category]</h2>
+
+        <ul class="govuk-list">
+            {% for _route in myData.routes.list %}
+            {% set _routeCode = _route.name | lower | replace(" ", "-") | replace(",", "") %}
+            <li><a href="training?route={{_routeCode}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a></li>
+            {% endfor %}
+        </ul>
+        <p class="govuk-body"><a href="training?route=all" class="govuk-link govuk-link--no-visited-state">Browse all</a></p>
+
+    </div>
+</div>
+
+{% endblock %}

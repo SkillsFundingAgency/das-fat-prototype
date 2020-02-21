@@ -50,7 +50,6 @@
             <thead class="govuk-table__head" >
               <tr class="govuk-table__row">
                 <th scope="col" class="govuk-table__header"></th>
-                <!-- <th scope="col" class="govuk-table__header"></th> -->
               </tr>
             </thead>
             <tbody class="govuk-table__body">
@@ -58,12 +57,8 @@
                 {% if _selectedRoute.name == undefined or _standard.route == _selectedRoute.name %}
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell">
-                        {{_standard.title}} - level {{_standard.level}}
-                        <!-- <a href="#" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} - level {{_standard.level}}</a> -->
+                        <a href="standard?standard={{_standard.larsCode}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} - level {{_standard.level}}</a>
                     </td>
-                    <!-- <td class="govuk-table__cell">
-                        Level {{_standard.level}}
-                    </td> -->
                 </tr>
                 {% endif %}
             {% endfor %}

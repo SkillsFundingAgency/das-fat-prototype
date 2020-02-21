@@ -48,8 +48,19 @@ module.exports = function (router,_myData) {
     router.get('/' + version + '/training', function (req, res) {
 
         req.session.myData.route = req.query.route || "all"
-        
+
         res.render(version + '/training', {
+            myData:req.session.myData
+        });
+
+    });
+
+    // Standard
+    router.get('/' + version + '/standard', function (req, res) {
+
+        req.session.myData.standard = req.query.standard || "1"
+        
+        res.render(version + '/standard', {
             myData:req.session.myData
         });
 

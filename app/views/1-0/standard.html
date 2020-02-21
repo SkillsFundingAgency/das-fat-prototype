@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% set _selectedStandard = {} %}
+{% for _standard in myData.standards.list %}
+    {% if myData.standard == _standard.larsCode %}
+        {% set _selectedStandard = _standard %}
+    {% endif %}
+{% endfor %}
+
+{% block beforeContent %}
+    {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+
+    {{ govukBreadcrumbs({
+    items: [
+        {
+            text: "Home: find apprenticeship training",
+            href: "home"
+        },
+        {
+            text: "Apprenticeships",
+            href: "training"
+        },
+        {
+            text: _selectedStandard.title
+        }
+    ]
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl" >
+            {{_selectedStandard.title}}
+        </h1>
+
+        <!-- <p class="govuk-body" >{{_selectedStandard|dump|safe}}</p> -->
+
+        {% for name, item in _selectedStandard %}
+        <p class="govuk-body" ><span class="govuk-!-font-weight-bold">{{ name }}</span>: {{ item }}</p>
+        {% endfor %}
+
+    </div>
+    <div class="govuk-grid-column-one-third">
+        
+    </div>
+</div>
+
+{% endblock %}

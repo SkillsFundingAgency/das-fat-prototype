@@ -7,26 +7,6 @@
     {% endif %}
 {% endfor %}
 
-{% block beforeContent %}
-    {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
-
-    {{ govukBreadcrumbs({
-    items: [
-        {
-            text: "Home: find apprenticeship training",
-            href: "home"
-        },
-        {
-            text: "Apprenticeships",
-            href: "training"
-        },
-        {
-            text: _selectedStandard.title
-        }
-    ]
-    }) }}
-{% endblock %}
-
 {% block content %}
 
 <div class="govuk-grid-row">

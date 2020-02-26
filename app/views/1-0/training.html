@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 
+<!-- Selected route -->
 {% set _selectedRoute = {} %}
 {% for _route in myData.routes.list %}
     {% if myData.route == _route.code %}
@@ -7,6 +8,21 @@
     {% endif %}
 {% endfor %}
 
+<!-- Query strings (for use in hrefs) -->
+{% set _searchQuery = "" %}
+{% set _filterQuery = "" %}
+{% set _sortQuery = "" %}
+{% if myData.searchapplied == true %}
+    {% set _searchQuery = "&q=" + myData.searchTerm %}
+{% endif %}
+{% if myData.filterapplied == true %}
+    {% set _filterQuery = "&route=" + myData.route %}
+{% endif %}
+{% if myData.sortapplied == true %}
+    {% set _sortQuery = "&sort=" + myData.sortby %}
+{% endif %}
+
+<!-- breadcrumbs -->
 {% block beforeContent %}
     {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 
@@ -17,7 +33,7 @@
             href: "home"
         },
         {
-            text: "Apprenticeships"
+            text: "Apprenticeship training"
         }
     ]
     }) }}
@@ -29,52 +45,133 @@
     <div class="govuk-grid-column-two-thirds">
 
         <h1 class="govuk-heading-xl" >
-            {% if _selectedRoute.name %}
-                {{_selectedRoute.name}}
-            {% else %}
-                Apprenticeships
-            {% endif %}
+            Apprenticeship training
         </h1>
 
-        
-            <h2 class="govuk-heading-m" >
-                {% if _selectedRoute.name %}
-                    {{_selectedRoute.standardsCount}} apprenticeships
-                {% else %}
-                    {{myData.standards.list | length}} apprenticeships
-                {% endif %}
-            </h2>
-        
+        <!-- <h2 class="govuk-heading-m">Selected route = {{myData.route}}<br>Selected route name = {{_selectedRoute.name}}</h2>
+        <h2 class="govuk-heading-m">Search term = "{{myData.searchTerm}}"</h2>
+        <h2 class="govuk-heading-m">_displaycount = {{myData.displaycount}}</h2>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>All count = {{myData.standards.list | length}}</li>
+            <li>Selected route count = {{myData.matchesroutecount}}</li>
+            <li>Search count = {{myData.matchessearchcount}}</li>
+            <li>Search AND route count = {{myData.displaycount}}</li>
+        </ul> -->
 
-        <table class="govuk-table">
-            <thead class="govuk-table__head" >
-              <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header"></th>
-              </tr>
-            </thead>
-            <tbody class="govuk-table__body">
-            {% for _standard in myData.standards.list %}
-                {% if _selectedRoute.name == undefined or _standard.route == _selectedRoute.name %}
-                <tr class="govuk-table__row">
-                    <td class="govuk-table__cell">
-                        <a href="standard?standard={{_standard.larsCode}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} - level {{_standard.level}}</a>
-                    </td>
-                </tr>
-                {% endif %}
-            {% endfor %}
-          </tbody>
-        </table>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <!-- Search box -->
+        <form action="training" method="GET" >
+            <div class="search-wrapper govuk-form-group" >
+                <legend style="display:none">[Search for apprenticeship training]</legend>
+                <label for="search-training" class="govuk-label" >
+                    <!-- <span class="govuk-hint">[Enter one or two keywords]</span> -->
+                </label>
+                <div class="search-input-wrapper">
+                    <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-training" name="q" title="Search" class="govuk-input">
+                    <div class="search-input-submit-wrapper">
+                        <button type="submit" class="search-submit">Search training</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <!-- Route name -->
+        {% if myData.filterapplied == true %}
+        <h2 class="govuk-heading-m">{{_selectedRoute.name}}</h2>
+        <!-- <p class="govuk-body"><a href="training?route=all{{_searchQuery}}{{_sortQuery}}" class="govuk-link govuk-link--no-visited-state">[Clear category]</a></p> -->
+        {% endif %}
+
+        {% if myData.searchapplied == true or myData.filterapplied == true %}
+        <p class="govuk-body"><a href="training?{{_sortQuery}}" class="govuk-link govuk-link--no-visited-state">Clear search</a></p>
+        {% endif %}
+
+        <!-- Results count -->
+        <div class="govuk-form-group">
+            <p class="govuk-body">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</p>
+        </div>
+
+        <!-- Sort -->
+        {% if myData.searchapplied == true and myData.displaycount > 1 %}
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+        <p class="govuk-body-s">Sort by:
+            {% if myData.sortby == "name" %}
+            <a class="govuk-link govuk-link--no-visited-state" href="training?{{_filterQuery}}{{_searchQuery}}&sort=relevance">Relevance</a>, 
+            <span class="govuk-!-font-weight-bold">Name</span>
+            {% else %}
+            <span class="govuk-!-font-weight-bold">Relevance</span>, 
+            <a class="govuk-link govuk-link--no-visited-state" href="training?{{_filterQuery}}{{_searchQuery}}&sort=name">Name</a>
+            {% endif %}
+        </p>
+        {% endif %}
+
+        <!-- Standards -->
+        {% for _standard in myData.standards.list %}
+            {% if _standard.search == true %}
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+            <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+                    <a href="standard?standard={{_standard.larsCode}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}}</a>
+                </h2>
+                <!-- TODO get first letter of job role -->
+                <ul class="govuk-list">
+                    <!-- <li class="govuk-!-font-size-16 govuk-secondary-colour">
+                        {% for _jobRole in _standard.jobRoles %}
+                        {{_jobRole}}{% if loop.last == false %}, {% endif %}
+                        {% endfor %}
+                    </li> -->
+                    <li><span class="govuk-secondary-colour">Level:</span> {{_standard.level}}</li>
+                    <li><span class="govuk-secondary-colour">Typical length:</span> {{_standard.typicalDuration}} months</li>
+                    <li class=""><span class="govuk-secondary-colour">Category:</span> {{_standard.route}}</li>
+                </ul>
+                    <!-- <br><span class="govuk-!-font-weight-bold">keywords: </span>
+                    {% for _keyword in _standard.keywords %}
+                    {{_keyword}}{% if loop.last == false %}, {% endif %}
+                    {% endfor %}
+                    <br><span class="govuk-!-font-weight-bold">jobRoles: </span>
+                    {% for _jobRole in _standard.jobRoles %}
+                    {{_jobRole}}{% if loop.last == false %}, {% endif %}
+                    {% endfor %}
+                    <br><span class="govuk-!-font-weight-bold">route: </span>{{_standard.route}}
+                    <br><span class="govuk-!-font-weight-bold">searchrelevance: </span>{{_standard.searchrelevance}} -->
+            </div>
+            {% endif %}
+        {% endfor %}
 
     </div>
     <div class="govuk-grid-column-one-third">
-        <h2 class="govuk-heading-s">[Explore by apprenticeship category]</h2>
 
+        <!-- Route list -->
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Category</h2>
         <ul class="govuk-list">
+            <!-- <li class="">
+                {% if myData.filterapplied == true %}
+                <a href="training?route=all{{_searchQuery}}{{_sortQuery}}" class="govuk-link govuk-link--no-visited-state">All</a>
+                {% else %}
+                <span class="" >All</span>
+                {% endif %}
+            </li> -->
             {% for _route in myData.routes.list %}
-            <li><a href="training?route={{_route.code}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a></li>
+            <li class="">
+                {% if myData.filterapplied == true and _route.code == _selectedRoute.code %}
+                <span class="" >{{_route.name}}</span>
+                {% else %}
+                <a href="training?route={{_route.code}}{{_searchQuery}}{{_sortQuery}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a>
+                {% endif %}
+            </li>
             {% endfor %}
         </ul>
-        <p class="govuk-body"><a href="training?route=all" class="govuk-link govuk-link--no-visited-state">Browse all</a></p>
+        <!-- <p class="govuk-body govuk-!-font-size-16"><a href="training?route=all{{_searchQuery}}{{_sortQuery}}" class="govuk-link govuk-link--no-visited-state">Browse all</a></p> -->
 
     </div>
 </div>

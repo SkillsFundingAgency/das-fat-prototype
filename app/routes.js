@@ -31,7 +31,8 @@ const router = express.Router()
 //                 "route": _apiData.route,
 //                 "pathway": _apiData.pathway,
 //                 "cluster": _apiData.cluster,
-//                 "keywords": _apiData.keywords
+//                 "keywords": _apiData.keywords,
+//                 "jobRoles": _apiData.jobRoles
 //             }
 //         _newStandards.list.push(_stdObj)
 //         _count++

@@ -37,6 +37,17 @@ module.exports = function (router,_myData) {
 
         });
     }
+    // For back links
+    function getRefererPage(referer){
+        if(referer) {
+          var urlArray = referer.split('/'),
+              pageLoc = urlArray.length-1,
+              refPage = urlArray[pageLoc];
+          return refPage
+        } else {
+          return ""
+        }
+      }
 
     function reset(req){
         req.session.myData = JSON.parse(JSON.stringify(_myData))
@@ -49,6 +60,9 @@ module.exports = function (router,_myData) {
         }
         //version
         req.session.myData.version = version
+        //referrer page
+        req.session.myData.referrerpage = getRefererPage(req.headers.referer)
+
         next()
     });
 
@@ -75,6 +89,9 @@ module.exports = function (router,_myData) {
 
     // Home
     router.get('/' + version + '/home', function (req, res) {
+
+        req.session.myData.searchTerm = ""
+
         res.render(version + '/home', {
             myData:req.session.myData
         });
@@ -84,6 +101,7 @@ module.exports = function (router,_myData) {
     router.get('/' + version + '/training', function (req, res) {
 
         //Sort
+        // req.session.myData.routesearch = false
         req.session.myData.sortapplied = false
         if(req.query.sort == "name" || req.query.sort == "relevance"){
             req.session.myData.sortapplied = true
@@ -160,9 +178,14 @@ module.exports = function (router,_myData) {
                     _searchesToDo = [
                         {"searchOn": _standard.title,"exactrelevance": 99999,"withinrelevance": 10000,"ifmatch": "exit"},
                         {"searchOn": _standard.jobRoles,"exactrelevance": 5000,"withinrelevance": 100,"ifmatch": "carryon"},
-                        {"searchOn": _standard.keywords,"exactrelevance": 2000,"withinrelevance": 20,"ifmatch": "carryon"}
-                        // {"searchOn": _standard.route,"exactrelevance": 1000,"withinrelevance": 10,"ifmatch": "carryon"}
+                        {"searchOn": _standard.keywords,"exactrelevance": 1000,"ifmatch": "carryon"}
                     ]
+                // if(_searchQ.toUpperCase().endsWith(" (CATEGORY)")){
+                //     req.session.myData.routesearch = true
+                //     _searchesToDo = [
+                //         {"searchOn": _standard.route + " (CATEGORY)","exactrelevance": 55555,"ifmatch": "exit"}
+                //     ]
+                // }
                 for (var i = 0; i < _searchesToDo.length; i++) {
                     var _thisItem = _searchesToDo[i]
                     if(Array.isArray(_thisItem.searchOn)){

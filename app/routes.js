@@ -32,7 +32,9 @@ const router = express.Router()
 //                 "pathway": _apiData.pathway,
 //                 "cluster": _apiData.cluster,
 //                 "keywords": _apiData.keywords,
-//                 "jobRoles": _apiData.jobRoles
+//                 "jobRoles": _apiData.jobRoles,
+//                 "integratedDegree": _apiData.integratedDegree,
+//                 "overviewOfRole": _apiData.overviewOfRole
 //             }
 //         _newStandards.list.push(_stdObj)
 //         _count++
@@ -42,6 +44,9 @@ const router = express.Router()
 //         }
 //     });
 // }
+
+// ALSO pull back
+// - closing date?
 
 // NOTE - FIXES AFTER GENERATING: 
 // 1..... these need overwriting in genereated data to match actual SSAs - OR just change ssas in json
@@ -85,6 +90,7 @@ _myData.routes.list.sort(function(a,b){
 var _routeCounts = {},
     _ssaCounts = {}
 _myData.standards.list.forEach(function(_standard, index) {
+    _standard.maxFundingCommas = _standard.maxFunding.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     _routeCounts[_standard.route.toLowerCase()] = (_routeCounts[_standard.route.toLowerCase()] || 0) + 1
     _ssaCounts[_standard.ssa1.toLowerCase()] = (_ssaCounts[_standard.ssa1.toLowerCase()] || 0) + 1
     _ssaCounts[_standard.ssa2.toLowerCase()] = (_ssaCounts[_standard.ssa2.toLowerCase()] || 0) + 1

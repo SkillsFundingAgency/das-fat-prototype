@@ -7,7 +7,32 @@
     {% endif %}
 {% endfor %}
 
+{% block beforeContent %}
+
+{% include "includes/alpha-banner.html" %}
+
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+
+{{ govukBreadcrumbs({
+items: [
+    {
+        text: "Home: find apprenticeship training",
+        href: "home"
+    },
+    {
+        text: "Apprenticeship training",
+        href: myData.referrerpage
+    },
+    {
+        text: _selectedStandard.title
+    }
+]
+}) }}
+{% endblock %}
+
 {% block content %}
+
+
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -16,15 +41,60 @@
             {{_selectedStandard.title}}
         </h1>
 
-        <!-- <p class="govuk-body" >{{_selectedStandard|dump|safe}}</p> -->
+        {% if _selectedStandard.integratedDegree == "non-degree qualification" %}
+        <p class="govuk-body-l"><span class="govuk-!-font-weight-bold">Non-degree qualification</span></p>
+        {% elif _selectedStandard.integratedDegree == "integrated degree" %}
+        <p class="govuk-body-l"><span class="govuk-!-font-weight-bold">Non-integrated degree</span></p>
+        {% elif _selectedStandard.integratedDegree == "non-integrated degree" %}
+        <p class="govuk-body-l"><span class="govuk-!-font-weight-bold">Integrated degree</span></p>
+        {% endif %}
 
-        {% for name, item in _selectedStandard %}
-        <p class="govuk-body" ><span class="govuk-!-font-weight-bold">{{ name }}</span>: {{ item }}</p>
-        {% endfor %}
+        
+
+        <table class="govuk-table">
+            <!-- <caption class="govuk-table__caption"></caption> -->
+            <!-- <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Date</th>
+                <th scope="col" class="govuk-table__header">Amount</th>
+                </tr>
+            </thead> -->
+            <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Level</th>
+                    <td class="govuk-table__cell">{{_selectedStandard.level}}</td>
+                </tr>
+                <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">Typical length</th>
+                <td class="govuk-table__cell">{{_selectedStandard.typicalDuration}} months</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Category</th>
+                    <td class="govuk-table__cell">{{_selectedStandard.route}}</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Max funding</th>
+                    <td class="govuk-table__cell">£{{_selectedStandard.maxFundingFormatted}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        {% if _selectedStandard.jobRoles | length > 0 %}
+        <!-- <p class="govuk-body govuk-secondary-colour"><span class="govuk-secondary-colour"></span>
+            {% for _jobRole in _selectedStandard.jobRoles %}
+                {{_jobRole}}{% if loop.last == false %}, {% endif %}
+            {% endfor %}
+        </p> -->
+        {% endif %}
+
+        {% from "govuk/components/button/macro.njk" import govukButton %}
+        {{ govukButton({
+        text: "Find a training provider"
+        }) }}
 
     </div>
     <div class="govuk-grid-column-one-third">
-        
+       
     </div>
 </div>
 

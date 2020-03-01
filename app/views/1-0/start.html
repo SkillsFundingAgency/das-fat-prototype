@@ -1,19 +1,22 @@
 {% extends "layout.html" %}
 
+{% block beforeContent %}
+{% include "includes/alpha-banner.html" %}
+{% endblock %}
+
 {% block content %}
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-xl">Find apprenticeship training</h1>
-
-        <p class="govuk-body">For employers looking for apprenticeship training.</p>
+        <h1 class="govuk-heading-xl">Find apprenticeship training courses</h1>
 
         <p>Use this service to:</p>
 
         <ul class="govuk-list govuk-list--bullet">
-            <li>search for apprenticeship training by job role, standard title or keyword</li>
-            <li>find training providers who offer apprenticeship training</li>
-            <li>search for training providers near you</li>
+            <li>search for apprenticeship training courses by title or job role</li>
+            <li>browse apprenticeship training by industry sector</li>
+            <li>search for apprenticeship training providers</li>
+            <li>search for apprenticeship training by location</li>
         </ul>
 
         <a href="home" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
@@ -23,7 +26,7 @@
             </svg>
         </a>
 
-        <h2 class="govuk-heading-m">Get help with the apprenticeship service</h2>
+        <!-- <h2 class="govuk-heading-m">Get help with the apprenticeship service</h2>
 
         <p class="govuk-body">You can either:</p>
 
@@ -35,7 +38,7 @@
         <p class="govuk-body">
             <span class="govuk-!-font-weight-bold">Opening times</span><br>
             Our opening times are 8am to 8pm Monday to Friday, and 9am to 1pm on Saturdays. During our opening times, we’ll reply to emails and messages within 4 hours.
-        </p>
+        </p> -->
 
     </div>
 
@@ -43,6 +46,5 @@
         &nbsp;
     </div>
 </div>
-
 
 {% endblock %}

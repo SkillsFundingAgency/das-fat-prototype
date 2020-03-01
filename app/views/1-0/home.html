@@ -1,15 +1,18 @@
 {% extends "layout.html" %}
 
 {% block beforeContent %}
-    {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 
-    {{ govukBreadcrumbs({
-    items: [
-        {
-            text: "Home: find apprenticeship training"
-        }
-    ]
-    }) }}
+{% include "includes/alpha-banner.html" %}
+
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+
+{{ govukBreadcrumbs({
+items: [
+    {
+        text: "Home: find apprenticeship training"
+    }
+]
+}) }}
 {% endblock %}
 
 {% block content %}
@@ -27,12 +30,12 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-xl" >Find apprenticeship training</h1>
+        <h1 class="govuk-heading-xl" >Find apprenticeship training courses</h1>
 
         <form action="training?r=true" method="GET" >
             <!-- Search -->
             <div class="search-wrapper govuk-form-group" >
-                <legend style="display:none">[Search for apprenticeship training]</legend>
+                <!-- <legend style="display:none">[Search for apprenticeship training]</legend> -->
                 <label for="search-training" class="govuk-label" >
                     <span class="govuk-hint">Start typing the apprenticeship name or job role</span>
                 </label>
@@ -42,8 +45,10 @@
                         <button type="submit" class="search-submit">Search training</button>
                     </div>
                 </div>
-                <!-- Reset value -->
+                <!-- Reset values -->
                 <input type="hidden" value="relevance" name="sortby" >
+                <input type="hidden" value="r" name="true" >
+                <input type="hidden" value="route" name="all" >
             </div>
         </form>
 
@@ -53,14 +58,13 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
 
-        <h2 class="govuk-heading-m">You can also search by apprenticeship category</h2>
+        <h2 class="govuk-heading-m">Browse apprenticeship training courses by sector</h2>
 
         <ul class="govuk-list routeslist">
             {% for _route in myData.routes.list %}
             <li><a href="training?r=true&route={{_route.code}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a></li>
             {% endfor %}
         </ul>
-        <!-- <p class="govuk-body"><a href="training?route=all" class="govuk-link govuk-link--no-visited-state">Browse all</a></p> -->
 
     </div>
 

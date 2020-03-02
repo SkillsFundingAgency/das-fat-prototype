@@ -38,9 +38,11 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-xl">Find apprenticeship training courses</h1>
+        <!-- <h1 class="govuk-heading-xl">[Service name]</h1> -->
+        <h1 class="govuk-heading-xl">Find an apprenticeship training course</h1>
+        <!-- <h2 class="govuk-heading-l">Find an apprenticeship training course</h2> -->
 
-        <form action="training?r=true" method="GET">
+        <form action="training" method="GET">
             <!-- Search -->
             <div class="search-wrapper govuk-form-group">
                 <!-- <legend style="display:none">[Search for apprenticeship training]</legend> -->
@@ -48,17 +50,19 @@
                     <span class="">Start typing an apprenticeship training course name or a job role</span>
                 </label>
                 <div class="search-input-wrapper">
-                    <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-training" name="q" title="Search" class="govuk-input">
+                    <input type="search" value="" id="search-training" name="q" title="Search" class="govuk-input">
                     <div class="search-input-submit-wrapper">
-                        <button type="submit" class="search-submit">Search training</button>
+                        <button type="submit" class="search-submit">Search apprenticeship training courses</button>
                     </div>
                 </div>
                 <!-- Reset values -->
                 <input type="hidden" value="relevance" name="sortby">
-                <input type="hidden" value="r" name="true">
+                <!-- <input type="hidden" value="r" name="true"> -->
                 <input type="hidden" value="route" name="all">
             </div>
         </form>
+
+        
 
     </div>
 </div>
@@ -76,10 +80,31 @@
 
     </div>
 
-    <div class="govuk-grid-column-one-third">
-        &nbsp;
-    </div>
 </div>
+
+<!-- PROVIDERS -->
+<!-- <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-l">Find a training provider</h2>
+
+        <form action="providers" method="GET">
+
+            <div class="search-wrapper govuk-form-group">
+                <legend style="display:none">[Search for apprenticeship training]</legend> 
+                <label for="search-training" class="govuk-label">
+                    <span class="">Start typing a training provider name</span>
+                </label>
+                <div class="search-input-wrapper">
+                    <input type="search" value="" id="search-provider" name="q" title="Search" class="govuk-input">
+                    <div class="search-input-submit-wrapper">
+                        <button type="submit" class="search-submit">Search training providers</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div> -->
 
 {% endblock %}
 
@@ -117,16 +142,12 @@
                 }
                 function doSearches(_itemToSearch){
                     //Exact check
-                    if(_thisItem.exact) {
-                        if(_itemToSearch.toUpperCase() == query.trim().toUpperCase()){
-                            _standardMatched = true
-                        }
+                    if(_thisItem.exact & _itemToSearch.toUpperCase() == query.trim().toUpperCase()){
+                        _standardMatched = true
                     }
                     // Within check
-                    if(_thisItem.within) {
-                        if(_itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
-                            _standardMatched = true
-                        }
+                    if(_thisItem.within & _itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
+                        _standardMatched = true
                     }
                 }
             }

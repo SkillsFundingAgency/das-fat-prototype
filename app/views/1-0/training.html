@@ -40,7 +40,7 @@
 {{ govukBreadcrumbs({
 items: [
     {
-        text: "Home: Find apprenticeship training courses",
+        text: "Home: Find an apprenticeship training course",
         href: "home"
     },
     {
@@ -200,16 +200,12 @@ items: [
                 }
                 function doSearches(_itemToSearch){
                     //Exact check
-                    if(_thisItem.exact) {
-                        if(_itemToSearch.toUpperCase() == query.trim().toUpperCase()){
-                            _standardMatched = true
-                        }
+                    if(_thisItem.exact & _itemToSearch.toUpperCase() == query.trim().toUpperCase()){
+                        _standardMatched = true
                     }
                     // Within check
-                    if(_thisItem.within) {
-                        if(_itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
-                            _standardMatched = true
-                        }
+                    if(_thisItem.within & _itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
+                        _standardMatched = true
                     }
                 }
             }

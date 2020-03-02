@@ -16,11 +16,11 @@
 {{ govukBreadcrumbs({
 items: [
     {
-        text: "Home: find apprenticeship training",
+        text: "Home: Find an apprenticeship training course",
         href: "home"
     },
     {
-        text: "Apprenticeship training",
+        text: "Apprenticeship training courses",
         href: myData.referrerpage
     },
     {
@@ -38,7 +38,7 @@ items: [
     <div class="govuk-grid-column-two-thirds">
 
         <h1 class="govuk-heading-xl" >
-            {{_selectedStandard.title}}
+            {{_selectedStandard.title}} (level {{_selectedStandard.level}})
         </h1>
 
         {% if _selectedStandard.integratedDegree == "non-degree qualification" %}
@@ -69,7 +69,7 @@ items: [
                 <td class="govuk-table__cell">{{_selectedStandard.typicalDuration}} months</td>
                 </tr>
                 <tr class="govuk-table__row">
-                    <th scope="row" class="govuk-table__header">Category</th>
+                    <th scope="row" class="govuk-table__header">Sector</th>
                     <td class="govuk-table__cell">{{_selectedStandard.route}}</td>
                 </tr>
                 <tr class="govuk-table__row">

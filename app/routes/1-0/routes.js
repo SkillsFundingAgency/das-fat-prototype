@@ -60,6 +60,8 @@ module.exports = function (router,_myData) {
         }
         //version
         req.session.myData.version = version
+        //defaults for setup
+        req.session.myData.start = "home"
         //referrer page
         req.session.myData.referrerpage = getRefererPage(req.headers.referer)
 

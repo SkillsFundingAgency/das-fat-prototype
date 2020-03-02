@@ -94,7 +94,7 @@ _myData.standards.list.forEach(function(_standard, index) {
     var _autoCompleteString = _standard.title + " (level " + _standard.level + ")"
     _standard.autoCompleteString = _autoCompleteString
     _myData.standardAutocompleteList.push(_autoCompleteString);
-    _standard.maxFundingCommas = _standard.maxFunding.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    _standard.maxFundingFormatted = _standard.maxFunding.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     _routeCounts[_standard.route.toLowerCase()] = (_routeCounts[_standard.route.toLowerCase()] || 0) + 1
     _ssaCounts[_standard.ssa1.toLowerCase()] = (_ssaCounts[_standard.ssa1.toLowerCase()] || 0) + 1
     _ssaCounts[_standard.ssa2.toLowerCase()] = (_ssaCounts[_standard.ssa2.toLowerCase()] || 0) + 1

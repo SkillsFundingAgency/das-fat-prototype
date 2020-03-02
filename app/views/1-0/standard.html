@@ -34,8 +34,6 @@ items: [
 
 {% block content %}
 
-
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
@@ -51,35 +49,24 @@ items: [
         <p class="govuk-body-l"><span class="govuk-!-font-weight-bold">Non-integrated degree</span></p>
         {% endif %}
 
-        
-
-        <table class="govuk-table">
-            <!-- <caption class="govuk-table__caption"></caption> -->
-            <!-- <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">Date</th>
-                <th scope="col" class="govuk-table__header">Amount</th>
-                </tr>
-            </thead> -->
-            <tbody class="govuk-table__body">
-                <tr class="govuk-table__row">
-                    <th scope="row" class="govuk-table__header">Level</th>
-                    <td class="govuk-table__cell">{{_selectedStandard.level}}</td>
-                </tr>
-                <tr class="govuk-table__row">
-                <th scope="row" class="govuk-table__header">Typical length</th>
-                <td class="govuk-table__cell">{{_selectedStandard.typicalDuration}} months</td>
-                </tr>
-                <tr class="govuk-table__row">
-                    <th scope="row" class="govuk-table__header">Sector</th>
-                    <td class="govuk-table__cell">{{_selectedStandard.route}}</td>
-                </tr>
-                <tr class="govuk-table__row">
-                    <th scope="row" class="govuk-table__header">Max funding</th>
-                    <td class="govuk-table__cell">£{{_selectedStandard.maxFundingFormatted}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Level</dt>
+                <dd class="govuk-summary-list__value">{{_selectedStandard.level}}</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Typical duration</dt>
+                <dd class="govuk-summary-list__value">{{_selectedStandard.typicalDuration}} months</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Sector</dt>
+                <dd class="govuk-summary-list__value">{{_selectedStandard.route}}</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Maximum funding</dt>
+                <dd class="govuk-summary-list__value">£{{_selectedStandard.maxFundingFormatted}}.00</dd>
+            </div>
+        </dl>
 
         {% if _selectedStandard.jobRoles | length > 0 %}
         <!-- <p class="govuk-body govuk-secondary-colour"><span class="govuk-secondary-colour"></span>
@@ -94,9 +81,53 @@ items: [
         text: "Find a training provider"
         }) }} -->
 
+        <br>
+
+        <h2 class="govuk-heading-l" >
+            Training providers
+        </h2>
+
+        <!-- <p class="govuk-body govuk-!-font-size-36">{{_selectedStandard.providers}}</p>
+
+        <p class="govuk-body"><a href="providers" class="govuk-link govuk-link--no-visited-state">View providers</a></p> -->
+
+        <!-- <h2 class="govuk-heading-l" >
+            {{_selectedStandard.providers}} training providers
+        </h2>
+
+        {% from "govuk/components/button/macro.njk" import govukButton %}
+        {{ govukButton({
+            text: "View training providers"
+        }) }} -->
+
+        <!-- <table class="govuk-table">
+            <tbody class="govuk-table__body">
+            {% for _provider in myData.providers.list %}
+            {% if loop.index < _selectedStandard.providers %}
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell">{{_provider.name}}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+            </tbody>
+        </table> -->
+
     </div>
     <div class="govuk-grid-column-one-third">
-       
+       &nbsp;
+    </div>
+</div>
+
+<div class="govuk-grid-row das-flex">
+    <div class="govuk-grid-column-one-third das-highlight-box govuk-!-margin-bottom-4">
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">{{_selectedStandard.providers}}</h1>
+        <p class="govuk-body govuk-!-margin-bottom-0">Delivering</p>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <p class="govuk-body"><a href="providers" class="govuk-link govuk-link--no-visited-state">View training providers</a></p>
     </div>
 </div>
 

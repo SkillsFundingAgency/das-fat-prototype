@@ -86,9 +86,9 @@ items: [
         <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Browse by sector</h2>
         {% if myData.routefilterapplied == true %}
         <p class="govuk-body govuk-!-font-weight govuk-!-margin-bottom-2">{{_selectedRoute.name}}</p>
-        <p class="govuk-body"><a href="training?{{_sortQuery}}{{_searchQuery}}" class="govuk-link govuk-link--no-visited-state ">Clear sector</a></p>
+        <p class="govuk-body "><a href="training?{{_sortQuery}}{{_searchQuery}}" class="govuk-link govuk-link--no-visited-state ">Clear sector</a></p>
         {% else %}
-        <ul class="govuk-list">
+        <ul class="govuk-list govuk-!-font-size-16">
             {% for _route in myData.routes.list %}
             <li class="">
                 <a href="training?route={{_route.code}}{{_sortQuery}}{{_searchQuery}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a>
@@ -125,7 +125,7 @@ items: [
                 <div class="search-input-wrapper">
                     <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-training" name="q" title="Search" class="govuk-input">
                     <div class="search-input-submit-wrapper">
-                        <button type="submit" class="search-submit">Search training</button>
+                        <button type="submit" class="search-submit" id="search-training-submit">Search apprenticeship training courses</button>
                     </div>
                 </div>
             </div>
@@ -175,8 +175,9 @@ items: [
                     {% endif %}
 
                     <!-- <li><span class="govuk-secondary-colour">Level:</span> {{_standard.level}}</li> -->
-                    <li><span class="govuk-secondary-colour">Typical length:</span> {{_standard.typicalDuration}} months</li>
+                    <li><span class="govuk-secondary-colour">Typical duration:</span> {{_standard.typicalDuration}} months</li>
                     <li class=""><span class="govuk-secondary-colour">Sector:</span> {{_standard.route}}</li>
+                    <li><span class="govuk-secondary-colour">Training providers:</span> <a href="providers" class="govuk-link govuk-link--no-visited-state">{{_standard.providers}}</a></li>
                     <!-- <li class=""><span class="govuk-secondary-colour">Sector:</span> <a href="training?q={{_standard.route}} (category){{_sortQuery}}" class="govuk-link govuk-link--no-visited-state">{{_standard.route}}</a></li> -->
                 </ul>
             </div>
@@ -236,7 +237,8 @@ items: [
     //     )
     //     populateResults(filteredResults)
     // }
-    
+    // Trigger search click on enter
+    function fireTrainingSearch(){setTimeout(function(){ $("#search-training-submit").trigger("click") },200);}
     var trainingInput = document.querySelector('#search-training')
     if (trainingInput) {
         var trainingInputID = trainingInput.id,
@@ -254,6 +256,7 @@ items: [
             minLength: 3,
             confirmOnBlur: false,
             autoselect: true,
+            onConfirm: fireTrainingSearch,
             // onConfirm: fireTrainingSearch,
             displayMenu: 'overlay'
         })

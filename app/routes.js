@@ -57,6 +57,8 @@ const router = express.Router()
 
 
 
+
+
 // Base session data
 var _myData = {
     "standards": require(__dirname + '/data/standards.json'),
@@ -69,8 +71,33 @@ var _myData = {
         "5",
         "6",
         "7"
-    ]
+    ],
+    "providers": require(__dirname + '/data/providers.json')
 }
+
+//
+//
+// GENERATE provider data
+//
+//
+// _myData.standards.list.forEach(function(_standard, index) {
+//     var _numProviders = 10
+//     if(_standard.larsCode > 0 && _standard.larsCode <= 100 ) {
+//         _numProviders = 9
+//     } else if(_standard.larsCode > 100 && _standard.larsCode <= 200 ) {
+//         _numProviders = 7
+//     } else if(_standard.larsCode > 200 && _standard.larsCode <= 300 ) {
+//         _numProviders = 5
+//     } else if(_standard.larsCode > 300 && _standard.larsCode <= 400 ) {
+//         _numProviders = 3
+//     } else if(_standard.larsCode > 400 && _standard.larsCode <= 500 ) {
+//         _numProviders = 2
+//     } else if(_standard.larsCode > 500 && _standard.larsCode <= 600 ) {
+//         _numProviders = 1
+//     }
+//     _standard.providers = _numProviders
+// });
+// console.log(JSON.stringify(_myData.standards))
 
 //Sort standards
 _myData.standards.list.sort(function(a,b){

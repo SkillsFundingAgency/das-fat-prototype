@@ -121,13 +121,13 @@ module.exports = function (router,_myData) {
         req.session.myData.matchessearchcount = _standards.length
 
         // Route filter reset/setup
-        req.session.myData.filterapplied = false
+        req.session.myData.routefilterapplied = false
         if(req.query.route){
             for (var i = 0; i < _routes.length; i++) {
                 var _thisRoute = _routes[i]
                 if(req.query.route == _thisRoute.code){
                     req.session.myData.route = req.query.route
-                    req.session.myData.filterapplied = true
+                    req.session.myData.routefilterapplied = true
                     req.session.myData.matchesroutecount = 0
                     req.session.myData.displaycount = 0
                     _selectedRoute = _thisRoute
@@ -164,7 +164,7 @@ module.exports = function (router,_myData) {
             _standard.search = true
 
             //ROUTE
-            if(req.session.myData.filterapplied) {
+            if(req.session.myData.routefilterapplied) {
                 _standard.search = false
                 if(_standard.route.toUpperCase() == _selectedRoute.name.toUpperCase()) {
                     req.session.myData.matchesroutecount++

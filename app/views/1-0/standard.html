@@ -7,6 +7,8 @@
     {% endif %}
 {% endfor %}
 
+{% set _standardTitle = _selectedStandard.title + " (level " + _selectedStandard.level + ")" %}
+
 {% block beforeContent %}
 
 {% include "includes/alpha-banner.html" %}
@@ -24,7 +26,7 @@ items: [
         href: myData.referrerpage
     },
     {
-        text: _selectedStandard.title
+        text: _standardTitle
     }
 ]
 }) }}
@@ -38,7 +40,7 @@ items: [
     <div class="govuk-grid-column-two-thirds">
 
         <h1 class="govuk-heading-xl" >
-            {{_selectedStandard.title}} (level {{_selectedStandard.level}})
+            {{_standardTitle}}
         </h1>
 
         {% if _selectedStandard.integratedDegree == "non-degree qualification" %}
@@ -87,10 +89,10 @@ items: [
         </p> -->
         {% endif %}
 
-        {% from "govuk/components/button/macro.njk" import govukButton %}
+        <!-- {% from "govuk/components/button/macro.njk" import govukButton %}
         {{ govukButton({
         text: "Find a training provider"
-        }) }}
+        }) }} -->
 
     </div>
     <div class="govuk-grid-column-one-third">

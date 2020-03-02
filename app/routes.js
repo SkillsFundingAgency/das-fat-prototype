@@ -61,7 +61,15 @@ const router = express.Router()
 var _myData = {
     "standards": require(__dirname + '/data/standards.json'),
     "ssa": require(__dirname + '/data/ssa.json'),
-    "routes": require(__dirname + '/data/routes.json')
+    "routes": require(__dirname + '/data/routes.json'),
+    "levels": [
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+    ]
 }
 
 //Sort standards

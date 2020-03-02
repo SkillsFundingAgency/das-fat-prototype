@@ -18,13 +18,13 @@
 
 <!-- Query strings (for use in hrefs) -->
 {% set _searchQuery = "" %}
-{% set _filterQuery = "" %}
+{% set _routefilterQuery = "" %}
 {% set _sortQuery = "" %}
 {% if myData.searchapplied == true %}
     {% set _searchQuery = "&q=" + myData.searchTerm %}
 {% endif %}
-{% if myData.filterapplied == true %}
-    {% set _filterQuery = "&route=" + myData.route %}
+{% if myData.routefilterapplied == true %}
+    {% set _routefilterQuery = "&route=" + myData.route %}
 {% endif %}
 {% if myData.sortapplied == true %}
     {% set _sortQuery = "&sort=" + myData.sortby %}
@@ -65,7 +65,7 @@ items: [
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        {% if myData.filterapplied == true %}
+        {% if myData.routefilterapplied == true %}
         <h1 class="govuk-heading-xl">
             <!-- <span class="govuk-caption-xl">Apprenticeship training courses</span> -->
             {{_selectedRoute.name}} 
@@ -84,7 +84,7 @@ items: [
 
         <!-- Route list -->
         <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Browse by sector</h2>
-        {% if myData.filterapplied == true %}
+        {% if myData.routefilterapplied == true %}
         <p class="govuk-body govuk-!-font-weight govuk-!-margin-bottom-2">{{_selectedRoute.name}}</p>
         <p class="govuk-body"><a href="training?{{_sortQuery}}{{_searchQuery}}" class="govuk-link govuk-link--no-visited-state ">Clear sector</a></p>
         {% else %}
@@ -96,6 +96,21 @@ items: [
             {% endfor %}
         </ul>
         {% endif %}
+
+        <!-- Level list -->
+        <!-- <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Browse by level</h2>
+        {% if myData.levelfilterapplied == true %}
+        <p class="govuk-body govuk-!-font-weight govuk-!-margin-bottom-2">Level {{_level}}</p>
+        <p class="govuk-body"><a href="training?{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state ">Clear level</a></p>
+        {% else %}
+        <ul class="govuk-list">
+            {% for _level in myData.levels %}
+            <li class="">
+                <a href="training?level={{_level}}{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">Level {{_level}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %} -->
 
     </div>
     <div class="govuk-grid-column-two-thirds">
@@ -119,7 +134,7 @@ items: [
         </form>
 
         {% if myData.searchapplied == true %}
-        <p class="govuk-body "><a href="training?{{_sortQuery}}{{_filterQuery}}" class="govuk-link govuk-link--no-visited-state">Clear search</a></p>
+        <p class="govuk-body "><a href="training?{{_sortQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">Clear search</a></p>
         {% endif %}
 
         <!-- Results count -->
@@ -131,11 +146,11 @@ items: [
         {% if myData.searchapplied == true and myData.displaycount > 1 %}
         <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
             {% if myData.sortby == "name" %}
-            <a class="govuk-link govuk-link--no-visited-state" href="training?{{_filterQuery}}{{_searchQuery}}&sort=relevance">Relevance</a>, 
+            <a class="govuk-link govuk-link--no-visited-state" href="training?{{_routefilterQuery}}{{_searchQuery}}&sort=relevance">Relevance</a>, 
             <span class="govuk-!-font-weight-bold">Name</span>
             {% else %}
             <span class="govuk-!-font-weight-bold">Relevance</span>, 
-            <a class="govuk-link govuk-link--no-visited-state" href="training?{{_filterQuery}}{{_searchQuery}}&sort=name">Name</a>
+            <a class="govuk-link govuk-link--no-visited-state" href="training?{{_routefilterQuery}}{{_searchQuery}}&sort=name">Name</a>
             {% endif %}
         </p>
         {% endif %}

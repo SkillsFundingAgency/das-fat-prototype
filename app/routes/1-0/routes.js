@@ -176,6 +176,7 @@ module.exports = function (router,_myData) {
                 _standard.searchrelevance = 0
                 var _standardsearch = false,
                     _searchesToDo = [
+                        {"searchOn": _standard.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"},
                         {"searchOn": _standard.title,"exactrelevance": 99999,"withinrelevance": 10000,"ifmatch": "exit"},
                         {"searchOn": _standard.jobRoles,"exactrelevance": 5000,"withinrelevance": 100,"ifmatch": "carryon"},
                         {"searchOn": _standard.keywords,"exactrelevance": 1000,"ifmatch": "carryon"}

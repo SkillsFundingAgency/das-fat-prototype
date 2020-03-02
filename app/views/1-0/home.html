@@ -1,19 +1,19 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} 
 
+{% set _standardAutocompleteList = myData.standardAutocompleteList %} 
+{% set _standards = myData.standards.list %} 
+
+{% set _defaultSearchvalue = "" %}
+
+<!-- breadcrumbs -->
 {% block beforeContent %}
 
 {% include "includes/alpha-banner.html" %}
 
-{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 
-{{ govukBreadcrumbs({
-items: [
-    {
-        text: "Home: find apprenticeship training"
-    }
-]
-}) }}
+
 {% endblock %}
+
 
 {% block content %}
 
@@ -25,19 +25,27 @@ items: [
             -moz-columns: 2;
         }
     }
+    
+    #search-training {
+        height: 50px;
+        border-right: 0;
+    }
+    .autocomplete__hint {
+        height: 50px;
+    }
 </style>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-xl" >Find apprenticeship training courses</h1>
+        <h1 class="govuk-heading-xl">Find apprenticeship training courses</h1>
 
-        <form action="training?r=true" method="GET" >
+        <form action="training?r=true" method="GET">
             <!-- Search -->
-            <div class="search-wrapper govuk-form-group" >
+            <div class="search-wrapper govuk-form-group">
                 <!-- <legend style="display:none">[Search for apprenticeship training]</legend> -->
-                <label for="search-training" class="govuk-label" >
-                    <span class="govuk-hint">Start typing the apprenticeship name or job role</span>
+                <label for="search-training" class="govuk-label">
+                    <span class="">Start typing an apprenticeship training course name or a job role</span>
                 </label>
                 <div class="search-input-wrapper">
                     <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-training" name="q" title="Search" class="govuk-input">
@@ -46,9 +54,9 @@ items: [
                     </div>
                 </div>
                 <!-- Reset values -->
-                <input type="hidden" value="relevance" name="sortby" >
-                <input type="hidden" value="r" name="true" >
-                <input type="hidden" value="route" name="all" >
+                <input type="hidden" value="relevance" name="sortby">
+                <input type="hidden" value="r" name="true">
+                <input type="hidden" value="route" name="all">
             </div>
         </form>
 
@@ -68,9 +76,97 @@ items: [
 
     </div>
 
-    <div class="govuk-grid-column-one-third" >
+    <div class="govuk-grid-column-one-third">
         &nbsp;
     </div>
 </div>
 
 {% endblock %}
+
+
+<!-- autoselect: false,
+        defaultValue: '',
+        minLength: 3,
+        selectElement: selectEl,
+        placeholder: 'Start typing to search apprenticeships',
+        showAllValues: false,
+        displayMenu: "overlay" -->
+
+
+{% block pageScripts %}
+<script>
+    //AUTOCOMPLETE TRAINING
+    function suggestTraining(query, populateResults) {
+        var results = {{_standardAutocompleteList | dump | safe }},
+            standards = {{_standards | dump | safe }},
+            filteredResults = []
+        standards.forEach(function(_standard, index) {
+            var _searchesToDo = [
+                    {"searchOn": _standard.autoCompleteString,"within": true,"exact": true},
+                    {"searchOn": _standard.jobRoles,"within": true,"exact": true}
+                ],
+                _standardMatched = false
+            for (var i = 0; i < _searchesToDo.length; i++) {
+                var _thisItem = _searchesToDo[i]
+                if(Array.isArray(_thisItem.searchOn)){
+                    _thisItem.searchOn.forEach(function(_arrayPart, index) {
+                        doSearches(_arrayPart)
+                    });
+                } else {
+                    doSearches(_thisItem.searchOn)
+                }
+                function doSearches(_itemToSearch){
+                    //Exact check
+                    if(_thisItem.exact) {
+                        if(_itemToSearch.toUpperCase() == query.trim().toUpperCase()){
+                            _standardMatched = true
+                        }
+                    }
+                    // Within check
+                    if(_thisItem.within) {
+                        if(_itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
+                            _standardMatched = true
+                        }
+                    }
+                }
+            }
+            (_standardMatched) && (filteredResults.push(_standard.autoCompleteString))
+        })
+        populateResults(filteredResults)
+    }
+    // Normal
+    // function suggestTraining(query, populateResults) {
+    //     var results = {{_standardAutocompleteList | dump | safe }},
+    //         filteredResults = results.filter(
+    //         result => result.toUpperCase().indexOf(query.trim().toUpperCase()) !== -1
+    //     )
+    //     populateResults(filteredResults)
+    // }
+    
+    var trainingInput = document.querySelector('#search-training')
+    if (trainingInput) {
+        var trainingInputID = trainingInput.id,
+            trainingElement = document.createElement('div'),
+            defaultSearchvalue = {{_defaultSearchvalue | dump | safe }}
+        trainingElement.className = "autocomplete__parent_wrapper";
+        trainingInput.parentNode.insertBefore(trainingElement, trainingInput)
+        accessibleAutocomplete({
+            // other options
+            element: trainingElement,
+            id: trainingInputID,
+            name: trainingInput.name,
+            source: suggestTraining,
+            defaultValue: defaultSearchvalue,
+            minLength: 3,
+            confirmOnBlur: false,
+            autoselect: true,
+            // onConfirm: fireTrainingSearch,
+            displayMenu: 'overlay'
+        })
+        trainingInput.style.display = 'none'
+        trainingInput.id = trainingInputID + '-old'
+        trainingInput.name = ''
+    }
+</script>
+
+{% endblock pageScripts %}

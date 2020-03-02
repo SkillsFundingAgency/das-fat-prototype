@@ -1,5 +1,13 @@
 {% extends "layout.html" %}
 
+{% set _standardAutocompleteList = myData.standardAutocompleteList %} 
+{% set _standards = myData.standards.list %} 
+
+{% set _defaultSearchvalue = "" %}
+{% if myData.searchapplied == true %}
+    {% set _defaultSearchvalue = myData.searchTerm %}
+{% endif %}
+
 <!-- Selected route -->
 {% set _selectedRoute = {} %}
 {% for _route in myData.routes.list %}
@@ -32,7 +40,7 @@
 {{ govukBreadcrumbs({
 items: [
     {
-        text: "Home: find apprenticeship training courses",
+        text: "Home: Find apprenticeship training courses",
         href: "home"
     },
     {
@@ -43,6 +51,16 @@ items: [
 {% endblock %}
 
 {% block content %}
+
+<style>
+    #search-training {
+        height: 50px;
+        border-right: 0;
+    }
+    .autocomplete__hint {
+        height: 50px;
+    }
+</style>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -68,7 +86,7 @@ items: [
         <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Browse by sector</h2>
         {% if myData.filterapplied == true %}
         <p class="govuk-body govuk-!-font-weight govuk-!-margin-bottom-2">{{_selectedRoute.name}}</p>
-        <p class="govuk-body"><a href="training?{{_sortQuery}}{{_searchQuery}}" class="govuk-link govuk-link--no-visited-state ">Clear filter</a></p>
+        <p class="govuk-body"><a href="training?{{_sortQuery}}{{_searchQuery}}" class="govuk-link govuk-link--no-visited-state ">Clear sector</a></p>
         {% else %}
         <ul class="govuk-list">
             {% for _route in myData.routes.list %}
@@ -87,7 +105,7 @@ items: [
             <div class="search-wrapper govuk-form-group" >
                 <legend style="display:none">[Search for apprenticeship training]</legend>
                 <label for="search-training" class="govuk-label" >
-                    <span class="">Start typing the apprenticeship name or job role</span>
+                    <span class="">Start typing an apprenticeship training course name or a job role</span>
                 </label>
                 <div class="search-input-wrapper">
                     <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-training" name="q" title="Search" class="govuk-input">
@@ -136,9 +154,9 @@ items: [
                     {% if _standard.integratedDegree == "non-degree qualification" %}
                     <li><span class="govuk-!-font-weight-bold">Non-degree qualification</span></li>
                     {% elif _standard.integratedDegree == "integrated degree" %}
-                    <li><span class="govuk-!-font-weight-bold">Non-integrated degree</span></li>
-                    {% elif _standard.integratedDegree == "non-integrated degree" %}
                     <li><span class="govuk-!-font-weight-bold">Integrated degree</span></li>
+                    {% elif _standard.integratedDegree == "non-integrated degree" %}
+                    <li><span class="govuk-!-font-weight-bold">Non-integrated degree</span></li>
                     {% endif %}
 
                     <!-- <li><span class="govuk-secondary-colour">Level:</span> {{_standard.level}}</li> -->
@@ -156,3 +174,82 @@ items: [
 </div>
 
 {% endblock %}
+
+
+{% block pageScripts %}
+<script>
+    //AUTOCOMPLETE TRAINING
+    function suggestTraining(query, populateResults) {
+        var results = {{_standardAutocompleteList | dump | safe }},
+            standards = {{_standards | dump | safe }},
+            filteredResults = []
+        standards.forEach(function(_standard, index) {
+            var _searchesToDo = [
+                    {"searchOn": _standard.autoCompleteString,"within": true,"exact": true},
+                    {"searchOn": _standard.jobRoles,"within": true,"exact": true}
+                ],
+                _standardMatched = false
+            for (var i = 0; i < _searchesToDo.length; i++) {
+                var _thisItem = _searchesToDo[i]
+                if(Array.isArray(_thisItem.searchOn)){
+                    _thisItem.searchOn.forEach(function(_arrayPart, index) {
+                        doSearches(_arrayPart)
+                    });
+                } else {
+                    doSearches(_thisItem.searchOn)
+                }
+                function doSearches(_itemToSearch){
+                    //Exact check
+                    if(_thisItem.exact) {
+                        if(_itemToSearch.toUpperCase() == query.trim().toUpperCase()){
+                            _standardMatched = true
+                        }
+                    }
+                    // Within check
+                    if(_thisItem.within) {
+                        if(_itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
+                            _standardMatched = true
+                        }
+                    }
+                }
+            }
+            (_standardMatched) && (filteredResults.push(_standard.autoCompleteString))
+        })
+        populateResults(filteredResults)
+    }
+    // Normal
+    // function suggestTraining(query, populateResults) {
+    //     var results = {{_standardAutocompleteList | dump | safe }},
+    //         filteredResults = results.filter(
+    //         result => result.toUpperCase().indexOf(query.trim().toUpperCase()) !== -1
+    //     )
+    //     populateResults(filteredResults)
+    // }
+    
+    var trainingInput = document.querySelector('#search-training')
+    if (trainingInput) {
+        var trainingInputID = trainingInput.id,
+            trainingElement = document.createElement('div'),
+            defaultSearchvalue = {{_defaultSearchvalue | dump | safe }}
+        trainingElement.className = "autocomplete__parent_wrapper";
+        trainingInput.parentNode.insertBefore(trainingElement, trainingInput)
+        accessibleAutocomplete({
+            // other options
+            element: trainingElement,
+            id: trainingInputID,
+            name: trainingInput.name,
+            source: suggestTraining,
+            defaultValue: defaultSearchvalue,
+            minLength: 3,
+            confirmOnBlur: false,
+            autoselect: true,
+            // onConfirm: fireTrainingSearch,
+            displayMenu: 'overlay'
+        })
+        trainingInput.style.display = 'none'
+        trainingInput.id = trainingInputID + '-old'
+        trainingInput.name = ''
+    }
+</script>
+
+{% endblock pageScripts %}

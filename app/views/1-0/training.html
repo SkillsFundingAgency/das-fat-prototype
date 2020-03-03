@@ -30,24 +30,9 @@
     {% set _sortQuery = "&sort=" + myData.sortby %}
 {% endif %}
 
-<!-- breadcrumbs -->
 {% block beforeContent %}
-
-{% include "includes/alpha-banner.html" %}
-
-{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
-
-{{ govukBreadcrumbs({
-items: [
-    {
-        text: "Home: Find an apprenticeship training course",
-        href: "home"
-    },
-    {
-        text: "Apprenticeship training courses"
-    }
-]
-}) }}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/breadcrumb.html" %}
 {% endblock %}
 
 {% block content %}
@@ -177,7 +162,7 @@ items: [
                     <!-- <li><span class="govuk-secondary-colour">Level:</span> {{_standard.level}}</li> -->
                     <li><span class="govuk-secondary-colour">Typical duration:</span> {{_standard.typicalDuration}} months</li>
                     <li class=""><span class="govuk-secondary-colour">Sector:</span> {{_standard.route}}</li>
-                    <li><span class="govuk-secondary-colour">Training providers:</span> <a href="providers" class="govuk-link govuk-link--no-visited-state">{{_standard.providers}}</a></li>
+                    <li><span class="govuk-secondary-colour">Training providers:</span> {{_standard.providers}}</li>
                     <!-- <li class=""><span class="govuk-secondary-colour">Sector:</span> <a href="training?q={{_standard.route}} (category){{_sortQuery}}" class="govuk-link govuk-link--no-visited-state">{{_standard.route}}</a></li> -->
                 </ul>
             </div>

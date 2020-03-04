@@ -14,27 +14,29 @@
     {% include "includes/breadcrumb.html" %}
 {% endblock %}
 
+{% set _overviewSafe = _selectedStandard.overviewOfRole | safe %}
+
 {% block content %}
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
+        <!-- {% for name, item in _selectedStandard %}
+        <p class="govuk-body" ><span class="govuk-!-font-weight-bold">{{ name }}</span>: {{ item | dump }}</p>
+        {% endfor %} -->
+
         <h1 class="govuk-heading-xl" >
             {{_standardTitle}}
         </h1>
 
-        {% if _selectedStandard.integratedDegree == "non-degree qualification" %}
-        <p class="govuk-body-l"><span class="govuk-!-font-weight-bold">Non-degree qualification</span></p>
-        {% elif _selectedStandard.integratedDegree == "integrated degree" %}
-        <p class="govuk-body-l"><span class="govuk-!-font-weight-bold">Integrated degree</span></p>
-        {% elif _selectedStandard.integratedDegree == "non-integrated degree" %}
-        <p class="govuk-body-l"><span class="govuk-!-font-weight-bold">Non-integrated degree</span></p>
-        {% endif %}
-
+        <!-- overviewOfRole -->
+        <p class="govuk-body-l">{{_selectedStandard.overviewOfRole}}.</p>
+        
+        <!-- Summary -->
         <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Level</dt>
-                <dd class="govuk-summary-list__value">{{_selectedStandard.level}}</dd>
+                <dd class="govuk-summary-list__value">{{_selectedStandard.level}} {% if _selectedStandard.integratedDegree == "non-degree qualification" %}(non-degree qualification){% elif _selectedStandard.integratedDegree == "integrated degree" %}(integrated degree){% elif _selectedStandard.integratedDegree == "non-integrated degree" %}(non-integrated degree){% endif %}</dd>
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Typical duration</dt>
@@ -48,51 +50,44 @@
                 <dt class="govuk-summary-list__key">Maximum funding</dt>
                 <dd class="govuk-summary-list__value">£{{_selectedStandard.maxFundingFormatted}}.00</dd>
             </div>
+            {% if _selectedStandard.typicalJobTitles.length > 0 %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Typical job titles</dt>
+                <dd class="govuk-summary-list__value">
+                    <ul class="govuk-list govuk-list--bullet">
+                        {% for _typicalJobTitle in _selectedStandard.typicalJobTitles %}
+                        <li>{{_typicalJobTitle}}</li>
+                        {% endfor %}
+                    </ul>
+                </dd>
+            </div>
+            {% endif %}
         </dl>
 
-        {% if _selectedStandard.jobRoles | length > 0 %}
-        <!-- <p class="govuk-body govuk-secondary-colour"><span class="govuk-secondary-colour"></span>
-            {% for _jobRole in _selectedStandard.jobRoles %}
-                {{_jobRole}}{% if loop.last == false %}, {% endif %}
-            {% endfor %}
-        </p> -->
+        <!-- Skills -->
+        {% if _selectedStandard.skills.length > 0 %}
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                Skills an apprentice will learn
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                <ul class="govuk-list govuk-list--bullet">{% for _skill in _selectedStandard.skills %}<li>{{_skill.detail}}</li>{% endfor %}</ul>
+            </div>
+        </details>
         {% endif %}
 
-        <!-- {% from "govuk/components/button/macro.njk" import govukButton %}
-        {{ govukButton({
-        text: "Find a training provider"
-        }) }} -->
-
-        <br>
+        <p class="govuk-body-s govuk-!-margin-bottom-8">
+            Full information available on <a class="govuk-link govuk-link--no-visited-state" href="{{_selectedStandard.standardPageUrl}}" target="_blank" rel="noopener noreferrer">Institute for Apprenticeships and Technical Education</a>
+        </p>
+        <!-- <p class="govuk-body-s govuk-!-margin-bottom-8">
+            Source: Institute for Apprenticeships and Technical Education
+        </p> -->
 
         <h2 class="govuk-heading-l" >
             Training providers
         </h2>
-
-        <!-- <p class="govuk-body govuk-!-font-size-36">{{_selectedStandard.providers}}</p>
-
-        <p class="govuk-body"><a href="providers" class="govuk-link govuk-link--no-visited-state">View providers</a></p> -->
-
-        <!-- <h2 class="govuk-heading-l" >
-            {{_selectedStandard.providers}} training providers
-        </h2>
-
-        {% from "govuk/components/button/macro.njk" import govukButton %}
-        {{ govukButton({
-            text: "View training providers"
-        }) }} -->
-
-        <!-- <table class="govuk-table">
-            <tbody class="govuk-table__body">
-            {% for _provider in myData.providers.list %}
-            {% if loop.index < _selectedStandard.providers %}
-            <tr class="govuk-table__row">
-                <td class="govuk-table__cell">{{_provider.name}}</td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-            </tbody>
-        </table> -->
 
     </div>
     <div class="govuk-grid-column-one-third">
@@ -102,8 +97,8 @@
 
 <div class="govuk-grid-row das-flex">
     <div class="govuk-grid-column-one-third das-highlight-box govuk-!-margin-bottom-4">
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">{{_selectedStandard.providers}}</h1>
-        <p class="govuk-body govuk-!-margin-bottom-0">Delivering</p>
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">{{_selectedStandard.providers.number}}</h1>
+        <p class="govuk-body govuk-!-margin-bottom-0">Available</p>
     </div>
 </div>
 

@@ -7,14 +7,12 @@
     {% endif %}
 {% endfor %}
 
-{% set _standardTitle = _selectedStandard.title + " (level " + _selectedStandard.level + ")" %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% include "includes/breadcrumb.html" %}
 {% endblock %}
-
-{% set _overviewSafe = _selectedStandard.overviewOfRole | safe %}
 
 {% block content %}
 
@@ -26,7 +24,7 @@
         {% endfor %} -->
 
         <h1 class="govuk-heading-xl" >
-            {{_standardTitle}}
+            {{_standardTitle | safe}}
         </h1>
 
         <!-- overviewOfRole -->
@@ -73,17 +71,14 @@
                 </span>
             </summary>
             <div class="govuk-details__text">
-                <ul class="govuk-list govuk-list--bullet">{% for _skill in _selectedStandard.skills %}<li>{{_skill.detail}}</li>{% endfor %}</ul>
+                <ul class="govuk-list govuk-list--bullet">{% for _skill in _selectedStandard.skills %}{% if _skill.isThisACoreSkill == true %}<li>{{_skill.detail}}</span></li>{% endif %}{% endfor %}</ul>
             </div>
         </details>
         {% endif %}
 
         <p class="govuk-body-s govuk-!-margin-bottom-8">
-            Full information on this Standard is available from the <a class="govuk-link govuk-link--no-visited-state" href="{{_selectedStandard.standardPageUrl}}" target="_blank" rel="noopener noreferrer">Institute for Apprenticeships and Technical Education</a>
+            Full information on this Standard is available from the <a class="govuk-link govuk-link--no-visited-state" href="{{_selectedStandard.standardPageUrl}}" target="_blank" >Institute for Apprenticeships and Technical Education</a>
         </p>
-        <!-- <p class="govuk-body-s govuk-!-margin-bottom-8">
-            Source: Institute for Apprenticeships and Technical Education
-        </p> -->
 
         <h2 class="govuk-heading-l" >
             Training providers
@@ -104,7 +99,7 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <p class="govuk-body"><a href="providers" class="govuk-link govuk-link--no-visited-state">View training providers</a></p>
+        <p class="govuk-body"><a href="providers" class="govuk-button govuk-link--no-visited-state">View training providers</a></p>
     </div>
 </div>
 

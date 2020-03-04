@@ -38,28 +38,43 @@ const router = express.Router()
 //                 "overviewOfRole": _apiData.overviewOfRole,
 //                 "typicalJobTitles": _apiData.typicalJobTitles,
 //                 "skills": _apiData.skills,
+//                 "duties": _apiData.duties,
 //                 "qualifications": _apiData.qualifications,
 //                 "professionalRecognition": _apiData.professionalRecognition,
 //                 "standardPageUrl": _apiData.standardPageUrl
 //             }
-//         _newStandards.list.push(_stdObj)
-//         _count++
+
+//         //STRIP OUT P TAG HTML FROM OVERVIEW
+//         _stdObj.overviewOfRole = _stdObj.overviewOfRole.replace("&lt;p&gt;", "");
+//         _stdObj.overviewOfRole = _stdObj.overviewOfRole.replace("&lt;/p&gt;", "");
         
-//         if(_apiData.typicalJobTitles > 0) {
+//         //MAP CORE SKILLS
+//         if(_stdObj.duties.length > 0) { 
 //         // if(_apiData.thing != "" ) {
 //             // cooooount++
 //             // console.log(_apiData.title + " - regulated = " + JSON.stringify(_apiData.regulated))
 //             // console.log(JSON.stringify(_apiData.regulatedBody))
 //             // console.log(JSON.stringify(_apiData.regulationDetail))
 //             // console.log("------")
-            
+//             var _coreSkillIDs = []
+//             _stdObj.duties.forEach(function(_duty, index) {
+//                 if(_duty.isThisACoreDuty == 1){
+//                     _coreSkillIDs = _coreSkillIDs.concat(_duty.mappedSkills)
+//                     // _coreSkillIDs.push(_duty.mappedSkills)
+//                 }
+//             });
+//             _stdObj.skills.forEach(function(_skill, index) {
+//                 _skill.isThisACoreSkill = _coreSkillIDs.includes(_skill.skillId)
+//             });
 //         }
-
+ 
+//         _newStandards.list.push(_stdObj)
+//         _count++
 //         if(_count == _activeStds.length){
 //             //use following to spit out entire gathered data
-//             // console.log(JSON.stringify(_newStandards))
+//             console.log(JSON.stringify(_newStandards))
 //             // console.log(cooooount)
-//         }
+//         } 
 //     });
 // }
 

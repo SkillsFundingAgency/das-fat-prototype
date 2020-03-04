@@ -92,7 +92,7 @@
         <p class="govuk-body govuk-!-font-weight govuk-!-margin-bottom-2">Level {{myData.level}}</p>
         <p class="govuk-body"><a href="training?{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state ">Clear level</a></p>
         {% else %}
-        <ul class="govuk-list">
+        <ul class="govuk-list govuk-!-font-size-16">
             {% for _level in myData.levels %}
             <li class="">
                 <a href="training?level={{_level}}{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">Level {{_level}}</a>

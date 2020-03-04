@@ -112,8 +112,10 @@ module.exports = function (router,_myData) {
 
         var _needToMatchCount = 0,
             _selectedRoute = {},
+            _selectedLevel = "",
             _standards = req.session.myData.standards.list,
-            _routes = req.session.myData.routes.list
+            _routes = req.session.myData.routes.list,
+            _levels = req.session.myData.levels
 
         req.session.myData.searchfilters = []
         req.session.myData.displaycount = _standards.length
@@ -138,6 +140,26 @@ module.exports = function (router,_myData) {
             }
         } else {
             req.session.myData.route = "all"
+        }
+
+        // Level filter reset/setup
+        req.session.myData.levelfilterapplied = false
+        if(req.query.level){
+            for (var i = 0; i < _levels.length; i++) {
+                var _thisLevel = _levels[i]
+                if(req.query.level == _thisLevel){
+                    req.session.myData.level = req.query.level
+                    req.session.myData.levelfilterapplied = true
+                    req.session.myData.matcheslevelcount = 0
+                    req.session.myData.displaycount = 0
+                    _selectedLevel = _thisLevel
+                    req.session.myData.searchfilters.push(_selectedLevel)
+                    _needToMatchCount++
+                    break
+                }
+            }
+        } else {
+            req.session.myData.level = "all"
         }
 
         //Search reset/setup
@@ -168,6 +190,15 @@ module.exports = function (router,_myData) {
                 _standard.search = false
                 if(_standard.route.toUpperCase() == _selectedRoute.name.toUpperCase()) {
                     req.session.myData.matchesroutecount++
+                    _hasAMatchcount++
+                }
+            }
+
+            //LEVEL
+            if(req.session.myData.levelfilterapplied) {
+                _standard.search = false
+                if(_standard.level.toString() == _selectedLevel) {
+                    req.session.myData.matcheslevelcount++
                     _hasAMatchcount++
                 }
             }

@@ -51,9 +51,9 @@
             </div>
             {% if _selectedStandard.typicalJobTitles.length > 0 %}
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Typical job titles</dt>
+                <dt class="govuk-summary-list__key">Typical job title{% if _selectedStandard.typicalJobTitles.length > 1 %}s{% endif %}</dt>
                 <dd class="govuk-summary-list__value">
-                    <ul class="govuk-list govuk-list--bullet">
+                    <ul class="govuk-list {% if _selectedStandard.typicalJobTitles.length > 1 %}govuk-list--bullet{% endif %}">
                         {% for _typicalJobTitle in _selectedStandard.typicalJobTitles %}
                         <li>{{_typicalJobTitle}}</li>
                         {% endfor %}

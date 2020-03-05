@@ -44,9 +44,11 @@ const router = express.Router()
 //                 "standardPageUrl": _apiData.standardPageUrl
 //             }
 
-//         //STRIP OUT P TAG HTML FROM OVERVIEW
+//         //STRIP OUT P TAG and APOSTROPHE HTML FROM OVERVIEW
 //         _stdObj.overviewOfRole = _stdObj.overviewOfRole.replace("&lt;p&gt;", "");
 //         _stdObj.overviewOfRole = _stdObj.overviewOfRole.replace("&lt;/p&gt;", "");
+//         _stdObj.overviewOfRole = _stdObj.overviewOfRole.replace("&#39;", "’");
+
         
 //         //MAP CORE SKILLS
 //         if(_stdObj.duties.length > 0) { 

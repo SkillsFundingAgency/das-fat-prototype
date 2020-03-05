@@ -188,6 +188,14 @@ _myData.ssa.list.forEach(function(_ssa1, index) {
     });
 }); 
 
+// Set providers
+_myData.providerAutocompleteList = []
+_myData.providers.list.forEach(function(_provider, index) {
+    var _autoCompleteString = _provider.name
+    _provider.autoCompleteString = _autoCompleteString
+    _myData.providerAutocompleteList.push(_autoCompleteString);
+});
+
 require('./routes/1-0/routes.js')(router,JSON.parse(JSON.stringify(_myData)));
 
 module.exports = router

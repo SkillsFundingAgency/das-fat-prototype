@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block beforeContent %}
+{% include "includes/alpha-banner.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl">Find apprenticeship training courses</h1>
+
+        <p>Use this service to:</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>search for apprenticeship training courses by title or job role</li>
+            <li>browse apprenticeship training by industry sector</li>
+            <li>search for apprenticeship training providers</li>
+            <li>search for apprenticeship training by location</li>
+        </ul>
+
+        <a href="home" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
+            Start now
+            <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" role="presentation" focusable="false">
+                <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
+            </svg>
+        </a>
+
+        <!-- <h2 class="govuk-heading-m">Get help with the apprenticeship service</h2>
+
+        <p class="govuk-body">You can either:</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb" class="govuk-link">search for help</a> in the apprenticeship service at any time</li>
+            <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link">contact us</a> during our opening times</li>
+        </ul>
+
+        <p class="govuk-body">
+            <span class="govuk-!-font-weight-bold">Opening times</span><br>
+            Our opening times are 8am to 8pm Monday to Friday, and 9am to 1pm on Saturdays. During our opening times, we’ll reply to emails and messages within 4 hours.
+        </p> -->
+
+    </div>
+
+    <div class="govuk-grid-column-one-third" >
+        &nbsp;
+    </div>
+</div>
+
+{% endblock %}

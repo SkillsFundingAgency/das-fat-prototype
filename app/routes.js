@@ -141,8 +141,13 @@ var _myData = {
 //             _standard.providers = _standardID.providers
 //         }
 //     });
+//     // Number overrides
+//     if(_standard.title.toUpperCase().indexOf("RETAIL".trim().toUpperCase()) != -1){
+//         _standard.providers.number = 0
+//     }
 // });
 // console.log(JSON.stringify(_myData.standards)) 
+
 
 
 

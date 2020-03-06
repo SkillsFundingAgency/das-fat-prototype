@@ -18,13 +18,16 @@ var _myData = {
 }
 
 // Uncomment to generate standards.json data - it will magically appear in the console
+// DO NOT UNCOMMENT AND PUSH LIVE
 // require('./generate-data.js')(router,_myData);
 
 //Sort standards
 _myData.standards.list.sort(function(a,b){
     if (a.title.toUpperCase() < b.title.toUpperCase()){
+    // if (a.larsCode < b.larsCode){
         return -1
     } else if(a.title.toUpperCase() > b.title.toUpperCase()){
+    // } else if(a.larsCode > b.larsCode){
         return 1
     }
     return 0;
@@ -45,6 +48,11 @@ var _routeCounts = {},
     _ssaCounts = {}
 _myData.standardAutocompleteList = []
 _myData.standards.list.forEach(function(_standard, index) {
+    // console.log(_standard.coreSkillsCount)
+    // if(_standard.coreSkillsCount > 0) {
+    //     console.log(_standard.larsCode + " - " + _standard.title + " (level " + _standard.level + ")")
+    // }
+
     var _autoCompleteString = _standard.title + " (level " + _standard.level + ")"
     _standard.autoCompleteString = _autoCompleteString
     _myData.standardAutocompleteList.push(_autoCompleteString);

@@ -39,7 +39,8 @@ module.exports = function (router,_myData) {
                     "duties": _apiData.duties,
                     "qualifications": _apiData.qualifications,
                     "professionalRecognition": _apiData.professionalRecognition,
-                    "standardPageUrl": _apiData.standardPageUrl
+                    "standardPageUrl": _apiData.standardPageUrl,
+                    "coreSkillsCount": 0
                 }
 
             //STRIP OUT P TAG and APOSTROPHE HTML FROM OVERVIEW
@@ -60,12 +61,12 @@ module.exports = function (router,_myData) {
                 _stdObj.duties.forEach(function(_duty, index) {
                     if(_duty.isThisACoreDuty == 1){
                         _coreSkillIDs = _coreSkillIDs.concat(_duty.mappedSkills)
-                        // _coreSkillIDs.push(_duty.mappedSkills)
                     }
                 });
                 _stdObj.skills.forEach(function(_skill, index) {
-                    //STRIP OUT NBSP from skill
-                    // _skill.detail = _skill.detail.replace("  ", " ");
+                    if(_coreSkillIDs.includes(_skill.skillId)){
+                        _stdObj.coreSkillsCount++
+                    }
                     _skill.isThisACoreSkill = _coreSkillIDs.includes(_skill.skillId)
                 });
             }
@@ -76,6 +77,42 @@ module.exports = function (router,_myData) {
                 //use following to spit out entire gathered data
                 // console.log(JSON.stringify(_newStandards))
                 // console.log(cooooount)
+                // APPLY provider data to generated standards
+                var _activeStdsObjs = _activeStds.map((str, index) => ({ value: str, id: parseInt(str) }));
+                // console.log(_activeStdsObjs)
+                _activeStdsObjs.forEach(function(_activeStdsObj, index) {
+                    _activeStdsObj.providers = {
+                        "number": 10
+                    }
+                    var _numProviders = 10
+                    if(_activeStdsObj.id > 0 && _activeStdsObj.id <= 100 ) {
+                        _numProviders = 9
+                    } else if(_activeStdsObj.id > 100 && _activeStdsObj.id <= 200 ) {
+                        _numProviders = 7
+                    } else if(_activeStdsObj.id > 200 && _activeStdsObj.id <= 300 ) {
+                        _numProviders = 5
+                    } else if(_activeStdsObj.id > 300 && _activeStdsObj.id <= 400 ) {
+                        _numProviders = 3
+                    } else if(_activeStdsObj.id > 400 && _activeStdsObj.id <= 500 ) {
+                        _numProviders = 2
+                    } else if(_activeStdsObj.id > 500) {
+                        _numProviders = 1
+                    }
+                    _activeStdsObj.providers.number = _numProviders
+
+                });
+                _newStandards.list.forEach(function(_standard, index) {
+                    _activeStdsObjs.forEach(function(_standardID, index) {
+                        if(_standard.larsCode == _standardID.id){
+                            _standard.providers = _standardID.providers
+                        }
+                    });
+                    // Number overrides
+                    if(_standard.title.toUpperCase().indexOf("RETAIL".trim().toUpperCase()) != -1){
+                        _standard.providers.number = 0
+                    }
+                });
+                console.log(JSON.stringify(_newStandards)) 
             } 
         });
     }
@@ -83,39 +120,4 @@ module.exports = function (router,_myData) {
     // ALSO pull back
     // - closing date?
 
-    // GENERATE provider data
-    var _activeStdsObjs = _activeStds.map((str, index) => ({ value: str, id: index + 1 }));
-    _activeStdsObjs.forEach(function(_standard, index) {
-        _standard.providers = {
-            "number": 10
-        }
-        var _numProviders = 10
-        if(_standard.id > 0 && _standard.id <= 100 ) {
-            _numProviders = 9
-        } else if(_standard.id > 100 && _standard.id <= 200 ) {
-            _numProviders = 7
-        } else if(_standard.id > 200 && _standard.id <= 300 ) {
-            _numProviders = 5
-        } else if(_standard.id > 300 && _standard.id <= 400 ) {
-            _numProviders = 3
-        } else if(_standard.id > 400 && _standard.id <= 500 ) {
-            _numProviders = 2
-        } else if(_standard.id > 500 && _standard.id <= 600 ) {
-            _numProviders = 1
-        }
-        _standard.providers.number = _numProviders
-
-    });
-    _myData.standards.list.forEach(function(_standard, index) {
-        _activeStdsObjs.forEach(function(_standardID, index) {
-            if(_standard.larsCode == _standardID.id){
-                _standard.providers = _standardID.providers
-            }
-        });
-        // Number overrides
-        if(_standard.title.toUpperCase().indexOf("RETAIL".trim().toUpperCase()) != -1){
-            _standard.providers.number = 0
-        }
-    });
-    console.log(JSON.stringify(_myData.standards)) 
 }

@@ -9,6 +9,12 @@
 
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
+<!-- overview -->
+{% set _overview = _selectedStandard.overviewOfRole|trim %}
+{% if _overview.slice(-1) != "." %}
+    {% set _overview = _overview + "." %}
+{% endif %}
+
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% include "includes/breadcrumb.html" %}
@@ -29,7 +35,7 @@
         </h1>
 
         <!-- overviewOfRole -->
-        <p class="govuk-body-l">{{_selectedStandard.overviewOfRole}}.</p>
+        <p class="govuk-body-l">{{_overview}}</p>
         
         <!-- Summary -->
         <dl class="govuk-summary-list">

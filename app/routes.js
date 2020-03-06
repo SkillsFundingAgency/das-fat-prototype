@@ -80,21 +80,8 @@ const router = express.Router()
 //     });
 // }
 
-
-
 // ALSO pull back
 // - closing date?
-
-// NOTE - FIXES AFTER GENERATING: 
-// 1..... these need overwriting in genereated data to match actual SSAs - OR just change ssas in json
-//          1.2 Nursing, and subjects and vocations allied to medicine
-//          6 Information and Communication Technology (ICT)
-//          15 Business, Administration, Finance and Law
-// 2. Add in missing SSAs if used - refer to excel spreadhseet for them
-
-
-
-
 
 // Base session data
 var _myData = {

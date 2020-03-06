@@ -65,7 +65,7 @@ module.exports = function (router,_myData) {
                 });
                 _stdObj.skills.forEach(function(_skill, index) {
                     //STRIP OUT NBSP from skill
-                    _skill.detail = _skill.detail.replace("  ", " ");
+                    // _skill.detail = _skill.detail.replace("  ", " ");
                     _skill.isThisACoreSkill = _coreSkillIDs.includes(_skill.skillId)
                 });
             }

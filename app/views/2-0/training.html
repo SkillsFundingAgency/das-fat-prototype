@@ -111,6 +111,8 @@
             </fieldset>
         </form>
 
+        <!-- <p class="govuk-body">Match both routes = {{myData.matchesfilterscount}}</p> -->
+
         <!--NON-JS VERSION-->
         {% if myData.searchapplied == true %}
         <p data-clear-filter-non-js class="govuk-body"><a href="training?{{_sortQuery}}{{_routefilterQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state">Clear search</a></p>
@@ -143,9 +145,9 @@
         -->
         <div data-list>
             {% for _standard in myData.standards.list %}
-                
+                {% if _standard.search == true %}
                     {% set _standardData = [{"searchOn": _standard.autoCompleteString,"within": true,"exact": true},{"searchOn": _standard.jobRoles,"within": true,"exact": true}] %}
-                    <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3 {% if _standard.search == false %} hidden {% endif %}" data-list-item data-search-data="{{_standardData|dump}}">
+                    <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3" data-list-item data-search-data="{{_standardData|dump}}">
                         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
                             <a href="standard?standard={{_standard.larsCode}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a>
                         </h2>
@@ -163,7 +165,7 @@
                         </ul>
                         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-2">
                     </div>
-
+                {% endif %}
             {% endfor %}
         </div>
 

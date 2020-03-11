@@ -9,20 +9,23 @@ function asYouTypeFilter(totalCount,itemTypeLabel,itemTypeLabelPlural,clearLocal
 
         // - list-search-filter
 
-    //Displayed count
-    var _displayedCount = totalCount
 
-    // List items
-    var _listContainer = jQuery("[data-list]")
-    var _listItems = _listContainer.find("[data-list-item]")
 
-    //
-    //
-    // AS YOU TYPE SEARCH
-    //
-    //
+    var _displayedCount = totalCount,
+        _listContainer = jQuery("[data-list]"),
+        _listItems = _listContainer.find("[data-list-item]"),
+        _searchContainer = jQuery("[data-list-search-filter]"),
+        _search = _searchContainer.find("input"),
+        _searchWrapper = _searchContainer.closest(".inner-form")
 
-    //Set Localstorage defaults
+    // Remove form elements (form, button)
+    _searchWrapper.unwrap()
+    _searchContainer.addClass("search-wrapper-no-icon")
+    _searchContainer.find(".search-input-submit-wrapper").remove()
+
+
+
+    //Set Localstorage defaults and searchTerm
     if(clearLocalStorage){
         localStorage.setItem("searchTerm", JSON.stringify(""));
     }
@@ -30,17 +33,8 @@ function asYouTypeFilter(totalCount,itemTypeLabel,itemTypeLabelPlural,clearLocal
         localStorage.setItem("searchTerm", JSON.stringify(_searchTerm));
     }
     var searchTerm = JSON.parse(localStorage.getItem('searchTerm')) || "";
-    console.log(searchTerm)
+    // console.log(searchTerm)
 
-    //find search box
-    var _searchContainer = jQuery("[data-list-search-filter]"),
-        _search = _searchContainer.find("input"),
-        _searchWrapper = _searchContainer.closest(".inner-form")
-
-    //Remove form elements (form, button)
-    _searchWrapper.unwrap()
-    _searchContainer.addClass("search-wrapper-no-icon")
-    _searchContainer.find(".search-input-submit-wrapper").remove()
 
 
 
@@ -61,6 +55,9 @@ function asYouTypeFilter(totalCount,itemTypeLabel,itemTypeLabelPlural,clearLocal
     
 
 
+    //
+    // Hide or show list items
+    //
     function filterListItems(value){
         _displayedCount = totalCount
         var _valueUpper = value.toUpperCase().trim()
@@ -97,21 +94,23 @@ function asYouTypeFilter(totalCount,itemTypeLabel,itemTypeLabelPlural,clearLocal
                 showOrHideElement(_this, "hide")
                 _displayedCount--
             }
-
-
-
-
         });
     }
 
+
+
+    //
+    // Update count label
+    //
     function updateMessage(){
         var label = (_displayedCount == 1) ? itemTypeLabel : itemTypeLabelPlural
         jQuery("[data-results-count]").text(_displayedCount + " " + label)
     }
 
 
+
     //
-    //Search box checks on load
+    // Search box checks on load
     //
     _search.val(searchTerm)
     var _valueUpper = searchTerm.toUpperCase().trim()
@@ -146,6 +145,9 @@ function asYouTypeFilter(totalCount,itemTypeLabel,itemTypeLabelPlural,clearLocal
             updateMessage()
         }
     )
+
+
+
 
     // Show/Hide
     function showOrHideElement(_this, showOrHide){

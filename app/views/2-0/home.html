@@ -1,45 +1,38 @@
 {% extends "layout.html" %} 
+{% set serviceName = "Find apprenticeship training" %}
 
+<!-- autocompletes -->
 {% set _standardAutocompleteList = myData.standardAutocompleteList %} 
 {% set _standards = myData.standards.list %} 
-
 {% set _defaultSearchvalue = "" %}
+{% set _providerAutocompleteList = myData.providerAutocompleteList %} 
+{% set _providers = myData.providers.list %}
+{% set _defaultProviderSearchvalue = "" %}
 
-<!-- breadcrumbs -->
+<!-- phase banner + breadcrumbs -->
 {% block beforeContent %}
-
-{% include "includes/alpha-banner.html" %}
-
-
-
+    {% include "includes/alpha-banner.html" %}
 {% endblock %}
-
 
 {% block content %}
 
 <style>
-    @media (min-width: 641px) {
+    /* @media (min-width: 641px) {
         .routeslist {
             columns: 2;
             -webkit-columns: 2;
             -moz-columns: 2;
         }
-    }
-    
-    #search-training {
-        height: 50px;
-        border-right: 0;
-    }
-    .autocomplete__hint {
-        height: 50px;
-    }
+    } */
 </style>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <!-- <h1 class="govuk-heading-xl">[Service name]</h1> -->
-        <h1 class="govuk-heading-xl">Find an apprenticeship training course</h1>
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-9">Find apprenticeship training</h1>
+
+        <h2 class="govuk-heading-m">Find an apprenticeship training course</h2>
+        
         <!-- <h2 class="govuk-heading-l">Find an apprenticeship training course</h2> -->
 
         <form action="training" method="GET">
@@ -47,12 +40,12 @@
             <div class="search-wrapper govuk-form-group">
                 <!-- <legend style="display:none">[Search for apprenticeship training]</legend> -->
                 <label for="search-training" class="govuk-label">
-                    <span class="">Start typing an apprenticeship training course name or a job role</span>
+                    <span class="govuk-hint">Enter course name, job role or keyword</span>
                 </label>
                 <div class="search-input-wrapper">
                     <input type="search" value="" id="search-training" name="q" title="Search" class="govuk-input">
                     <div class="search-input-submit-wrapper">
-                        <button type="submit" class="search-submit">Search apprenticeship training courses</button>
+                        <button type="submit" class="search-submit" id="search-training-submit">Search apprenticeship training courses</button>
                     </div>
                 </div>
                 <!-- Reset values -->
@@ -62,132 +55,58 @@
             </div>
         </form>
 
-        
-
     </div>
 </div>
 
-<div class="govuk-grid-row">
+<div class="govuk-grid-row govuk-!-margin-bottom-6">
     <div class="govuk-grid-column-full">
 
-        <h2 class="govuk-heading-s">Browse by sector</h2>
+        <!-- <h2 class="govuk-heading-s">Browse by sector</h2>
 
         <ul class="govuk-list routeslist">
             {% for _route in myData.routes.list %}
-            <li><a href="training?r=true&route={{_route.code}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a></li>
+            <li><a href="training?r=true&route={{_route.code}}" class="govuk-link govuk-link--no-visited-state" >{{_route.name}}</a></li>
             {% endfor %}
-        </ul>
+        </ul> -->
+
+        <h2 class="govuk-heading-s"><a href="training" class="govuk-link govuk-link--no-visited-state">Browse all apprenticeship training courses</a></h2>
+        <!-- <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">509</h1> -->
 
     </div>
 
 </div>
 
 <!-- PROVIDERS -->
-<!-- <div class="govuk-grid-row">
+<div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h2 class="govuk-heading-l">Find a training provider</h2>
+        <h2 class="govuk-heading-m">Find a training provider</h2>
 
-        <form action="providers" method="GET">
-
-            <div class="search-wrapper govuk-form-group">
-                <legend style="display:none">[Search for apprenticeship training]</legend> 
-                <label for="search-training" class="govuk-label">
-                    <span class="">Start typing a training provider name</span>
+        <!-- Search box -->
+        <form action="providers" method="GET" >
+            <div class="search-wrapper govuk-form-group" >
+                <legend style="display:none">[Search for a training provider]</legend>
+                <label for="search-providers" class="govuk-label" >
+                    <span class="govuk-hint">[name search label]</span>
                 </label>
                 <div class="search-input-wrapper">
-                    <input type="search" value="" id="search-provider" name="q" title="Search" class="govuk-input">
+                    <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-providers" name="q" title="Search" class="govuk-input">
                     <div class="search-input-submit-wrapper">
-                        <button type="submit" class="search-submit">Search training providers</button>
+                        <button type="submit" class="search-submit" id="search-providers-submit">Search for a training provider</button>
                     </div>
                 </div>
             </div>
         </form>
 
+        <h2 class="govuk-heading-s"><a href="providers" class="govuk-link govuk-link--no-visited-state">Browse all training providers</a></h2>
+        <!-- <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">1500</h1> -->
+
     </div>
-</div> -->
+</div>
 
 {% endblock %}
 
-
-<!-- autoselect: false,
-        defaultValue: '',
-        minLength: 3,
-        selectElement: selectEl,
-        placeholder: 'Start typing to search apprenticeships',
-        showAllValues: false,
-        displayMenu: "overlay" -->
-
-
 {% block pageScripts %}
 <script>
-    //AUTOCOMPLETE TRAINING
-    function suggestTraining(query, populateResults) {
-        var results = {{_standardAutocompleteList | dump | safe }},
-            standards = {{_standards | dump | safe }},
-            filteredResults = []
-        standards.forEach(function(_standard, index) {
-            var _searchesToDo = [
-                    {"searchOn": _standard.autoCompleteString,"within": true,"exact": true},
-                    {"searchOn": _standard.jobRoles,"within": true,"exact": true}
-                ],
-                _standardMatched = false
-            for (var i = 0; i < _searchesToDo.length; i++) {
-                var _thisItem = _searchesToDo[i]
-                if(Array.isArray(_thisItem.searchOn)){
-                    _thisItem.searchOn.forEach(function(_arrayPart, index) {
-                        doSearches(_arrayPart)
-                    });
-                } else {
-                    doSearches(_thisItem.searchOn)
-                }
-                function doSearches(_itemToSearch){
-                    //Exact check
-                    if(_thisItem.exact & _itemToSearch.toUpperCase() == query.trim().toUpperCase()){
-                        _standardMatched = true
-                    }
-                    // Within check
-                    if(_thisItem.within & _itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
-                        _standardMatched = true
-                    }
-                }
-            }
-            (_standardMatched) && (filteredResults.push(_standard.autoCompleteString))
-        })
-        populateResults(filteredResults)
-    }
-    // Normal
-    // function suggestTraining(query, populateResults) {
-    //     var results = {{_standardAutocompleteList | dump | safe }},
-    //         filteredResults = results.filter(
-    //         result => result.toUpperCase().indexOf(query.trim().toUpperCase()) !== -1
-    //     )
-    //     populateResults(filteredResults)
-    // }
-    
-    var trainingInput = document.querySelector('#search-training')
-    if (trainingInput) {
-        var trainingInputID = trainingInput.id,
-            trainingElement = document.createElement('div'),
-            defaultSearchvalue = {{_defaultSearchvalue | dump | safe }}
-        trainingElement.className = "autocomplete__parent_wrapper";
-        trainingInput.parentNode.insertBefore(trainingElement, trainingInput)
-        accessibleAutocomplete({
-            // other options
-            element: trainingElement,
-            id: trainingInputID,
-            name: trainingInput.name,
-            source: suggestTraining,
-            defaultValue: defaultSearchvalue,
-            minLength: 3,
-            confirmOnBlur: false,
-            autoselect: true,
-            // onConfirm: fireTrainingSearch,
-            displayMenu: 'overlay'
-        })
-        trainingInput.style.display = 'none'
-        trainingInput.id = trainingInputID + '-old'
-        trainingInput.name = ''
-    }
+   
 </script>
-
 {% endblock pageScripts %}

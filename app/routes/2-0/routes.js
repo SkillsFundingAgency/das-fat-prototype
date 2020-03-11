@@ -80,6 +80,8 @@ module.exports = function (router,_myData) {
         req.session.myData.start = "home"
         //referrer page
         req.session.myData.referrerpage = getRefererPage(req.headers.referer)
+        //local storage clear boolean
+        // req.session.myData.clearLocalStorage = (req.query.cls) ? true : false
 
         next()
     });
@@ -108,6 +110,7 @@ module.exports = function (router,_myData) {
     // Home
     router.get('/' + version + '/home', function (req, res) {
 
+        req.session.myData.searchReset = true
         req.session.myData.searchTerm = ""
 
         res.render(version + '/home', {
@@ -118,6 +121,9 @@ module.exports = function (router,_myData) {
     // Training
     router.get('/' + version + '/training', function (req, res) {
 
+        // localstorage clear variable
+        req.session.myData.clearLocalStorage = req.session.myData.searchReset || false;
+
         //Sort
         // req.session.myData.routesearch = false
         req.session.myData.sortapplied = false
@@ -127,6 +133,7 @@ module.exports = function (router,_myData) {
         }
 
         var _needToMatchCount = 0,
+            _needToMatchFiltersCount = 0,
             _selectedRoute = {},
             _selectedLevel = "",
             _standards = req.session.myData.standards.list,
@@ -135,7 +142,9 @@ module.exports = function (router,_myData) {
 
         req.session.myData.searchfilters = []
         req.session.myData.displaycount = _standards.length
+        req.session.myData.matchesfilterscount = _standards.length
         req.session.myData.matchesroutecount = _standards.length
+        req.session.myData.matcheslevelcount = _standards.length
         req.session.myData.matchessearchcount = _standards.length
 
         // Route filter reset/setup
@@ -147,10 +156,12 @@ module.exports = function (router,_myData) {
                     req.session.myData.route = req.query.route
                     req.session.myData.routefilterapplied = true
                     req.session.myData.matchesroutecount = 0
+                    req.session.myData.matchesfilterscount = 0
                     req.session.myData.displaycount = 0
                     _selectedRoute = _thisRoute
                     req.session.myData.searchfilters.push(_selectedRoute.name)
                     _needToMatchCount++
+                    _needToMatchFiltersCount++
                     break
                 }
             }
@@ -167,10 +178,12 @@ module.exports = function (router,_myData) {
                     req.session.myData.level = req.query.level
                     req.session.myData.levelfilterapplied = true
                     req.session.myData.matcheslevelcount = 0
+                    req.session.myData.matchesfilterscount = 0
                     req.session.myData.displaycount = 0
                     _selectedLevel = _thisLevel
                     req.session.myData.searchfilters.push(_selectedLevel)
                     _needToMatchCount++
+                    _needToMatchFiltersCount++
                     break
                 }
             }
@@ -196,7 +209,8 @@ module.exports = function (router,_myData) {
 
         _standards.forEach(function(_standard, index) {
 
-            var _hasAMatchcount = 0
+            var _hasAMatchcount = 0,
+                _hasAFilterMatchcount = 0
 
             // Reset each standard
             _standard.search = true
@@ -207,6 +221,7 @@ module.exports = function (router,_myData) {
                 if(_standard.route.toUpperCase() == _selectedRoute.name.toUpperCase()) {
                     req.session.myData.matchesroutecount++
                     _hasAMatchcount++
+                    _hasAFilterMatchcount++
                 }
             }
 
@@ -216,6 +231,7 @@ module.exports = function (router,_myData) {
                 if(_standard.level.toString() == _selectedLevel) {
                     req.session.myData.matcheslevelcount++
                     _hasAMatchcount++
+                    _hasAFilterMatchcount++
                 }
             }
 
@@ -277,6 +293,10 @@ module.exports = function (router,_myData) {
             if(_needToMatchCount > 0 && _needToMatchCount == _hasAMatchcount){
                 _standard.search = true
                 req.session.myData.displaycount++
+            }
+            //Matches all fitlers (for the as you type function)
+            if(_needToMatchFiltersCount > 0&& _needToMatchFiltersCount == _hasAFilterMatchcount){
+                req.session.myData.matchesfilterscount++
             }
 
         });

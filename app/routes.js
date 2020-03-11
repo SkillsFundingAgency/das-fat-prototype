@@ -50,7 +50,7 @@ _myData.standardAutocompleteList = []
 _myData.standards.list.forEach(function(_standard, index) {
     // console.log(_standard.coreSkillsCount)
     // if(_standard.coreSkillsCount > 0) {
-    //     console.log(_standard.larsCode + " - " + _standard.title + " (level " + _standard.level + ")")
+    //     console.log(_standard.larsCode + " - " + _standard.coreSkillsCount + " - " + _standard.title + " (level " + _standard.level + ")")
     // }
 
     var _autoCompleteString = _standard.title + " (level " + _standard.level + ")"

@@ -22,6 +22,16 @@
 
 {% block content %}
 
+<style>
+    @media (min-width: 641px) {
+        .skillslist {
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+        }
+    }
+</style>
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
@@ -69,8 +79,8 @@
             {% endif %}
         </dl>
 
-        <!-- Skills -->
         {% if _selectedStandard.coreSkillsCount > 0 %}
+        <!-- Skills -->
         <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
                 <span class="govuk-details__summary-text">
@@ -78,7 +88,7 @@
                 </span>
             </summary>
             <div class="govuk-details__text">
-                <ul class="govuk-list govuk-list--bullet">{% for _skill in _selectedStandard.skills %}{% if _skill.isThisACoreSkill == true %}<li>{{_skill.detail}}</span></li>{% endif %}{% endfor %}</ul>
+                <ul class="govuk-list govuk-list--bullet ">{% for _skill in _selectedStandard.skills %}{% if _skill.isThisACoreSkill == true %}<li>{{_skill.detail}}</span></li>{% endif %}{% endfor %}</ul>
             </div>
         </details>
         {% endif %}
@@ -111,5 +121,20 @@
     </div>
 </div>
 {% endif %}
+
+<!-- <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-l" >
+            End-point assessment organisations
+        </h2>
+    </div>
+</div>
+
+<div class="govuk-grid-row das-flex">
+    <div class="govuk-grid-column-one-third das-highlight-box govuk-!-margin-bottom-4">
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">2</h1>
+        <p class="govuk-body govuk-!-margin-bottom-0">Available</p>
+    </div>
+</div> -->
 
 {% endblock %}

@@ -70,15 +70,12 @@
 
         <!-- Filters  -->
 
-    </div>
-    <div class="govuk-grid-column-two-thirds">
-
         <!-- Search box -->
-        <!-- <form action="providers" method="GET" >
+        <form action="providers" method="GET" >
             <div class="search-wrapper govuk-form-group" >
                 <legend style="display:none">[Search for a training provider]</legend>
                 <label for="search-providers" class="govuk-label" >
-                    <span class="">Start typing a training provider name</span>
+                    <span class="">[name search]</span>
                 </label>
                 <div class="search-input-wrapper">
                     <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-providers" name="q" title="Search" class="govuk-input">
@@ -87,7 +84,16 @@
                     </div>
                 </div>
             </div>
-        </form> -->
+        </form>
+
+        <p class="govuk-body">1. [Filter by apprenticeship training course]</p>
+
+        <p class="govuk-body">2. [Filter by location]</p>
+
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+
+        
 
         {% if myData.searchapplied == true %}
         <p class="govuk-body "><a href="providers?{{_sortQuery}}" class="govuk-link govuk-link--no-visited-state">Clear search</a></p>
@@ -100,7 +106,7 @@
 
         <!-- Sort -->
         {% if myData.searchapplied == true and myData.displaycount > 1 %}
-        <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
+        <p class="govuk-body govuk-!-margin-bottom-6">Sorted by:
             <span class="govuk-!-font-weight-bold">Name</span>
             <!-- <a class="govuk-link govuk-link--no-visited-state" href="training?{{_levelfilterQuery}}{{_routefilterQuery}}{{_searchQuery}}&sort=name">Name</a> -->
         </p>

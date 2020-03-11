@@ -120,4 +120,92 @@ module.exports = function (router,_myData) {
     // ALSO pull back
     // - closing date?
 
+
+
+
+
+
+    //
+    // Generating extra provider info
+    //
+
+    // 1,500 providers
+
+    //
+    // Cities list
+    //
+
+    // Example
+    //
+    // function randomBoolean(_chance){
+    //     return Math.random() < _chance
+    // }
+    // if(randomBoolean(0.1)){
+    //     _reservation.status = "used"
+    // } else {
+    //     _reservation.status = "available"
+    // }
+
+    // Chance = 6
+    //
+    // London
+
+    // Chance = 1
+    //
+    // Birmingham
+
+    // Chance = 0.35
+    //
+    // Liverpool
+    // Sheffield
+    // Leeds
+    // Manchester
+    // Bristol
+
+    // Chance = 0.25
+    //
+    // Coventry
+    // Leicester
+    // Bradford
+    // Nottingham
+    // Newcastle
+    // Stoke-on-Trent
+    // Hull
+    // Wolverhampton
+    // Plymouth
+    // Derby
+    
+
+    // Chance = 0.175
+    //
+    // Southampton
+    // Sunderland
+    // Dudley
+    // Portsmouth
+    // Walsall
+    // Norwich
+    // Northampton
+    // Luton
+
+    // Chance = 0.135
+    //
+    // Southend-on-Sea
+    // Milton Keynes
+    // Blackpool
+    // Reading
+    // Bolton
+    // Middlesbrough
+    // West Bromwich
+    // Preston
+    // Brighton
+    // Stockport
+    // Poole
+    // Peterborough
+    // Huddersfield
+    // Ipswich
+    // Telford
+
+
+
+
 }

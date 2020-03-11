@@ -1,10 +1,11 @@
 
+{% set _breadcrumbText = _breadcrumbText or "Home: Find an apprenticeship training course" %}
 {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 
 {{ govukBreadcrumbs({
 items: [
     {
-        text: "Home: Find an apprenticeship training course",
+        text: _breadcrumbText,
         href: "home"
     }
 ]

@@ -159,6 +159,21 @@ module.exports = function (router,_myData) {
         req.session.myData.matcheslevelcount = _standards.length
         req.session.myData.matchessearchcount = _standards.length
 
+        //Search reset/setup
+        req.session.myData.searchapplied = false
+        var _searchQ = req.query.q
+        if(_searchQ || _searchQ == ""){
+            _searchQ = _searchQ.trim()
+            if(_searchQ != ""){
+                req.session.myData.searchTerm = _searchQ
+                req.session.myData.searchapplied = true
+                req.session.myData.matchessearchcount = 0
+                req.session.myData.displaycount = 0
+                req.session.myData.searchfilters.push({"value": "‘" + _searchQ + "’","type": "search"})
+                _needToMatchCount++
+            }
+        }
+
         // Route filter reset/setup
         req.session.myData.routefilterapplied = false
         if(req.query.route){
@@ -201,21 +216,6 @@ module.exports = function (router,_myData) {
             }
         } else {
             req.session.myData.level = "all"
-        }
-
-        //Search reset/setup
-        req.session.myData.searchapplied = false
-        var _searchQ = req.query.q
-        if(_searchQ || _searchQ == ""){
-            _searchQ = _searchQ.trim()
-            if(_searchQ != ""){
-                req.session.myData.searchTerm = _searchQ
-                req.session.myData.searchapplied = true
-                req.session.myData.matchessearchcount = 0
-                req.session.myData.displaycount = 0
-                req.session.myData.searchfilters.push({"value": "‘" + _searchQ + "’","type": "search"})
-                _needToMatchCount++
-            }
         }
 
 

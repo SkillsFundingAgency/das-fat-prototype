@@ -29,7 +29,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-9">Find apprenticeship training</h1>
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-9">{{serviceName}}</h1>
 
         <h2 class="govuk-heading-m">Find an apprenticeship training course</h2>
         
@@ -37,7 +37,7 @@
 
         <form action="training" method="GET">
             <!-- Search -->
-            <div class="search-wrapper govuk-form-group">
+            <div class="search-wrapper govuk-form-group search-wrapper-das">
                 <!-- <legend style="display:none">[Search for apprenticeship training]</legend> -->
                 <label for="search-training" class="govuk-label">
                     <span class="govuk-hint">Enter course name, job role or keyword</span>
@@ -79,11 +79,13 @@
 <!-- PROVIDERS -->
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-6">
+
         <h2 class="govuk-heading-m">Find a training provider</h2>
 
         <!-- Search box -->
         <form action="providers" method="GET" >
-            <div class="search-wrapper govuk-form-group" >
+            <div class="search-wrapper govuk-form-group search-wrapper-das" >
                 <legend style="display:none">[Search for a training provider]</legend>
                 <label for="search-providers" class="govuk-label" >
                     <span class="govuk-hint">[name search label]</span>

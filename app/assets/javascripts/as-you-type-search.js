@@ -112,6 +112,7 @@ function asYouTypeFilter(totalCount,itemTypeLabel,itemTypeLabelPlural,clearLocal
     //
     // Search box checks on load
     //
+    showOrHideElement(_listItems, "show")
     _search.val(searchTerm)
     var _valueUpper = searchTerm.toUpperCase().trim()
     if(_valueUpper.length != 0){
@@ -135,7 +136,7 @@ function asYouTypeFilter(totalCount,itemTypeLabel,itemTypeLabelPlural,clearLocal
             var _value = _search.val()
             var _valueUpper = _value.toUpperCase().trim()
             if(_valueUpper.length != 0){
-                filterListItems(_value)
+                filterListItems(_valueUpper)
                 showOrHideElement(_clearFilter, "show")
             } else {
                 localStorage.setItem("searchTerm", JSON.stringify(""));

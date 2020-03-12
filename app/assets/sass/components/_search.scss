@@ -58,8 +58,15 @@
     background-color: #2b8cc4;
     color: #ffffff;
   }
+  .search-wrapper-das .search-submit {
+    background-color: #005ea5;
+    color: #ffffff;
+  }
   .search-submit:hover {
     background-color: #3699d3;
+  }
+  .search-wrapper-das .search-submit:hover {
+    background-color: #2b8cc4;
   }
   .search-wrapper input[type="search"] {
     border-right-width: 0;
@@ -73,10 +80,16 @@
   .search-wrapper input[type="search"] {
     height: 50px;
   }
+  .search-wrapper-das input[type="search"] {
+    height: 40px;
+  }
   .search-wrapper .search-submit {
     width: 50px;
     height: 50px;
-    background-position: 8px 50%;
+  }
+  .search-wrapper-das .search-submit {
+    width: 40px;
+    height: 40px;
   }
   @media only screen and (-webkit-min-device-pixel-ratio: 2),
     only screen and (min-device-pixel-ratio: 2),
@@ -87,4 +100,12 @@
       background-position: 160% 50%;
     }
   }
-  
+  @media only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (min-device-pixel-ratio: 2),
+  only screen and (min-resolution: 192dpi),
+  only screen and (min-resolution: 2dppx) {
+  .search-wrapper-das .search-submit {
+    background-size: 55px auto;
+    background-position: 120% 50%;
+  }
+}

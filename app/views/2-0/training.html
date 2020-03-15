@@ -69,26 +69,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
 
-        <!-- Search box -->
-        <form action="training" method="GET" >
-            <div class="inner-form">
-                <div class="search-wrapper search-wrapper-das search-wrapper-das-small govuk-form-group " data-list-search-filter >
-                    <legend style="display:none">[Search for apprenticeship training]</legend>
-                    <label for="search-training" class="govuk-label" >
-                        <span class="govuk-!-font-weight-bold">Keywords</span>
-                    </label>
-                    <div class="search-input-wrapper">
-                        <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-training" name="q" title="Search" class="govuk-input search-input search-input-with-button" >
-                        <div class="search-input-submit-wrapper">
-                            <button type="submit" class="search-submit" id="search-training-submit">Search apprenticeship training courses</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Reset/keep values -->
-                <input type="hidden" value="{{myData.route}}" name="route" >
-                <input type="hidden" value="{{myData.level}}" name="level" >
-            </div>
-        </form>
+        
 
         <!-- Route list -->
         <!-- <details class="govuk-details" data-module="govuk-details">
@@ -166,6 +147,27 @@
 
     </div>
     <div class="govuk-grid-column-two-thirds">
+
+        <!-- Search box -->
+        <form action="training" method="GET" >
+            <div class="inner-form">
+                <div class="search-wrapper search-wrapper-das search-wrapper-das-small govuk-form-group " data-list-search-filter >
+                    <legend style="display:none">[Search for apprenticeship training]</legend>
+                    <label for="search-training" class="govuk-label" >
+                        <span class="govuk-!-font-weight-bold">Keywords</span>
+                    </label>
+                    <div class="search-input-wrapper">
+                        <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-training" name="q" title="Search" class="govuk-input search-input search-input-with-button" >
+                        <div class="search-input-submit-wrapper">
+                            <button type="submit" class="search-submit" id="search-training-submit">Search apprenticeship training courses</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Reset/keep values -->
+                <input type="hidden" value="{{myData.route}}" name="route" >
+                <input type="hidden" value="{{myData.level}}" name="level" >
+            </div>
+        </form>
 
         
 

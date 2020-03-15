@@ -186,7 +186,7 @@ module.exports = function (router,_myData) {
                     req.session.myData.matchesfilterscount = 0
                     req.session.myData.displaycount = 0
                     _selectedRoute = _thisRoute
-                    req.session.myData.searchfilters.push({"value": _selectedRoute.name,"type": "route"})
+                    req.session.myData.searchfilters.push({"value": _selectedRoute.name.toLowerCase(),"type": "route"})
                     _needToMatchCount++
                     _needToMatchFiltersCount++
                     break

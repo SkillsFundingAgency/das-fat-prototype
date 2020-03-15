@@ -48,11 +48,20 @@
 {% block content %}
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-full">
 
         <h1 class="govuk-heading-xl">
+            {% if myData.levelfilterapplied == true or myData.routefilterapplied or myData.searchapplied %}
+            <strong>{{_displayCount}} result{% if _displayCount != 1 %}s{% endif %}</strong>{% if myData.levelfilterapplied == true or myData.routefilterapplied or myData.searchapplied %} for {% for _term in myData.searchfilters %}{% if loop.first == false and loop.last == false and loop.length > 1 %}, {% endif %}{% if loop.last and loop.length > 1 %} and {% endif %}{{_term.value|safe}}{% endfor %}{% endif %}
+            {% else %}
             Apprenticeship training courses
+            {% endif %}
         </h1>
+
+        <!-- <p class="govuk-body-l govuk-!-margin-bottom-6"><strong>{{_displayCount}} result{% if _displayCount != 1 %}s{% endif %}</strong>{% if myData.levelfilterapplied == true or myData.routefilterapplied or myData.searchapplied %} for {% for _term in myData.searchfilters %}{% if loop.first == false and loop.last == false and loop.length > 1 %} : {% endif %}{% if loop.last and loop.length > 1 %} : {% endif %}{{_term.value|safe}}{% endfor %}{% endif %}</p> -->
+
+        {% if myData.levelfilterapplied == true or myData.routefilterapplied or myData.searchapplied %}
+        <p class="govuk-body-l govuk-!-margin-bottom-8 "><a href="training?{{_sortQuery}}" class="govuk-link govuk-link--no-visited-state ">Clear filters</a></p>{% endif %}
 
     </div>
 </div>
@@ -63,10 +72,10 @@
         <!-- Search box -->
         <form action="training" method="GET" >
             <div class="inner-form">
-                <div class="search-wrapper search-wrapper-das govuk-form-group " data-list-search-filter >
+                <div class="search-wrapper search-wrapper-das search-wrapper-das-small govuk-form-group " data-list-search-filter >
                     <legend style="display:none">[Search for apprenticeship training]</legend>
                     <label for="search-training" class="govuk-label" >
-                        <span class="">Search for a course</span>
+                        <span class="govuk-!-font-weight-bold">Keywords</span>
                     </label>
                     <div class="search-input-wrapper">
                         <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-training" name="q" title="Search" class="govuk-input search-input search-input-with-button" >
@@ -98,11 +107,22 @@
                 </ul>
             </div>
         </details> -->
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Browse by sector</h2>
-        <ul class="govuk-list govuk-!-font-size-16">
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Sector</h2>
+        <ul class="govuk-list govuk-!-font-size">
+            <li>
+                {% if myData.routefilterapplied == false %}
+                All sectors
+                {% else %}
+                <a href="training?{{_sortQuery}}{{_searchQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state">All sectors</a>
+                {% endif %}
+            </li>
             {% for _route in myData.routes.list %}
-            <li class="">
+            <li>
+                {% if myData.routefilterapplied == true and _route.code == myData.route %}
+                {{_route.name}}
+                {% else %}
                 <a href="training?route={{_route.code}}{{_sortQuery}}{{_searchQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a>
+                {% endif %}
             </li>
             {% endfor %}
         </ul>
@@ -124,11 +144,22 @@
                 </ul>
             </div>
         </details> -->
-        <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Browse by level</h2>
-        <ul class="govuk-list govuk-!-font-size-16">
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Level</h2>
+        <ul class="govuk-list govuk-!-font-size">
+           <li>
+            {% if myData.levelfilterapplied == false %}
+            All levels
+            {% else %}
+            <a href="training?{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">All levels</a>
+            {% endif %}
+            </li>
             {% for _level in myData.levels %}
-            <li class="">
+            <li>
+                {% if _level == myData.level %}
+                Level {{_level}}
+                {% else %}
                 <a href="training?level={{_level}}{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">Level {{_level}}</a>
+                {% endif %}
             </li>
             {% endfor %}
         </ul>
@@ -153,18 +184,54 @@
         <!-- <p class="govuk-body">{{myData.searchfilters|dump}}</p> -->
 
 
-        <p class="govuk-body-l govuk-!-margin-bottom-2"><strong>{{_displayCount}} result{% if _displayCount != 1 %}s{% endif %}</strong>{% if myData.levelfilterapplied == true or myData.routefilterapplied or myData.searchapplied %} for {% for _term in myData.searchfilters %}{% if loop.first == false and loop.last == false and loop.length > 1 %}, {% endif %}{% if loop.last and loop.length > 1 %}, {% endif %}<strong>{{_term.value}}</strong>{% endfor %}{% endif %}</p>
+        
+
+        <!-- None  -->
+        <!-- <p class="govuk-body-l govuk-!-margin-bottom-4"><strong>1 result</strong></p> -->
+
+        <!-- All 3 -->
+        <!-- <p class="govuk-body-l govuk-!-margin-bottom-4"><strong>1 result</strong></p>
+        <p class="govuk-body-l govuk-!-margin-bottom-4"><strong>Filtered by:</strong> ‘meat’, sales, marketing and procurement, level 4</p> -->
+
+        <!-- Search  -->
+        <!-- <p class="govuk-body-l govuk-!-margin-bottom-4"><strong>1 result</strong> for <strong>‘meat’</strong></p> -->
+
+        <!-- Sector  -->
+        <!-- <p class="govuk-body-l govuk-!-margin-bottom-4"><strong>1 result</strong> in <strong>sales, marketing and procurement</strong></p> -->
+
+        <!-- Level  -->
+        <!-- <p class="govuk-body-l govuk-!-margin-bottom-4"><strong>1 result</strong> in <strong>level 4</strong></p> -->
+
+        <!-- Search + sector -->
+        <!-- <p class="govuk-body-l govuk-!-margin-bottom-4"><strong>1 result</strong> for <strong>‘meat’</strong> in <strong>sales, marketing and procurement</strong></p> -->
+
+        <!-- Search + level -->
+        <!-- <p class="govuk-body-l govuk-!-margin-bottom-4"><strong>1 result</strong> for <strong>‘meat’</strong> in <strong>level 4</strong></p> -->
+
+        <!-- Sector + level -->
+        <!-- <p class="govuk-body-l govuk-!-margin-bottom-4"><strong>1 result</strong> in <strong>sales, marketing and procurement</strong> and <strong>level 4</strong></p> -->
+
+
+
+        <!-- <p class="govuk-body-l govuk-!-margin-bottom-2"><strong>1 result</strong> for:</p> -->
+
+        <!-- {% if myData.levelfilterapplied == true or myData.routefilterapplied or myData.searchapplied %}
+        <ul class="govuk-list govuk-list--bullet">
+            {% for _term in myData.searchfilters %}
+                <li>{{_term.value}}</li>
+            {% endfor %}
+        </ul>
+        {% endif %} -->
         
         
 
 
-        {% if myData.levelfilterapplied == true or myData.routefilterapplied or myData.searchapplied %}
-        <p class="govuk-body govuk-!-margin-bottom-6"><a href="training?{{_sortQuery}}" class="govuk-link govuk-link--no-visited-state ">Clear search and filters</a></p>{% endif %}
+        
 
         <!-- Sort -->
         {% if myData.searchapplied == true and _displayCount > 1 %}
         <!-- <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-4"> -->
-        <p class="govuk-body govuk-!-margin-bottom-4">Sort by:
+        <p class="govuk-body govuk-!-margin-bottom-">Sort by:
             {% if myData.sortby == "name" %}
             <a class="govuk-link govuk-link--no-visited-state" href="training?{{_levelfilterQuery}}{{_routefilterQuery}}{{_searchQuery}}&sort=relevance">Relevance</a>, 
             <span class="govuk-!-font-weight-bold">Name</span>
@@ -174,16 +241,18 @@
             {% endif %}
         </p>
         {% endif %}
-        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2 govuk-!-margin-top-6">
        
         <!-- 
             Standards list
         -->
+        {% if _displayCount > 0 %}
         <div data-list>
             {% for _standard in myData.standards.list %}
                 {% if _standard.search == true %}
                     {% set _standardData = [{"searchOn": _standard.autoCompleteString,"within": true,"exact": true},{"searchOn": _standard.jobRoles,"within": true,"exact": true}] %}
-                    <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3" data-list-item data-search-data="{{_standardData|dump}}">
+                    <div class=" govuk-!-margin-bottom-3" data-list-item data-search-data="{{_standardData|dump}}">
                         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
                             <a href="standard?standard={{_standard.larsCode}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a>
                         </h2>
@@ -204,6 +273,36 @@
                 {% endif %}
             {% endfor %}
         </div>
+        <!-- <p class="govuk-body govuk-!-margin-top-8"><a href="training?{{_sortQuery}}" class="govuk-link govuk-link--no-visited-state ">Clear filters</a> to see all apprenticeship training courses.</p> -->
+        {% else %}
+        <h2 class="govuk-heading-m govuk-!-margin-top-4">0 results</h2>
+        <p class="govuk-body">You could:</p>
+        <ul class="govuk-list govuk-list--bullet">
+
+            {% if myData.searchapplied == true %}
+            <!-- <li>Change the keyword search</li> -->
+            <li>Change or <a href="training?{{_sortQuery}}{{_routefilterQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state ">clear the keyword search</a> (‘{{myData.searchTerm}}’)</li>
+            {% endif %}
+        
+            {% if myData.levelfilterapplied == true %}
+            <li><a href="training?{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">Clear the level filter</a> (level {{myData.level}})</li>
+            {% endif %}
+
+            {% if myData.routefilterapplied == true %}
+            <li><a href="training?{{_sortQuery}}{{_searchQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state">Clear the sector filter</a> ({{_selectedRoute.name}})</li>
+            {% endif %}
+
+            <!-- <li>or</li>
+
+            <li><a href="training?{{_sortQuery}}" class="govuk-link govuk-link--no-visited-state ">Clear all filters</a></li> -->
+
+
+        </ul>
+        {% endif %}
+        
+        <!-- <p class="govuk-body govuk-!-margin-top">{% for _term in myData.searchfilters %}{% if loop.first == false and loop.last == false and loop.length > 1 %}, {% endif %}{% if loop.last and loop.length > 1 %} and {% endif %}{{_term.value|safe}}{% endfor %}.</p>
+
+        <p class="govuk-body govuk-!-margin-top-8"><a href="training?{{_sortQuery}}" class="govuk-link govuk-link--no-visited-state ">Clear filters</a> to see all apprenticeship training courses.</p> -->
 
 
     </div>

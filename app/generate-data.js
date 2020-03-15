@@ -73,6 +73,8 @@ module.exports = function (router,_myData) {
     
             _newStandards.list.push(_stdObj)
             _count++
+
+            //This is the LAST standard
             if(_count == _activeStds.length){
                 //use following to spit out entire gathered data
                 // console.log(JSON.stringify(_newStandards))

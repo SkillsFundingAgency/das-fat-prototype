@@ -24,6 +24,13 @@
             -moz-columns: 2;
         }
     } */
+    #search-providers {
+        height: 50px;
+        border-right: 0;
+    }
+    .autocomplete__hint {
+        height: 50px;
+    }
 </style>
 
 <div class="govuk-grid-row">
@@ -40,7 +47,7 @@
             <div class="search-wrapper govuk-form-group search-wrapper-das">
                 <!-- <legend style="display:none">[Search for apprenticeship training]</legend> -->
                 <label for="search-training" class="govuk-label">
-                    <span class="govuk-hint">Enter course name, job role or keyword</span>
+                    <span class="govuk-hint">Search for a course</span>
                 </label>
                 <div class="search-input-wrapper">
                     <input type="search" value="" id="search-training" name="q" title="Search" class="govuk-input">
@@ -109,6 +116,73 @@
 
 {% block pageScripts %}
 <script>
-   
+    //AUTOCOMPLETE PROVIDERS
+    function suggestProviders(query, populateResults) {
+        var results = {{_providerAutocompleteList | dump | safe }},
+            providers = {{_providers | dump | safe }},
+            filteredResults = []
+        providers.forEach(function(_provider, index) {
+            var _searchesToDo = [
+                    {"searchOn": _provider.autoCompleteString,"within": true,"exact": true}
+                ],
+                _providerMatched = false
+            for (var i = 0; i < _searchesToDo.length; i++) {
+                var _thisItem = _searchesToDo[i]
+                if(Array.isArray(_thisItem.searchOn)){
+                    _thisItem.searchOn.forEach(function(_arrayPart, index) {
+                        doSearches(_arrayPart)
+                    });
+                } else {
+                    doSearches(_thisItem.searchOn)
+                }
+                function doSearches(_itemToSearch){
+                    //Exact check
+                    if(_thisItem.exact & _itemToSearch.toUpperCase() == query.trim().toUpperCase()){
+                        _providerMatched = true
+                    }
+                    // Within check
+                    if(_thisItem.within & _itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
+                        _providerMatched = true
+                    }
+                }
+            }
+            (_providerMatched) && (filteredResults.push(_provider.autoCompleteString))
+        })
+        populateResults(filteredResults)
+    }
+    // Normal
+    // function suggestTraining(query, populateResults) {
+    //     var results = {{_standardAutocompleteList | dump | safe }},
+    //         filteredResults = results.filter(
+    //         result => result.toUpperCase().indexOf(query.trim().toUpperCase()) !== -1
+    //     )
+    //     populateResults(filteredResults)
+    // }
+    // Trigger search click on enter
+    function fireProvidersSearch(){setTimeout(function(){ $("#search-providers-submit").trigger("click") },200);}
+    var providerInput = document.querySelector('#search-providers')
+    if (providerInput) {
+        var providerInputID = providerInput.id,
+            providerElement = document.createElement('div'),
+            defaultSearchvalue = {{_defaultSearchvalue | dump | safe }}
+        providerElement.className = "autocomplete__parent_wrapper";
+        providerInput.parentNode.insertBefore(providerElement, providerInput)
+        accessibleAutocomplete({
+            // other options
+            element: providerElement,
+            id: providerInputID,
+            name: providerInput.name,
+            source: suggestProviders,
+            defaultValue: defaultSearchvalue,
+            minLength: 3,
+            confirmOnBlur: false,
+            autoselect: true,
+            onConfirm: fireProvidersSearch,
+            displayMenu: 'overlay'
+        })
+        providerInput.style.display = 'none'
+        providerInput.id = providerInputID + '-old'
+        providerInput.name = ''
+    }
 </script>
 {% endblock pageScripts %}

@@ -169,7 +169,7 @@ module.exports = function (router,_myData) {
                 req.session.myData.searchapplied = true
                 req.session.myData.matchessearchcount = 0
                 req.session.myData.displaycount = 0
-                req.session.myData.searchfilters.push({"value": "‘" + _searchQ + "’","type": "search"})
+                req.session.myData.searchfilters.push({"value": "‘" + _searchQ + "’","type": "search","typeText": "Keywords"})
                 _needToMatchCount++
             }
         }
@@ -186,7 +186,7 @@ module.exports = function (router,_myData) {
                     req.session.myData.matchesfilterscount = 0
                     req.session.myData.displaycount = 0
                     _selectedRoute = _thisRoute
-                    req.session.myData.searchfilters.push({"value": _selectedRoute.name.toLowerCase(),"type": "route"})
+                    req.session.myData.searchfilters.push({"value": _selectedRoute.name,"type": "route","typeText": "Sector"})
                     _needToMatchCount++
                     _needToMatchFiltersCount++
                     break
@@ -208,7 +208,7 @@ module.exports = function (router,_myData) {
                     req.session.myData.matchesfilterscount = 0
                     req.session.myData.displaycount = 0
                     _selectedLevel = _thisLevel
-                    req.session.myData.searchfilters.push({"value": "level " + _selectedLevel,"type": "level"})
+                    req.session.myData.searchfilters.push({"value": "Level " + _selectedLevel,"type": "level","typeText": "Level"})
                     _needToMatchCount++
                     _needToMatchFiltersCount++
                     break

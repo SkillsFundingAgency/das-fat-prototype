@@ -2,7 +2,7 @@
    #FILTER
    ========================================================================== */
 
-   .moj-filter {
+   .fat-filter {
     background-color: govuk-colour("white");
     box-shadow: inset 0 0 0 1px govuk-colour("mid-grey");
   
@@ -11,7 +11,7 @@
     }
   }
 
-  .moj-filter__header {
+  .fat-filter__header {
     background: govuk-colour('white');
     box-shadow: none;
     border: 1px solid #b1b4b6;
@@ -36,7 +36,7 @@
   
   
   // JavaScript
-  .moj-filter__legend {
+  .fat-filter__legend {
     overflow: visible; // Override govuk to allow for focus style to be seen
     width: 100%;
   
@@ -87,15 +87,15 @@
   }
   
   
-  .moj-filter__header-title,
-  .moj-filter__header-action {
+  .fat-filter__header-title,
+  .fat-filter__header-action {
     display: inline-block;
     text-align: left;
     vertical-align: middle;
   }
   
   
-  .moj-filter__close {
+  .fat-filter__close {
     // @include govuk-focusable;
     color: govuk-colour("black");
     cursor: pointer; // I know Adam won’t like this
@@ -135,12 +135,12 @@
   }
   
   
-  .moj-filter__close {
+  .fat-filter__close {
     @include govuk-font(19);
   }
   
   
-  .moj-filter__selected {
+  .fat-filter__selected {
     background-color: govuk-colour("light-grey");
     border: 1px solid #b1b4b6;
     border-top: 0;
@@ -157,7 +157,7 @@
   }
   
   
-  .moj-filter__selected-heading {
+  .fat-filter__selected-heading {
     font-size: 0; // Hide whitespace between elements
     text-align: justify; // Trick to remove the need for floats
   
@@ -170,15 +170,15 @@
   }
   
   
-  .moj-filter__heading-title,
-  .moj-filter__heading-action {
+  .fat-filter__heading-title,
+  .fat-filter__heading-action {
     display: inline-block;
     text-align: left;
     vertical-align: middle;
   }
   
   
-  .moj-filter-tags {
+  .fat-filter-tags {
     font-size: 0;
     margin-bottom: govuk-spacing(4); // Needs to adjust to 15px on mobile
     padding-left: 0;
@@ -191,7 +191,7 @@
   }
   
   
-  .moj-filter__tag {
+  .fat-filter__tag {
     @include govuk-font(16);
     background-color: govuk-colour("white");
     border: 1px solid govuk-colour("black");
@@ -234,7 +234,7 @@
   }
   
   
-  .moj-filter__options {
+  .fat-filter__options {
     box-shadow: none;
     margin-top: -1px;
     padding: govuk-spacing(4);

@@ -9,6 +9,13 @@
 
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
+{% set _standardLevel = {} %}
+{% for _level  in myData.levels2 %}
+    {% if _level.value == _selectedStandard.level %}
+        {% set _standardLevel = _level %}
+    {% endif %}
+{% endfor %}
+
 <!-- overview -->
 {% set _overview = _selectedStandard.overviewOfRole|trim %}
 {% if _overview.slice(-1) != "." %}
@@ -51,7 +58,7 @@
         <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Level</dt>
-                <dd class="govuk-summary-list__value">{{_selectedStandard.level}} {% if _selectedStandard.integratedDegree == "non-degree qualification" %}(non-degree qualification){% elif _selectedStandard.integratedDegree == "integrated degree" %}(integrated degree){% elif _selectedStandard.integratedDegree == "non-integrated degree" %}(non-integrated degree){% endif %}</dd>
+                <dd class="govuk-summary-list__value">{{_standardLevel.value}} {% if _selectedStandard.integratedDegree == "non-degree qualification" %}(non-degree qualification){% elif _selectedStandard.integratedDegree == "integrated degree" %}(integrated degree){% elif _selectedStandard.integratedDegree == "non-integrated degree" %}(non-integrated degree){% endif %}</dd>
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Typical duration</dt>

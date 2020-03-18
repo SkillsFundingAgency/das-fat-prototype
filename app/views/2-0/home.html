@@ -57,8 +57,6 @@
                 </div>
                 <!-- Reset values -->
                 <input type="hidden" value="relevance" name="sortby">
-                <!-- <input type="hidden" value="r" name="true"> -->
-                <input type="hidden" value="all" name="route">
             </div>
         </form>
 
@@ -98,7 +96,7 @@
                     <span class="govuk-hint">[name search label]</span>
                 </label>
                 <div class="search-input-wrapper">
-                    <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-providers" name="q" title="Search" class="govuk-input">
+                    <input type="search" value="" id="search-providers" name="q" title="Search" class="govuk-input">
                     <div class="search-input-submit-wrapper">
                         <button type="submit" class="search-submit" id="search-providers-submit">Search for a training provider</button>
                     </div>
@@ -107,6 +105,35 @@
         </form>
 
         <h2 class="govuk-heading-s"><a href="providers" class="govuk-link govuk-link--no-visited-state">Browse all training providers</a></h2>
+        <!-- <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">1500</h1> -->
+
+    </div>
+</div>
+
+<!-- EPAOs -->
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-6">
+
+        <h2 class="govuk-heading-m">Find an end-point assessment organisation</h2>
+
+        <!-- Search box -->
+        <form action="epaos" method="GET" >
+            <div class="search-wrapper govuk-form-group search-wrapper-das" >
+                <legend style="display:none">[Search for an end-point assessment organisation]</legend>
+                <label for="search-providers" class="govuk-label" >
+                    <span class="govuk-hint">[name search label]</span>
+                </label>
+                <div class="search-input-wrapper">
+                    <input type="search" value="" id="search-providers" name="q" title="Search" class="govuk-input">
+                    <div class="search-input-submit-wrapper">
+                        <button type="submit" class="search-submit" id="search-providers-submit">Search for an end-point assessment organisation</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <h2 class="govuk-heading-s"><a href="epaos" class="govuk-link govuk-link--no-visited-state">Browse all end-point assessment organisations</a></h2>
         <!-- <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">1500</h1> -->
 
     </div>

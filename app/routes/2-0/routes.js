@@ -150,7 +150,7 @@ module.exports = function (router,_myData) {
             _selectedLevel = "",
             _standards = req.session.myData.standards.list,
             _routes = req.session.myData.routes.list,
-            _levels = req.session.myData.levels
+            _levels = req.session.myData.levels2
 
         req.session.myData.searchfilters = []
         req.session.myData.displaycount = _standards.length
@@ -201,14 +201,14 @@ module.exports = function (router,_myData) {
         if(req.query.level){
             for (var i = 0; i < _levels.length; i++) {
                 var _thisLevel = _levels[i]
-                if(req.query.level == _thisLevel){
+                if(req.query.level == _thisLevel.value){
                     req.session.myData.level = req.query.level
                     req.session.myData.levelfilterapplied = true
                     req.session.myData.matcheslevelcount = 0
                     req.session.myData.matchesfilterscount = 0
                     req.session.myData.displaycount = 0
                     _selectedLevel = _thisLevel
-                    req.session.myData.searchfilters.push({"value": "Level " + _selectedLevel,"type": "level","typeText": "Level"})
+                    req.session.myData.searchfilters.push({"value": "Level " + _selectedLevel.value + " - " + _selectedLevel.equiv,"type": "level","typeText": "Level"})
                     _needToMatchCount++
                     _needToMatchFiltersCount++
                     break
@@ -240,7 +240,7 @@ module.exports = function (router,_myData) {
             //LEVEL
             if(req.session.myData.levelfilterapplied) {
                 _standard.search = false
-                if(_standard.level.toString() == _selectedLevel) {
+                if(_standard.level.toString() == _selectedLevel.value) {
                     req.session.myData.matcheslevelcount++
                     _hasAMatchcount++
                     _hasAFilterMatchcount++
@@ -381,7 +381,7 @@ module.exports = function (router,_myData) {
                     req.session.myData.matchesstandardcount = 0
                     req.session.myData.displaycount = 0
                     _selectedStandard = _thisStandard
-                    req.session.myData.searchfilters.push(_selectedStandard.autoCompleteString)
+                    // req.session.myData.searchfilters.push(_selectedStandard.autoCompleteString)
                     _needToMatchCount++
                     break
                 }
@@ -400,7 +400,7 @@ module.exports = function (router,_myData) {
                 req.session.myData.searchapplied = true
                 req.session.myData.matchessearchcount = 0
                 req.session.myData.displaycount = 0
-                req.session.myData.searchfilters.push("‘" + _searchQ + "’")
+                req.session.myData.searchfilters.push({"value": "‘" + _searchQ + "’", "type": "name", "typeText": "Training provider name"})
                 _needToMatchCount++
             }
         }

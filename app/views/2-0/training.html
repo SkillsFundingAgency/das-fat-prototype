@@ -54,7 +54,7 @@
 
         <h1 class="govuk-heading-xl" >
             {% if _filterOrSearchApplied %}
-            <!-- <span class="govuk-caption-xl">Apprenticeship training courses</span> -->
+            <span class="govuk-caption-xl">Apprenticeship training courses</span>
             {{_displayCount}} result{% if _displayCount != 1 %}s{% endif %}
             {% else %}
             Apprenticeship training courses
@@ -66,6 +66,8 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
+
+        <!-- FILTERS  -->
 
         <div class="fat-filter">
 
@@ -156,9 +158,9 @@
                         <a href="training?{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">All levels</a>
                         {% endif %}
                         </li> -->
-                        {% for _level in myData.levels %}
+                        {% for _level in myData.levels2 %}
                         <li>
-                            <a href="training?level={{_level}}{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">Level {{_level}}</a>
+                            <a href="training?level={{_level.value}}{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">Level {{_level.value}} - {{_level.equiv}}</a>
                         </li>
                         {% endfor %}
                     </ul>
@@ -231,7 +233,9 @@
        
         {% else %}
 
-        <h2 class="govuk-heading-m govuk-!-margin-top-4">[0 results message]</h2>
+        <h2 class="govuk-body govuk-!-margin-top-4">No apprenticeship training courses for the selected filters.
+
+        </h2>
         <!-- <p class="govuk-body">You could:</p> -->
         <!-- <ul class="govuk-list govuk-list--bullet">
 

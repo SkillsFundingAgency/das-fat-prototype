@@ -18,8 +18,6 @@
     // border-bottom: 0;
     font-size: 0; // Hide whitespace between elements
     padding: govuk-spacing(2) govuk-spacing(4);
-    padding-top: govuk-spacing(3);
-    padding-bottom: govuk-spacing(3);
     text-align: justify; // Trick to remove the need for floats
   
     &:after {

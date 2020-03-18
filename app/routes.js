@@ -14,6 +14,32 @@ var _myData = {
         "6",
         "7"
     ],
+    "levels2": [
+        {
+            "value": "2",
+            "equiv": "GCSE grades 9 to 4"
+        }, 
+        {
+            "value": "3",
+            "equiv": "A level"
+        }, 
+        {
+            "value": "4",
+            "equiv": "HNC"
+        }, 
+        {
+            "value": "5",
+            "equiv": "HND"
+        }, 
+        {
+            "value": "6",
+            "equiv": "degree"
+        }, 
+        {
+            "value": "7",
+            "equiv": "master’s degree"
+        }
+    ],
     "providers": require(__dirname + '/data/providers.json')
 }
 

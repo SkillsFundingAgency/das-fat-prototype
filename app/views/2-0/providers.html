@@ -21,11 +21,15 @@
 <!-- Query strings (for use in hrefs) -->
 {% set _searchQuery = "" %}
 {% set _sortQuery = "" %}
+{% set _standardQuery = "" %}
 {% if myData.searchapplied == true %}
     {% set _searchQuery = "&q=" + myData.searchTerm %}
 {% endif %}
 {% if myData.sortapplied == true %}
     {% set _sortQuery = "&sort=" + myData.sortby %}
+{% endif %}
+{% if myData.standardfilterapplied == true %}
+    {% set _standardQuery = "&standard=" + myData.standard %}
 {% endif %}
 
 {% block beforeContent %}
@@ -68,36 +72,76 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
 
-        <!-- Filters  -->
+        <!-- FILTERS  -->
 
-        <!-- Search box -->
-        <form action="providers" method="GET" >
-            <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
-                <legend style="display:none">[Search for a training provider]</legend>
-                <label for="search-providers" class="govuk-label" >
-                    <span class="">[name search]</span>
-                </label>
-                <div class="search-input-wrapper">
-                    <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-providers" name="q" title="Search" class="govuk-input">
-                    <div class="search-input-submit-wrapper">
-                        <button type="submit" class="search-submit" id="search-providers-submit">Search for a training provider</button>
-                    </div>
+        <div class="fat-filter">
+
+            <div class="fat-filter__header">
+                <div class="fat-filter__header-title">
+                    <h2 class="govuk-heading-m">Filter</h2>
+                </div>
+                <div class="fat-filter__header-action">
                 </div>
             </div>
-        </form>
 
-        <p class="govuk-body">1. [Filter by apprenticeship training course]</p>
+            <div class="fat-filter__content">
 
-        <p class="govuk-body">2. [Filter by location]</p>
+                {% if myData.searchapplied == true %}
+                <div class="fat-filter__selected">
+                    <div class="fat-filter__selected-heading">
+                        <div class="fat-filter__heading-title">
+                            <h2 class="govuk-heading-m">Selected filters</h2>
+                        </div>
+                        <div class="fat-filter__heading-action">
+                            <p><a class="govuk-link govuk-link--no-visited-state" href="providers?{{_sortQuery}}{{_standardQuery}}">Clear</a></p>
+                        </div>
+                    </div>
+
+          
+                    <!-- For each filter type -->
+                    {% for _filter in myData.searchfilters %}
+                        {% set _url = "providers?" + _sortQuery %}
+
+                    <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText}}</h3>
+                    <ul class="fat-filter-tags">
+                        <li><a class="fat-filter__tag" href="{{_url}}"><span class="govuk-visually-hidden">Remove this filter</span> {{_filter.value}}</a></li>
+                    </ul>
+                    {% endfor %}
+                    
+                </div>
+                {% endif %}
+
+                <div class="fat-filter__options">
+
+                    <!-- Search box -->
+                    <form action="providers" method="GET" >
+                        <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
+                            <legend style="display:none">[Search for a training provider]</legend>
+                            <label for="search-providers" class="govuk-label" >
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Training provider name</span>
+                            </label>
+                            <div class="search-input-wrapper">
+                                <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-providers" name="q" title="Search" class="govuk-input">
+                                <div class="search-input-submit-wrapper">
+                                    <button type="submit" class="search-submit" id="search-providers-submit">Search for a training provider</button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" value="{{myData.standard}}" name="standard" >
+                    </form>
+
+                    <!-- <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship training course</h2> -->
+
+                    <!-- <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location</h2> -->
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
     <div class="govuk-grid-column-two-thirds">
-
-        
-
-        {% if myData.searchapplied == true %}
-        <p class="govuk-body "><a href="providers?{{_sortQuery}}" class="govuk-link govuk-link--no-visited-state">Clear search</a></p>
-        {% endif %}
 
         <!-- Results count -->
         <div class="govuk-form-group">

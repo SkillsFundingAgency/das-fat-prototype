@@ -371,7 +371,7 @@ module.exports = function (router,_myData) {
 
         // Standard filter reset/setup
         req.session.myData.standardfilterapplied = false
-        if(req.query.standard || req.session.myData.standard){
+        if(req.query.standard){
             var _selectedStandardID = req.query.standard || req.session.myData.standard
             for (var i = 0; i < _standards.length; i++) {
                 var _thisStandard = _standards[i]

@@ -38,16 +38,20 @@
 
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-9">{{serviceName}}</h1>
 
-        <h2 class="govuk-heading-m">Find an apprenticeship training course</h2>
+        <!-- <h2 class="govuk-heading-m">Apprenticeship training courses</h2> -->
         
         <!-- <h2 class="govuk-heading-l">Find an apprenticeship training course</h2> -->
 
-        <form action="training" method="GET">
-            <!-- Search -->
-            <div class="search-wrapper govuk-form-group search-wrapper-das">
-                <!-- <legend style="display:none">[Search for apprenticeship training]</legend> -->
+
+        <h2 class="govuk-heading-m"><a href="training" class="govuk-link govuk-link--no-visited-state">Apprenticeship training courses</a></h2>
+
+        <p class="govuk-body">Browse by sector, course name or job title</p>
+
+        <!-- <form action="training" method="GET">
+            <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small">
+                <legend style="display:none">[Search for apprenticeship training]</legend>
                 <label for="search-training" class="govuk-label">
-                    <!-- <span class="govuk-hint">Search for a course</span> -->
+                    <span class="govuk-hint">[label for search needed]</span>
                 </label>
                 <div class="search-input-wrapper">
                     <input type="search" value="" id="search-training" name="q" title="Search" class="govuk-input">
@@ -55,16 +59,15 @@
                         <button type="submit" class="search-submit" id="search-training-submit">Search apprenticeship training courses</button>
                     </div>
                 </div>
-                <!-- Reset values -->
                 <input type="hidden" value="relevance" name="sortby">
             </div>
-        </form>
+        </form> -->
 
     </div>
 </div>
 
 <div class="govuk-grid-row govuk-!-margin-bottom-6">
-    <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-two-thirds">
 
         <!-- <h2 class="govuk-heading-s">Browse by sector</h2>
 
@@ -74,19 +77,13 @@
             {% endfor %}
         </ul> -->
 
-        <p class="govuk-body"><a href="training" class="govuk-link govuk-link--no-visited-state">Apprenticeship training courses</a></p>
+        
         <!-- <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">509</h1> -->
 
-    </div>
-
-</div>
-
-<!-- PROVIDERS -->
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    
         <!-- <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-6"> -->
 
-        <h2 class="govuk-heading-m">Find a training provider</h2>
+        <!-- <h2 class="govuk-heading-m">Find a training provider</h2> -->
 
         <!-- Search box -->
         <!-- <form action="providers" method="GET" >
@@ -104,13 +101,15 @@
             </div>
         </form> -->
 
-        <p class="govuk-body govuk-!-margin-bottom-8"><a href="providers" class="govuk-link govuk-link--no-visited-state">Training providers</a></p>
+        <h2 class="govuk-heading-m"><a href="providers-all" class="govuk-link govuk-link--no-visited-state">Training providers</a></h2>
+
+        <p class="govuk-body">Find training providers by name, course name or location</p>
         <!-- <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">1500</h1> -->
 
     
         <!-- <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-6"> -->
 
-        <h2 class="govuk-heading-m">Find an end-point assessment organisation</h2>
+        <!-- <h2 class="govuk-heading-m">Find an end-point assessment organisation</h2> -->
 
         <!-- Search box -->
         <!-- <form action="epaos" method="GET" >
@@ -128,7 +127,8 @@
             </div>
         </form> -->
 
-        <p class="govuk-body"><a href="epaos" class="govuk-link govuk-link--no-visited-state">End-point assessment organisations</a></p>
+        <h2 class="govuk-heading-m"><a href="epaos-all" class="govuk-link govuk-link--no-visited-state">End-point assessment organisations</a></h2>
+        <p class="govuk-body">Find end-point assessment organisations by name or course name</p>
         <!-- <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">1500</h1> -->
 
     </div>
@@ -139,39 +139,39 @@
 {% block pageScripts %}
 <script>
     //AUTOCOMPLETE PROVIDERS
-    function suggestProviders(query, populateResults) {
-        var results = {{_providerAutocompleteList | dump | safe }},
-            providers = {{_providers | dump | safe }},
-            filteredResults = []
-        providers.forEach(function(_provider, index) {
-            var _searchesToDo = [
-                    {"searchOn": _provider.autoCompleteString,"within": true,"exact": true}
-                ],
-                _providerMatched = false
-            for (var i = 0; i < _searchesToDo.length; i++) {
-                var _thisItem = _searchesToDo[i]
-                if(Array.isArray(_thisItem.searchOn)){
-                    _thisItem.searchOn.forEach(function(_arrayPart, index) {
-                        doSearches(_arrayPart)
-                    });
-                } else {
-                    doSearches(_thisItem.searchOn)
-                }
-                function doSearches(_itemToSearch){
-                    //Exact check
-                    if(_thisItem.exact & _itemToSearch.toUpperCase() == query.trim().toUpperCase()){
-                        _providerMatched = true
-                    }
-                    // Within check
-                    if(_thisItem.within & _itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
-                        _providerMatched = true
-                    }
-                }
-            }
-            (_providerMatched) && (filteredResults.push(_provider.autoCompleteString))
-        })
-        populateResults(filteredResults)
-    }
+    // function suggestProviders(query, populateResults) {
+    //     var results = {{_providerAutocompleteList | dump | safe }},
+    //         providers = {{_providers | dump | safe }},
+    //         filteredResults = []
+    //     providers.forEach(function(_provider, index) {
+    //         var _searchesToDo = [
+    //                 {"searchOn": _provider.autoCompleteString,"within": true,"exact": true}
+    //             ],
+    //             _providerMatched = false
+    //         for (var i = 0; i < _searchesToDo.length; i++) {
+    //             var _thisItem = _searchesToDo[i]
+    //             if(Array.isArray(_thisItem.searchOn)){
+    //                 _thisItem.searchOn.forEach(function(_arrayPart, index) {
+    //                     doSearches(_arrayPart)
+    //                 });
+    //             } else {
+    //                 doSearches(_thisItem.searchOn)
+    //             }
+    //             function doSearches(_itemToSearch){
+    //                 //Exact check
+    //                 if(_thisItem.exact & _itemToSearch.toUpperCase() == query.trim().toUpperCase()){
+    //                     _providerMatched = true
+    //                 }
+    //                 // Within check
+    //                 if(_thisItem.within & _itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
+    //                     _providerMatched = true
+    //                 }
+    //             }
+    //         }
+    //         (_providerMatched) && (filteredResults.push(_provider.autoCompleteString))
+    //     })
+    //     populateResults(filteredResults)
+    // }
     // Normal
     // function suggestTraining(query, populateResults) {
     //     var results = {{_standardAutocompleteList | dump | safe }},
@@ -181,30 +181,30 @@
     //     populateResults(filteredResults)
     // }
     // Trigger search click on enter
-    function fireProvidersSearch(){setTimeout(function(){ $("#search-providers-submit").trigger("click") },200);}
-    var providerInput = document.querySelector('#search-providers')
-    if (providerInput) {
-        var providerInputID = providerInput.id,
-            providerElement = document.createElement('div'),
-            defaultSearchvalue = {{_defaultSearchvalue | dump | safe }}
-        providerElement.className = "autocomplete__parent_wrapper";
-        providerInput.parentNode.insertBefore(providerElement, providerInput)
-        accessibleAutocomplete({
-            // other options
-            element: providerElement,
-            id: providerInputID,
-            name: providerInput.name,
-            source: suggestProviders,
-            defaultValue: defaultSearchvalue,
-            minLength: 3,
-            confirmOnBlur: false,
-            autoselect: true,
-            onConfirm: fireProvidersSearch,
-            displayMenu: 'overlay'
-        })
-        providerInput.style.display = 'none'
-        providerInput.id = providerInputID + '-old'
-        providerInput.name = ''
-    }
+    // function fireProvidersSearch(){setTimeout(function(){ $("#search-providers-submit").trigger("click") },200);}
+    // var providerInput = document.querySelector('#search-providers')
+    // if (providerInput) {
+    //     var providerInputID = providerInput.id,
+    //         providerElement = document.createElement('div'),
+    //         defaultSearchvalue = {{_defaultSearchvalue | dump | safe }}
+    //     providerElement.className = "autocomplete__parent_wrapper";
+    //     providerInput.parentNode.insertBefore(providerElement, providerInput)
+    //     accessibleAutocomplete({
+    //         // other options
+    //         element: providerElement,
+    //         id: providerInputID,
+    //         name: providerInput.name,
+    //         source: suggestProviders,
+    //         defaultValue: defaultSearchvalue,
+    //         minLength: 3,
+    //         confirmOnBlur: false,
+    //         autoselect: true,
+    //         onConfirm: fireProvidersSearch,
+    //         displayMenu: 'overlay'
+    //     })
+    //     providerInput.style.display = 'none'
+    //     providerInput.id = providerInputID + '-old'
+    //     providerInput.name = ''
+    // }
 </script>
 {% endblock pageScripts %}

@@ -43,7 +43,6 @@
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
-    {% set _breadcrumbText = "Home: " + serviceName %}
     {% include "includes/breadcrumb.html" %}
 {% endblock %}
 
@@ -165,11 +164,15 @@
                         {% endfor %}
                     </ul>
 
+                    <p class="govuk-body govuk-!-font-size-16"><a class="govuk-link govuk-link--no-visited-state" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank">What levels mean (opens in new tab or window)</a></p>
+
                 </div>
 
             </div>
 
         </div>
+
+        
 
     </div>
     <div class="govuk-grid-column-two-thirds">
@@ -209,7 +212,7 @@
             {% for _standard in myData.standards.list %}
                 {% if _standard.search == true %}
                     {% set _standardData = [{"searchOn": _standard.autoCompleteString,"within": true,"exact": true},{"searchOn": _standard.jobRoles,"within": true,"exact": true}] %}
-                    <div class=" govuk-!-margin-bottom-3" data-list-item data-search-data="{{_standardData|dump}}" style="">
+                    <div class=" govuk-!-margin-bottom-3" data-list-item data-search-data="{{_standardData|dump}}" >
                         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
                             <a href="standard?standard={{_standard.larsCode}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a>
                         </h2>
@@ -233,25 +236,7 @@
        
         {% else %}
 
-        <h2 class="govuk-body govuk-!-margin-top-4">No apprenticeship training courses for the selected filters.
-
-        </h2>
-        <!-- <p class="govuk-body">You could:</p> -->
-        <!-- <ul class="govuk-list govuk-list--bullet">
-
-            {% if myData.searchapplied == true %}
-            <li>Change or <a href="training?{{_sortQuery}}{{_routefilterQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state ">clear the keyword search</a> (‘{{myData.searchTerm}}’)</li>
-            {% endif %}
-
-            {% if myData.levelfilterapplied == true %}
-            <li><a href="training?{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">Clear the level filter</a> (level {{myData.level}})</li>
-            {% endif %}
-
-            {% if myData.routefilterapplied == true %}
-            <li><a href="training?{{_sortQuery}}{{_searchQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state">Clear the sector filter</a> ({{_selectedRoute.name}})</li>
-            {% endif %}
-
-        </ul> -->
+        <p class="govuk-body govuk-!-margin-top-4">No apprenticeship training courses for the selected filters.</p>
 
         {% endif %}
 

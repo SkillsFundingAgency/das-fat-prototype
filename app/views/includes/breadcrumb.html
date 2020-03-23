@@ -1,5 +1,5 @@
 
-{% set _breadcrumbText = _breadcrumbText or "Home: Find an apprenticeship training course" %}
+{% set _breadcrumbText = "Home: " + serviceName %}
 {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 
 {{ govukBreadcrumbs({

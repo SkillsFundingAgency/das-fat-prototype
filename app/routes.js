@@ -40,7 +40,8 @@ var _myData = {
             "equiv": "master’s degree"
         }
     ],
-    "providers": require(__dirname + '/data/providers.json')
+    "providers": require(__dirname + '/data/providers.json'),
+    "epaos": require(__dirname + '/data/epaos.json')
 }
 
 // Uncomment to generate standards.json data - it will magically appear in the console
@@ -103,6 +104,14 @@ _myData.providers.list.forEach(function(_provider, index) {
     var _autoCompleteString = _provider.name
     _provider.autoCompleteString = _autoCompleteString
     _myData.providerAutocompleteList.push(_autoCompleteString);
+});
+
+// Set epaos
+_myData.epaoAutocompleteList = []
+_myData.epaos.list.forEach(function(_epao, index) {
+    var _autoCompleteString = _epao.name
+    _epao.autoCompleteString = _autoCompleteString
+    _myData.epaoAutocompleteList.push(_autoCompleteString);
 });
 
 require('./routes/1-0/routes.js')(router,JSON.parse(JSON.stringify(_myData)));

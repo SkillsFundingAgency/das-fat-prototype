@@ -53,6 +53,22 @@ module.exports = function (router,_myData) {
 
         });
     }
+    //Sort epaos
+    function sortEPAOs(req, _sortBy){
+        req.session.myData.epaos.list.sort(function(a,b){
+
+            var returnValue = 0;
+
+            if (a.name.toUpperCase() < b.name.toUpperCase()){
+                returnValue = -1
+            } else if(a.name.toUpperCase() > b.name.toUpperCase()){
+                returnValue = 1
+            }
+
+            return returnValue
+
+        });
+    }
     // For back links
     function getRefererPage(referer){
         if(referer) {
@@ -491,12 +507,311 @@ module.exports = function (router,_myData) {
 
     });
 
+    // Providers
+    router.get('/' + version + '/providers-all', function (req, res) {
+
+        //Sort
+        req.session.myData.sortapplied = false
+        if(req.query.sort == "name"){
+            req.session.myData.sortapplied = true
+            req.session.myData.sortby = req.query.sort
+        }
+
+        var _needToMatchCount = 0,
+            _selectedStandard = {},
+            _providers = req.session.myData.providers.list,
+            _standards = req.session.myData.standards.list
+
+        req.session.myData.searchfilters = []
+        req.session.myData.displaycount = _providers.length
+        req.session.myData.matchesstandardcount = _standards.length
+        req.session.myData.matchessearchcount = _providers.length
+
+        // Standard filter reset/setup
+        req.session.myData.standardsearchapplied = false
+        req.session.myData.standardSearchTerm = ""
+        var _searchStandardQ = req.query.standard
+        if(_searchStandardQ || _searchStandardQ == ""){
+            _searchStandardQ = _searchStandardQ.trim()
+            if(_searchStandardQ != ""){
+                for (var i = 0; i < _standards.length; i++) {
+                    var _thisStandard = _standards[i]
+                    if(_searchStandardQ.toUpperCase() == _thisStandard.autoCompleteString.toUpperCase()){
+                        req.session.myData.standardSearchTerm = _searchStandardQ
+                        req.session.myData.standardsearchapplied = true
+                        req.session.myData.matchesstandardcount = 0
+                        req.session.myData.displaycount = 0
+                        _selectedStandard = _thisStandard
+                        req.session.myData.searchfilters.push({"value": _thisStandard.autoCompleteString, "type": "standard", "typeText": "Course name"})
+                        _needToMatchCount++
+                    }
+                }
+            }
+        }
+
+        //Search reset/setup
+        req.session.myData.searchapplied = false
+        req.session.myData.searchTerm = ""
+        var _searchQ = req.query.q
+        if(_searchQ || _searchQ == ""){
+            _searchQ = _searchQ.trim()
+            if(_searchQ != ""){
+                req.session.myData.searchTerm = _searchQ
+                req.session.myData.searchapplied = true
+                req.session.myData.matchessearchcount = 0
+                req.session.myData.displaycount = 0
+                req.session.myData.searchfilters.push({"value": "‘" + _searchQ + "’", "type": "name", "typeText": "Training provider name"})
+                _needToMatchCount++
+            }
+        }
+
+        _providers.forEach(function(_provider, index) {
+
+            var _hasAMatchcount = 0
+
+            // Reset each provider
+            _provider.search = true
+
+            //STANDARD SEARCH TERM
+            if(req.session.myData.standardsearchapplied) {
+                _provider.search = false
+                if(index < _selectedStandard.providers.number) {
+                    req.session.myData.matchesstandardcount++
+                    _hasAMatchcount++
+                }
+            }
+
+            //SEARCH TERM
+            if(req.session.myData.searchapplied) {
+                _provider.search = false
+                _provider.searchrelevance = 0
+                var _providersearch = false,
+                    _searchesToDo = [
+                        {"searchOn": _provider.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
+                    ]
+                for (var i = 0; i < _searchesToDo.length; i++) {
+                    var _thisItem = _searchesToDo[i]
+                    if(Array.isArray(_thisItem.searchOn)){
+                        _thisItem.searchOn.forEach(function(_arrayPart, index) {
+                            doSearches(_arrayPart)
+                        });
+                    } else {
+                        doSearches(_thisItem.searchOn)
+                    }
+                    function doSearches(_itemToSearch){
+                        //Exact check
+                        if(_thisItem.exactrelevance && _itemToSearch.toUpperCase() == _searchQ.toUpperCase()){
+                            _provider.searchrelevance = _provider.searchrelevance + _thisItem.exactrelevance
+                            _providersearch = true
+                            if(_thisItem.ifmatch == "exit"){
+                                return
+                            }
+                        }
+                        // Within check
+                        if(_thisItem.withinrelevance && _itemToSearch.toUpperCase().indexOf(_searchQ.toUpperCase()) != -1){
+                            _provider.searchrelevance = _provider.searchrelevance + _thisItem.withinrelevance
+                            _providersearch = true
+                            if(_thisItem.ifmatch == "exit"){
+                                return 
+                            }
+                        }
+                    }
+                    if(_providersearch == true && _thisItem.ifmatch == "exit") {
+                        break
+                    }
+                }
+                if(_providersearch && _provider.searchrelevance > 1){
+                    req.session.myData.matchessearchcount++
+                    _hasAMatchcount++
+                }
+            }
+
+            //MATCHES ALL IT NEEDS TO?
+            if(_needToMatchCount > 0 && _needToMatchCount == _hasAMatchcount){
+                _provider.search = true
+                req.session.myData.displaycount++
+            }
+
+        });
+        // Hide low relevance results if results count too high - needs redoing since commenting out to work with BOTH filter and search term
+        // if(req.session.myData.displaycount > 50){
+        //     _providers.forEach(function(_provider, index) {
+        //         if(_provider.search == true && _provider.searchrelevance < 10000) {
+        //             _provider.search = false
+        //             req.session.myData.displaycount--
+        //         }
+        //     });
+        // }
+
+        sortProviders(req, "name")
+
+        res.render(version + '/providers-all', {
+            myData:req.session.myData
+        });
+
+    });
+
     // Provider
     router.get('/' + version + '/provider', function (req, res) {
 
         req.session.myData.provider = req.query.provider || "1"
         
         res.render(version + '/provider', {
+            myData:req.session.myData
+        });
+
+    });
+
+    // EPAOS
+    router.get('/' + version + '/epaos-all', function (req, res) {
+
+        //Sort
+        req.session.myData.sortapplied = false
+        if(req.query.sort == "name"){
+            req.session.myData.sortapplied = true
+            req.session.myData.sortby = req.query.sort
+        }
+
+        var _needToMatchCount = 0,
+            _selectedStandard = {},
+            _epaos = req.session.myData.epaos.list,
+            _standards = req.session.myData.standards.list
+
+        req.session.myData.searchfilters = []
+        req.session.myData.displaycount = _epaos.length
+        req.session.myData.matchesstandardcount = _standards.length
+        req.session.myData.matchessearchcount = _epaos.length
+
+        // Standard filter reset/setup
+        req.session.myData.standardsearchapplied = false
+        req.session.myData.standardSearchTerm = ""
+        var _searchStandardQ = req.query.standard
+        if(_searchStandardQ || _searchStandardQ == ""){
+            _searchStandardQ = _searchStandardQ.trim()
+            if(_searchStandardQ != ""){
+                for (var i = 0; i < _standards.length; i++) {
+                    var _thisStandard = _standards[i]
+                    if(_searchStandardQ.toUpperCase() == _thisStandard.autoCompleteString.toUpperCase()){
+                        req.session.myData.standardSearchTerm = _searchStandardQ
+                        req.session.myData.standardsearchapplied = true
+                        req.session.myData.matchesstandardcount = 0
+                        req.session.myData.displaycount = 0
+                        _selectedStandard = _thisStandard
+                        req.session.myData.searchfilters.push({"value": _thisStandard.autoCompleteString, "type": "standard", "typeText": "Course name"})
+                        _needToMatchCount++
+                    }
+                }
+            }
+        }
+
+        //Search reset/setup
+        req.session.myData.searchapplied = false
+        req.session.myData.searchTerm = ""
+        var _searchQ = req.query.q
+        if(_searchQ || _searchQ == ""){
+            _searchQ = _searchQ.trim()
+            if(_searchQ != ""){
+                req.session.myData.searchTerm = _searchQ
+                req.session.myData.searchapplied = true
+                req.session.myData.matchessearchcount = 0
+                req.session.myData.displaycount = 0
+                req.session.myData.searchfilters.push({"value": "‘" + _searchQ + "’", "type": "name", "typeText": "End-point assessment organisation name"})
+                _needToMatchCount++
+            }
+        }
+
+        _epaos.forEach(function(_epao, index) {
+
+            var _hasAMatchcount = 0
+
+            // Reset each epao
+            _epao.search = true
+
+            //STANDARD SEARCH TERM
+            if(req.session.myData.standardsearchapplied) {
+                _epao.search = false
+                if(index < _selectedStandard.epaos.number) {
+                    req.session.myData.matchesstandardcount++
+                    _hasAMatchcount++
+                }
+            }
+
+            //SEARCH TERM
+            if(req.session.myData.searchapplied) {
+                _epao.search = false
+                _epao.searchrelevance = 0
+                var _epaosearch = false,
+                    _searchesToDo = [
+                        {"searchOn": _epao.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
+                    ]
+                for (var i = 0; i < _searchesToDo.length; i++) {
+                    var _thisItem = _searchesToDo[i]
+                    if(Array.isArray(_thisItem.searchOn)){
+                        _thisItem.searchOn.forEach(function(_arrayPart, index) {
+                            doSearches(_arrayPart)
+                        });
+                    } else {
+                        doSearches(_thisItem.searchOn)
+                    }
+                    function doSearches(_itemToSearch){
+                        //Exact check
+                        if(_thisItem.exactrelevance && _itemToSearch.toUpperCase() == _searchQ.toUpperCase()){
+                            _epao.searchrelevance = _epao.searchrelevance + _thisItem.exactrelevance
+                            _epaosearch = true
+                            if(_thisItem.ifmatch == "exit"){
+                                return
+                            }
+                        }
+                        // Within check
+                        if(_thisItem.withinrelevance && _itemToSearch.toUpperCase().indexOf(_searchQ.toUpperCase()) != -1){
+                            _epao.searchrelevance = _epao.searchrelevance + _thisItem.withinrelevance
+                            _epaosearch = true
+                            if(_thisItem.ifmatch == "exit"){
+                                return 
+                            }
+                        }
+                    }
+                    if(_epaosearch == true && _thisItem.ifmatch == "exit") {
+                        break
+                    }
+                }
+                if(_epaosearch && _epao.searchrelevance > 1){
+                    req.session.myData.matchessearchcount++
+                    _hasAMatchcount++
+                }
+            }
+
+            //MATCHES ALL IT NEEDS TO?
+            if(_needToMatchCount > 0 && _needToMatchCount == _hasAMatchcount){
+                _epao.search = true
+                req.session.myData.displaycount++
+            }
+
+        });
+        // Hide low relevance results if results count too high - needs redoing since commenting out to work with BOTH filter and search term
+        // if(req.session.myData.displaycount > 50){
+        //     _epaos.forEach(function(_epao, index) {
+        //         if(_epao.search == true && _epao.searchrelevance < 10000) {
+        //             _epao.search = false
+        //             req.session.myData.displaycount--
+        //         }
+        //     });
+        // }
+
+        sortEPAOs(req, "name")
+
+        res.render(version + '/epaos-all', {
+            myData:req.session.myData
+        });
+
+    });
+
+    // Epao
+    router.get('/' + version + '/epao', function (req, res) {
+
+        req.session.myData.epao = req.query.epao || "1"
+        
+        res.render(version + '/epao', {
             myData:req.session.myData
         });
 

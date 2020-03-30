@@ -1,0 +1,128 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-half">
+
+    <h2 class="govuk-heading-l">Routes</h2>
+    <table class="govuk-table">
+      <thead class="govuk-table__head" >
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">name</th>
+          <th scope="col" class="govuk-table__header">standardsCount</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+      {% for _route in myData.routes.list %}
+        <tr class="govuk-table__row">
+          <th class="govuk-table__header">
+            {{_route.name}}
+          </th>
+          <th class="govuk-table__header">
+            {{_route.standardsCount}}
+          </th>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="govuk-grid-column-one-half">
+
+    <h2 class="govuk-heading-l">SSAs</h2>
+    <table class="govuk-table">
+      <thead class="govuk-table__head" >
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">code</th>
+          <th scope="col" class="govuk-table__header">name</th>
+          <th scope="col" class="govuk-table__header">standardsCount</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+      {% for _ssa in myData.ssa.list %}
+        <tr class="govuk-table__row">
+          <th class="govuk-table__header">
+            {{_ssa.code}}
+          </th>
+          <th class="govuk-table__header">
+            {{_ssa.name}}
+          </th>
+          <th class="govuk-table__header">
+            {{_ssa.standardsCount}}
+          </th>
+        </tr>
+        {% for _ssa2 in _ssa.ssa2s %}
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">
+            {{_ssa2.code}}
+          </td>
+          <td class="govuk-table__cell">
+            {{_ssa2.name}}
+          </td>
+          <td class="govuk-table__cell" >
+            {{_ssa2.standardsCount}}
+          </td>
+        </tr>
+        {% endfor %}
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+      <h2 class="govuk-heading-l">{{myData.standards.list|length}} standards</h2>
+      <!-- <ul class="govuk-list govuk-list--bullet">
+        {% for _standard in myData.standards.list %}
+        <li>{{_standard.code}} - {{_standard.name}}</li>
+        {% endfor %}
+      </ul>   -->
+
+      <table class="govuk-table">
+        <thead class="govuk-table__head" >
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">code</th>
+            <th scope="col" class="govuk-table__header">name</th>
+            <th scope="col" class="govuk-table__header">level</th>
+            <th scope="col" class="govuk-table__header">route<br>pathway<br>cluster</th>
+            <th scope="col" class="govuk-table__header">ssa1<br>ssa2</th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+        {% for _standard in myData.standards.list %}
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+              {{_standard.larsCode}}
+            </td>
+            <td class="govuk-table__cell">
+              {{_standard.title}}
+            </td>
+            <td class="govuk-table__cell" >
+              {{_standard.level}}
+            </td>
+            <td class="govuk-table__cell" >
+              <span class="govuk-!-font-weight-bold">{{_standard.route}}</span><br><br>{{_standard.pathway}}<br><br>{{_standard.cluster}}
+              </td>
+            <td class="govuk-table__cell" >
+              {{_standard.ssa1}}<br><br>{{_standard.ssa2}}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+      
+      
+
+
+  </div>
+</div>
+
+
+<!-- <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <p class="govuk-body" >{{myData.apiData|dump|safe}}</p>
+    </div>
+</div> -->
+
+{% endblock %}

@@ -1,0 +1,148 @@
+{% extends "layout.html" %}
+{% set serviceName = "Find apprenticeship training" %}
+
+{% set _selectedStandard = {} %}
+{% for _standard in myData.standards.list %}
+    {% if myData.standard == _standard.larsCode %}
+        {% set _selectedStandard = _standard %}
+    {% endif %}
+{% endfor %}
+
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% set _standardLevel = {} %}
+{% for _level  in myData.levels2 %}
+    {% if _level.value == _selectedStandard.level %}
+        {% set _standardLevel = _level %}
+    {% endif %}
+{% endfor %}
+
+<!-- overview -->
+{% set _overview = _selectedStandard.overviewOfRole|trim %}
+{% if _overview.slice(-1) != "." %}
+    {% set _overview = _overview + "." %}
+{% endif %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/breadcrumb.html" %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+    @media (min-width: 641px) {
+        .skillslist {
+            columns: 2;
+            -webkit-columns: 2;
+            -moz-columns: 2;
+        }
+    }
+</style>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <!-- {% for name, item in _selectedStandard %}
+        <p class="govuk-body" ><span class="govuk-!-font-weight-bold">{{ name }}</span>: {{ item | dump }}</p>
+        {% endfor %} -->
+
+        <span class="govuk-caption-xl">Apprenticeship training course</span>
+        <h1 class="govuk-heading-xl" >
+            {{_standardTitle | safe}}
+        </h1>
+
+        <!-- overviewOfRole -->
+        <p class="govuk-body-l">{{_overview}}</p>
+        
+        <!-- Summary -->
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Level</dt>
+                <dd class="govuk-summary-list__value">{{_standardLevel.value}} {% if _selectedStandard.integratedDegree == "non-degree qualification" %}(non-degree qualification){% elif _selectedStandard.integratedDegree == "integrated degree" %}(integrated degree){% elif _selectedStandard.integratedDegree == "non-integrated degree" %}(non-integrated degree){% endif %}</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Typical duration</dt>
+                <dd class="govuk-summary-list__value">{{_selectedStandard.typicalDuration}} months</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Sector</dt>
+                <dd class="govuk-summary-list__value">{{_selectedStandard.route}}</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Maximum funding</dt>
+                <dd class="govuk-summary-list__value">£{{_selectedStandard.maxFundingFormatted}}</dd>
+            </div>
+            {% if _selectedStandard.typicalJobTitles.length > 0 %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Typical job title{% if _selectedStandard.typicalJobTitles.length > 1 %}s{% endif %}</dt>
+                <dd class="govuk-summary-list__value">
+                    <ul class="govuk-list {% if _selectedStandard.typicalJobTitles.length > 1 %}govuk-list--bullet{% endif %}">
+                        {% for _typicalJobTitle in _selectedStandard.typicalJobTitles %}
+                        <li>{{_typicalJobTitle}}</li>
+                        {% endfor %}
+                    </ul>
+                </dd>
+            </div>
+            {% endif %}
+        </dl>
+
+        {% if _selectedStandard.coreSkillsCount > 0 %}
+        <!-- Skills -->
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                Skills an apprentice will learn
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                <ul class="govuk-list govuk-list--bullet ">{% for _skill in _selectedStandard.skills %}{% if _skill.isThisACoreSkill == true %}<li>{{_skill.detail}}</span></li>{% endif %}{% endfor %}</ul>
+            </div>
+        </details>
+        {% endif %}
+
+        <p class="govuk-body govuk-!-margin-bottom-6">
+            Full information is available from the <a class="govuk-link govuk-link--no-visited-state" href="{{_selectedStandard.standardPageUrl}}" target="_blank" >Institute for Apprenticeships and Technical Education</a>
+        </p>
+
+        <h2 class="govuk-heading-l" >
+            Training providers
+        </h2>
+
+    </div>
+    <div class="govuk-grid-column-one-third">
+       &nbsp;
+    </div>
+</div>
+
+<div class="govuk-grid-row das-flex">
+    <div class="govuk-grid-column-one-third das-highlight-box govuk-!-margin-bottom-4">
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">{{_selectedStandard.providers.number}}</h1>
+        <p class="govuk-body govuk-!-margin-bottom-0">Available</p>
+    </div>
+</div>
+
+{% if _selectedStandard.providers.number != 0 %}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <p class="govuk-body"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state">View training providers</a></p>
+    </div>
+</div>
+{% endif %}
+
+<!-- <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-l" >
+            End-point assessment organisations
+        </h2>
+    </div>
+</div>
+
+<div class="govuk-grid-row das-flex">
+    <div class="govuk-grid-column-one-third das-highlight-box govuk-!-margin-bottom-4">
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">2</h1>
+        <p class="govuk-body govuk-!-margin-bottom-0">Available</p>
+    </div>
+</div> -->
+
+{% endblock %}

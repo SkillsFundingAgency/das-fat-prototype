@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% set serviceName = "Find apprenticeship training" %}
+
+{% set _selectedEPAO = {} %}
+{% for _epao in myData.epaos.list %}
+    {% if myData.epao == _epao.id %}
+        {% set _selectedEPAO = _epao %}
+    {% endif %}
+{% endfor %}
+
+{% set _epaoTitle = _selectedEPAO.name %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/breadcrumb.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <!-- {% for name, item in _selectedEPAO %}
+        <p class="govuk-body" ><span class="govuk-!-font-weight-bold">{{ name }}</span>: {{ item | dump }}</p>
+        {% endfor %} -->
+
+        <span class="govuk-caption-xl">End-point assessment organisation</span>
+        <h1 class="govuk-heading-xl" >
+            {{_epaoTitle | safe}}
+        </h1>
+
+        <div class="govuk-inset-text">
+            
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Email</h3>
+            <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="#">{{_selectedEPAO.email}}</a></p>
+            
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Telephone</h3>
+            <p class="govuk-body">{{_selectedEPAO.phone}}</p>
+
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-1">URL</h3>
+            <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="#">{{_selectedEPAO.website}}</a></p>
+            
+            
+
+        </div>
+
+    </div>
+    <div class="govuk-grid-column-one-third">
+       &nbsp;
+    </div>
+</div>
+
+{% endblock %}

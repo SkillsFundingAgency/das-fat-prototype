@@ -1,0 +1,351 @@
+{% extends "layout.html" %}
+{% set serviceName = "Find apprenticeship training" %}
+
+<!-- Provider search -->
+{% set _providerAutocompleteList = myData.providerAutocompleteList %} 
+{% set _providers = myData.providers.list %}
+{% set _defaultSearchvalue = "" %}
+{% if myData.searchapplied == true %}
+    {% set _defaultSearchvalue = myData.searchTerm %}
+{% endif %}
+
+<!-- Training search -->
+{% set _standardAutocompleteList = myData.standardAutocompleteList %} 
+{% set _standards = myData.standards.list %} 
+{% set _defaultStandardSearchvalue = "" %}
+{% if myData.standardsearchapplied == true %}
+    {% set _defaultStandardSearchvalue = myData.standardSearchTerm %}
+{% endif %}
+
+<!-- Query strings (for use in hrefs) -->
+{% set _searchQuery = "" %}
+{% set _sortQuery = "" %}
+{% set _standardQuery = "" %}
+{% if myData.searchapplied == true %}
+    {% set _searchQuery = "&q=" + myData.searchTerm %}
+{% endif %}
+{% if myData.sortapplied == true %}
+    {% set _sortQuery = "&sort=" + myData.sortby %}
+{% endif %}
+{% if myData.standardsearchapplied == true %}
+    {% set _standardQuery = "&standard=" + myData.standardSearchTerm %}
+{% endif %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/breadcrumb.html" %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+    #search-providers,
+    #search-training {
+        height: 40px;
+        border-right: 0;
+    }
+    .autocomplete__hint {
+        height: 40px;
+    }
+</style>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        {% if myData.searchapplied == true or myData.standardsearchapplied == true %}
+        <h1 class="govuk-heading-xl" >
+            <span class="govuk-caption-xl">Training providers</span>
+            {{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}
+        </h1>
+        {% else %}
+        <h1 class="govuk-heading-xl" >
+            Training providers
+        </h1>
+        {% endif %}
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+
+        <!-- FILTERS  -->
+
+        <div class="fat-filter">
+
+            <div class="fat-filter__header">
+                <div class="fat-filter__header-title">
+                    <h2 class="govuk-heading-m">Filter</h2>
+                </div>
+                <div class="fat-filter__header-action">
+                </div>
+            </div>
+
+            <div class="fat-filter__content">
+
+                {% if myData.searchapplied == true or myData.standardsearchapplied %}
+                <div class="fat-filter__selected">
+                    <div class="fat-filter__selected-heading">
+                        <div class="fat-filter__heading-title">
+                            <h2 class="govuk-heading-m">Selected filters</h2>
+                        </div>
+                        <div class="fat-filter__heading-action">
+                            <p><a class="govuk-link govuk-link--no-visited-state" href="providers-all?{{_sortQuery}}">Clear</a></p>
+                        </div>
+                    </div>
+
+          
+                    <!-- For each filter type -->
+                    {% for _filter in myData.searchfilters %}
+                        {% set _url = "providers-all?" + _sortQuery + _standardQuery %}
+                        {% if _filter.type == "standard" %}
+                            {% set _url = "providers-all?" + _sortQuery + _searchQuery %}
+                        {% endif %}
+
+                    <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText}}</h3>
+                    <ul class="fat-filter-tags">
+                        <li><a class="fat-filter__tag" href="{{_url}}"><span class="govuk-visually-hidden">Remove this filter</span> {{_filter.value}}</a></li>
+                    </ul>
+                    {% endfor %}
+                    
+                </div>
+                {% endif %}
+
+                <div class="fat-filter__options">
+
+                    <!-- Search box -->
+                    <form action="providers-all" method="GET" >
+                        <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
+                            <legend style="display:none">[Search for a training provider]</legend>
+                            <label for="search-providers" class="govuk-label" >
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Training provider name</span>
+                            </label>
+                            <div class="search-input-wrapper">
+                                <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-providers" name="q" title="Search" class="govuk-input">
+                                <div class="search-input-submit-wrapper">
+                                    <button type="submit" class="search-submit" id="search-providers-submit">Search for a training provider</button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" value="{{myData.standardSearchTerm}}" name="standard" >
+                    </form>
+
+                    <!-- Course -->
+                    <form action="providers-all" method="GET" >
+                        <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
+                            <legend style="display:none">[Search for a course]</legend>
+                            <label for="search-training" class="govuk-label" >
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Course name</span>
+                            </label>
+                            <div class="search-input-wrapper">
+                                <input type="search" value="{% if myData.standardsearchapplied == true %}{{myData.standardSearchTerm}}{% endif %}" id="search-training" name="standard" title="Search" class="govuk-input">
+                                <div class="search-input-submit-wrapper">
+                                    <button type="submit" class="search-submit" id="search-training-submit">Search for a training provider</button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" value="{{myData.searchTerm}}" name="q" >
+                    </form>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+
+
+        <!-- Sort -->
+        {% if myData.searchapplied == true and myData.displaycount > 1 %}
+        <p class="govuk-body govuk-!-margin-bottom-6">Sorted by:
+            <span class="govuk-!-font-weight-bold">Name</span>
+            <!-- <a class="govuk-link govuk-link--no-visited-state" href="training?{{_levelfilterQuery}}{{_routefilterQuery}}{{_searchQuery}}&sort=name">Name</a> -->
+        </p>
+        {% endif %}
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+       
+        <!-- 
+            Providers list OR No results
+        -->
+        {% if myData.displaycount > 0 %}
+
+        <!-- Providers -->
+        {% for _provider in myData.providers.list %}
+            {% if _provider.search == true %}
+            <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+                    <a href="provider?provider={{_provider.id}}" class="govuk-link govuk-link--no-visited-state">{{_provider.name}}</a>
+                </h2>
+                <ul class="govuk-list">
+
+                    {% if _provider.national == true %}
+                    <li><span class="govuk-!-font-weight-bold">National</span></li>
+                    {% endif %}
+                    <li><span>{{_provider.address.city}}</span></li>
+
+                </ul>
+            </div>
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+            {% endif %}
+        {% endfor %}
+
+        {% else %}
+
+        <p class="govuk-body govuk-!-margin-top-4">No training providers for the selected filters.</p>
+
+        {% endif %}
+
+    </div>
+    
+</div>
+
+{% endblock %}
+
+
+{% block pageScripts %}
+<script>
+    //AUTOCOMPLETE PROVIDERS
+    function suggestProviders(query, populateResults) {
+        var results = {{_providerAutocompleteList | dump | safe }},
+            providers = {{_providers | dump | safe }},
+            filteredResults = []
+        providers.forEach(function(_provider, index) {
+            var _searchesToDo = [
+                    {"searchOn": _provider.autoCompleteString,"within": true,"exact": true}
+                ],
+                _providerMatched = false
+            for (var i = 0; i < _searchesToDo.length; i++) {
+                var _thisItem = _searchesToDo[i]
+                if(Array.isArray(_thisItem.searchOn)){
+                    _thisItem.searchOn.forEach(function(_arrayPart, index) {
+                        doSearches(_arrayPart)
+                    });
+                } else {
+                    doSearches(_thisItem.searchOn)
+                }
+                function doSearches(_itemToSearch){
+                    //Exact check
+                    if(_thisItem.exact & _itemToSearch.toUpperCase() == query.trim().toUpperCase()){
+                        _providerMatched = true
+                    }
+                    // Within check
+                    if(_thisItem.within & _itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
+                        _providerMatched = true
+                    }
+                }
+            }
+            (_providerMatched) && (filteredResults.push(_provider.autoCompleteString))
+        })
+        populateResults(filteredResults)
+    }
+    // Normal
+    // function suggestTraining(query, populateResults) {
+    //     var results = {{_standardAutocompleteList | dump | safe }},
+    //         filteredResults = results.filter(
+    //         result => result.toUpperCase().indexOf(query.trim().toUpperCase()) !== -1
+    //     )
+    //     populateResults(filteredResults)
+    // }
+    // Trigger search click on enter
+    function fireProvidersSearch(){setTimeout(function(){ $("#search-providers-submit").trigger("click") },200);}
+    var providerInput = document.querySelector('#search-providers')
+    if (providerInput) {
+        var providerInputID = providerInput.id,
+            providerElement = document.createElement('div'),
+            defaultSearchvalue = {{_defaultSearchvalue | dump | safe }}
+        providerElement.className = "autocomplete__parent_wrapper";
+        providerInput.parentNode.insertBefore(providerElement, providerInput)
+        accessibleAutocomplete({
+            // other options
+            element: providerElement,
+            id: providerInputID,
+            name: providerInput.name,
+            source: suggestProviders,
+            defaultValue: defaultSearchvalue,
+            minLength: 2,
+            confirmOnBlur: false,
+            autoselect: true,
+            onConfirm: fireProvidersSearch,
+            displayMenu: 'overlay'
+        })
+        providerInput.style.display = 'none'
+        providerInput.id = providerInputID + '-old'
+        providerInput.name = ''
+    }
+
+
+    //AUTOCOMPLETE TRAINING
+    // function suggestTraining(query, populateResults) {
+    //     var results = {{_standardAutocompleteList | dump | safe }},
+    //         standards = {{_standards | dump | safe }},
+    //         filteredResults = []
+    //     standards.forEach(function(_standard, index) {
+    //         var _searchesToDo = [
+    //                 {"searchOn": _standard.autoCompleteString,"within": true,"exact": true},
+    //                 {"searchOn": _standard.jobRoles,"within": true,"exact": true}
+    //             ],
+    //             _standardMatched = false
+    //         for (var i = 0; i < _searchesToDo.length; i++) {
+    //             var _thisItem = _searchesToDo[i]
+    //             if(Array.isArray(_thisItem.searchOn)){
+    //                 _thisItem.searchOn.forEach(function(_arrayPart, index) {
+    //                     doSearches(_arrayPart)
+    //                 });
+    //             } else {
+    //                 doSearches(_thisItem.searchOn)
+    //             }
+    //             function doSearches(_itemToSearch){
+    //                 //Exact check
+    //                 if(_thisItem.exact & _itemToSearch.toUpperCase() == query.trim().toUpperCase()){
+    //                     _standardMatched = true
+    //                 }
+    //                 // Within check
+    //                 if(_thisItem.within & _itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
+    //                     _standardMatched = true
+    //                 }
+    //             }
+    //         }
+    //         (_standardMatched) && (filteredResults.push(_standard.autoCompleteString))
+    //     })
+    //     populateResults(filteredResults)
+    // }
+    // Normal
+    function suggestTraining(query, populateResults) {
+        var results = {{_standardAutocompleteList | dump | safe }},
+            filteredResults = results.filter(
+            result => result.toUpperCase().indexOf(query.trim().toUpperCase()) !== -1
+        )
+        populateResults(filteredResults)
+    }
+    function fireTrainingSearch(){setTimeout(function(){ $("#search-training-submit").trigger("click") },200);}
+    var trainingInput = document.querySelector('#search-training')
+    if (trainingInput) {
+        var trainingInputID = trainingInput.id,
+            trainingElement = document.createElement('div'),
+            defaultStandardSearchvalue = {{_defaultStandardSearchvalue | dump | safe }}
+        trainingElement.className = "autocomplete__parent_wrapper";
+        trainingInput.parentNode.insertBefore(trainingElement, trainingInput)
+        accessibleAutocomplete({
+            // other options
+            element: trainingElement,
+            id: trainingInputID,
+            name: trainingInput.name,
+            source: suggestTraining,
+            defaultValue: defaultStandardSearchvalue,
+            minLength: 2,
+            confirmOnBlur: false,
+            autoselect: true,
+            onConfirm: fireTrainingSearch,
+            displayMenu: 'overlay'
+            // showAllValues: true
+        })
+        trainingInput.style.display = 'none'
+        trainingInput.id = trainingInputID + '-old'
+        trainingInput.name = ''
+    }
+</script>
+
+{% endblock pageScripts %}

@@ -402,8 +402,6 @@ module.exports = function (router,_myData) {
                     break
                 }
             }
-        } else {
-            req.session.myData.standard = "all"
         }
 
         //Search reset/setup

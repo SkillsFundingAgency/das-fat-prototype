@@ -312,7 +312,7 @@
     // Normal
     function suggestLocations(query, populateResults) {
         var filteredResults = []
-        const _url = 'http://api.postcodes.io/postcodes/' + query + '/autocomplete'
+        const _url = 'https://api.postcodes.io/postcodes/' + query + '/autocomplete'
         $.getJSON(_url, function(body){
             if(body.result) {
                 filteredResults = body.result

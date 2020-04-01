@@ -19,6 +19,11 @@
     {% set _defaultSearchvalue = myData.searchTerm %}
 {% endif %}
 
+{% set _defaultLocationSearchvalue = "" %}
+{% if myData.locationapplied == true %}
+    {% set _defaultLocationSearchvalue = myData.location %}
+{% endif %}
+
 <!-- Query strings (for use in hrefs) -->
 {% set _searchQuery = "" %}
 {% set _sortQuery = "" %}
@@ -45,7 +50,8 @@
 {% block content %}
 
 <style>
-    #search-providers {
+    #search-providers,
+    #search-location {
         height: 40px;
         border-right: 0;
     }
@@ -297,6 +303,53 @@
         providerInput.id = providerInputID + '-old'
         providerInput.name = ''
     }
+
+
+
+
+    // Locations 
+
+    // Normal
+    function suggestLocations(query, populateResults) {
+        var filteredResults = []
+        const _url = 'http://api.postcodes.io/postcodes/' + query + '/autocomplete'
+        $.getJSON(_url, function(body){
+            if(body.result) {
+                filteredResults = body.result
+            } else {
+                filteredResults = []
+            }
+            populateResults(filteredResults)
+        })
+    }
+    function fireLocationSearch(){setTimeout(function(){ $("#search-location-submit").trigger("click") },200);}
+    var locationInput = document.querySelector('#search-location')
+    if (locationInput) {
+        var locationInputID = locationInput.id,
+            locationElement = document.createElement('div'),
+            defaultLocationSearchvalue = {{_defaultLocationSearchvalue | dump | safe }}
+        locationElement.className = "autocomplete__parent_wrapper";
+        locationInput.parentNode.insertBefore(locationElement, locationInput)
+        accessibleAutocomplete({
+            // other options
+            element: locationElement,
+            id: locationInputID,
+            name: locationInput.name,
+            source: suggestLocations,
+            defaultValue: defaultLocationSearchvalue,
+            minLength: 1,
+            confirmOnBlur: false,
+            autoselect: true,
+            onConfirm: fireLocationSearch,
+            displayMenu: 'overlay'
+        })
+        locationInput.style.display = 'none'
+        locationInput.id = locationInputID + '-old'
+        locationInput.name = ''
+    }
+
+
+
 </script>
 
 {% endblock pageScripts %}

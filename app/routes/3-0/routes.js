@@ -234,7 +234,6 @@ module.exports = function (router,_myData) {
             req.session.myData.level = "all"
         }
 
-
         _standards.forEach(function(_standard, index) {
 
             var _hasAMatchcount = 0,
@@ -328,15 +327,6 @@ module.exports = function (router,_myData) {
             }
 
         });
-        // Hide low relevance results if results count too high - needs redoing since commenting out to work with BOTH filter and search term
-        // if(req.session.myData.displaycount > 50){
-        //     _standards.forEach(function(_standard, index) {
-        //         if(_standard.search == true && _standard.searchrelevance < 10000) {
-        //             _standard.search = false
-        //             req.session.myData.displaycount--
-        //         }
-        //     });
-        // }
 
         if(req.session.myData.searchapplied){
             if(req.session.myData.sortby == "name"){
@@ -426,146 +416,160 @@ module.exports = function (router,_myData) {
         if(_locationQ || _locationQ == ""){
             _locationQ = _locationQ.trim()
             if(_locationQ != ""){
-                // for (var i = 0; i < req.session.myData.citiesAutocompleteList.length; i++) {
-                //     var _thisCity = req.session.myData.citiesAutocompleteList[i]
-                //     if(_locationQ.toUpperCase() == _thisCity.toUpperCase()){
+
+                var _exactMatch = false
+                // City
+                for (var i = 0; i < req.session.myData.citiesAutocompleteList.length; i++) {
+                    var _thisCity = req.session.myData.citiesAutocompleteList[i]
+                    if(_locationQ.toUpperCase() == _thisCity.toUpperCase()){
+                        _exactMatch = true
+                    }
+                }
+                // Postcode
+                var Request = require("request")
+                Request.get('https://api.postcodes.io/postcodes/' + _locationQ + '/autocomplete', (error, response, body) => {
+
+                    if(JSON.parse(body).result && _locationQ.length > 1){
+                        _exactMatch = true
+                    }
+
+                    if(_exactMatch) {
                         req.session.myData.location = _locationQ
                         req.session.myData.locationapplied = true
                         req.session.myData.matcheslocationcount = 0
                         req.session.myData.displaycount = 0
                         req.session.myData.searchfilters.push({"value": _locationQ, "type": "location", "typeText": "Location"})
                         _needToMatchCount++
-                //     }
-                // }
-            }
-        }
-
-        _providers.forEach(function(_provider, index) {
-
-            var _hasAMatchcount = 0,
-                _deliversStandard = false,
-                _providerIndex = _provider.id-1
-
-            // Reset each provider
-            _provider.search = true
-
-
-            //STANDARD
-            if(req.session.myData.standardfilterapplied) {
-                _provider.search = false
-                if(_providerIndex < _selectedStandard.providers.number) {
-                    _deliversStandard = true
-                    req.session.myData.matchesstandardcount++
-                    _hasAMatchcount++
-                }
-            }
-
-            //LOCATION
-            if(req.session.myData.locationapplied) {
-                _provider.search = false
-
-                var _locationMatch = false
-               
-                if(_deliversStandard){
-
-                    // All national match distance
-                    if(_provider.national){
-                        _locationMatch = true
                     }
-                    if(_selectedStandard.providers.number <= 4) {
-                        _locationMatch = true
-                    } else if(_selectedStandard.providers.number > 4 && _selectedStandard.providers.number < 7){
-                        if(_providerIndex > _selectedStandard.providers.number - 3){
-                            _locationMatch = true
-                        }
-                    } else if(_selectedStandard.providers.number >= 6){
-                        if(_providerIndex < _selectedStandard.providers.number - 5){
-                            _locationMatch = true
-                        }
-                    }
-                }
-
-                if(_locationMatch){
-                    req.session.myData.matcheslocationcount++
-                    _hasAMatchcount++
-                }
-            }
-
-            //SEARCH TERM
-            if(req.session.myData.searchapplied) {
-                _provider.search = false
-                _provider.searchrelevance = 0
-                var _providersearch = false,
-                    _searchesToDo = [
-                        {"searchOn": _provider.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
-                    ]
-                for (var i = 0; i < _searchesToDo.length; i++) {
-                    var _thisItem = _searchesToDo[i]
-                    if(Array.isArray(_thisItem.searchOn)){
-                        _thisItem.searchOn.forEach(function(_arrayPart, index) {
-                            doSearches(_arrayPart)
-                        });
-                    } else {
-                        doSearches(_thisItem.searchOn)
-                    }
-                    function doSearches(_itemToSearch){
-                        //Exact check
-                        if(_thisItem.exactrelevance && _itemToSearch.toUpperCase() == _searchQ.toUpperCase()){
-                            _provider.searchrelevance = _provider.searchrelevance + _thisItem.exactrelevance
-                            _providersearch = true
-                            if(_thisItem.ifmatch == "exit"){
-                                return
-                            }
-                        }
-                        // Within check
-                        if(_thisItem.withinrelevance && _itemToSearch.toUpperCase().indexOf(_searchQ.toUpperCase()) != -1){
-                            _provider.searchrelevance = _provider.searchrelevance + _thisItem.withinrelevance
-                            _providersearch = true
-                            if(_thisItem.ifmatch == "exit"){
-                                return 
-                            }
-                        }
-                    }
-                    if(_providersearch == true && _thisItem.ifmatch == "exit") {
-                        break
-                    }
-                }
-                if(_providersearch && _provider.searchrelevance > 1){
-                    req.session.myData.matchessearchcount++
-                    _hasAMatchcount++
-                }
-            }
-
-            //MATCHES ALL IT NEEDS TO?
-            if(_needToMatchCount > 0 && _needToMatchCount == _hasAMatchcount){
-                _provider.search = true
-                req.session.myData.displaycount++
-            }
-
-        });
-        // Hide low relevance results if results count too high - needs redoing since commenting out to work with BOTH filter and search term
-        // if(req.session.myData.displaycount > 50){
-        //     _providers.forEach(function(_provider, index) {
-        //         if(_provider.search == true && _provider.searchrelevance < 10000) {
-        //             _provider.search = false
-        //             req.session.myData.displaycount--
-        //         }
-        //     });
-        // }
-
-        if(req.session.myData.locationapplied){
-            if(req.session.myData.sortby == "name"){
-                sortProviders(req, "name")
+                    continueRendering()
+                });
             } else {
-                sortProviders(req, "distance")
+                continueRendering()
             }
         } else {
-            sortProviders(req, "name")
+            continueRendering()
         }
 
-        res.render(version + '/providers', {
-            myData:req.session.myData
-        });
+        function continueRendering(){
+            _providers.forEach(function(_provider, index) {
+                
+                var _hasAMatchcount = 0,
+                    _deliversStandard = false,
+                    _providerIndex = _provider.id-1
+
+                // Reset each provider
+                _provider.search = true
+
+
+                //STANDARD
+                if(req.session.myData.standardfilterapplied) {
+                    _provider.search = false
+                    if(_providerIndex < _selectedStandard.providers.number) {
+                        _deliversStandard = true
+                        req.session.myData.matchesstandardcount++
+                        _hasAMatchcount++
+                    }
+                }
+
+                //LOCATION
+                if(req.session.myData.locationapplied) {
+                    _provider.search = false
+
+                    var _locationMatch = false
+                
+                    if(_deliversStandard){
+
+                        // All national match distance
+                        if(_provider.national){
+                            _locationMatch = true
+                        }
+                        if(_selectedStandard.providers.number <= 4) {
+                            _locationMatch = true
+                        } else if(_selectedStandard.providers.number > 4 && _selectedStandard.providers.number < 7){
+                            if(_providerIndex > _selectedStandard.providers.number - 3){
+                                _locationMatch = true
+                            }
+                        } else if(_selectedStandard.providers.number >= 6){
+                            if(_providerIndex < _selectedStandard.providers.number - 5){
+                                _locationMatch = true
+                            }
+                        }
+                    }
+
+                    if(_locationMatch){
+                        req.session.myData.matcheslocationcount++
+                        _hasAMatchcount++
+                    }
+                }
+
+                //SEARCH TERM
+                if(req.session.myData.searchapplied) {
+                    _provider.search = false
+                    _provider.searchrelevance = 0
+                    var _providersearch = false,
+                        _searchesToDo = [
+                            {"searchOn": _provider.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
+                        ]
+                    for (var i = 0; i < _searchesToDo.length; i++) {
+                        var _thisItem = _searchesToDo[i]
+                        if(Array.isArray(_thisItem.searchOn)){
+                            _thisItem.searchOn.forEach(function(_arrayPart, index) {
+                                doSearches(_arrayPart)
+                            });
+                        } else {
+                            doSearches(_thisItem.searchOn)
+                        }
+                        function doSearches(_itemToSearch){
+                            //Exact check
+                            if(_thisItem.exactrelevance && _itemToSearch.toUpperCase() == _searchQ.toUpperCase()){
+                                _provider.searchrelevance = _provider.searchrelevance + _thisItem.exactrelevance
+                                _providersearch = true
+                                if(_thisItem.ifmatch == "exit"){
+                                    return
+                                }
+                            }
+                            // Within check
+                            if(_thisItem.withinrelevance && _itemToSearch.toUpperCase().indexOf(_searchQ.toUpperCase()) != -1){
+                                _provider.searchrelevance = _provider.searchrelevance + _thisItem.withinrelevance
+                                _providersearch = true
+                                if(_thisItem.ifmatch == "exit"){
+                                    return 
+                                }
+                            }
+                        }
+                        if(_providersearch == true && _thisItem.ifmatch == "exit") {
+                            break
+                        }
+                    }
+                    if(_providersearch && _provider.searchrelevance > 1){
+                        req.session.myData.matchessearchcount++
+                        _hasAMatchcount++
+                    }
+                }
+
+                //MATCHES ALL IT NEEDS TO?
+                if(_needToMatchCount > 0 && _needToMatchCount == _hasAMatchcount){
+                    _provider.search = true
+                    req.session.myData.displaycount++
+                }
+
+            });
+
+            if(req.session.myData.locationapplied){
+                if(req.session.myData.sortby == "name"){
+                    sortProviders(req, "name")
+                } else {
+                    sortProviders(req, "distance")
+                }
+            } else {
+                sortProviders(req, "name")
+            }
+
+            res.render(version + '/providers', {
+                myData:req.session.myData
+            });
+
+        }
 
     });
 
@@ -635,145 +639,158 @@ module.exports = function (router,_myData) {
         if(_locationQ || _locationQ == ""){
             _locationQ = _locationQ.trim()
             if(_locationQ != "" && req.session.myData.standardsearchapplied){
-                // for (var i = 0; i < req.session.myData.citiesAutocompleteList.length; i++) {
-                //     var _thisCity = req.session.myData.citiesAutocompleteList[i]
-                //     if(_locationQ.toUpperCase() == _thisCity.toUpperCase()){
+
+                var _exactMatch = false
+                // City
+                for (var i = 0; i < req.session.myData.citiesAutocompleteList.length; i++) {
+                    var _thisCity = req.session.myData.citiesAutocompleteList[i]
+                    if(_locationQ.toUpperCase() == _thisCity.toUpperCase()){
+                        _exactMatch = true
+                    }
+                }
+                // Postcode
+                var Request = require("request")
+                Request.get('https://api.postcodes.io/postcodes/' + _locationQ + '/autocomplete', (error, response, body) => {
+
+                    if(JSON.parse(body).result && _locationQ.length > 1){
+                        _exactMatch = true
+                    }
+
+                    if(_exactMatch) {
                         req.session.myData.location = _locationQ
                         req.session.myData.locationapplied = true
                         req.session.myData.matcheslocationcount = 0
                         req.session.myData.displaycount = 0
                         req.session.myData.searchfilters.push({"value": _locationQ, "type": "location", "typeText": "Location"})
                         _needToMatchCount++
-                //     }
-                // }
-            }
-        }
-
-        _providers.forEach(function(_provider, index) {
-
-            var _hasAMatchcount = 0,
-                _deliversStandard = false,
-                _providerIndex = _provider.id-1
-
-            // Reset each provider
-            _provider.search = true
-
-            //STANDARD SEARCH TERM
-            if(req.session.myData.standardsearchapplied) {
-                _provider.search = false
-                if(_providerIndex < _selectedStandard.providers.number) {
-                    _deliversStandard = true
-                    req.session.myData.matchesstandardcount++
-                    _hasAMatchcount++
-                }
-            }
-
-            //LOCATION
-            if(req.session.myData.locationapplied) {
-                _provider.search = false
-
-                var _locationMatch = false
-               
-                if(_deliversStandard){
-
-                    // All national match distance
-                    if(_provider.national){
-                        _locationMatch = true
                     }
-                    if(_selectedStandard.providers.number <= 4) {
-                        _locationMatch = true
-                    } else if(_selectedStandard.providers.number > 4 && _selectedStandard.providers.number < 7){
-                        if(_providerIndex > _selectedStandard.providers.number - 3){
-                            _locationMatch = true
-                        }
-                    } else if(_selectedStandard.providers.number >= 6){
-                        if(_providerIndex < _selectedStandard.providers.number - 5){
-                            _locationMatch = true
-                        }
-                    }
-                }
-
-                if(_locationMatch){
-                    req.session.myData.matcheslocationcount++
-                    _hasAMatchcount++
-                }
-            }
-
-            //SEARCH TERM
-            if(req.session.myData.searchapplied) {
-                _provider.search = false
-                _provider.searchrelevance = 0
-                var _providersearch = false,
-                    _searchesToDo = [
-                        {"searchOn": _provider.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
-                    ]
-                for (var i = 0; i < _searchesToDo.length; i++) {
-                    var _thisItem = _searchesToDo[i]
-                    if(Array.isArray(_thisItem.searchOn)){
-                        _thisItem.searchOn.forEach(function(_arrayPart, index) {
-                            doSearches(_arrayPart)
-                        });
-                    } else {
-                        doSearches(_thisItem.searchOn)
-                    }
-                    function doSearches(_itemToSearch){
-                        //Exact check
-                        if(_thisItem.exactrelevance && _itemToSearch.toUpperCase() == _searchQ.toUpperCase()){
-                            _provider.searchrelevance = _provider.searchrelevance + _thisItem.exactrelevance
-                            _providersearch = true
-                            if(_thisItem.ifmatch == "exit"){
-                                return
-                            }
-                        }
-                        // Within check
-                        if(_thisItem.withinrelevance && _itemToSearch.toUpperCase().indexOf(_searchQ.toUpperCase()) != -1){
-                            _provider.searchrelevance = _provider.searchrelevance + _thisItem.withinrelevance
-                            _providersearch = true
-                            if(_thisItem.ifmatch == "exit"){
-                                return 
-                            }
-                        }
-                    }
-                    if(_providersearch == true && _thisItem.ifmatch == "exit") {
-                        break
-                    }
-                }
-                if(_providersearch && _provider.searchrelevance > 1){
-                    req.session.myData.matchessearchcount++
-                    _hasAMatchcount++
-                }
-            }
-
-            //MATCHES ALL IT NEEDS TO?
-            if(_needToMatchCount > 0 && _needToMatchCount == _hasAMatchcount){
-                _provider.search = true
-                req.session.myData.displaycount++
-            }
-
-        });
-        // Hide low relevance results if results count too high - needs redoing since commenting out to work with BOTH filter and search term
-        // if(req.session.myData.displaycount > 50){
-        //     _providers.forEach(function(_provider, index) {
-        //         if(_provider.search == true && _provider.searchrelevance < 10000) {
-        //             _provider.search = false
-        //             req.session.myData.displaycount--
-        //         }
-        //     });
-        // }
-
-        if(req.session.myData.locationapplied){
-            if(req.session.myData.sortby == "name"){
-                sortProviders(req, "name")
+                continueRendering()
+            });
             } else {
-                sortProviders(req, "distance")
+                continueRendering()
             }
         } else {
-            sortProviders(req, "name")
+            continueRendering()
         }
+       
+        function continueRendering(){
+            _providers.forEach(function(_provider, index) {
 
-        res.render(version + '/providers-all', {
-            myData:req.session.myData
-        });
+                var _hasAMatchcount = 0,
+                    _deliversStandard = false,
+                    _providerIndex = _provider.id-1
+    
+                // Reset each provider
+                _provider.search = true
+    
+                //STANDARD SEARCH TERM
+                if(req.session.myData.standardsearchapplied) {
+                    _provider.search = false
+                    if(_providerIndex < _selectedStandard.providers.number) {
+                        _deliversStandard = true
+                        req.session.myData.matchesstandardcount++
+                        _hasAMatchcount++
+                    }
+                }
+    
+                //LOCATION
+                if(req.session.myData.locationapplied) {
+                    _provider.search = false
+    
+                    var _locationMatch = false
+                   
+                    if(_deliversStandard){
+    
+                        // All national match distance
+                        if(_provider.national){
+                            _locationMatch = true
+                        }
+                        if(_selectedStandard.providers.number <= 4) {
+                            _locationMatch = true
+                        } else if(_selectedStandard.providers.number > 4 && _selectedStandard.providers.number < 7){
+                            if(_providerIndex > _selectedStandard.providers.number - 3){
+                                _locationMatch = true
+                            }
+                        } else if(_selectedStandard.providers.number >= 6){
+                            if(_providerIndex < _selectedStandard.providers.number - 5){
+                                _locationMatch = true
+                            }
+                        }
+                    }
+    
+                    if(_locationMatch){
+                        req.session.myData.matcheslocationcount++
+                        _hasAMatchcount++
+                    }
+                }
+    
+                //SEARCH TERM
+                if(req.session.myData.searchapplied) {
+                    _provider.search = false
+                    _provider.searchrelevance = 0
+                    var _providersearch = false,
+                        _searchesToDo = [
+                            {"searchOn": _provider.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
+                        ]
+                    for (var i = 0; i < _searchesToDo.length; i++) {
+                        var _thisItem = _searchesToDo[i]
+                        if(Array.isArray(_thisItem.searchOn)){
+                            _thisItem.searchOn.forEach(function(_arrayPart, index) {
+                                doSearches(_arrayPart)
+                            });
+                        } else {
+                            doSearches(_thisItem.searchOn)
+                        }
+                        function doSearches(_itemToSearch){
+                            //Exact check
+                            if(_thisItem.exactrelevance && _itemToSearch.toUpperCase() == _searchQ.toUpperCase()){
+                                _provider.searchrelevance = _provider.searchrelevance + _thisItem.exactrelevance
+                                _providersearch = true
+                                if(_thisItem.ifmatch == "exit"){
+                                    return
+                                }
+                            }
+                            // Within check
+                            if(_thisItem.withinrelevance && _itemToSearch.toUpperCase().indexOf(_searchQ.toUpperCase()) != -1){
+                                _provider.searchrelevance = _provider.searchrelevance + _thisItem.withinrelevance
+                                _providersearch = true
+                                if(_thisItem.ifmatch == "exit"){
+                                    return 
+                                }
+                            }
+                        }
+                        if(_providersearch == true && _thisItem.ifmatch == "exit") {
+                            break
+                        }
+                    }
+                    if(_providersearch && _provider.searchrelevance > 1){
+                        req.session.myData.matchessearchcount++
+                        _hasAMatchcount++
+                    }
+                }
+    
+                //MATCHES ALL IT NEEDS TO?
+                if(_needToMatchCount > 0 && _needToMatchCount == _hasAMatchcount){
+                    _provider.search = true
+                    req.session.myData.displaycount++
+                }
+    
+            });
+    
+            if(req.session.myData.locationapplied){
+                if(req.session.myData.sortby == "name"){
+                    sortProviders(req, "name")
+                } else {
+                    sortProviders(req, "distance")
+                }
+            } else {
+                sortProviders(req, "name")
+            }
+    
+            res.render(version + '/providers-all', {
+                myData:req.session.myData
+            });
+        }
 
     });
 
@@ -914,15 +931,6 @@ module.exports = function (router,_myData) {
             }
 
         });
-        // Hide low relevance results if results count too high - needs redoing since commenting out to work with BOTH filter and search term
-        // if(req.session.myData.displaycount > 50){
-        //     _epaos.forEach(function(_epao, index) {
-        //         if(_epao.search == true && _epao.searchrelevance < 10000) {
-        //             _epao.search = false
-        //             req.session.myData.displaycount--
-        //         }
-        //     });
-        // }
 
         sortEPAOs(req, "name")
 

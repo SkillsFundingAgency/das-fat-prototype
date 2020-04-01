@@ -118,7 +118,7 @@ _myData.epaos.list.forEach(function(_epao, index) {
 // Set cities list
 _myData.citiesAutocompleteList = []
 _myData.cities.list.forEach(function(_city, index) {
-    var _suffix = (_city.city == _city.admin) ? "" : (", " + _city.admin),
+    var _suffix = (_city.city == _city.admin || _city.admin == "") ? "" : (", " + _city.admin),
         _autoCompleteString = _city.city + _suffix
     _city.autoCompleteString = _autoCompleteString
     _myData.citiesAutocompleteList.push(_autoCompleteString);

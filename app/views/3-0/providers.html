@@ -305,21 +305,10 @@
     }
 
 
-
-
     // Locations 
-
-    // Normal
     function suggestLocations(query, populateResults) {
-        var filteredResults = []
-        const _url = 'https://api.postcodes.io/postcodes/' + query + '/autocomplete'
-        $.getJSON(_url, function(body){
-            if(body.result) {
-                filteredResults = body.result
-            } else {
-                filteredResults = []
-            }
-            populateResults(filteredResults)
+        $.getJSON('https://api.postcodes.io/postcodes/' + query + '/autocomplete', function(body){
+            populateResults(body.result || [])
         })
     }
     function fireLocationSearch(){setTimeout(function(){ $("#search-location-submit").trigger("click") },200);}
@@ -347,8 +336,6 @@
         locationInput.id = locationInputID + '-old'
         locationInput.name = ''
     }
-
-
 
 </script>
 

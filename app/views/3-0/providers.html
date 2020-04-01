@@ -23,8 +23,12 @@
 {% set _searchQuery = "" %}
 {% set _sortQuery = "" %}
 {% set _standardQuery = "" %}
+{% set _locationQuery = "" %}
 {% if myData.searchapplied == true %}
     {% set _searchQuery = "&q=" + myData.searchTerm %}
+{% endif %}
+{% if myData.locationapplied == true %}
+    {% set _locationQuery = "&location=" + myData.location %}
 {% endif %}
 {% if myData.sortapplied == true %}
     {% set _sortQuery = "&sort=" + myData.sortby %}
@@ -53,10 +57,16 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
+        <!-- <h1 class="govuk-heading-xl govuk-!-margin-bottom-4" >
+            <span class="govuk-caption-xl">Training providers for {{_standardTitle|safe}}</span>
+            {{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}
+        </h1> -->
+
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-4" >
             <span class="govuk-caption-xl">Training providers for</span>
             {{_standardTitle|safe}}
         </h1>
+
         <p class="govuk-body govuk-!-margin-bottom-8"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{myData.standard}}">Overview of {{_standardTitle|safe}}</a></p>
 
     </div>
@@ -79,7 +89,7 @@
 
             <div class="fat-filter__content">
 
-                {% if myData.searchapplied == true %}
+                {% if myData.searchapplied == true or myData.locationapplied %}
                 <div class="fat-filter__selected">
                     <div class="fat-filter__selected-heading">
                         <div class="fat-filter__heading-title">
@@ -93,7 +103,10 @@
           
                     <!-- For each filter type -->
                     {% for _filter in myData.searchfilters %}
-                        {% set _url = "providers?" + _sortQuery %}
+                        {% set _url = "providers?" + _sortQuery + _locationQuery + _standardQuery %}
+                        {% if _filter.type == "location" %}
+                            {% set _url = "providers?" + _sortQuery + _searchQuery + _standardQuery %}
+                        {% endif %}
 
                     <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText}}</h3>
                     <ul class="fat-filter-tags">
@@ -121,6 +134,25 @@
                             </div>
                         </div>
                         <input type="hidden" value="{{myData.standard}}" name="standard" >
+                        <input type="hidden" value="{{myData.location}}" name="location" >
+                    </form>
+
+                    <!-- Location -->
+                    <form action="providers" method="GET" >
+                        <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
+                            <legend style="display:none">[Enter your location]</legend>
+                            <label for="search-location" class="govuk-label" >
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">[location]</span>
+                            </label>
+                            <div class="search-input-wrapper">
+                                <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input">
+                                <div class="search-input-submit-wrapper">
+                                    <button type="submit" class="search-submit" id="search-location-submit">Enter your location</button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" value="{{myData.standard}}" name="standard" >
+                        <input type="hidden" value="{{myData.searchTerm}}" name="q" >
                     </form>
 
 
@@ -132,13 +164,23 @@
 
     </div>
     <div class="govuk-grid-column-two-thirds">
-
+       
+        <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
 
         <!-- Sort -->
-        {% if myData.searchapplied == true and myData.displaycount > 1 %}
+        {% if myData.locationapplied == true and myData.displaycount > 1 %}
+        <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
+            {% if myData.sortby == "name" %}
+            <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}&sort=distance">Distance</a>, 
+            <span class="govuk-!-font-weight-bold">Name</span>
+            {% else %}
+            <span class="govuk-!-font-weight-bold">Distance</span>, 
+            <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}&sort=name">Name</a>
+            {% endif %}
+        </p>
+        {% elif myData.displaycount > 1 %}
         <p class="govuk-body govuk-!-margin-bottom-6">Sorted by:
             <span class="govuk-!-font-weight-bold">Name</span>
-            <!-- <a class="govuk-link govuk-link--no-visited-state" href="training?{{_levelfilterQuery}}{{_routefilterQuery}}{{_searchQuery}}&sort=name">Name</a> -->
         </p>
         {% endif %}
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
@@ -156,6 +198,10 @@
                     <a href="provider?provider={{_provider.id}}" class="govuk-link govuk-link--no-visited-state">{{_provider.name}}</a>
                 </h2>
                 <ul class="govuk-list">
+
+                    {% if myData.locationapplied %}
+                    <li><span>{{_provider.distance}}</span> miles away</li>
+                    {% endif %}
 
                     {% if _provider.national == true %}
                     <li><span class="govuk-!-font-weight-bold">National</span></li>

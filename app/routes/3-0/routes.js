@@ -10,7 +10,6 @@ module.exports = function (router,_myData) {
 
             // RELEVANCE
             if(_sortBy == "searchrelevance"){
-                // req.session.myData.sortby = "relevance"
                 if (a.searchrelevance == b.searchrelevance){
                     // NAME 
                     sortByName()
@@ -20,7 +19,6 @@ module.exports = function (router,_myData) {
                     returnValue = 1
                 }
             } else {
-                // req.session.myData.sortby = "name"
                 // NAME
                 sortByName()
             }
@@ -39,19 +37,21 @@ module.exports = function (router,_myData) {
     }
     //Sort providers
     function sortProviders(req, _sortBy){
-        req.session.myData.providers.list.sort(function(a,b){
-
-            var returnValue = 0;
-
-            if (a.name.toUpperCase() < b.name.toUpperCase()){
-                returnValue = -1
-            } else if(a.name.toUpperCase() > b.name.toUpperCase()){
-                returnValue = 1
-            }
-
-            return returnValue
-
-        });
+        if(_sortBy == "distance"){
+            req.session.myData.providers.list.sort(function(a,b){
+                return a.distance - b.distance
+            });
+        } else {
+            req.session.myData.providers.list.sort(function(a,b){
+                var returnValue = 0;
+                if (a.name.toUpperCase() < b.name.toUpperCase()){
+                    returnValue = -1
+                } else if(a.name.toUpperCase() > b.name.toUpperCase()){
+                    returnValue = 1
+                }
+                return returnValue
+            });
+        }
     }
     //Sort epaos
     function sortEPAOs(req, _sortBy){
@@ -370,7 +370,7 @@ module.exports = function (router,_myData) {
 
         //Sort
         req.session.myData.sortapplied = false
-        if(req.query.sort == "name"){
+        if(req.query.sort == "name" || req.query.sort == "distance"){
             req.session.myData.sortapplied = true
             req.session.myData.sortby = req.query.sort
         }
@@ -384,30 +384,28 @@ module.exports = function (router,_myData) {
         req.session.myData.displaycount = _providers.length
         req.session.myData.matchesstandardcount = _standards.length
         req.session.myData.matchessearchcount = _providers.length
+        req.session.myData.matcheslocationcount = _providers.length
 
         // Standard filter reset/setup
         req.session.myData.standardfilterapplied = false
-        if(req.query.standard){
-            var _selectedStandardID = req.query.standard || req.session.myData.standard
-            for (var i = 0; i < _standards.length; i++) {
-                var _thisStandard = _standards[i]
-                if(_selectedStandardID == _thisStandard.larsCode){
-                    req.session.myData.standard = _selectedStandardID
-                    req.session.myData.standardfilterapplied = true
-                    req.session.myData.matchesstandardcount = 0
-                    req.session.myData.displaycount = 0
-                    _selectedStandard = _thisStandard
-                    // req.session.myData.searchfilters.push(_selectedStandard.autoCompleteString)
-                    _needToMatchCount++
-                    break
-                }
+        var _selectedStandardID = req.query.standard || req.session.myData.standard
+        for (var i = 0; i < _standards.length; i++) {
+            var _thisStandard = _standards[i]
+            if(_selectedStandardID == _thisStandard.larsCode){
+                req.session.myData.standard = _selectedStandardID
+                req.session.myData.standardfilterapplied = true
+                req.session.myData.matchesstandardcount = 0
+                req.session.myData.displaycount = 0
+                _selectedStandard = _thisStandard
+                // req.session.myData.searchfilters.push(_selectedStandard.autoCompleteString)
+                _needToMatchCount++
+                break
             }
-        } else {
-            req.session.myData.standard = "all"
         }
 
         //Search reset/setup
         req.session.myData.searchapplied = false
+        req.session.myData.searchTerm = ""
         var _searchQ = req.query.q
         if(_searchQ || _searchQ == ""){
             _searchQ = _searchQ.trim()
@@ -421,18 +419,69 @@ module.exports = function (router,_myData) {
             }
         }
 
+        //Location reset/setup
+        req.session.myData.locationapplied = false
+        req.session.myData.location = ""
+        var _locationQ = req.query.location
+        if(_locationQ || _locationQ == ""){
+            _locationQ = _locationQ.trim()
+            if(_locationQ != ""){
+                req.session.myData.location = _locationQ
+                req.session.myData.locationapplied = true
+                req.session.myData.matcheslocationcount = 0
+                req.session.myData.displaycount = 0
+                req.session.myData.searchfilters.push({"value": "‘" + _locationQ + "’", "type": "location", "typeText": "[location]"})
+                _needToMatchCount++
+            }
+        }
+
         _providers.forEach(function(_provider, index) {
 
-            var _hasAMatchcount = 0
+            var _hasAMatchcount = 0,
+                _deliversStandard = false,
+                _providerIndex = _provider.id-1
 
             // Reset each provider
             _provider.search = true
 
+
             //STANDARD
             if(req.session.myData.standardfilterapplied) {
                 _provider.search = false
-                if(index < _selectedStandard.providers.number) {
+                if(_providerIndex < _selectedStandard.providers.number) {
+                    _deliversStandard = true
                     req.session.myData.matchesstandardcount++
+                    _hasAMatchcount++
+                }
+            }
+
+            //LOCATION
+            if(req.session.myData.locationapplied) {
+                _provider.search = false
+
+                var _locationMatch = false
+               
+                if(_deliversStandard){
+
+                    // All national match distance
+                    if(_provider.national){
+                        _locationMatch = true
+                    }
+                    if(_selectedStandard.providers.number <= 4) {
+                        _locationMatch = true
+                    } else if(_selectedStandard.providers.number > 4 && _selectedStandard.providers.number < 7){
+                        if(_providerIndex > _selectedStandard.providers.number - 3){
+                            _locationMatch = true
+                        }
+                    } else if(_selectedStandard.providers.number >= 6){
+                        if(_providerIndex < _selectedStandard.providers.number - 5){
+                            _locationMatch = true
+                        }
+                    }
+                }
+
+                if(_locationMatch){
+                    req.session.myData.matcheslocationcount++
                     _hasAMatchcount++
                 }
             }
@@ -499,7 +548,15 @@ module.exports = function (router,_myData) {
         //     });
         // }
 
-        sortProviders(req, "name")
+        if(req.session.myData.locationapplied){
+            if(req.session.myData.sortby == "name"){
+                sortProviders(req, "name")
+            } else {
+                sortProviders(req, "distance")
+            }
+        } else {
+            sortProviders(req, "name")
+        }
 
         res.render(version + '/providers', {
             myData:req.session.myData

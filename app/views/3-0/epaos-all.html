@@ -52,16 +52,9 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        {% if myData.searchapplied == true or myData.standardsearchapplied == true %}
-        <h1 class="govuk-heading-xl" >
-            <span class="govuk-caption-xl">End-point assessment organisations</span>
-            {{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}
-        </h1>
-        {% else %}
         <h1 class="govuk-heading-xl" >
             End-point assessment organisations
         </h1>
-        {% endif %}
 
     </div>
 </div>
@@ -157,9 +150,10 @@
     </div>
     <div class="govuk-grid-column-two-thirds">
 
+        <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
 
         <!-- Sort -->
-        {% if myData.searchapplied == true and myData.displaycount > 1 %}
+        {% if myData.displaycount > 1 %}
         <p class="govuk-body govuk-!-margin-bottom-6">Sorted by:
             <span class="govuk-!-font-weight-bold">Name</span>
             <!-- <a class="govuk-link govuk-link--no-visited-state" href="training?{{_levelfilterQuery}}{{_routefilterQuery}}{{_searchQuery}}&sort=name">Name</a> -->

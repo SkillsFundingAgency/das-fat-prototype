@@ -426,12 +426,17 @@ module.exports = function (router,_myData) {
         if(_locationQ || _locationQ == ""){
             _locationQ = _locationQ.trim()
             if(_locationQ != ""){
-                req.session.myData.location = _locationQ
-                req.session.myData.locationapplied = true
-                req.session.myData.matcheslocationcount = 0
-                req.session.myData.displaycount = 0
-                req.session.myData.searchfilters.push({"value": "‘" + _locationQ + "’", "type": "location", "typeText": "[location]"})
-                _needToMatchCount++
+                // for (var i = 0; i < req.session.myData.citiesAutocompleteList.length; i++) {
+                //     var _thisCity = req.session.myData.citiesAutocompleteList[i]
+                //     if(_locationQ.toUpperCase() == _thisCity.toUpperCase()){
+                        req.session.myData.location = _locationQ
+                        req.session.myData.locationapplied = true
+                        req.session.myData.matcheslocationcount = 0
+                        req.session.myData.displaycount = 0
+                        req.session.myData.searchfilters.push({"value": _locationQ, "type": "location", "typeText": "Location"})
+                        _needToMatchCount++
+                //     }
+                // }
             }
         }
 
@@ -569,7 +574,7 @@ module.exports = function (router,_myData) {
 
         //Sort
         req.session.myData.sortapplied = false
-        if(req.query.sort == "name"){
+        if(req.query.sort == "name" || req.query.sort == "distance"){
             req.session.myData.sortapplied = true
             req.session.myData.sortby = req.query.sort
         }
@@ -583,6 +588,7 @@ module.exports = function (router,_myData) {
         req.session.myData.displaycount = _providers.length
         req.session.myData.matchesstandardcount = _standards.length
         req.session.myData.matchessearchcount = _providers.length
+        req.session.myData.matcheslocationcount = _providers.length
 
         // Standard filter reset/setup
         req.session.myData.standardsearchapplied = false
@@ -622,9 +628,32 @@ module.exports = function (router,_myData) {
             }
         }
 
+        //Location reset/setup
+        req.session.myData.locationapplied = false
+        req.session.myData.location = ""
+        var _locationQ = req.query.location
+        if(_locationQ || _locationQ == ""){
+            _locationQ = _locationQ.trim()
+            if(_locationQ != "" && req.session.myData.standardsearchapplied){
+                // for (var i = 0; i < req.session.myData.citiesAutocompleteList.length; i++) {
+                //     var _thisCity = req.session.myData.citiesAutocompleteList[i]
+                //     if(_locationQ.toUpperCase() == _thisCity.toUpperCase()){
+                        req.session.myData.location = _locationQ
+                        req.session.myData.locationapplied = true
+                        req.session.myData.matcheslocationcount = 0
+                        req.session.myData.displaycount = 0
+                        req.session.myData.searchfilters.push({"value": _locationQ, "type": "location", "typeText": "Location"})
+                        _needToMatchCount++
+                //     }
+                // }
+            }
+        }
+
         _providers.forEach(function(_provider, index) {
 
-            var _hasAMatchcount = 0
+            var _hasAMatchcount = 0,
+                _deliversStandard = false,
+                _providerIndex = _provider.id-1
 
             // Reset each provider
             _provider.search = true
@@ -632,8 +661,40 @@ module.exports = function (router,_myData) {
             //STANDARD SEARCH TERM
             if(req.session.myData.standardsearchapplied) {
                 _provider.search = false
-                if(index < _selectedStandard.providers.number) {
+                if(_providerIndex < _selectedStandard.providers.number) {
+                    _deliversStandard = true
                     req.session.myData.matchesstandardcount++
+                    _hasAMatchcount++
+                }
+            }
+
+            //LOCATION
+            if(req.session.myData.locationapplied) {
+                _provider.search = false
+
+                var _locationMatch = false
+               
+                if(_deliversStandard){
+
+                    // All national match distance
+                    if(_provider.national){
+                        _locationMatch = true
+                    }
+                    if(_selectedStandard.providers.number <= 4) {
+                        _locationMatch = true
+                    } else if(_selectedStandard.providers.number > 4 && _selectedStandard.providers.number < 7){
+                        if(_providerIndex > _selectedStandard.providers.number - 3){
+                            _locationMatch = true
+                        }
+                    } else if(_selectedStandard.providers.number >= 6){
+                        if(_providerIndex < _selectedStandard.providers.number - 5){
+                            _locationMatch = true
+                        }
+                    }
+                }
+
+                if(_locationMatch){
+                    req.session.myData.matcheslocationcount++
                     _hasAMatchcount++
                 }
             }
@@ -700,7 +761,15 @@ module.exports = function (router,_myData) {
         //     });
         // }
 
-        sortProviders(req, "name")
+        if(req.session.myData.locationapplied){
+            if(req.session.myData.sortby == "name"){
+                sortProviders(req, "name")
+            } else {
+                sortProviders(req, "distance")
+            }
+        } else {
+            sortProviders(req, "name")
+        }
 
         res.render(version + '/providers-all', {
             myData:req.session.myData

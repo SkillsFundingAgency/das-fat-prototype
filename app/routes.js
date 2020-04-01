@@ -41,7 +41,8 @@ var _myData = {
         }
     ],
     "providers": require(__dirname + '/data/providers.json'),
-    "epaos": require(__dirname + '/data/epaos.json')
+    "epaos": require(__dirname + '/data/epaos.json'),
+    "cities": require(__dirname + '/data/cities.json')
 }
 
 // Uncomment to generate standards.json data - it will magically appear in the console
@@ -112,6 +113,14 @@ _myData.epaos.list.forEach(function(_epao, index) {
     var _autoCompleteString = _epao.name
     _epao.autoCompleteString = _autoCompleteString
     _myData.epaoAutocompleteList.push(_autoCompleteString);
+});
+
+// Set cities list
+_myData.citiesAutocompleteList = []
+_myData.cities.list.forEach(function(_city, index) {
+    var _autoCompleteString = _city.city + ", " + _city.country
+    _city.autoCompleteString = _autoCompleteString
+    _myData.citiesAutocompleteList.push(_autoCompleteString);
 });
 
 require('./routes/1-0/routes.js')(router,JSON.parse(JSON.stringify(_myData)));

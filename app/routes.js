@@ -121,6 +121,14 @@ require(__dirname + '/data/cities.json').list.forEach(function(_city, index) {
         _autoCompleteString = _city.city + _suffix
     _myData.citiesAutocompleteList.push(_autoCompleteString);
 });
+_myData.citiesAutocompleteList.sort(function(a,b){
+    if (a.toUpperCase() < b.toUpperCase()){
+        return -1
+    } else if(a.toUpperCase() > b.toUpperCase()){
+        return 1
+    }
+    return 0;
+});
 
 require('./routes/1-0/routes.js')(router,JSON.parse(JSON.stringify(_myData)));
 require('./routes/2-0/routes.js')(router,JSON.parse(JSON.stringify(_myData)));

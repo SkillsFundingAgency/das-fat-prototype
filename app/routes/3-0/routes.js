@@ -421,9 +421,14 @@ module.exports = function (router,_myData) {
                 // City
                 for (var i = 0; i < req.session.myData.citiesAutocompleteList.length; i++) {
                     var _thisCity = req.session.myData.citiesAutocompleteList[i]
-                    if(_locationQ.toUpperCase() == _thisCity.toUpperCase()){
-                        _exactMatch = true
-                    }
+                    // if(!_exactMatch){
+                        if(_locationQ.toUpperCase() == _thisCity.toUpperCase()){
+                            _exactMatch = true
+                        } else if(_thisCity.toUpperCase().startsWith(_locationQ.toUpperCase())){
+                            _locationQ = _thisCity
+                            _exactMatch = true
+                        }
+                    // }
                 }
                 // Postcode
                 var Request = require("request")

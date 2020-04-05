@@ -17,27 +17,33 @@ var _myData = {
     "levels2": [
         {
             "value": "2",
-            "equiv": "GCSE grades 9 to 4"
+            "equiv": "GCSE grades 9 to 4",
+            "equiv2": "GCSE grades 9 to 4"
         }, 
         {
             "value": "3",
-            "equiv": "A level"
+            "equiv": "A level",
+            "equiv2": "A level"
         }, 
         {
             "value": "4",
-            "equiv": "HNC"
+            "equiv": "HNC",
+            "equiv2": "HNC"
         }, 
         {
             "value": "5",
-            "equiv": "HND"
+            "equiv": "HND",
+            "equiv2": "foundation degree"
         }, 
         {
             "value": "6",
-            "equiv": "degree"
+            "equiv": "degree",
+            "equiv2": "degree"
         }, 
         {
             "value": "7",
-            "equiv": "master’s degree"
+            "equiv": "master’s degree",
+            "equiv2": "master’s degree"
         }
     ],
     "providers": require(__dirname + '/data/providers.json'),

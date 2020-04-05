@@ -1,5 +1,6 @@
 
 {% extends "layout.html" %}
+{% set serviceName = "" %}
 
 {% block pageTitle %}
 Find apprenticeship training prototype
@@ -8,10 +9,14 @@ Find apprenticeship training prototype
 {% block content %}
 
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-full">
+  <div class="govuk-grid-column-two-thirds">
     <h1 class="govuk-heading-xl">
       Find apprenticeship training prototype
     </h1>
+  </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
 
     <table class="govuk-table">
       <thead class="govuk-table__head" >
@@ -27,17 +32,18 @@ Find apprenticeship training prototype
             <a href="/3-0/setup" class="govuk-link govuk-link--no-visited-state govuk-!-font-size-27 govuk-!-font-weight-bold">Version 3</a>
           </td>
           <td class="govuk-table__cell" >
-            <strong class="govuk-tag" style="background: #d53880;">
-              In progress
+            <strong class="govuk-tag" style="background: green;">
+              Ready for UR
             </strong>
             <br>
-            [tested on xxx]
+            <!-- tested -->
           </td>
           <td class="govuk-table__cell" >
             <ul class="govuk-list govuk-list--bullet">
               <li>Providers for a standard - location filter ADDED</li>
               <li>Provider - location filter ADDED</li>
               <li>Search results pages - headings UPDATED</li>
+              <li>Training results - levels equivalence UPDATED</li>
               <li>Training - link to ifate UPDATED</li>
             </ul>
           </td>

@@ -55,31 +55,34 @@ module.exports = function (router,_myData) {
     }
     //Sort epaos
     function sortEPAOs(req, _sortBy){
-        req.session.myData.epaos.list.sort(function(a,b){
-
-            var returnValue = 0;
-
-            if (a.name.toUpperCase() < b.name.toUpperCase()){
-                returnValue = -1
-            } else if(a.name.toUpperCase() > b.name.toUpperCase()){
-                returnValue = 1
-            }
-
-            return returnValue
-
-        });
+        if(_sortBy == "distance"){
+            req.session.myData.epaos.list.sort(function(a,b){
+                return a.distance - b.distance
+            });
+        } else {
+            req.session.myData.epaos.list.sort(function(a,b){
+                var returnValue = 0;
+                if (a.name.toUpperCase() < b.name.toUpperCase()){
+                    returnValue = -1
+                } else if(a.name.toUpperCase() > b.name.toUpperCase()){
+                    returnValue = 1
+                }
+                return returnValue
+            });
+        }
     }
+
     // For back links
     function getRefererPage(referer){
         if(referer) {
-          var urlArray = referer.split('/'),
-              pageLoc = urlArray.length-1,
-              refPage = urlArray[pageLoc];
-          return refPage
+            var urlArray = referer.split('/'),
+                pageLoc = urlArray.length-1,
+                refPage = urlArray[pageLoc];
+            return refPage
         } else {
-          return ""
+            return ""
         }
-      }
+    }
 
     function reset(req){
         req.session.myData = JSON.parse(JSON.stringify(_myData))
@@ -810,12 +813,12 @@ module.exports = function (router,_myData) {
 
     });
 
-    // EPAOS
-    router.get('/' + version + '/epaos-all', function (req, res) {
+    // EPAOs
+    router.get('/' + version + '/epaos', function (req, res) {
 
         //Sort
         req.session.myData.sortapplied = false
-        if(req.query.sort == "name"){
+        if(req.query.sort == "name" || req.query.sort == "distance"){
             req.session.myData.sortapplied = true
             req.session.myData.sortby = req.query.sort
         }
@@ -829,6 +832,227 @@ module.exports = function (router,_myData) {
         req.session.myData.displaycount = _epaos.length
         req.session.myData.matchesstandardcount = _standards.length
         req.session.myData.matchessearchcount = _epaos.length
+        req.session.myData.matcheslocationcount = _epaos.length
+
+        // Standard filter reset/setup
+        req.session.myData.standardfilterapplied = false
+        var _selectedStandardID = req.query.standard || req.session.myData.standard
+        for (var i = 0; i < _standards.length; i++) {
+            var _thisStandard = _standards[i]
+            if(_selectedStandardID == _thisStandard.larsCode){
+                req.session.myData.standard = _selectedStandardID
+                req.session.myData.standardfilterapplied = true
+                req.session.myData.matchesstandardcount = 0
+                req.session.myData.displaycount = 0
+                _selectedStandard = _thisStandard
+                // req.session.myData.searchfilters.push(_selectedStandard.autoCompleteString)
+                _needToMatchCount++
+                break
+            }
+        }
+
+        //Search reset/setup
+        req.session.myData.searchapplied = false
+        req.session.myData.searchTerm = ""
+        var _searchQ = req.query.q
+        if(_searchQ || _searchQ == ""){
+            _searchQ = _searchQ.trim()
+            if(_searchQ != ""){
+                req.session.myData.searchTerm = _searchQ
+                req.session.myData.searchapplied = true
+                req.session.myData.matchessearchcount = 0
+                req.session.myData.displaycount = 0
+                req.session.myData.searchfilters.push({"value": "‘" + _searchQ + "’", "type": "name", "typeText": "Assessment organisation name"})
+                _needToMatchCount++
+            }
+        }
+
+        //Location reset/setup
+        req.session.myData.locationapplied = false
+        req.session.myData.location = ""
+        var _locationQ = req.query.location
+        if(_locationQ || _locationQ == ""){
+            _locationQ = _locationQ.trim()
+            if(_locationQ != ""){
+
+                var _exactMatch = false
+                // City
+                for (var i = 0; i < req.session.myData.citiesAutocompleteList.length; i++) {
+                    var _thisCity = req.session.myData.citiesAutocompleteList[i]
+                    // if(!_exactMatch){
+                        if(_locationQ.toUpperCase() == _thisCity.toUpperCase()){
+                            _exactMatch = true
+                        } else if(_thisCity.toUpperCase().startsWith(_locationQ.toUpperCase())){
+                            _locationQ = _thisCity
+                            _exactMatch = true
+                        }
+                    // }
+                }
+                // Postcode
+                var Request = require("request")
+                Request.get('https://api.postcodes.io/postcodes/' + _locationQ + '/autocomplete', (error, response, body) => {
+
+                    if(JSON.parse(body).result && _locationQ.length > 1){
+                        _exactMatch = true
+                    }
+
+                    if(_exactMatch) {
+                        req.session.myData.location = _locationQ
+                        req.session.myData.locationapplied = true
+                        req.session.myData.matcheslocationcount = 0
+                        req.session.myData.displaycount = 0
+                        req.session.myData.searchfilters.push({"value": _locationQ, "type": "location", "typeText": "Location"})
+                        _needToMatchCount++
+                    }
+                    continueRendering()
+                });
+            } else {
+                continueRendering()
+            }
+        } else {
+            continueRendering()
+        }
+
+        function continueRendering(){
+            _epaos.forEach(function(_epao, index) {
+                
+                var _hasAMatchcount = 0,
+                    _deliversStandard = false,
+                    _epaoIndex = 0
+
+                // Reset each epao
+                _epao.search = true
+
+                //STANDARD
+                if(req.session.myData.standardfilterapplied) {
+                    _epao.search = false
+                    _selectedStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
+                        if(_epaoOnStandard.toUpperCase() == _epao.name.toUpperCase()){
+                            _epaoIndex = index
+                            _deliversStandard = true
+                            req.session.myData.matchesstandardcount++
+                            _hasAMatchcount++
+                        }
+                    });
+                }
+
+                //LOCATION
+                if(req.session.myData.locationapplied) {
+                    _epao.search = false
+
+                    var _locationMatch = false
+                
+                    if(_deliversStandard){
+                        if(_selectedStandard.epaos.number <= 7) {
+                            _locationMatch = true
+                        } else if(_selectedStandard.epaos.number > 7 && _selectedStandard.epaos.number < 12){
+                            if(_epaoIndex > _selectedStandard.epaos.number - 3){
+                                _locationMatch = true
+                            }
+                        } else if(_selectedStandard.epaos.number >= 12){
+                            if(_epaoIndex < _selectedStandard.epaos.number - 5){
+                                _locationMatch = true
+                            }
+                        }
+                    }
+
+                    if(_locationMatch){
+                        req.session.myData.matcheslocationcount++
+                        _hasAMatchcount++
+                    }
+                }
+
+                //SEARCH TERM
+                if(req.session.myData.searchapplied) {
+                    _epao.search = false
+                    _epao.searchrelevance = 0
+                    var _epaosearch = false,
+                        _searchesToDo = [
+                            {"searchOn": _epao.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
+                        ]
+                    for (var i = 0; i < _searchesToDo.length; i++) {
+                        var _thisItem = _searchesToDo[i]
+                        if(Array.isArray(_thisItem.searchOn)){
+                            _thisItem.searchOn.forEach(function(_arrayPart, index) {
+                                doSearches(_arrayPart)
+                            });
+                        } else {
+                            doSearches(_thisItem.searchOn)
+                        }
+                        function doSearches(_itemToSearch){
+                            //Exact check
+                            if(_thisItem.exactrelevance && _itemToSearch.toUpperCase() == _searchQ.toUpperCase()){
+                                _epao.searchrelevance = _epao.searchrelevance + _thisItem.exactrelevance
+                                _epaosearch = true
+                                if(_thisItem.ifmatch == "exit"){
+                                    return
+                                }
+                            }
+                            // Within check
+                            if(_thisItem.withinrelevance && _itemToSearch.toUpperCase().indexOf(_searchQ.toUpperCase()) != -1){
+                                _epao.searchrelevance = _epao.searchrelevance + _thisItem.withinrelevance
+                                _epaosearch = true
+                                if(_thisItem.ifmatch == "exit"){
+                                    return 
+                                }
+                            }
+                        }
+                        if(_epaosearch == true && _thisItem.ifmatch == "exit") {
+                            break
+                        }
+                    }
+                    if(_epaosearch && _epao.searchrelevance > 1){
+                        req.session.myData.matchessearchcount++
+                        _hasAMatchcount++
+                    }
+                }
+
+                //MATCHES ALL IT NEEDS TO?
+                if(_needToMatchCount > 0 && _needToMatchCount == _hasAMatchcount){
+                    _epao.search = true
+                    req.session.myData.displaycount++
+                }
+
+            });
+
+            if(req.session.myData.locationapplied){
+                if(req.session.myData.sortby == "name"){
+                    sortEPAOs(req, "name")
+                } else {
+                    sortEPAOs(req, "distance")
+                }
+            } else {
+                sortEPAOs(req, "name")
+            }
+
+            res.render(version + '/epaos', {
+                myData:req.session.myData
+            });
+
+        }
+
+    });
+
+    // EPAOS
+    router.get('/' + version + '/epaos-all', function (req, res) {
+
+        //Sort
+        req.session.myData.sortapplied = false
+        if(req.query.sort == "name" || req.query.sort == "distance"){
+            req.session.myData.sortapplied = true
+            req.session.myData.sortby = req.query.sort
+        }
+
+        var _needToMatchCount = 0,
+            _selectedStandard = {},
+            _epaos = req.session.myData.epaos.list,
+            _standards = req.session.myData.standards.list
+
+        req.session.myData.searchfilters = []
+        req.session.myData.displaycount = _epaos.length
+        req.session.myData.matchesstandardcount = _standards.length
+        req.session.myData.matchessearchcount = _epaos.length
+        req.session.myData.matcheslocationcount = _epaos.length
 
         // Standard filter reset/setup
         req.session.myData.standardsearchapplied = false
@@ -863,85 +1087,174 @@ module.exports = function (router,_myData) {
                 req.session.myData.searchapplied = true
                 req.session.myData.matchessearchcount = 0
                 req.session.myData.displaycount = 0
-                req.session.myData.searchfilters.push({"value": "‘" + _searchQ + "’", "type": "name", "typeText": "End-point assessment organisation name"})
+                req.session.myData.searchfilters.push({"value": "‘" + _searchQ + "’", "type": "name", "typeText": "Assessment organisation name"})
                 _needToMatchCount++
             }
         }
 
-        _epaos.forEach(function(_epao, index) {
+        //Location reset/setup
+        req.session.myData.locationapplied = false
+        req.session.myData.location = ""
+        var _locationQ = req.query.location
+        if(_locationQ || _locationQ == ""){
+            _locationQ = _locationQ.trim()
+            if(_locationQ != ""){
 
-            var _hasAMatchcount = 0
-
-            // Reset each epao
-            _epao.search = true
-
-            //STANDARD SEARCH TERM
-            if(req.session.myData.standardsearchapplied) {
-                _epao.search = false
-                if(index < _selectedStandard.epaos.number) {
-                    req.session.myData.matchesstandardcount++
-                    _hasAMatchcount++
-                }
-            }
-
-            //SEARCH TERM
-            if(req.session.myData.searchapplied) {
-                _epao.search = false
-                _epao.searchrelevance = 0
-                var _epaosearch = false,
-                    _searchesToDo = [
-                        {"searchOn": _epao.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
-                    ]
-                for (var i = 0; i < _searchesToDo.length; i++) {
-                    var _thisItem = _searchesToDo[i]
-                    if(Array.isArray(_thisItem.searchOn)){
-                        _thisItem.searchOn.forEach(function(_arrayPart, index) {
-                            doSearches(_arrayPart)
-                        });
-                    } else {
-                        doSearches(_thisItem.searchOn)
-                    }
-                    function doSearches(_itemToSearch){
-                        //Exact check
-                        if(_thisItem.exactrelevance && _itemToSearch.toUpperCase() == _searchQ.toUpperCase()){
-                            _epao.searchrelevance = _epao.searchrelevance + _thisItem.exactrelevance
-                            _epaosearch = true
-                            if(_thisItem.ifmatch == "exit"){
-                                return
-                            }
+                var _exactMatch = false
+                // City
+                for (var i = 0; i < req.session.myData.citiesAutocompleteList.length; i++) {
+                    var _thisCity = req.session.myData.citiesAutocompleteList[i]
+                    // if(!_exactMatch){
+                        if(_locationQ.toUpperCase() == _thisCity.toUpperCase()){
+                            _exactMatch = true
+                        } else if(_thisCity.toUpperCase().startsWith(_locationQ.toUpperCase())){
+                            _locationQ = _thisCity
+                            _exactMatch = true
                         }
-                        // Within check
-                        if(_thisItem.withinrelevance && _itemToSearch.toUpperCase().indexOf(_searchQ.toUpperCase()) != -1){
-                            _epao.searchrelevance = _epao.searchrelevance + _thisItem.withinrelevance
-                            _epaosearch = true
-                            if(_thisItem.ifmatch == "exit"){
-                                return 
-                            }
-                        }
-                    }
-                    if(_epaosearch == true && _thisItem.ifmatch == "exit") {
-                        break
-                    }
+                    // }
                 }
-                if(_epaosearch && _epao.searchrelevance > 1){
-                    req.session.myData.matchessearchcount++
-                    _hasAMatchcount++
-                }
-            }
+                // Postcode
+                var Request = require("request")
+                Request.get('https://api.postcodes.io/postcodes/' + _locationQ + '/autocomplete', (error, response, body) => {
 
-            //MATCHES ALL IT NEEDS TO?
-            if(_needToMatchCount > 0 && _needToMatchCount == _hasAMatchcount){
+                    if(JSON.parse(body).result && _locationQ.length > 1){
+                        _exactMatch = true
+                    }
+
+                    if(_exactMatch) {
+                        req.session.myData.location = _locationQ
+                        req.session.myData.locationapplied = true
+                        req.session.myData.matcheslocationcount = 0
+                        req.session.myData.displaycount = 0
+                        req.session.myData.searchfilters.push({"value": _locationQ, "type": "location", "typeText": "Location"})
+                        _needToMatchCount++
+                    }
+                    continueRendering()
+                });
+            } else {
+                continueRendering()
+            }
+        } else {
+            continueRendering()
+        }
+        function continueRendering(){
+            _epaos.forEach(function(_epao, index) {
+
+                var _hasAMatchcount = 0,
+                    _deliversStandard = false,
+                    _epaoIndex = 0
+
+                // Reset each epao
                 _epao.search = true
-                req.session.myData.displaycount++
+
+                //STANDARD SEARCH TERM
+                if(req.session.myData.standardsearchapplied) {
+                    _epao.search = false
+                    _selectedStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
+                        if(_epaoOnStandard.toUpperCase() == _epao.name.toUpperCase()){
+                            _epaoIndex = index
+                            _deliversStandard = true
+                            req.session.myData.matchesstandardcount++
+                            _hasAMatchcount++
+                        }
+                    });
+                }
+
+                //LOCATION
+                if(req.session.myData.locationapplied) {
+                    _epao.search = false
+
+                    var _locationMatch = false
+                
+                    if(_deliversStandard){
+                        // _locationMatch = true
+                        if(_selectedStandard.epaos.number <= 7) {
+                            _locationMatch = true
+                        } else if(_selectedStandard.epaos.number > 7 && _selectedStandard.epaos.number < 12){
+                            if(_epaoIndex > _selectedStandard.epaos.number - 3){
+                                _locationMatch = true
+                            }
+                        } else if(_selectedStandard.epaos.number >= 12){
+                            if(_epaoIndex < _selectedStandard.epaos.number - 5){
+                                _locationMatch = true
+                            }
+                        }
+                    }
+
+                    if(_locationMatch){
+                        req.session.myData.matcheslocationcount++
+                        _hasAMatchcount++
+                    }
+                }
+
+                //SEARCH TERM
+                if(req.session.myData.searchapplied) {
+                    _epao.search = false
+                    _epao.searchrelevance = 0
+                    var _epaosearch = false,
+                        _searchesToDo = [
+                            {"searchOn": _epao.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
+                        ]
+                    for (var i = 0; i < _searchesToDo.length; i++) {
+                        var _thisItem = _searchesToDo[i]
+                        if(Array.isArray(_thisItem.searchOn)){
+                            _thisItem.searchOn.forEach(function(_arrayPart, index) {
+                                doSearches(_arrayPart)
+                            });
+                        } else {
+                            doSearches(_thisItem.searchOn)
+                        }
+                        function doSearches(_itemToSearch){
+                            //Exact check
+                            if(_thisItem.exactrelevance && _itemToSearch.toUpperCase() == _searchQ.toUpperCase()){
+                                _epao.searchrelevance = _epao.searchrelevance + _thisItem.exactrelevance
+                                _epaosearch = true
+                                if(_thisItem.ifmatch == "exit"){
+                                    return
+                                }
+                            }
+                            // Within check
+                            if(_thisItem.withinrelevance && _itemToSearch.toUpperCase().indexOf(_searchQ.toUpperCase()) != -1){
+                                _epao.searchrelevance = _epao.searchrelevance + _thisItem.withinrelevance
+                                _epaosearch = true
+                                if(_thisItem.ifmatch == "exit"){
+                                    return 
+                                }
+                            }
+                        }
+                        if(_epaosearch == true && _thisItem.ifmatch == "exit") {
+                            break
+                        }
+                    }
+                    if(_epaosearch && _epao.searchrelevance > 1){
+                        req.session.myData.matchessearchcount++
+                        _hasAMatchcount++
+                    }
+                }
+
+                //MATCHES ALL IT NEEDS TO?
+                if(_needToMatchCount > 0 && _needToMatchCount == _hasAMatchcount){
+                    _epao.search = true
+                    req.session.myData.displaycount++
+                }
+
+            });
+
+            if(req.session.myData.locationapplied){
+                if(req.session.myData.sortby == "name"){
+                    sortEPAOs(req, "name")
+                } else {
+                    sortEPAOs(req, "distance")
+                }
+            } else {
+                sortEPAOs(req, "name")
             }
 
-        });
+            res.render(version + '/epaos-all', {
+                myData:req.session.myData
+            });
 
-        sortEPAOs(req, "name")
-
-        res.render(version + '/epaos-all', {
-            myData:req.session.myData
-        });
+        }
 
     });
 

@@ -1,24 +1,25 @@
 {% extends "layout.html" %}
 {% set serviceName = "Find apprenticeship training" %}
 
-<!-- EPAO search -->
+{% set _selectedStandard = {} %}
+{% for _standard in myData.standards.list %}
+    {% if myData.standard == _standard.larsCode %}
+        {% set _selectedStandard = _standard %}
+    {% endif %}
+{% endfor %}
+
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
 {% set _epaoAutocompleteList = myData.epaoAutocompleteList %} 
 {% set _epaos = myData.epaos.list %}
+
 {% set _defaultSearchvalue = "" %}
 {% if myData.searchapplied == true %}
     {% set _defaultSearchvalue = myData.searchTerm %}
 {% endif %}
 
-<!-- Training search -->
-{% set _standardAutocompleteList = myData.standardAutocompleteList %} 
-{% set _standards = myData.standards.list %} 
-{% set _defaultStandardSearchvalue = "" %}
-{% if myData.standardsearchapplied == true %}
-    {% set _defaultStandardSearchvalue = myData.standardSearchTerm %}
-{% endif %}
-
-<!-- Location filter -->
 {% set _citiesAutocompleteList = myData.citiesAutocompleteList %}
+
 {% set _defaultLocationSearchvalue = "" %}
 {% if myData.locationapplied == true %}
     {% set _defaultLocationSearchvalue = myData.location %}
@@ -38,8 +39,8 @@
 {% if myData.sortapplied == true %}
     {% set _sortQuery = "&sort=" + myData.sortby %}
 {% endif %}
-{% if myData.standardsearchapplied == true %}
-    {% set _standardQuery = "&standard=" + myData.standardSearchTerm %}
+{% if myData.standardfilterapplied == true %}
+    {% set _standardQuery = "&standard=" + myData.standard %}
 {% endif %}
 
 {% block beforeContent %}
@@ -51,7 +52,6 @@
 
 <style>
     #search-epaos,
-    #search-training,
     #search-location {
         height: 40px;
         border-right: 0;
@@ -64,9 +64,12 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-xl" >
-            Assessment organisations
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-4" >
+            <span class="govuk-caption-xl">Assessment organisations for</span>
+            {{_standardTitle|safe}}
         </h1>
+
+        <p class="govuk-body govuk-!-margin-bottom-8"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{myData.standard}}">Overview of {{_standardTitle|safe}}</a></p>
 
     </div>
 </div>
@@ -88,25 +91,23 @@
 
             <div class="fat-filter__content">
 
-                {% if myData.searchapplied == true or myData.standardsearchapplied or myData.locationapplied %}
+                {% if myData.searchapplied == true or myData.locationapplied %}
                 <div class="fat-filter__selected">
                     <div class="fat-filter__selected-heading">
                         <div class="fat-filter__heading-title">
                             <h2 class="govuk-heading-m">Selected filters</h2>
                         </div>
                         <div class="fat-filter__heading-action">
-                            <p><a class="govuk-link govuk-link--no-visited-state" href="epaos-all?{{_sortQuery}}">Clear</a></p>
+                            <p><a class="govuk-link govuk-link--no-visited-state" href="epaos?{{_sortQuery}}{{_standardQuery}}">Clear</a></p>
                         </div>
                     </div>
 
           
                     <!-- For each filter type -->
                     {% for _filter in myData.searchfilters %}
-                        {% set _url = "epaos-all?" + _sortQuery + _standardQuery %}
-                        {% if _filter.type == "standard" %}
-                            {% set _url = "epaos-all?" + _sortQuery + _searchQuery %}
-                        {% elif _filter.type == "location" %}
-                            {% set _url = "epaos-all?" + _sortQuery + _searchQuery + _standardQuery %}
+                        {% set _url = "epaos?" + _sortQuery + _locationQuery + _standardQuery %}
+                        {% if _filter.type == "location" %}
+                            {% set _url = "epaos?" + _sortQuery + _searchQuery + _standardQuery %}
                         {% endif %}
 
                     <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText}}</h3>
@@ -121,9 +122,9 @@
                 <div class="fat-filter__options">
 
                     <!-- Search box -->
-                    <form action="epaos-all" method="GET" >
+                    <form action="epaos" method="GET" >
                         <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
-                            <legend style="display:none">[Search for an epao]</legend>
+                            <legend style="display:none">[Search for an assessment organisation]</legend>
                             <label for="search-epaos" class="govuk-label" >
                                 <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Assessment organisation name</span>
                             </label>
@@ -134,31 +135,12 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" value="{{myData.standardSearchTerm}}" name="standard" >
-                        <input type="hidden" value="{{myData.location}}" name="location" >
-                    </form>
-
-                    <!-- Course -->
-                    <form action="epaos-all" method="GET" >
-                        <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
-                            <legend style="display:none">[Search for a course]</legend>
-                            <label for="search-training" class="govuk-label" >
-                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Course name</span>
-                            </label>
-                            <div class="search-input-wrapper">
-                                <input type="search" value="{% if myData.standardsearchapplied == true %}{{myData.standardSearchTerm}}{% endif %}" id="search-training" name="standard" title="Search" class="govuk-input">
-                                <div class="search-input-submit-wrapper">
-                                    <button type="submit" class="search-submit" id="search-training-submit">Search for a course</button>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" value="{{myData.searchTerm}}" name="q" >
+                        <input type="hidden" value="{{myData.standard}}" name="standard" >
                         <input type="hidden" value="{{myData.location}}" name="location" >
                     </form>
 
                     <!-- Location -->
-                    {% if myData.standardsearchapplied == true %}
-                    <form action="epaos-all" method="GET" >
+                    <form action="epaos" method="GET" >
                         <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
                             <legend style="display:none">[Enter your location]</legend>
                             <label for="search-location" class="govuk-label" >
@@ -171,10 +153,9 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" value="{{myData.standardSearchTerm}}" name="standard" >
+                        <input type="hidden" value="{{myData.standard}}" name="standard" >
                         <input type="hidden" value="{{myData.searchTerm}}" name="q" >
                     </form>
-                    {% endif %}
 
 
                 </div>
@@ -185,18 +166,18 @@
 
     </div>
     <div class="govuk-grid-column-two-thirds">
-
+       
         <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
 
         <!-- Sort -->
         {% if myData.locationapplied == true and myData.displaycount > 1 %}
         <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
             {% if myData.sortby == "name" %}
-            <a class="govuk-link govuk-link--no-visited-state" href="epaos-all?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}&sort=distance">Distance (nearest first)</a>, 
+            <a class="govuk-link govuk-link--no-visited-state" href="epaos?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}&sort=distance">Distance (nearest first)</a>, 
             <span class="govuk-!-font-weight-bold">Name</span>
             {% else %}
             <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>, 
-            <a class="govuk-link govuk-link--no-visited-state" href="epaos-all?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}&sort=name">Name</a>
+            <a class="govuk-link govuk-link--no-visited-state" href="epaos?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}&sort=name">Name</a>
             {% endif %}
         </p>
         {% elif myData.displaycount > 1 %}
@@ -209,10 +190,11 @@
         <!-- 
             epaos list OR No results
         -->
+
         {% if myData.displaycount > 0 %}
 
         <!-- epaos -->
-        {% for _epao in myData.epaos.list %}
+        {% for _epao in _epaos %}
             {% if _epao.search == true %}
             <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
@@ -301,7 +283,7 @@
             name: epaoInput.name,
             source: suggestEPAOs,
             defaultValue: defaultSearchvalue,
-            minLength: 2,
+            minLength: 3,
             confirmOnBlur: false,
             autoselect: true,
             onConfirm: fireEPAOsSearch,
@@ -311,6 +293,7 @@
         epaoInput.id = epaoInputID + '-old'
         epaoInput.name = ''
     }
+
 
     // Locations 
     function suggestLocations(query, populateResults) {
@@ -364,76 +347,6 @@
         locationInput.name = ''
     }
 
-
-    //AUTOCOMPLETE TRAINING
-    // function suggestTraining(query, populateResults) {
-    //     var results = {{_standardAutocompleteList | dump | safe }},
-    //         standards = {{_standards | dump | safe }},
-    //         filteredResults = []
-    //     standards.forEach(function(_standard, index) {
-    //         var _searchesToDo = [
-    //                 {"searchOn": _standard.autoCompleteString,"within": true,"exact": true},
-    //                 {"searchOn": _standard.jobRoles,"within": true,"exact": true}
-    //             ],
-    //             _standardMatched = false
-    //         for (var i = 0; i < _searchesToDo.length; i++) {
-    //             var _thisItem = _searchesToDo[i]
-    //             if(Array.isArray(_thisItem.searchOn)){
-    //                 _thisItem.searchOn.forEach(function(_arrayPart, index) {
-    //                     doSearches(_arrayPart)
-    //                 });
-    //             } else {
-    //                 doSearches(_thisItem.searchOn)
-    //             }
-    //             function doSearches(_itemToSearch){
-    //                 //Exact check
-    //                 if(_thisItem.exact & _itemToSearch.toUpperCase() == query.trim().toUpperCase()){
-    //                     _standardMatched = true
-    //                 }
-    //                 // Within check
-    //                 if(_thisItem.within & _itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
-    //                     _standardMatched = true
-    //                 }
-    //             }
-    //         }
-    //         (_standardMatched) && (filteredResults.push(_standard.autoCompleteString))
-    //     })
-    //     populateResults(filteredResults)
-    // }
-    // Normal
-    function suggestTraining(query, populateResults) {
-        var results = {{_standardAutocompleteList | dump | safe }},
-            filteredResults = results.filter(
-            result => result.toUpperCase().indexOf(query.trim().toUpperCase()) !== -1
-        )
-        populateResults(filteredResults)
-    }
-    function fireTrainingSearch(){setTimeout(function(){ $("#search-training-submit").trigger("click") },200);}
-    var trainingInput = document.querySelector('#search-training')
-    if (trainingInput) {
-        var trainingInputID = trainingInput.id,
-            trainingElement = document.createElement('div'),
-            defaultStandardSearchvalue = {{_defaultStandardSearchvalue | dump | safe }}
-        trainingElement.className = "autocomplete__parent_wrapper";
-        trainingInput.parentNode.insertBefore(trainingElement, trainingInput)
-        accessibleAutocomplete({
-            // other options
-            element: trainingElement,
-            id: trainingInputID,
-            name: trainingInput.name,
-            source: suggestTraining,
-            defaultValue: defaultStandardSearchvalue,
-            minLength: 2,
-            confirmOnBlur: false,
-            autoselect: true,
-            onConfirm: fireTrainingSearch,
-            displayMenu: 'overlay'
-            // showAllValues: true
-        })
-        trainingInput.style.display = 'none'
-        trainingInput.id = trainingInputID + '-old'
-        trainingInput.name = ''
-    }
 </script>
 
 {% endblock pageScripts %}

@@ -86,10 +86,36 @@ _myData.standards.list.forEach(function(_standard, index) {
     //     console.log(_standard.larsCode + " - " + _standard.coreSkillsCount + " - " + _standard.title + " (level " + _standard.level + ")")
     // }
 
+    //Set EPAOs on each standard
+    var _epaosOnStandards = require(__dirname + '/data/epaos-on-standards.json')
+    for (var _epaoLarsCode in _epaosOnStandards) {
+        if(_standard.larsCode == _epaoLarsCode){
+            var _epaos = _epaosOnStandards[_epaoLarsCode],
+                _epaoObj = {
+                    "number":_epaos.length,
+                    "inprinciple": false,
+                    "list": _epaos
+                }
+            if(_epaos == "EPAO in principle - application pending"){
+                _epaoObj = {
+                    "number":0,
+                    "inprinciple": true,
+                    "list": []
+                }
+            }
+            _standard["epaos"] = _epaoObj
+        }
+    }
+
+    // Set autocomplete string
     var _autoCompleteString = _standard.title + " (level " + _standard.level + ")"
     _standard.autoCompleteString = _autoCompleteString
     _myData.standardAutocompleteList.push(_autoCompleteString);
+
+    // Set maxFunding formatted value
     _standard.maxFundingFormatted = _standard.maxFunding.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+
+    // Set route and ssa counts
     _routeCounts[_standard.route.toLowerCase()] = (_routeCounts[_standard.route.toLowerCase()] || 0) + 1
     _ssaCounts[_standard.ssa1.toLowerCase()] = (_ssaCounts[_standard.ssa1.toLowerCase()] || 0) + 1
     _ssaCounts[_standard.ssa2.toLowerCase()] = (_ssaCounts[_standard.ssa2.toLowerCase()] || 0) + 1
@@ -119,6 +145,8 @@ _myData.epaos.list.forEach(function(_epao, index) {
     _epao.autoCompleteString = _autoCompleteString
     _myData.epaoAutocompleteList.push(_autoCompleteString);
 });
+
+// Set epaos
 
 // Set cities list
 _myData.citiesAutocompleteList = []

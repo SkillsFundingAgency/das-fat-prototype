@@ -101,39 +101,69 @@
         </details>
         {% endif %}
 
-        <p class="govuk-body govuk-!-margin-bottom-6">
+        <p class="govuk-body govuk-!-margin-bottom-8">
             Full information on <a class="govuk-link govuk-link--no-visited-state" href="{{_selectedStandard.standardPageUrl}}" target="_blank" >{{_standardTitle | safe}}</a> is available from the Institute for Apprenticeships and Technical Education.
         </p>
 
+        <!-- <hr class="govuk-section-break govuk-section-break--visible"> -->
+
+        <!-- <p class="govuk-body govuk-!-margin-bottom-6" style="border-top:3px solid #dee0e2; padding-top:30px"><a href="#" class="govuk-link govuk-link--no-visited-state">Add location</a> for precise availability</p> -->
+
+        <!-- <p class="govuk-body govuk-!-margin-bottom-6" style="border-top:3px solid #dee0e2; padding-top:30px">Showing availability for <span class="govuk-!-font-weight-bold">B1 Birmingham</span> <a href="#" class="govuk-link govuk-link--no-visited-state">Clear location</a></p> -->
+
+    </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+        
+        <!-- Providers -->
         <h2 class="govuk-heading-l" >
-            Training providers
+            Training <br>providers
         </h2>
+        
+        
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">{{_selectedStandard.providers.number}} </h1>
+        <p class="govuk-body">Available</p>
+
+        <!-- <p class="govuk-body">Available for ‘B1 Birmingham’</p>
+        <p class="govuk-body"><a href="#" class="govuk-link govuk-link--no-visited-state">Clear location</a></p> -->
+
+        {% if _selectedStandard.providers.number != 0 %}
+        <p class="govuk-body govuk-!-font-weight-bold"><a href="providers?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View training providers</a></p>
+        {% endif %}
 
     </div>
     <div class="govuk-grid-column-one-third">
-       &nbsp;
-    </div>
-</div>
 
-<div class="govuk-grid-row das-flex">
-    <div class="govuk-grid-column-one-third das-highlight-box govuk-!-margin-bottom-4">
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">{{_selectedStandard.providers.number}}</h1>
-        <p class="govuk-body govuk-!-margin-bottom-0">Available</p>
-    </div>
-</div>
+        <!-- EPAOs -->
+        <h2 class="govuk-heading-l" >
+            Assessment organisations
+        </h2>
+        <!-- <p class="govuk-body"><a href="#" class="govuk-link govuk-link--no-visited-state">Add location</a> for precise availability</p> -->
+        
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">{{_selectedStandard.epaos.number}}</h1>
+        <p class="govuk-body">Available</p>
 
-{% if _selectedStandard.providers.number != 0 %}
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <p class="govuk-body"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state">View training providers</a></p>
+        <!-- <p class="govuk-body">Available for ‘B1 Birmingham’</p>
+        <p class="govuk-body"><a href="#" class="govuk-link govuk-link--no-visited-state">Clear location</a></p> -->
+
+
+        {% if _selectedStandard.epaos.number != 0 %}
+        <p class="govuk-body govuk-!-font-weight-bold"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View assessment organisations</a></p>
+        {% endif %}
+
     </div>
+
+    <div class="govuk-grid-column-one-third">
+        &nbsp;
+     </div>
+
 </div>
-{% endif %}
 
 <!-- <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h2 class="govuk-heading-l" >
-            End-point assessment organisations
+            Assessment organisations
         </h2>
     </div>
 </div>

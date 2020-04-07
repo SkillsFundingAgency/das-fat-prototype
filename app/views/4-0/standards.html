@@ -132,6 +132,7 @@
         <span class="govuk-details__summary-text">
           Regulated
       </summary>
+      <div class="govuk-details__text">
         <h2 class="govuk-heading-l" >Regulated standards - example data</h2>
         <table class="govuk-table">
             <thead class="govuk-table__head" >
@@ -165,7 +166,38 @@
         </table>
       </div>
     </details>
-          
+
+    <details class="govuk-details" data-module="govuk-details" >
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          Last date for new starters
+        </summary>
+        <div class="govuk-details__text">
+          <h2 class="govuk-heading-l" >Last date for new starts</h2>
+          <table class="govuk-table">
+              <thead class="govuk-table__head" >
+                <tr class="govuk-table__row">
+                  <th scope="col" class="govuk-table__header">course</th>
+                  <th scope="col" class="govuk-table__header">lastDateStarts</th>
+                </tr>
+              </thead>
+              <tbody class="govuk-table__body">
+              {% for _standard in myData.standards.list %}
+                {% if _standard.lastDateStarts %}
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">
+                    {{_standard.larsCode}} - {{_standard.autoCompleteString}}
+                  </td>
+                  <td class="govuk-table__cell" >
+                    {{_standard.lastDateStarts}}
+                  </td>
+                </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </details>
 
     <!-- <p class="govuk-body" >{{myData.standards.list|dump|safe}}</p> -->
 

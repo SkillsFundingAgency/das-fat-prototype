@@ -85,21 +85,30 @@
                 </dd>
             </div>
             {% endif %}
-        </dl>
-
-        {% if _selectedStandard.coreSkillsCount > 0 %}
-        <!-- Skills -->
-        <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                Skills an apprentice will learn
-                </span>
-            </summary>
-            <div class="govuk-details__text">
-                <ul class="govuk-list govuk-list--bullet ">{% for _skill in _selectedStandard.skills %}{% if _skill.isThisACoreSkill == true %}<li>{{_skill.detail}}</span></li>{% endif %}{% endfor %}</ul>
+            {% if _selectedStandard.coreSkillsCount > 0 %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Skills</dt>
+                <dd class="govuk-summary-list__value">
+                    <details class="govuk-details" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                            Skills an apprentice will learn
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            <ul class="govuk-list govuk-list--bullet">
+                                {% for _skill in _selectedStandard.skills %}
+                                    {% if _skill.isThisACoreSkill == true %}
+                                        <li>{{_skill.detail}}</span></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </details>
+                </dd>
             </div>
-        </details>
-        {% endif %}
+            {% endif %}
+        </dl>
 
         <p class="govuk-body govuk-!-margin-bottom-8">
             Full information on <a class="govuk-link govuk-link--no-visited-state" href="{{_selectedStandard.standardPageUrl}}" target="_blank" >{{_standardTitle | safe}}</a> is available from the Institute for Apprenticeships and Technical Education.

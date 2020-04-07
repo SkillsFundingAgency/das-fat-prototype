@@ -40,7 +40,12 @@ module.exports = function (router,_myData) {
                     "qualifications": _apiData.qualifications,
                     "professionalRecognition": _apiData.professionalRecognition,
                     "standardPageUrl": _apiData.standardPageUrl,
-                    "coreSkillsCount": 0
+                    "coreSkillsCount": 0,
+
+                    "regulated": _apiData.regulated,
+                    "regulatedBody": _apiData.regulatedBody,
+                    "regulationDetail": _apiData.regulationDetail
+                    
                 }
 
             //STRIP OUT P TAG and APOSTROPHE HTML FROM OVERVIEW

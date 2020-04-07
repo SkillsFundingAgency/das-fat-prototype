@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<div class="govuk-grid-row">
+<!-- <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-half">
 
     <h2 class="govuk-heading-l">Routes</h2>
@@ -69,16 +69,10 @@
       </tbody>
     </table>
   </div>
-</div>
+</div> -->
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full">
-      <h2 class="govuk-heading-l">{{myData.standards.list|length}} standards</h2>
-      <!-- <ul class="govuk-list govuk-list--bullet">
-        {% for _standard in myData.standards.list %}
-        <li>{{_standard.code}} - {{_standard.name}}</li>
-        {% endfor %}
-      </ul>   -->
-
+      <!-- <h2 class="govuk-heading-l">{{myData.standards.list|length}} standards</h2>
       <table class="govuk-table">
         <thead class="govuk-table__head" >
           <tr class="govuk-table__row">
@@ -108,6 +102,46 @@
               {{_standard.ssa1}}<br><br>{{_standard.ssa2}}
             </td>
           </tr>
+        {% endfor %}
+      </tbody>
+    </table> -->
+
+    <hr>
+
+    <h2 class="govuk-heading-l">Regulated data</h2>
+      <!-- <ul class="govuk-list govuk-list--bullet">
+        {% for _standard in myData.standards.list %}
+        <li>{{_standard.code}} - {{_standard.name}}</li>
+        {% endfor %}
+      </ul>   -->
+
+      <table class="govuk-table">
+        <thead class="govuk-table__head" >
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">course</th>
+            <th scope="col" class="govuk-table__header">regulated</th>
+            <th scope="col" class="govuk-table__header">regulatedBody</th>
+            <th scope="col" class="govuk-table__header">regulationDetail</th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+        {% for _standard in myData.standards.list %}
+        {% if _standard.regulated != false %}
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+              {{_standard.larsCode}} - {{_standard.autoCompleteString}}<br><br>{{_standard.integratedDegree}}
+            </td>
+            <td class="govuk-table__cell" {% if _standard.regulated == true %}style="background-colour: pink"{% elif _standard.regulated == false %}{% else %}style="background-colour: red"{% endif %} >
+              {{_standard.regulated}}
+            </td>
+            <td class="govuk-table__cell" >
+              {{_standard.regulatedBody}}
+            </td>
+            <td class="govuk-table__cell" >
+              {{_standard.regulationDetail|dump|safe}}
+            </td>
+          </tr>
+          {% endif %}
         {% endfor %}
       </tbody>
     </table>

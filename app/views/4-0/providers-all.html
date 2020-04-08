@@ -42,6 +42,9 @@
     {% set _standardQuery = "&standard=" + myData.standardSearchTerm %}
 {% endif %}
 
+<!-- Filters -->
+{% set _filtersApplied = myData.searchapplied or myData.standardsearchapplied %}
+
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% include "includes/breadcrumb.html" %}
@@ -88,7 +91,7 @@
 
             <div class="fat-filter__content">
 
-                {% if myData.searchapplied == true or myData.standardsearchapplied %}
+                {% if _filtersApplied %}
                 <div class="fat-filter__selected">
                     <div class="fat-filter__selected-heading">
                         <div class="fat-filter__heading-title">
@@ -249,6 +252,9 @@
 
 {% block pageScripts %}
 <script>
+
+    filterVisibilityToggle({{_filtersApplied | dump | safe }})
+
     //AUTOCOMPLETE PROVIDERS
     function suggestProviders(query, populateResults) {
         var results = {{_providerAutocompleteList | dump | safe }},

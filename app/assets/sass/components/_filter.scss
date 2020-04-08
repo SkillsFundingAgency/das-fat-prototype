@@ -2,10 +2,11 @@
    #FILTER
    ========================================================================== */
 
-   .fat-filter {
+  .fat-filter {
     background-color: govuk-colour("white");
     box-shadow: inset 0 0 0 1px govuk-colour("mid-grey");
-  
+    // margin-bottom: 20px;
+
     &:focus {
       box-shadow: 0 -2px $govuk-focus-colour, 0 4px $govuk-focus-text-colour;
     }
@@ -141,8 +142,6 @@
   .fat-filter__selected {
     background-color: govuk-colour("light-grey");
     border: 1px solid #b1b4b6;
-    border-top: 0;
-    border-bottom: 0;
     box-shadow: none;
     padding: govuk-spacing(4);
     padding-top: govuk-spacing(5);
@@ -152,6 +151,12 @@
       margin-bottom: 0; // IE9 +
     }
   
+  }
+
+  @media (min-width: 641px){
+    .fat-filter__selected {
+      border-top: 0;
+    }
   }
   
   
@@ -236,10 +241,23 @@
     box-shadow: none;
     margin-top: -1px;
     padding: govuk-spacing(4);
-  
     div:last-of-type {
     //   margin-bottom: 0; // IE9 +
     }
-  
   }
-  
+  @media (min-width: 641px){
+    .fat-filter__options {
+      margin-bottom: 0;
+    }
+  }
+
+  .fat-filter__togle-container {
+    display: none;
+    padding-top: govuk-spacing(4);
+    padding-bottom: govuk-spacing(4);
+    display: inline-block;
+    position: relative;
+  }
+  .filters-not-applied.closed {
+    padding-top: 0;
+  }

@@ -10,7 +10,6 @@
 
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
-
 {% set _providerAutocompleteList = myData.providerAutocompleteList %} 
 {% set _providers = myData.providers.list %}
 
@@ -43,6 +42,9 @@
 {% if myData.standardfilterapplied == true %}
     {% set _standardQuery = "&standard=" + myData.standard %}
 {% endif %}
+
+<!-- Filters -->
+{% set _filtersApplied = myData.searchapplied or myData.locationapplied %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
@@ -84,8 +86,7 @@
     <div class="govuk-grid-column-one-third">
 
         <!-- FILTERS  -->
-
-        <div class="fat-filter">
+        <div class="fat-filter" >
 
             <div class="fat-filter__header">
                 <div class="fat-filter__header-title">
@@ -94,10 +95,9 @@
                 <div class="fat-filter__header-action">
                 </div>
             </div>
-
             <div class="fat-filter__content">
 
-                {% if myData.searchapplied == true or myData.locationapplied %}
+                {% if _filtersApplied %}
                 <div class="fat-filter__selected">
                     <div class="fat-filter__selected-heading">
                         <div class="fat-filter__heading-title">
@@ -162,7 +162,6 @@
                         <input type="hidden" value="{{myData.standard}}" name="standard" >
                         <input type="hidden" value="{{myData.searchTerm}}" name="q" >
                     </form>
-
 
                 </div>
 
@@ -237,6 +236,9 @@
 
 {% block pageScripts %}
 <script>
+
+    filterVisibilityToggle({{_filtersApplied | dump | safe }})
+
     //AUTOCOMPLETE PROVIDERS
     function suggestProviders(query, populateResults) {
         var results = {{_providerAutocompleteList | dump | safe }},

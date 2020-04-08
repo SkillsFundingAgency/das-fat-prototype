@@ -19,7 +19,7 @@
     {% endif %}
 {% endfor %}
 
-{% set _filterOrSearchApplied = (myData.levelfilterapplied == true or myData.routefilterapplied or myData.searchapplied) %}
+{% set _filterOrSearchApplied = myData.levelfilterapplied or myData.routefilterapplied or myData.searchapplied %}
 
 <!-- Query strings (for use in hrefs) -->
 {% set _searchQuery = "" %}
@@ -246,6 +246,10 @@
 
 {% block pageScripts %}
 <script>
+
+    filterVisibilityToggle({{_filterOrSearchApplied | dump | safe }})
+
+
     // $(document).ready(function() {
     //     asYouTypeFilter(
     //         {{_asYouTypeCount}},

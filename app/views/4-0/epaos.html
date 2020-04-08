@@ -43,6 +43,9 @@
     {% set _standardQuery = "&standard=" + myData.standard %}
 {% endif %}
 
+<!-- Filters -->
+{% set _filtersApplied = myData.searchapplied or myData.locationapplied %}
+
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% include "includes/breadcrumb.html" %}
@@ -91,7 +94,7 @@
 
             <div class="fat-filter__content">
 
-                {% if myData.searchapplied == true or myData.locationapplied %}
+                {% if _filtersApplied %}
                 <div class="fat-filter__selected">
                     <div class="fat-filter__selected-heading">
                         <div class="fat-filter__heading-title">
@@ -225,6 +228,9 @@
 
 {% block pageScripts %}
 <script>
+
+    filterVisibilityToggle({{_filtersApplied | dump | safe }})
+
     //AUTOCOMPLETE epaoS
     function suggestEPAOs(query, populateResults) {
         var results = {{_epaoAutocompleteList | dump | safe }},

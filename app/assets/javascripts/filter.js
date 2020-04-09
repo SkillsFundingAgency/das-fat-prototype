@@ -1,6 +1,9 @@
 function filterVisibilityToggle(_filtersApplied){
 
-    var _filterContainer = jQuery(".fat-filter"),
+    var _viewIs = (jQuery(window).width() < 641) ? "mobile" : "desktop",
+        _viewWas = _viewIs,
+        _firstLoad = true,
+        _filterContainer = jQuery(".fat-filter"),
         _filterHeader = jQuery(".fat-filter__header"),
         _filterToggleContainer = jQuery("<div class='fat-filter__togle-container closed'></div>"),
         _filterOptions = _filterContainer.find(".fat-filter__options"),
@@ -8,7 +11,7 @@ function filterVisibilityToggle(_filtersApplied){
         _buttonTextOpen = _filtersApplied ? "Close filter options" : "Close filter",
         _toggleButton = jQuery("<button class='govuk-button govuk-button--secondary fat-filter__toggle' type='button' >" + _buttonTextClosed + "</button>"),
         _optionsVisible = true;
-        
+
     if (!_filtersApplied) {
         _filterToggleContainer.addClass("filters-not-applied")
     }
@@ -18,7 +21,17 @@ function filterVisibilityToggle(_filtersApplied){
 
     // On window resize
     jQuery(window).on( "resize", function() {
-        toggleMobileView()
+        _viewIs = (jQuery(window).width() < 641) ? "mobile" : "desktop"
+        if((_viewWas != _viewIs) || _firstLoad){
+            hideShowPanel()
+            if(_viewIs == "mobile") {
+                _toggleButton.show() 
+            } else {
+                _toggleButton.hide()
+            }
+        }
+        _viewWas = _viewIs
+        _firstLoad = false
     }).trigger("resize");
 
     // On toggle click
@@ -27,44 +40,23 @@ function filterVisibilityToggle(_filtersApplied){
     });
 
     function hideShowPanel(){
-        if(_optionsVisible){
-            _optionsVisible = false
-            _filterOptions.hide()
-            _toggleButton.text(_buttonTextClosed)
-            _filterToggleContainer.addClass("closed")
-            if(!_filtersApplied){
-                _filterHeader.hide()
-            }
-        } else {
-            _optionsVisible = true
-            _filterOptions.show()
+        if(!_optionsVisible || _viewIs == "desktop"){
             _toggleButton.text(_buttonTextOpen)
             _filterToggleContainer.removeClass("closed")
+            _optionsVisible = true
+            _filterOptions.show()
             if(!_filtersApplied){
                 _filterHeader.show()
-            }
-        }
-    }
-
-    function toggleMobileView(){
-        if(jQuery(window).width() < 641){
-            _toggleButton.show()
+            } 
+        } else {
+            _toggleButton.text(_buttonTextClosed)
+            _filterToggleContainer.addClass("closed")
+            _optionsVisible = false 
             _filterOptions.hide()
             if(!_filtersApplied){
                 _filterHeader.hide()
             }
-            _optionsVisible = false
-        } else {
-            _toggleButton.hide()
-            _filterOptions.show()
-            if(!_filtersApplied){
-                _filterHeader.show()
-            }
-            _optionsVisible = true
         }
     }
 
 }
-
-
-

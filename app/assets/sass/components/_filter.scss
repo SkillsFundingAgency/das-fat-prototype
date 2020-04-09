@@ -33,7 +33,6 @@
   
   }
   
-  
   // JavaScript
   .fat-filter__legend {
     overflow: visible; // Override govuk to allow for focus style to be seen
@@ -85,14 +84,12 @@
   
   }
   
-  
   .fat-filter__header-title,
   .fat-filter__header-action {
     display: inline-block;
     text-align: left;
     vertical-align: middle;
   }
-  
   
   .fat-filter__close {
     // @include govuk-focusable;
@@ -138,10 +135,10 @@
     @include govuk-font(19);
   }
   
-  
   .fat-filter__selected {
     background-color: govuk-colour("light-grey");
     border: 1px solid #b1b4b6;
+    border-top: 0;
     box-shadow: none;
     padding: govuk-spacing(4);
     padding-top: govuk-spacing(5);
@@ -152,13 +149,6 @@
     }
   
   }
-
-  @media (min-width: 641px){
-    .fat-filter__selected {
-      border-top: 0;
-    }
-  }
-  
   
   .fat-filter__selected-heading {
     font-size: 0; // Hide whitespace between elements

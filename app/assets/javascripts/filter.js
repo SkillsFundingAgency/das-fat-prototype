@@ -8,7 +8,7 @@ function filterVisibilityToggle(_filtersApplied){
         _filterToggleContainer = jQuery("<div class='fat-filter__togle-container closed'></div>"),
         _filterOptions = _filterContainer.find(".fat-filter__options"),
         _buttonTextClosed = _filtersApplied ? "Show filter options" : "Show filter",
-        _buttonTextOpen = _filtersApplied ? "Close filter options" : "Close filter",
+        _buttonTextOpen = _filtersApplied ? "Hide filter options" : "Hide filter",
         _toggleButton = jQuery("<button class='govuk-button govuk-button--secondary fat-filter__toggle' type='button' >" + _buttonTextClosed + "</button>"),
         _optionsVisible = true;
 

@@ -1,14 +1,6 @@
 {% extends "layout.html" %} 
 {% set serviceName = "Find apprenticeship training" %}
 
-<!-- autocompletes -->
-{% set _standardAutocompleteList = myData.standardAutocompleteList %} 
-{% set _standards = myData.standards.list %} 
-{% set _defaultSearchvalue = "" %}
-{% set _providerAutocompleteList = myData.providerAutocompleteList %} 
-{% set _providers = myData.providers.list %}
-{% set _defaultProviderSearchvalue = "" %}
-
 <!-- phase banner + breadcrumbs -->
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
@@ -17,188 +9,70 @@
 {% block content %}
 
 <style>
-    /* @media (min-width: 641px) {
-        .routeslist {
-            columns: 2;
-            -webkit-columns: 2;
-            -moz-columns: 2;
-        }
-    } */
-    #search-providers {
-        height: 50px;
-        border-right: 0;
+    /* indent */
+    .fat-steps-number {
+        min-width: 35px; 
+        display: table-cell;
     }
-    .autocomplete__hint {
-        height: 50px;
+    .fat-steps-heading {
+        display: table
+    }
+    .fat-steps-content {
+        margin-left: 35px;
     }
 </style>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-9">{{serviceName}}</h1>
+        <!-- TASK LIST STYLE -->
+        <h1 class="govuk-heading-xl ">{{serviceName}}</h1>
+        <p class="govuk-body govuk-!-margin-bottom-6">There are 3 steps to choosing suitable apprenticeship training.</p>
+        <ol class="govuk-list">
+            <li>
+                <h2 class="govuk-heading-m fat-steps-heading" ><span class="fat-steps-number">1. </span>Choose an apprenticeship training course</h2>
+                
+                <p class="govuk-body fat-steps-content">Find a course at a suitable level with relevant skills.</p>
 
-        <!-- <h2 class="govuk-heading-m">Apprenticeship training courses</h2> -->
-        
-        <!-- <h2 class="govuk-heading-l">Find an apprenticeship training course</h2> -->
+                <p class="govuk-body fat-steps-content">Then, check availability of training providers and assessment organisations.</p>
 
+                <!-- <ul class="govuk-list govuk-list--bullet fat-steps-content">
+                    <li>what skills will an apprentice learn</li>
+                    <li>is it relevant to your business' needs</li>
+                    <li>how long will the apprenticeship take</li>
+                    <li>how much funding will the government offer</li>
+                </ul> -->
+                <p class="govuk-body fat-steps-content">
+                    <a href="training" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
+                    Start now
+                    <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
+                      <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
+                    </svg>
+                  </a>
+                </p>
+            </li>
+            <li>
+                <h2 class="govuk-heading-m fat-steps-heading"><span class="fat-steps-number">2. </span>Find a training provider</h2>
+                <p class="govuk-body fat-steps-content">Check who can train an apprentice based on the course and location.</p>
+                <p class="govuk-body fat-steps-content"><a href="providers-all" class="govuk-link govuk-link--no-visited-state">View training providers</a></p>
+            </li>
+            <li>
+                <h2 class="govuk-heading-m fat-steps-heading govuk-!-margin-top-7"><span class="fat-steps-number">3. </span>Find an assessment organisation</h2>
+                <p class="govuk-body fat-steps-content">Check who can assess an apprentice based on the course and location.</p>
+                <p class="govuk-body fat-steps-content"><a href="epaos-all" class="govuk-link govuk-link--no-visited-state">View assessment organisations</a></p>
+            </li>
+        </ol>
 
+        <!-- OLD -->
+        <!-- <h1 class="govuk-heading-xl govuk-!-margin-bottom-9">{{serviceName}}</h1>
         <h2 class="govuk-heading-m"><a href="training" class="govuk-link govuk-link--no-visited-state">Apprenticeship training courses</a></h2>
-
         <p class="govuk-body">Browse by sector, course name or job title</p>
-
-        <!-- <form action="training" method="GET">
-            <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small">
-                <legend style="display:none">[Search for apprenticeship training]</legend>
-                <label for="search-training" class="govuk-label">
-                    <span class="govuk-hint">[label for search needed]</span>
-                </label>
-                <div class="search-input-wrapper">
-                    <input type="search" value="" id="search-training" name="q" title="Search" class="govuk-input">
-                    <div class="search-input-submit-wrapper">
-                        <button type="submit" class="search-submit" id="search-training-submit">Search apprenticeship training courses</button>
-                    </div>
-                </div>
-                <input type="hidden" value="relevance" name="sortby">
-            </div>
-        </form> -->
-
-        <!-- <h2 class="govuk-heading-s">Browse by sector</h2>
-
-        <ul class="govuk-list routeslist">
-            {% for _route in myData.routes.list %}
-            <li><a href="training?r=true&route={{_route.code}}" class="govuk-link govuk-link--no-visited-state" >{{_route.name}}</a></li>
-            {% endfor %}
-        </ul> -->
-
-        
-        <!-- <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">509</h1> -->
-
-    
-        <!-- <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-6"> -->
-
-        <!-- <h2 class="govuk-heading-m">Find a training provider</h2> -->
-
-        <!-- Search box -->
-        <!-- <form action="providers" method="GET" >
-            <div class="search-wrapper govuk-form-group search-wrapper-das" >
-                <legend style="display:none">[Search for a training provider]</legend>
-                <label for="search-providers" class="govuk-label" >
-                    <span class="govuk-hint">[name search label]</span>
-                </label>
-                <div class="search-input-wrapper">
-                    <input type="search" value="" id="search-providers" name="q" title="Search" class="govuk-input">
-                    <div class="search-input-submit-wrapper">
-                        <button type="submit" class="search-submit" id="search-providers-submit">Search for a training provider</button>
-                    </div>
-                </div>
-            </div>
-        </form> -->
-
         <h2 class="govuk-body govuk-!-margin-top-6 govuk-!-margin-bottom-2"><a href="providers-all" class="govuk-link govuk-link--no-visited-state">Training providers</a></h2>
-
         <p class="govuk-body">Find training providers by name, course name or location</p>
-        <!-- <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">1500</h1> -->
-
-    
-        <!-- <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-6"> -->
-
-        <!-- <h2 class="govuk-heading-m">Find an assessment organisation</h2> -->
-
-        <!-- Search box -->
-        <!-- <form action="epaos" method="GET" >
-            <div class="search-wrapper govuk-form-group search-wrapper-das" >
-                <legend style="display:none">[Search for an assessment organisation]</legend>
-                <label for="search-providers" class="govuk-label" >
-                    <span class="govuk-hint">[name search label]</span>
-                </label>
-                <div class="search-input-wrapper">
-                    <input type="search" value="" id="search-providers" name="q" title="Search" class="govuk-input">
-                    <div class="search-input-submit-wrapper">
-                        <button type="submit" class="search-submit" id="search-providers-submit">Search for an assessment organisation</button>
-                    </div>
-                </div>
-            </div>
-        </form> -->
-
         <h2 class="govuk-body govuk-!-margin-bottom-2"><a href="epaos-all" class="govuk-link govuk-link--no-visited-state">Assessment organisations</a></h2>
-        <p class="govuk-body">Find assessment organisations by name or course name</p>
-        <!-- <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">1500</h1> -->
+        <p class="govuk-body">Find assessment organisations by name or course name</p> -->
 
     </div>
 </div>
 
 {% endblock %}
-
-{% block pageScripts %}
-<script>
-    //AUTOCOMPLETE PROVIDERS
-    // function suggestProviders(query, populateResults) {
-    //     var results = {{_providerAutocompleteList | dump | safe }},
-    //         providers = {{_providers | dump | safe }},
-    //         filteredResults = []
-    //     providers.forEach(function(_provider, index) {
-    //         var _searchesToDo = [
-    //                 {"searchOn": _provider.autoCompleteString,"within": true,"exact": true}
-    //             ],
-    //             _providerMatched = false
-    //         for (var i = 0; i < _searchesToDo.length; i++) {
-    //             var _thisItem = _searchesToDo[i]
-    //             if(Array.isArray(_thisItem.searchOn)){
-    //                 _thisItem.searchOn.forEach(function(_arrayPart, index) {
-    //                     doSearches(_arrayPart)
-    //                 });
-    //             } else {
-    //                 doSearches(_thisItem.searchOn)
-    //             }
-    //             function doSearches(_itemToSearch){
-    //                 //Exact check
-    //                 if(_thisItem.exact & _itemToSearch.toUpperCase() == query.trim().toUpperCase()){
-    //                     _providerMatched = true
-    //                 }
-    //                 // Within check
-    //                 if(_thisItem.within & _itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
-    //                     _providerMatched = true
-    //                 }
-    //             }
-    //         }
-    //         (_providerMatched) && (filteredResults.push(_provider.autoCompleteString))
-    //     })
-    //     populateResults(filteredResults)
-    // }
-    // Normal
-    // function suggestTraining(query, populateResults) {
-    //     var results = {{_standardAutocompleteList | dump | safe }},
-    //         filteredResults = results.filter(
-    //         result => result.toUpperCase().indexOf(query.trim().toUpperCase()) !== -1
-    //     )
-    //     populateResults(filteredResults)
-    // }
-    // Trigger search click on enter
-    // function fireProvidersSearch(){setTimeout(function(){ $("#search-providers-submit").trigger("click") },200);}
-    // var providerInput = document.querySelector('#search-providers')
-    // if (providerInput) {
-    //     var providerInputID = providerInput.id,
-    //         providerElement = document.createElement('div'),
-    //         defaultSearchvalue = {{_defaultSearchvalue | dump | safe }}
-    //     providerElement.className = "autocomplete__parent_wrapper";
-    //     providerInput.parentNode.insertBefore(providerElement, providerInput)
-    //     accessibleAutocomplete({
-    //         // other options
-    //         element: providerElement,
-    //         id: providerInputID,
-    //         name: providerInput.name,
-    //         source: suggestProviders,
-    //         defaultValue: defaultSearchvalue,
-    //         minLength: 3,
-    //         confirmOnBlur: false,
-    //         autoselect: true,
-    //         onConfirm: fireProvidersSearch,
-    //         displayMenu: 'overlay'
-    //     })
-    //     providerInput.style.display = 'none'
-    //     providerInput.id = providerInputID + '-old'
-    //     providerInput.name = ''
-    // }
-</script>
-{% endblock pageScripts %}

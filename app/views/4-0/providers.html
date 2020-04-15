@@ -202,18 +202,24 @@
             {% if _provider.search == true %}
             <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                    <a href="provider?provider={{_provider.id}}" class="govuk-link govuk-link--no-visited-state">{{_provider.name}}</a>
+                    <a href="provider?provider={{_provider.id}}{{_standardQuery}}" class="govuk-link govuk-link--no-visited-state">{{_provider.name}}</a>
                 </h2>
                 <ul class="govuk-list">
 
+                    <!-- Distance -->
                     {% if myData.locationapplied %}
                     <li><span>{{_provider.distance}}</span> miles</li>
                     {% endif %}
 
+                    <!-- Ofsted -->
+                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Ofsted rating:</span> Good</li>
+
+                    <!-- National -->
                     {% if _provider.national == true %}
-                    <li><span class="govuk-!-font-weight-bold">National</span></li>
+                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Availability:</span> National</li>
+                    {% else %}
+                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Availability:</span> Specific locations</li>
                     {% endif %}
-                    <li><span>{{_provider.address.city}}</span></li>
 
                 </ul>
             </div>

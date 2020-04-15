@@ -41,10 +41,80 @@
     <details class="govuk-details" data-module="govuk-details">
       <summary class="govuk-details__summary">
         <span class="govuk-details__summary-text">
-          SSAs
+          SSAs tier 1
       </summary>
       <div class="govuk-details__text">
-        <h2 class="govuk-heading-l">SSAs</h2>
+        <h2 class="govuk-heading-l">SSAs tier 1</h2>
+        <table class="govuk-table">
+          <thead class="govuk-table__head" >
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">code</th>
+              <th scope="col" class="govuk-table__header">name</th>
+              <th scope="col" class="govuk-table__header">standardsCount</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+          {% for _ssa in myData.ssa.list %}
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">
+                {{_ssa.code}}
+              </th>
+              <th class="govuk-table__header">
+                {{_ssa.name}}
+              </th>
+              <th class="govuk-table__header">
+                {{_ssa.standardsCount}}
+              </th>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table> 
+      </div>
+    </details>
+
+    <details class="govuk-details" data-module="govuk-details">
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          SSAs tier 2
+      </summary>
+      <div class="govuk-details__text">
+        <h2 class="govuk-heading-l">SSAs tier 2</h2>
+        <table class="govuk-table">
+          <thead class="govuk-table__head" >
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">code</th>
+              <th scope="col" class="govuk-table__header">name</th>
+              <th scope="col" class="govuk-table__header">standardsCount</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+          {% for _ssa in myData.ssa.list %}
+            {% for _ssa2 in _ssa.ssa2s %}
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                {{_ssa2.code}}
+              </td>
+              <td class="govuk-table__cell">
+                {{_ssa2.name}}
+              </td>
+              <td class="govuk-table__cell" >
+                {{_ssa2.standardsCount}}
+              </td>
+            </tr>
+            {% endfor %}
+          {% endfor %}
+          </tbody>
+        </table> 
+      </div>
+    </details>
+
+    <details class="govuk-details" data-module="govuk-details">
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          SSAs tier 1 + tier 2
+      </summary>
+      <div class="govuk-details__text">
+        <h2 class="govuk-heading-l">SSAs tier 1 + tier 2</h2>
         <table class="govuk-table">
           <thead class="govuk-table__head" >
             <tr class="govuk-table__row">

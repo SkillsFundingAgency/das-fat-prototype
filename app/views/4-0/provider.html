@@ -17,6 +17,14 @@
 
 {% block content %}
 
+<style>
+    .fat-panel {
+        /* border: 1px solid #b1b4b6;
+        padding: 20px; */
+        margin-bottom: 30px;
+    }
+</style>
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
@@ -29,32 +37,120 @@
             {{_providerTitle | safe}}
         </h1>
 
-        <!-- national flag -->
-        {% if _selectedProvider.national == true %}
-        <p class="govuk-body-l">National provider</p>
-        {% endif %}
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Ofsted rating</dt>
+                <dd class="govuk-summary-list__value">
+                    <strong class="govuk-tag govuk-tag--green">Outstanding</strong>
+                    <strong class="govuk-tag govuk-tag--blue">Good</strong>
+                    <strong class="govuk-tag govuk-tag--yellow">Requires Improvement</strong>
+                    <strong class="govuk-tag govuk-tag--orange">Inadequate</strong>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Coverage</dt>
+                <dd class="govuk-summary-list__value">{% if _selectedProvider.national == true %}National{% else %}???{% endif %}</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">About</dt>
+                <dd class="govuk-summary-list__value">
+                    <details class="govuk-details" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                            About {{_providerTitle | safe}}
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            <p class="govuk-body">{{_providerTitle | safe}} is a specialist private training company which has been delivering apprenticeships for 20 years. From our Midlands base, we work nationally to support private, public and third sector organisations - large and small - to develop their apprentices and achieve the best possible outcomes and value for both apprentice and employer.</p>
+                            <p class="govuk-body">We specialise in:</p>
+                            <ul class="govuk-list govuk-list--bullet">
+                                <li>Learning and Development</li>
+                                <li>Human Resources</li>
+                                <li>Butchery & Food</li>
+                                <li>Aviation</li>
+                            </ul>
+                            <p class="govuk-body">Our programmes are designed to fit the needs of employer and apprentice and are delivered in the workplace and/or at our specialist facilities. To make the apprenticeship special we pride ourselves on giving unique opportunities such as educational visits and outdoor residentials.</p>
+                        </div>
+                    </details>
+                </dd>
+            </div>
+        </dl>
 
-        <div class="govuk-inset-text">
+        <!-- <div class="fat-panel">
+            <h2 class="govuk-heading-m">Ofsted rating</h2>
+            <p class="govuk-body">Good</p>
+        </div>
 
-            <!-- <h2 class="govuk-heading-m">Contact {{_providerTitle | safe}}</h2> -->
-            
+        <div class="fat-panel">
+            <h2 class="govuk-heading-m">Coverage</h2>
+            <p class="govuk-body">{% if _selectedProvider.national == true %}National{% else %}???{% endif %}</p>
+        </div> -->
+
+        <!-- <div class="fat-panel">
+            <h2 class="govuk-heading-m">Strengths</h2>
+            <p class="govuk-body">Communication with employers</p>
+            <p class="govuk-body">Getting new apprentices started</p>
+            <p class="govuk-body">Reporting on progress of apprentices</p>
+            <p class="govuk-body">Improving apprentice skills</p>
+            <p class="govuk-body">Initial assessment of apprentices</p>
+        </div> -->
+
+        <!-- <div class="fat-panel">
+            <h2 class="govuk-heading-m">Employer reviews</h2>
+            <p class="govuk-body"></p>
+        </div> -->
+
+
+        <!-- <h2 class="govuk-heading-m">Provider</h2> -->
+        <ol class="govuk-list govuk-list--number" style="color:red">
+            <!-- <li>Provider name</li> -->
+            <!-- <li>Trading name (if exist)</li> -->
+            <!-- <li>UKPRN</li> -->
+            <li>Ofsted rating</li>
+            <li>National / Not national</li>
+            <li>Contact details (what are these/where are these)</li>
+            <li>About provider (free text)</li>
+            <li>Employer reviews data</li>
+            <li>Courses offered (list)</li>
+            <!-- <li style="list-style: none;">
+                <h2 class="govuk-heading-m govuk-!-margin-top-6">per each Course</h2>
+                <ol class="govuk-list govuk-list--number">
+                    <li>Achievement rate (based on SSA tier 2)</li>
+                    <li>About apprenticeship (free text)</li>
+                    <li>Contact details (website / email / phone / contact us webpage)</li>
+                    <li style="list-style: none;">
+                        <h2 class="govuk-heading-m govuk-!-margin-top-6">per each Location</h2>
+                        <ol class="govuk-list govuk-list--number">
+                            <li>Delivery modes</li>
+                            <li>venue name</li>
+                            <li>venue address</li>
+                            <li>venue contact details (phone, email, website)</li>
+                            <li>Distance from employer (if employer location known)</li>
+                        </ol>
+                    </li>
+                </ol>
+            </li> -->
+        </ol>
+
+        <!-- <div class="govuk-inset-text">
             <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Email</h3>
             <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitle|lower|replace(" ", "")|replace(".", "")}}.co.uk</a></p>
-            
             <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Telephone</h3>
             <p class="govuk-body">078&nbsp;7856&nbsp;9856</p>
-
             <h3 class="govuk-heading-s govuk-!-margin-bottom-1">URL</h3>
             <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitle|lower|replace(" ", "")|replace(".", "")}}.co.uk</a></p>
-            
             <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Address</h3>
             <p class="govuk-body">
                 {{_selectedProvider.address.line1}}<br>
                 {{_selectedProvider.address.city}}<br>
                 {{_selectedProvider.address.postcode}}
             </p>
+        </div> -->
 
-        </div>
+        
+        <!-- <ul class="govuk-list govuk-list--bullet" style="color: red">
+            <li>minimum number of apprenticeships</li>
+        </ul><hr> -->
 
     </div>
     <div class="govuk-grid-column-one-third">

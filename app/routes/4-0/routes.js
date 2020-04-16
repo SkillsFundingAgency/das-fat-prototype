@@ -462,17 +462,15 @@ module.exports = function (router,_myData) {
             _providers.forEach(function(_provider, index) {
                 
                 var _hasAMatchcount = 0,
-                    _deliversStandard = false,
-                    _providerIndex = _provider.id-1
+                    _deliversStandard = false
 
                 // Reset each provider
                 _provider.search = true
 
-
                 //STANDARD
                 if(req.session.myData.standardfilterapplied) {
                     _provider.search = false
-                    if(_providerIndex < _selectedStandard.providers.number) {
+                    if(_provider.courses.includes(_selectedStandard.larsCode)){
                         _deliversStandard = true
                         req.session.myData.matchesstandardcount++
                         _hasAMatchcount++
@@ -482,28 +480,12 @@ module.exports = function (router,_myData) {
                 //LOCATION
                 if(req.session.myData.locationapplied) {
                     _provider.search = false
-
                     var _locationMatch = false
-                
                     if(_deliversStandard){
-
-                        // All national match distance
-                        if(_provider.national){
+                        if(_provider.national || _provider.locationmatch){
                             _locationMatch = true
-                        }
-                        if(_selectedStandard.providers.number <= 4) {
-                            _locationMatch = true
-                        } else if(_selectedStandard.providers.number > 4 && _selectedStandard.providers.number < 7){
-                            if(_providerIndex > _selectedStandard.providers.number - 3){
-                                _locationMatch = true
-                            }
-                        } else if(_selectedStandard.providers.number >= 6){
-                            if(_providerIndex < _selectedStandard.providers.number - 5){
-                                _locationMatch = true
-                            }
                         }
                     }
-
                     if(_locationMatch){
                         req.session.myData.matcheslocationcount++
                         _hasAMatchcount++
@@ -685,8 +667,7 @@ module.exports = function (router,_myData) {
             _providers.forEach(function(_provider, index) {
 
                 var _hasAMatchcount = 0,
-                    _deliversStandard = false,
-                    _providerIndex = _provider.id-1
+                    _deliversStandard = false
     
                 // Reset each provider
                 _provider.search = true
@@ -694,7 +675,7 @@ module.exports = function (router,_myData) {
                 //STANDARD SEARCH TERM
                 if(req.session.myData.standardsearchapplied) {
                     _provider.search = false
-                    if(_providerIndex < _selectedStandard.providers.number) {
+                    if(_provider.courses.includes(_selectedStandard.larsCode)){
                         _deliversStandard = true
                         req.session.myData.matchesstandardcount++
                         _hasAMatchcount++
@@ -704,28 +685,12 @@ module.exports = function (router,_myData) {
                 //LOCATION
                 if(req.session.myData.locationapplied) {
                     _provider.search = false
-    
                     var _locationMatch = false
-                   
                     if(_deliversStandard){
-    
-                        // All national match distance
-                        if(_provider.national){
+                        if(_provider.national || _provider.locationmatch){
                             _locationMatch = true
-                        }
-                        if(_selectedStandard.providers.number <= 4) {
-                            _locationMatch = true
-                        } else if(_selectedStandard.providers.number > 4 && _selectedStandard.providers.number < 7){
-                            if(_providerIndex > _selectedStandard.providers.number - 3){
-                                _locationMatch = true
-                            }
-                        } else if(_selectedStandard.providers.number >= 6){
-                            if(_providerIndex < _selectedStandard.providers.number - 5){
-                                _locationMatch = true
-                            }
                         }
                     }
-    
                     if(_locationMatch){
                         req.session.myData.matcheslocationcount++
                         _hasAMatchcount++

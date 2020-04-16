@@ -45,6 +45,9 @@ module.exports = function (router,_myData) {
         // Add - "distance"
         _provider.distance = Math.floor(Math.random() * 99) + 1 + Math.round(Math.random() * 10) / 10
 
+        // Add - "locationmatch"
+        _provider.locationmatch = _booleans[Math.floor(Math.random()*_booleans.length)]
+
         // Add - Courses offered (list) ------ old on standard = "providers":{"number":2}
         var _coursesToAdd = Math.floor(Math.random() * 40) + 1,
             _providersCourses = []

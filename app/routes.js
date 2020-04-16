@@ -93,6 +93,18 @@ _myData.standards.list.forEach(function(_standard, index) {
     //     console.log(_standard.larsCode + " - " + _standard.coreSkillsCount + " - " + _standard.title + " (level " + _standard.level + ")")
     // }
 
+    //Set Providers on each standard
+    _standard.providers2 = {
+        "number": 0,
+        "list": []
+    }
+    _myData["providers-new"].list.forEach(function(_provider, index) {
+        if(_provider.courses.includes(_standard.larsCode)){
+            _standard.providers2.number++
+            _standard.providers2.list.push(_provider.id)
+        }
+    })
+
     //Set EPAOs on each standard
     var _epaosOnStandards = require(__dirname + '/data/epaos-on-standards.json')
     for (var _epaoLarsCode in _epaosOnStandards) {

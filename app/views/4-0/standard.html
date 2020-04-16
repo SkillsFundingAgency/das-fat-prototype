@@ -130,14 +130,14 @@
             Training <br>providers
         </h2>
         
-        
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">{{_selectedStandard.providers.number}} </h1>
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">{{_selectedStandard.providers2.number}} </h1>
+        <!-- <h1 class="govuk-heading-xl govuk-!-margin-bottom-0">{{_selectedStandard.providers.number}} </h1> -->
         <p class="govuk-body">Available</p>
 
         <!-- <p class="govuk-body">Available for ‘B1 Birmingham’</p>
         <p class="govuk-body"><a href="#" class="govuk-link govuk-link--no-visited-state">Clear location</a></p> -->
 
-        {% if _selectedStandard.providers.number != 0 %}
+        {% if _selectedStandard.providers2.number != 0 %}
         <p class="govuk-body govuk-!-font-weight-bold"><a href="providers?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View training providers</a></p>
         {% endif %}
 

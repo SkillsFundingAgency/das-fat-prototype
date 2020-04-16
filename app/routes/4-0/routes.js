@@ -38,11 +38,11 @@ module.exports = function (router,_myData) {
     //Sort providers
     function sortProviders(req, _sortBy){
         if(_sortBy == "distance"){
-            req.session.myData.providers.list.sort(function(a,b){
+            req.session.myData["providers-new"].list.sort(function(a,b){
                 return a.distance - b.distance
             });
         } else {
-            req.session.myData.providers.list.sort(function(a,b){
+            req.session.myData["providers-new"].list.sort(function(a,b){
                 var returnValue = 0;
                 if (a.name.toUpperCase() < b.name.toUpperCase()){
                     returnValue = -1
@@ -370,7 +370,7 @@ module.exports = function (router,_myData) {
 
         var _needToMatchCount = 0,
             _selectedStandard = {},
-            _providers = req.session.myData.providers.list,
+            _providers = req.session.myData["providers-new"].list,
             _standards = req.session.myData.standards.list
 
         req.session.myData.searchfilters = []
@@ -593,7 +593,7 @@ module.exports = function (router,_myData) {
 
         var _needToMatchCount = 0,
             _selectedStandard = {},
-            _providers = req.session.myData.providers.list,
+            _providers = req.session.myData["providers-new"].list,
             _standards = req.session.myData.standards.list
 
         req.session.myData.searchfilters = []
@@ -601,6 +601,22 @@ module.exports = function (router,_myData) {
         req.session.myData.matchesstandardcount = _standards.length
         req.session.myData.matchessearchcount = _providers.length
         req.session.myData.matcheslocationcount = _providers.length
+
+        //Search reset/setup
+        req.session.myData.searchapplied = false
+        req.session.myData.searchTerm = ""
+        var _searchQ = req.query.q
+        if(_searchQ || _searchQ == ""){
+            _searchQ = _searchQ.trim()
+            if(_searchQ != ""){
+                req.session.myData.searchTerm = _searchQ
+                req.session.myData.searchapplied = true
+                req.session.myData.matchessearchcount = 0
+                req.session.myData.displaycount = 0
+                req.session.myData.searchfilters.push({"value": "‘" + _searchQ + "’", "type": "name", "typeText": "Training provider name"})
+                _needToMatchCount++
+            }
+        }
 
         // Standard filter reset/setup
         req.session.myData.standardsearchapplied = false
@@ -621,22 +637,6 @@ module.exports = function (router,_myData) {
                         _needToMatchCount++
                     }
                 }
-            }
-        }
-
-        //Search reset/setup
-        req.session.myData.searchapplied = false
-        req.session.myData.searchTerm = ""
-        var _searchQ = req.query.q
-        if(_searchQ || _searchQ == ""){
-            _searchQ = _searchQ.trim()
-            if(_searchQ != ""){
-                req.session.myData.searchTerm = _searchQ
-                req.session.myData.searchapplied = true
-                req.session.myData.matchessearchcount = 0
-                req.session.myData.displaycount = 0
-                req.session.myData.searchfilters.push({"value": "‘" + _searchQ + "’", "type": "name", "typeText": "Training provider name"})
-                _needToMatchCount++
             }
         }
 
@@ -806,6 +806,15 @@ module.exports = function (router,_myData) {
     router.get('/' + version + '/provider', function (req, res) {
 
         req.session.myData.provider = req.query.provider || "1"
+
+        var _selectedProvider = {},
+            _providers = req.session.myData["providers-new"].list
+        for (var i = 0; i < _providers.length; i++) {
+            var _thisProvider = _providers[i]
+            if(req.session.myData.provider == _thisProvider.id){
+                _selectedProvider = _thisProvider
+            }
+        }
         
         res.render(version + '/provider', {
             myData:req.session.myData

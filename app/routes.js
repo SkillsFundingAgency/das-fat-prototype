@@ -47,12 +47,19 @@ var _myData = {
         }
     ],
     "providers": require(__dirname + '/data/providers.json'),
+    "providers-new": require(__dirname + '/data/providers-new.json'),
     "epaos": require(__dirname + '/data/epaos.json')
 }
 
 // Uncomment to generate standards.json data - it will magically appear in the console
 // DO NOT UNCOMMENT AND PUSH LIVE
-// require('./generate-data.js')(router,_myData);
+// require('./generate-data-standards.js')(router,_myData);
+// require('./generate-data-providers.js')(router,_myData);
+
+//Sort new providers
+_myData["providers-new"].list.sort(function(a,b){
+    return b.ukprn - a.ukprn
+});
 
 //Sort standards
 _myData.standards.list.sort(function(a,b){
@@ -138,6 +145,14 @@ _myData.providers.list.forEach(function(_provider, index) {
     _myData.providerAutocompleteList.push(_autoCompleteString);
 });
 
+// Set providers new
+_myData.providerNewAutocompleteList = []
+_myData["providers-new"].list.forEach(function(_provider, index) {
+    var _autoCompleteString = _provider.name
+    _provider.autoCompleteString = _autoCompleteString
+    _myData.providerNewAutocompleteList.push(_autoCompleteString);
+});
+
 // Set epaos
 _myData.epaoAutocompleteList = []
 _myData.epaos.list.forEach(function(_epao, index) {
@@ -145,8 +160,6 @@ _myData.epaos.list.forEach(function(_epao, index) {
     _epao.autoCompleteString = _autoCompleteString
     _myData.epaoAutocompleteList.push(_autoCompleteString);
 });
-
-// Set epaos
 
 // Set cities list
 _myData.citiesAutocompleteList = []

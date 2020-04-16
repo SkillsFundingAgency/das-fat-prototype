@@ -2,7 +2,7 @@
 {% set serviceName = "Find apprenticeship training" %}
 
 {% set _selectedProvider = {} %}
-{% for _provider in myData.providers.list %}
+{% for _provider in myData["providers-new"].list %}
     {% if myData.provider == _provider.id %}
         {% set _selectedProvider = _provider %}
     {% endif %}
@@ -41,20 +41,27 @@
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Ofsted rating</dt>
                 <dd class="govuk-summary-list__value">
-                    <strong class="govuk-tag govuk-tag--green">Outstanding</strong>
-                    <strong class="govuk-tag govuk-tag--blue">Good</strong>
+                    {% if _selectedProvider.ofsted == 0 %}
+                    <strong class="govuk-tag govuk-tag--grey">Not yet rated</strong>
+                    {% elif _selectedProvider.ofsted == 1 %}
+                    <strong class="govuk-tag govuk-tag--turquoise">Outstanding</strong>
+                    {% elif _selectedProvider.ofsted == 2 %}
+                    <strong class="govuk-tag govuk-tag--green">Good</strong>
+                    {% elif _selectedProvider.ofsted == 3 %}
                     <strong class="govuk-tag govuk-tag--yellow">Requires Improvement</strong>
-                    <strong class="govuk-tag govuk-tag--orange">Inadequate</strong>
+                    {% elif _selectedProvider.ofsted == 4 %}
+                    <strong class="govuk-tag govuk-tag--red">Inadequate</strong>
+                    {% endif %}
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Coverage</dt>
-                <dd class="govuk-summary-list__value">{% if _selectedProvider.national == true %}National{% else %}???{% endif %}</dd>
+                <dd class="govuk-summary-list__value">{% if _selectedProvider.national == true %}National{% else %}Specific locations{% endif %}</dd>
             </div>
-            <div class="govuk-summary-list__row">
+            <!-- <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">About</dt>
                 <dd class="govuk-summary-list__value">
-                    <details class="govuk-details" data-module="govuk-details">
+                    <details class="govuk-details govuk-!-margin-top-1" data-module="govuk-details">
                         <summary class="govuk-details__summary">
                             <span class="govuk-details__summary-text">
                             About {{_providerTitle | safe}}
@@ -73,52 +80,50 @@
                         </div>
                     </details>
                 </dd>
+            </div> -->
+        <!-- </dl>
+
+        <h2 class="govuk-heading-m">Contact details</h2>
+        <dl class="govuk-summary-list"> -->
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Email</dt>
+                <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitle|lower|replace(" ", "")|replace(".", "")}}.co.uk</a></dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Telephone</dt>
+                <dd class="govuk-summary-list__value">078&nbsp;7856&nbsp;9856</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">URL</dt>
+                <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitle|lower|replace(" ", "")|replace(".", "")}}.co.uk</a></dd>
             </div>
         </dl>
 
-        <!-- <div class="fat-panel">
-            <h2 class="govuk-heading-m">Ofsted rating</h2>
-            <p class="govuk-body">Good</p>
-        </div>
 
-        <div class="fat-panel">
-            <h2 class="govuk-heading-m">Coverage</h2>
-            <p class="govuk-body">{% if _selectedProvider.national == true %}National{% else %}???{% endif %}</p>
-        </div> -->
 
-        <!-- <div class="fat-panel">
-            <h2 class="govuk-heading-m">Strengths</h2>
-            <p class="govuk-body">Communication with employers</p>
-            <p class="govuk-body">Getting new apprentices started</p>
-            <p class="govuk-body">Reporting on progress of apprentices</p>
-            <p class="govuk-body">Improving apprentice skills</p>
-            <p class="govuk-body">Initial assessment of apprentices</p>
-        </div> -->
+        <h2 class="govuk-heading-l govuk-!-margin-top-8">Apprenticeship training courses</h2>
 
-        <!-- <div class="fat-panel">
-            <h2 class="govuk-heading-m">Employer reviews</h2>
-            <p class="govuk-body"></p>
-        </div> -->
 
+        <br><br><br><br><br><br>
 
         <!-- <h2 class="govuk-heading-m">Provider</h2> -->
         <ol class="govuk-list govuk-list--number" style="color:red">
-            <!-- <li>Provider name</li> -->
+            <li style="text-decoration: line-through">Provider name</li>
             <!-- <li>Trading name (if exist)</li> -->
             <!-- <li>UKPRN</li> -->
-            <li>Ofsted rating</li>
-            <li>National / Not national</li>
-            <li>Contact details (what are these/where are these)</li>
-            <li>About provider (free text)</li>
+            <li style="text-decoration: line-through">Ofsted rating</li>
+            <li style="text-decoration: line-through">National / Not national</li>
+            <li style="text-decoration: line-through">Contact details (what are these/where are these)</li>
+            <li style="text-decoration: line-through">About provider (free text)</li>
             <li>Employer reviews data</li>
             <li>Courses offered (list)</li>
-            <!-- <li style="list-style: none;">
+            <li style="list-style: none;">
                 <h2 class="govuk-heading-m govuk-!-margin-top-6">per each Course</h2>
                 <ol class="govuk-list govuk-list--number">
                     <li>Achievement rate (based on SSA tier 2)</li>
                     <li>About apprenticeship (free text)</li>
                     <li>Contact details (website / email / phone / contact us webpage)</li>
-                    <li style="list-style: none;">
+                    <!-- <li style="list-style: none;">
                         <h2 class="govuk-heading-m govuk-!-margin-top-6">per each Location</h2>
                         <ol class="govuk-list govuk-list--number">
                             <li>Delivery modes</li>
@@ -127,9 +132,9 @@
                             <li>venue contact details (phone, email, website)</li>
                             <li>Distance from employer (if employer location known)</li>
                         </ol>
-                    </li>
+                    </li> -->
                 </ol>
-            </li> -->
+            </li>
         </ol>
 
         <!-- <div class="govuk-inset-text">

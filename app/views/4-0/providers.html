@@ -11,7 +11,7 @@
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
 {% set _providerAutocompleteList = myData.providerAutocompleteList %} 
-{% set _providers = myData.providers.list %}
+{% set _providers = myData["providers-new"].list %}
 
 {% set _defaultSearchvalue = "" %}
 {% if myData.searchapplied == true %}
@@ -198,7 +198,7 @@
         {% if myData.displaycount > 0 %}
 
         <!-- Providers -->
-        {% for _provider in myData.providers.list %}
+        {% for _provider in _providers %}
             {% if _provider.search == true %}
             <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
@@ -211,8 +211,21 @@
                     <li><span>{{_provider.distance}}</span> miles</li>
                     {% endif %}
 
-                    <!-- Ofsted -->
-                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Ofsted rating:</span> Good</li>
+                    <!-- Ofsted  -->
+                    <li class="govuk-!-font-size-16">
+                        <span class="govuk-secondary-colour">Ofsted rating:</span> 
+                        {% if _provider.ofsted == 0 %}
+                        Not yet rated
+                        {% elif _provider.ofsted == 1 %}
+                        Outstanding
+                        {% elif _provider.ofsted == 2 %}
+                        Good
+                        {% elif _provider.ofsted == 3 %}
+                        Requires Improvement
+                        {% elif _provider.ofsted == 4 %}
+                        Inadequate
+                        {% endif %}
+                    </li>
 
                     <!-- National -->
                     {% if _provider.national == true %}

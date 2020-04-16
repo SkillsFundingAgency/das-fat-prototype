@@ -93,9 +93,11 @@ module.exports = function (router,_myData) {
                 //use following to spit out entire gathered data
                 // console.log(JSON.stringify(_newStandards))
                 // console.log(cooooount)
+
                 // APPLY provider data to generated standards
+
+                // LEGACY COUNTS method for old prototype versions
                 var _activeStdsObjs = _activeStds.map((str, index) => ({ value: str, id: parseInt(str) }));
-                // console.log(_activeStdsObjs)
                 _activeStdsObjs.forEach(function(_activeStdsObj, index) {
                     _activeStdsObj.providers = {
                         "number": 10
@@ -128,7 +130,17 @@ module.exports = function (router,_myData) {
                         _standard.providers.number = 0
                     }
                 });
+
+                //  FINAL OUTPUT - check console log
+                //
+                //
+                //
                 console.log(JSON.stringify(_newStandards)) 
+                //
+                //
+                //
+                //  FINAL OUTPUT
+
             } 
         });
     }

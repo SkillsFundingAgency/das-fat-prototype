@@ -8,7 +8,8 @@
                 "city": "Northampton",
                 "postcode": "DL9 1ER"
             },
-            "distance": 2.2
+            "distance": 2.2,
+            "ofsted": 1
         },
         {
             "id": 2,
@@ -18,7 +19,8 @@
                 "city": "Coventry",
                 "postcode": "CV7 5YU"
             },
-            "distance": 8.9
+            "distance": 8.9,
+            "ofsted": 2
         },
         {
             "id": 3,
@@ -28,7 +30,8 @@
                 "city": "Gloucester",
                 "postcode": "GL54 5YU"
             },
-            "distance": 23
+            "distance": 23,
+            "ofsted": 2
         },
         {
             "id": 4,
@@ -39,7 +42,8 @@
                 "city": "Nottingham",
                 "postcode": "NG32 3WT"
             },
-            "distance": 56
+            "distance": 56,
+            "ofsted": 1
         },
         {
             "id": 5,
@@ -49,7 +53,8 @@
                 "city": "Birmingham",
                 "postcode": "BB1 5AT"
             },
-            "distance": 4.5
+            "distance": 4.5,
+            "ofsted": 3
         },
         {
             "id": 6,
@@ -59,7 +64,8 @@
                 "city": "Peterborough",
                 "postcode": "PA60 9BX"
             },
-            "distance": 90
+            "distance": 90,
+            "ofsted": 2
         },
         {
             "id": 7,
@@ -70,7 +76,8 @@
                 "city": "Newcastle",
                 "postcode": "NW62 7JX"
             },
-            "distance": 27
+            "distance": 27,
+            "ofsted": 2
         },
         {
             "id": 8,
@@ -81,7 +88,8 @@
                 "city": "Alcester",
                 "postcode": "AB51 9ZE"
             },
-            "distance": 19
+            "distance": 19,
+            "ofsted": 2
         },
         {
             "id": 9,
@@ -91,7 +99,8 @@
                 "city": "London",
                 "postcode": "LN34 2WD"
             },
-            "distance": 12.7
+            "distance": 12.7,
+            "ofsted": 2
         },
         {
             "id": 10,
@@ -101,7 +110,8 @@
                 "city": "London",
                 "postcode": "LD9 9AT"
             },
-            "distance": 41.2
+            "distance": 41.2,
+            "ofsted": 2
         },
         {
             "id": 11,
@@ -110,7 +120,9 @@
                 "line1": "136 Victoria Road",
                 "city": "Huddersfield",
                 "postcode": "HD7 6WT"
-            }
+            },
+            "distance": 16,
+            "ofsted": 0
         },
         {
             "id": 12,
@@ -120,7 +132,8 @@
                 "city": "Doncaster",
                 "postcode": "DE12 4XE"
             },
-            "distance": 3.9
+            "distance": 3.9,
+            "ofsted": 2
         },
         {
             "id": 13,
@@ -130,7 +143,8 @@
                 "city": "Exeter",
                 "postcode": "EX6 2SQ"
             },
-            "distance": 6.1
+            "distance": 6.1,
+            "ofsted": 2
         },
         {
             "id": 14,
@@ -140,7 +154,8 @@
                 "city": "Oxford",
                 "postcode": "OT6 2FJ"
             },
-            "distance": 9.2
+            "distance": 9.2,
+            "ofsted": 0
         },
         {
             "id": 15,
@@ -150,7 +165,8 @@
                 "city": "Carlisle",
                 "postcode": "CL8 4PL"
             },
-            "distance": 74.3
+            "distance": 74.3,
+            "ofsted": 1
         },
         {
             "id": 16,
@@ -160,7 +176,8 @@
                 "city": "Leicester",
                 "postcode": "LA2 6LA"
             },
-            "distance": 62.9
+            "distance": 62.9,
+            "ofsted": 4
         },
         {
             "id": 17,
@@ -170,7 +187,8 @@
                 "city": "Hereford",
                 "postcode": "HR1 3XB"
             },
-            "distance": 110
+            "distance": 110,
+            "ofsted": 3
         },
         {
             "id": 18,
@@ -181,7 +199,8 @@
                 "city": "Derby",
                 "postcode": "DE4 7XY"
             },
-            "distance": 30.2
+            "distance": 30.2,
+            "ofsted": 3
         },
         {
             "id": 19,
@@ -192,7 +211,8 @@
                 "city": "Plymouth",
                 "postcode": "PM7 7NZ"
             },
-            "distance": 20.5
+            "distance": 20.5,
+            "ofsted": 3
         }
     ]
 }

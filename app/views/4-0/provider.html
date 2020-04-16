@@ -48,16 +48,34 @@
                     {% elif _selectedProvider.ofsted == 2 %}
                     <strong class="govuk-tag govuk-tag--green">Good</strong>
                     {% elif _selectedProvider.ofsted == 3 %}
-                    <strong class="govuk-tag govuk-tag--yellow">Requires Improvement</strong>
+                    <strong class="govuk-tag govuk-tag--yellow">Requires improvement</strong>
                     {% elif _selectedProvider.ofsted == 4 %}
                     <strong class="govuk-tag govuk-tag--red">Inadequate</strong>
                     {% endif %}
                 </dd>
             </div>
-            <div class="govuk-summary-list__row">
+            <!-- <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Coverage</dt>
                 <dd class="govuk-summary-list__value">{% if _selectedProvider.national == true %}National{% else %}Specific locations{% endif %}</dd>
+            </div> -->
+            
+        <!-- </dl>
+
+        <h2 class="govuk-heading-m">Contact details</h2>
+        <dl class="govuk-summary-list"> -->
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Email</dt>
+                <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitle|lower|replace(" ", "")|replace(".", "")}}.co.uk</a></dd>
             </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Telephone</dt>
+                <dd class="govuk-summary-list__value">078&nbsp;7856&nbsp;9856</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Website</dt>
+                <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitle|lower|replace(" ", "")|replace(".", "")}}.co.uk</a></dd>
+            </div>
+
             <!-- <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">About</dt>
                 <dd class="govuk-summary-list__value">
@@ -81,33 +99,29 @@
                     </details>
                 </dd>
             </div> -->
-        <!-- </dl>
 
-        <h2 class="govuk-heading-m">Contact details</h2>
-        <dl class="govuk-summary-list"> -->
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Email</dt>
-                <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitle|lower|replace(" ", "")|replace(".", "")}}.co.uk</a></dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Telephone</dt>
-                <dd class="govuk-summary-list__value">078&nbsp;7856&nbsp;9856</dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">URL</dt>
-                <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitle|lower|replace(" ", "")|replace(".", "")}}.co.uk</a></dd>
-            </div>
         </dl>
 
 
 
-        <h2 class="govuk-heading-l govuk-!-margin-top-8">Apprenticeship training courses</h2>
+        <h2 class="govuk-heading-l govuk-!-margin-top-8">Apprenticeship training courses ({{myData.displayCount}})</h2>
+
+        {% for _standard in myData.standards.list %}
+            {% if _standard.matchesProvider %}
+            <div class=" govuk-!-margin-bottom-3" data-list-item data-search-data="{{_standardData|dump}}" >
+                <p class="govuk-body govuk-!-margin-bottom-2">
+                    <a href="standard?standard={{_standard.larsCode}}&provider={{_selectedProvider.id}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a>
+                </p>
+            </div>
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+            {% endif %}
+        {% endfor %}
 
 
-        <br><br><br><br><br><br>
+        <!-- <br><br><br><br><br><br> -->
 
         <!-- <h2 class="govuk-heading-m">Provider</h2> -->
-        <ol class="govuk-list govuk-list--number" style="color:red">
+        <ol class="govuk-list govuk-list--number" style="color:red; display: none;">
             <li style="text-decoration: line-through">Provider name</li>
             <!-- <li>Trading name (if exist)</li> -->
             <!-- <li>UKPRN</li> -->

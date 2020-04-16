@@ -805,14 +805,24 @@ module.exports = function (router,_myData) {
     // Provider
     router.get('/' + version + '/provider', function (req, res) {
 
-        req.session.myData.provider = req.query.provider || "1"
+        req.session.myData.provider = req.query.provider || 1
+        req.session.myData.displayCount = 0
 
         var _selectedProvider = {},
-            _providers = req.session.myData["providers-new"].list
+            _providers = req.session.myData["providers-new"].list,
+            _standards = req.session.myData.standards.list
         for (var i = 0; i < _providers.length; i++) {
             var _thisProvider = _providers[i]
             if(req.session.myData.provider == _thisProvider.id){
                 _selectedProvider = _thisProvider
+            }
+        }
+        for (var i = 0; i < _standards.length; i++) {
+            var _thisStandard = _standards[i]
+            _thisStandard.matchesProvider = false
+            if(_selectedProvider.courses.includes(_thisStandard.larsCode)) {
+                req.session.myData.displayCount++
+                _thisStandard.matchesProvider = true
             }
         }
         

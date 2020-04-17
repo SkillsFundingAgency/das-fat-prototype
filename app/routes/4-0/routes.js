@@ -419,19 +419,16 @@ module.exports = function (router,_myData) {
         if(_locationQ || _locationQ == ""){
             _locationQ = _locationQ.trim()
             if(_locationQ != ""){
-
                 var _exactMatch = false
                 // City
                 for (var i = 0; i < req.session.myData.citiesAutocompleteList.length; i++) {
                     var _thisCity = req.session.myData.citiesAutocompleteList[i]
-                    // if(!_exactMatch){
-                        if(_locationQ.toUpperCase() == _thisCity.toUpperCase()){
-                            _exactMatch = true
-                        } else if(_thisCity.toUpperCase().startsWith(_locationQ.toUpperCase())){
-                            _locationQ = _thisCity
-                            _exactMatch = true
-                        }
-                    // }
+                    if(_locationQ.toUpperCase() == _thisCity.toUpperCase()){
+                        _exactMatch = true
+                    } else if(_thisCity.toUpperCase().startsWith(_locationQ.toUpperCase())){
+                        _locationQ = _thisCity
+                        _exactMatch = true
+                    }
                 }
                 // Postcode
                 var Request = require("request")
@@ -771,6 +768,7 @@ module.exports = function (router,_myData) {
     router.get('/' + version + '/provider', function (req, res) {
 
         req.session.myData.provider = req.query.provider || 1
+        req.session.myData.standard = req.query.standard || 1
         req.session.myData.displayCount = 0
 
         var _selectedProvider = {},
@@ -790,10 +788,56 @@ module.exports = function (router,_myData) {
                 _thisStandard.matchesProvider = true
             }
         }
+
+
+        //Location reset/setup
+        req.session.myData.locationapplied = false
+        req.session.myData.location = ""
+        var _locationQ = req.query.location
+        if(_locationQ || _locationQ == ""){
+            _locationQ = _locationQ.trim()
+            if(_locationQ != ""){
+                var _exactMatch = false
+                // City
+                for (var i = 0; i < req.session.myData.citiesAutocompleteList.length; i++) {
+                    var _thisCity = req.session.myData.citiesAutocompleteList[i]
+                    if(_locationQ.toUpperCase() == _thisCity.toUpperCase()){
+                        _exactMatch = true
+                    } else if(_thisCity.toUpperCase().startsWith(_locationQ.toUpperCase())){
+                        _locationQ = _thisCity
+                        _exactMatch = true
+                    }
+                }
+                // Postcode
+                var Request = require("request")
+                Request.get('https://api.postcodes.io/postcodes/' + _locationQ + '/autocomplete', (error, response, body) => {
+
+                    if(JSON.parse(body).result && _locationQ.length > 1){
+                        _exactMatch = true
+                    }
+
+                    if(_exactMatch) {
+                        req.session.myData.location = _locationQ
+                        req.session.myData.locationapplied = true
+                        // req.session.myData.matcheslocationcount = 0
+                        // req.session.myData.displaycount = 0
+                        // req.session.myData.searchfilters.push({"value": _locationQ, "type": "location", "typeText": "Location"})
+                        // _needToMatchCount++
+                    }
+                    continueRendering()
+                });
+            } else {
+                continueRendering()
+            }
+        } else {
+            continueRendering()
+        }
         
-        res.render(version + '/provider', {
-            myData:req.session.myData
-        });
+        function continueRendering(){
+            res.render(version + '/provider', {
+                myData:req.session.myData
+            });
+        }
 
     });
 

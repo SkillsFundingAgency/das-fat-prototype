@@ -33,15 +33,17 @@ $govuk-assets-path: '/govuk/assets/';
 //FAT training options
 .fat-training-options li {
     display: inline;
-    padding-left: 27px;
+    padding-left: 25px;
     margin-right: 20px;
 }
 .fat-tick {
-    background: url(/public/images/icon-green-tick.png) 0 0 no-repeat;
+    background: url(/public/images/icon-green-tick.svg) 0 0 no-repeat;
+    background-size: 20px 20px;
 }
 .fat-cross {
     color: #626a6e;
-    background: url(/public/images/icon-red-cross.png) 0 0 no-repeat;
+    background: url(/public/images/icon-red-cross.svg) 0 0 no-repeat;
+    background-size: 15px 20px;
 }
 
 

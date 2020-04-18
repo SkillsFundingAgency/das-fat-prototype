@@ -218,7 +218,7 @@
             {% if _provider.search == true %}
             <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                    <a href="provider?provider={{_provider.id}}" class="govuk-link govuk-link--no-visited-state">{{_provider.name}}</a>
+                    <a href="provider?provider={{_provider.id}}{{_standardQuery}}" class="govuk-link govuk-link--no-visited-state">{{_provider.name}}</a>
                 </h2>
                 <ul class="govuk-list">
 
@@ -243,7 +243,7 @@
                         {% if _provider.ofsted == 0 %}
                         <strong class="govuk-tag govuk-tag--grey">Not yet rated</strong>
                         {% elif _provider.ofsted == 1 %}
-                        <strong class="govuk-tag govuk-tag--turquoise">Outstanding</strong>
+                        <strong class="govuk-tag govuk-tag--green">Outstanding</strong>
                         {% elif _provider.ofsted == 2 %}
                         <strong class="govuk-tag govuk-tag--green">Good</strong>
                         {% elif _provider.ofsted == 3 %}

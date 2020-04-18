@@ -767,19 +767,20 @@ module.exports = function (router,_myData) {
     // Provider
     router.get('/' + version + '/provider', function (req, res) {
 
-        req.session.myData.provider = req.query.provider || 1
-        req.session.myData.standard = req.query.standard || 1
-        req.session.myData.displayCount = 0
+        var _standards = req.session.myData.standards.list
 
+        // Provider
+        req.session.myData.provider = req.query.provider
         var _selectedProvider = {},
-            _providers = req.session.myData["providers-new"].list,
-            _standards = req.session.myData.standards.list
+            _providers = req.session.myData["providers-new"].list
         for (var i = 0; i < _providers.length; i++) {
             var _thisProvider = _providers[i]
             if(req.session.myData.provider == _thisProvider.id){
                 _selectedProvider = _thisProvider
             }
         }
+        // Provider - standards list
+        req.session.myData.displayCount = 0
         for (var i = 0; i < _standards.length; i++) {
             var _thisStandard = _standards[i]
             _thisStandard.matchesProvider = false
@@ -789,6 +790,18 @@ module.exports = function (router,_myData) {
             }
         }
 
+        //Selected standard
+        req.session.myData.standard = req.query.standard
+        req.session.myData.standardsearchapplied = false
+        if(req.session.myData.standard){
+            for (var i = 0; i < _standards.length; i++) {
+                var _thisStandard = _standards[i]
+                if(_thisStandard.larsCode == req.session.myData.standard || _thisStandard.autoCompleteString.toUpperCase() == req.session.myData.standard.toUpperCase()){
+                    req.session.myData.standardsearchapplied = true
+                    req.session.myData.selectedStandard = _thisStandard
+                }
+            }
+        }
 
         //Location reset/setup
         req.session.myData.locationapplied = false

@@ -30,6 +30,20 @@ $govuk-assets-path: '/govuk/assets/';
     display:none
 }
 
+//FAT training options
+.fat-training-options li {
+    display: inline;
+    padding-left: 27px;
+    margin-right: 20px;
+}
+.fat-tick {
+    background: url(/public/images/icon-green-tick.png) 0 0 no-repeat;
+}
+.fat-cross {
+    color: #626a6e;
+    background: url(/public/images/icon-red-cross.png) 0 0 no-repeat;
+}
+
 
 
 // Das highlight box

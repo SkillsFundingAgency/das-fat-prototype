@@ -4,13 +4,6 @@
 <!-- Display count -->
 {% set _displayCount = myData.displaycount %}
 
-<!-- Count for as you type -->
-{% set _asYouTypeCount = myData.matchesfilterscount %}
-{% if myData.searchapplied %}
-    {% set _asYouTypeCount = _displayCount %}
-{% endif %}
-
-
 <!-- Selected route -->
 {% set _selectedRoute = {} %}
 {% for _route in myData.routes.list %}
@@ -246,19 +239,6 @@
 
 {% block pageScripts %}
 <script>
-
     filterVisibilityToggle({{_filterOrSearchApplied | dump | safe }})
-
-
-    // $(document).ready(function() {
-    //     asYouTypeFilter(
-    //         {{_asYouTypeCount}},
-    //         "result",
-    //         "results",
-    //         {{myData.clearLocalStorage}},
-    //         {{myData.searchapplied}},
-    //         {{myData.searchTerm|dump|safe}}
-    //     )
-    // });
 </script>
 {% endblock pageScripts %}

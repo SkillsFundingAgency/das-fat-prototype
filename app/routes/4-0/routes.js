@@ -369,10 +369,64 @@ module.exports = function (router,_myData) {
     router.get('/' + version + '/standard', function (req, res) {
 
         req.session.myData.standard = req.query.standard || "1"
+        req.session.myData.needToMatchCount = 1
+        req.session.myData.displaycountproviders = 0
+
+        //Location reset/setup
+        if(req.query.location || req.session.myData.location != ""){
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
+            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
+                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
+                if(cityMatch(req) || _postCodeMatch) {
+                    req.session.myData.locationapplied = true
+                    req.session.myData.location = req.session.myData.locationTemp
+                    req.session.myData.needToMatchCount++
+                } else {
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
+                }
+                continueRendering()
+            });
+        } else {
+            continueRendering()
+        }
         
-        res.render(version + '/standard', {
-            myData:req.session.myData
-        });
+        function continueRendering(){
+
+            req.session.myData["providers-new"].list.forEach(function(_provider, index) {
+                
+                var _deliversStandard = false
+                req.session.myData.hasAMatchcount = 0
+
+                //STANDARD
+                if(_provider.courses.includes(parseInt(req.session.myData.standard))){
+                    _deliversStandard = true
+                    req.session.myData.hasAMatchcount++
+                }
+
+                //LOCATION
+                if(req.session.myData.locationapplied) {
+                    if(_deliversStandard && (_provider.national || _provider.locationmatch)){
+                        req.session.myData.hasAMatchcount++
+                    }
+                }
+
+                //MATCHES ALL IT NEEDS TO?
+                if(req.session.myData.needToMatchCount == req.session.myData.hasAMatchcount){
+                    req.session.myData.displaycountproviders++
+                }
+
+            });
+
+            res.render(version + '/standard', {
+                myData:req.session.myData
+            });
+        }
 
     });
 

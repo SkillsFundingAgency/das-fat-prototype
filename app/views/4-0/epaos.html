@@ -169,6 +169,19 @@
 
     </div>
     <div class="govuk-grid-column-two-thirds">
+
+        {% if myData.locationapplied %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Your location</h2>
+            <p class="govuk-body"><span style="margin-right: 10px">{{myData.location}}</span> <a href="epaos?{{_sortQuery}}{{_standardQuery}}{{_searchQuery}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;your&nbsp;location</a></p>
+        </div>
+        {% else %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Your location</h2>
+            <p class="govuk-body govuk-!-margin-bottom-2">Show only assessment organisations who offer this training in your location.</p>
+            <p class="govuk-body"><a href="#search-location" class="govuk-link govuk-link--no-visited-state" >Enter&nbsp;your&nbsp;location</a></p>
+        </div>
+        {% endif %}
        
         <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
 

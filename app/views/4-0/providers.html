@@ -177,7 +177,6 @@
         {% if myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Your location</h2>
-            <!-- <p class="govuk-body govuk-!-margin-bottom-2">Showing only providers who offer this training in your location.</p> -->
             <p class="govuk-body"><span style="margin-right: 10px">{{myData.location}}</span> <a href="providers?{{_sortQuery}}{{_searchQuery}}{{_standardQuery}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;your&nbsp;location</a></p>
         </div>
         {% else %}
@@ -223,7 +222,7 @@
             {% if _provider.search == true %}
             <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                    <a href="provider?provider={{_provider.id}}{{_standardQuery}}{{_locationQuery}}" class="govuk-link govuk-link--no-visited-state">{{_provider.name}}</a>
+                    <a href="provider?provider={{_provider.id}}{{_standardQuery}}" class="govuk-link govuk-link--no-visited-state">{{_provider.name}}</a>
                 </h2>
                 <ul class="govuk-list">
 

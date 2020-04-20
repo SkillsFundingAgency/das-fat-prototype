@@ -30,6 +30,17 @@ $govuk-assets-path: '/govuk/assets/';
     display:none
 }
 
+//FAT grey panel
+.fat-panel {
+    padding: 20px 20px 1px 20px;
+}
+.fat-panel-blocked {
+    background: #f3f2f1;
+}
+.fat-panel-bordered {
+    border: 1px solid #b1b4b6;
+}
+
 //FAT training options
 .fat-training-options li {
     display: inline;
@@ -44,6 +55,18 @@ $govuk-assets-path: '/govuk/assets/';
     color: #626a6e;
     background: url(/public/images/icon-red-cross.svg) 0 0 no-repeat;
     background-size: 15px 20px;
+}
+//FAT availaibility
+.fat-availability {
+    padding-left: 30px;
+}
+.fat-availability.fat-tick {
+    color: #00703c;
+    background-size: 25px 23px;
+}
+.fat-availability.fat-cross {
+    color: #d4351c;
+    background-size: 20px 23px;
 }
 
 

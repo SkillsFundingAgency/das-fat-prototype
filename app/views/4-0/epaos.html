@@ -101,7 +101,7 @@
                             <h2 class="govuk-heading-m">Selected filters</h2>
                         </div>
                         <div class="fat-filter__heading-action">
-                            <p><a class="govuk-link govuk-link--no-visited-state" href="epaos?{{_sortQuery}}{{_standardQuery}}">Clear</a></p>
+                            <p><a class="govuk-link govuk-link--no-visited-state" href="epaos?{{_sortQuery}}{{_standardQuery}}&location">Clear</a></p>
                         </div>
                     </div>
 
@@ -110,7 +110,7 @@
                     {% for _filter in myData.searchfilters %}
                         {% set _url = "epaos?" + _sortQuery + _locationQuery + _standardQuery %}
                         {% if _filter.type == "location" %}
-                            {% set _url = "epaos?" + _sortQuery + _searchQuery + _standardQuery %}
+                            {% set _url = "epaos?" + _sortQuery + _searchQuery + _standardQuery + "&location" %}
                         {% endif %}
 
                     <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText}}</h3>

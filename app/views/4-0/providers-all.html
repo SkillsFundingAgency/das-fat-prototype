@@ -32,7 +32,7 @@
 {% if myData.searchapplied == true %}
     {% set _searchQuery = "&q=" + myData.searchTerm %}
 {% endif %}
-{% if myData.locationapplied == true and myData.standardsearchapplied == true %}
+{% if myData.locationapplied == true %}
     {% set _locationQuery = "&location=" + myData.location %}
 {% endif %}
 {% if myData.sortapplied == true %}
@@ -43,7 +43,7 @@
 {% endif %}
 
 <!-- Filters -->
-{% set _filtersApplied = myData.searchapplied or myData.standardsearchapplied %}
+{% set _filtersApplied = myData.searchapplied or myData.standardsearchapplied or myData.locationapplied %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
@@ -98,7 +98,7 @@
                             <h2 class="govuk-heading-m">Selected filters</h2>
                         </div>
                         <div class="fat-filter__heading-action">
-                            <p><a class="govuk-link govuk-link--no-visited-state" href="providers-all?{{_sortQuery}}">Clear</a></p>
+                            <p><a class="govuk-link govuk-link--no-visited-state" href="providers-all?{{_sortQuery}}&location">Clear</a></p>
                         </div>
                     </div>
 
@@ -109,7 +109,7 @@
                         {% if _filter.type == "standard" %}
                             {% set _url = "providers-all?" + _sortQuery + _searchQuery + _locationQuery %}
                         {% elif _filter.type == "location" %}
-                            {% set _url = "providers-all?" + _sortQuery + _searchQuery + _standardQuery %}
+                            {% set _url = "providers-all?" + _sortQuery + _searchQuery + _standardQuery + "&location" %}
                         {% endif %}
 
                     <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText}}</h3>
@@ -160,7 +160,6 @@
                     </form>
 
                     <!-- Location -->
-                    {% if myData.standardsearchapplied == true %}
                     <form action="providers-all" method="GET" >
                         <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
                             <legend style="display:none">[Enter your location]</legend>
@@ -177,7 +176,6 @@
                         <input type="hidden" value="{{myData.standardSearchTerm}}" name="standard" >
                         <input type="hidden" value="{{myData.searchTerm}}" name="q" >
                     </form>
-                    {% endif %}
 
                 </div>
 
@@ -187,6 +185,20 @@
 
     </div>
     <div class="govuk-grid-column-two-thirds">
+
+        {% if myData.locationapplied %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Your location</h2>
+            <!-- <p class="govuk-body govuk-!-margin-bottom-2">Showing only providers who offer training in your location.</p> -->
+            <p class="govuk-body"><span style="margin-right: 10px">{{myData.location}}</span> <a href="providers-all?{{_sortQuery}}{{_standardQuery}}{{_searchQuery}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;your&nbsp;location</a></p>
+        </div>
+        {% else %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Your location</h2>
+            <p class="govuk-body govuk-!-margin-bottom-2">Show only providers who offer training in your location.</p>
+            <p class="govuk-body"><a href="#search-location" class="govuk-link govuk-link--no-visited-state" >Enter&nbsp;your&nbsp;location</a></p>
+        </div>
+        {% endif %}
 
         <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
 
@@ -224,7 +236,9 @@
 
                     {% if myData.locationapplied %}
                     <li><span>{{_provider.distance}}</span> miles</li>
+                    {% endif %}
 
+                    {% if myData.locationapplied and myData.standardsearchapplied %}
                     <li>
                         <ul class="govuk-list fat-training-options govuk-!-font-size-16" >
                             <li class="fat-tick">day&nbsp;release</li>

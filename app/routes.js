@@ -167,12 +167,18 @@ _myData["providers-new"].list.forEach(function(_provider, index) {
 
 // Set epaos
 _myData.epaoAutocompleteList = []
+var _locationmatchFalses = 0
 _myData.epaos.list.forEach(function(_epao, index) {
     var _autoCompleteString = _epao.name
     _epao.autoCompleteString = _autoCompleteString
     _myData.epaoAutocompleteList.push(_autoCompleteString);
+    //Set location matches
+    var _locationmatch = [true,false][Math.floor(Math.random()*2)];
+    if(_locationmatch == false){
+        _locationmatch = (_locationmatchFalses++ > 24)
+    }
+    _epao.locationmatch = _locationmatch  
 });
-
 // Set cities list
 _myData.citiesAutocompleteList = []
 require(__dirname + '/data/cities.json').list.forEach(function(_city, index) {

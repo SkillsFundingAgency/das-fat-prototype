@@ -141,6 +141,7 @@ module.exports = function (router,_myData) {
         }
     }
 
+    // Check a standard if it matches search term
     function checkStandardSearchTerm(req, _item, _searchesToDo){
         
         _item.search = false
@@ -183,8 +184,30 @@ module.exports = function (router,_myData) {
         }
     }
 
+    // Set the selected standard
+    function setSelectedStandard(req, _standardParameter){
+        req.session.myData.standardsearchapplied = false
+        req.session.myData.selectedStandard = {}
+        req.session.myData.standard = ""
+        if(_standardParameter){
+            for (var i = 0; i < req.session.myData.standards.list.length; i++) {
+                var _thisStandard = req.session.myData.standards.list[i]
+                if(_thisStandard.larsCode == _standardParameter || _thisStandard.autoCompleteString.toUpperCase() == _standardParameter.toUpperCase()){
+                    req.session.myData.standardsearchapplied = true
+                    req.session.myData.selectedStandard = _thisStandard
+                    req.session.myData.standard = _thisStandard.larsCode
+                }
+            }
+        }
+    }
+
     function reset(req){
         req.session.myData = JSON.parse(JSON.stringify(_myData))
+
+        // Filters defaults
+        req.session.myData.location = ""
+        // req.session.myData.standard = ""
+        // req.session.myData.provider = ""
     }
 
     // Every GET and POST
@@ -386,18 +409,24 @@ module.exports = function (router,_myData) {
         searchFilterSetup(req,"Training provider name")
 
         //Location reset/setup
-        req.session.myData.locationapplied = false
-        req.session.myData.location = ""
-        if(req.query.location && req.session.myData.standardfilterapplied){
-            req.session.myData.locationTemp = req.query.location.trim()
+        if(req.query.location || req.session.myData.location != ""){
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
             require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
                 var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
                 if(cityMatch(req) || _postCodeMatch) {
                     req.session.myData.displaycount = 0
                     req.session.myData.needToMatchCount++
-                    req.session.myData.location = req.session.myData.locationTemp
                     req.session.myData.locationapplied = true
+                    req.session.myData.location = req.session.myData.locationTemp
                     req.session.myData.searchfilters.push({"value": req.session.myData.location, "type": "location", "typeText": "Location"})
+                } else {
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
                 }
                 continueRendering()
             });
@@ -485,18 +514,24 @@ module.exports = function (router,_myData) {
         standardFilterSetup(req)
 
         //Location filter reset/setup
-        req.session.myData.locationapplied = false
-        req.session.myData.location = ""
-        if(req.query.location && req.session.myData.standardsearchapplied){
-            req.session.myData.locationTemp = req.query.location.trim()
+        if(req.query.location || req.session.myData.location != ""){
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
             require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
                 var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
                 if(cityMatch(req) || _postCodeMatch) {
                     req.session.myData.displaycount = 0
                     req.session.myData.needToMatchCount++
-                    req.session.myData.location = req.session.myData.locationTemp
                     req.session.myData.locationapplied = true
+                    req.session.myData.location = req.session.myData.locationTemp
                     req.session.myData.searchfilters.push({"value": req.session.myData.location, "type": "location", "typeText": "Location"})
+                } else {
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
                 }
                 continueRendering()
             });
@@ -509,8 +544,6 @@ module.exports = function (router,_myData) {
             // FILTER providers
             _providers.forEach(function(_provider, index) {
 
-                var _deliversStandard = false
-    
                 req.session.myData.hasAMatchcount = 0
 
                 // Reset each provider
@@ -520,7 +553,6 @@ module.exports = function (router,_myData) {
                 if(req.session.myData.standardsearchapplied) {
                     _provider.search = false
                     if(_provider.courses.includes(req.session.myData.selectedStandard.larsCode)){
-                        _deliversStandard = true
                         req.session.myData.hasAMatchcount++
                     }
                 }
@@ -528,7 +560,7 @@ module.exports = function (router,_myData) {
                 //LOCATION
                 if(req.session.myData.locationapplied) {
                     _provider.search = false
-                    if(_deliversStandard && (_provider.national || _provider.locationmatch)){
+                    if(_provider.national || _provider.locationmatch){
                         req.session.myData.hasAMatchcount++
                     }
                 }
@@ -573,12 +605,10 @@ module.exports = function (router,_myData) {
 
         // Provider
         req.session.myData.provider = req.query.provider
-        var _selectedProvider = {},
-            _providers = req.session.myData["providers-new"].list
-        for (var i = 0; i < _providers.length; i++) {
-            var _thisProvider = _providers[i]
+        for (var i = 0; i < req.session.myData["providers-new"].list.length; i++) {
+            var _thisProvider = req.session.myData["providers-new"].list[i]
             if(req.session.myData.provider == _thisProvider.id){
-                _selectedProvider = _thisProvider
+                req.session.myData.selectedProvider = _thisProvider
             }
         }
         // Provider - standards list
@@ -586,35 +616,31 @@ module.exports = function (router,_myData) {
         for (var i = 0; i < _standards.length; i++) {
             var _thisStandard = _standards[i]
             _thisStandard.matchesProvider = false
-            if(_selectedProvider.courses.includes(_thisStandard.larsCode)) {
+            if(req.session.myData.selectedProvider.courses.includes(_thisStandard.larsCode)) {
                 req.session.myData.displaycount++
                 _thisStandard.matchesProvider = true
             }
         }
 
         //Selected standard
-        req.session.myData.standardsearchapplied = false
-        req.session.myData.standard = req.query.standard
-        if(req.session.myData.standard){
-            for (var i = 0; i < _standards.length; i++) {
-                var _thisStandard = _standards[i]
-                if(_thisStandard.larsCode == req.session.myData.standard || _thisStandard.autoCompleteString.toUpperCase() == req.session.myData.standard.toUpperCase()){
-                    req.session.myData.standardsearchapplied = true
-                    req.session.myData.selectedStandard = _thisStandard
-                }
-            }
-        }
+        setSelectedStandard(req,req.query.standard)
 
         //Location reset/setup
-        req.session.myData.locationapplied = false
-        req.session.myData.location = ""
-        if(req.query.location && req.session.myData.standardsearchapplied){
-            req.session.myData.locationTemp = req.query.location.trim()
+        if(req.query.location || req.session.myData.location != ""){
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
             require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
                 var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
                 if(cityMatch(req) || _postCodeMatch) {
-                    req.session.myData.location = req.session.myData.locationTemp
                     req.session.myData.locationapplied = true
+                    req.session.myData.location = req.session.myData.locationTemp
+                } else {
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
                 }
                 continueRendering()
             });
@@ -663,10 +689,13 @@ module.exports = function (router,_myData) {
         searchFilterSetup(req,"Assessment organisation name")
 
         //Location reset/setup
-        req.session.myData.locationapplied = false
-        req.session.myData.location = ""
-        if(req.query.location && req.session.myData.standardfilterapplied){
-            req.session.myData.locationTemp = req.query.location.trim()
+        if((req.query.location || req.session.myData.location != "") && req.session.myData.standardfilterapplied){
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
             require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
                 var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
                 if(cityMatch(req) || _postCodeMatch) {
@@ -675,6 +704,9 @@ module.exports = function (router,_myData) {
                     req.session.myData.location = req.session.myData.locationTemp
                     req.session.myData.locationapplied = true
                     req.session.myData.searchfilters.push({"value": req.session.myData.location, "type": "location", "typeText": "Location"})
+                } else {
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
                 }
                 continueRendering()
             });
@@ -708,24 +740,7 @@ module.exports = function (router,_myData) {
                 //LOCATION
                 if(req.session.myData.locationapplied) {
                     _epao.search = false
-
-                    var _locationMatch = false
-                
-                    if(_deliversStandard){
-                        if(req.session.myData.selectedStandard.epaos.number <= 7) {
-                            _locationMatch = true
-                        } else if(req.session.myData.selectedStandard.epaos.number > 7 && req.session.myData.selectedStandard.epaos.number < 12){
-                            if(_epaoIndex > req.session.myData.selectedStandard.epaos.number - 3){
-                                _locationMatch = true
-                            }
-                        } else if(req.session.myData.selectedStandard.epaos.number >= 12){
-                            if(_epaoIndex < req.session.myData.selectedStandard.epaos.number - 5){
-                                _locationMatch = true
-                            }
-                        }
-                    }
-
-                    if(_locationMatch){
+                    if(_epao.locationmatch){
                         req.session.myData.hasAMatchcount++
                     }
                 }
@@ -781,10 +796,13 @@ module.exports = function (router,_myData) {
         standardFilterSetup(req)
 
         //Location reset/setup
-        req.session.myData.locationapplied = false
-        req.session.myData.location = ""
-        if(req.query.location && req.session.myData.standardsearchapplied){
-            req.session.myData.locationTemp = req.query.location.trim()
+        if(req.query.location || req.session.myData.location != ""){
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
             require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
                 var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
                 if(cityMatch(req) || _postCodeMatch) {
@@ -793,6 +811,9 @@ module.exports = function (router,_myData) {
                     req.session.myData.location = req.session.myData.locationTemp
                     req.session.myData.locationapplied = true
                     req.session.myData.searchfilters.push({"value": req.session.myData.location, "type": "location", "typeText": "Location"})
+                } else {
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
                 }
                 continueRendering()
             });
@@ -803,8 +824,7 @@ module.exports = function (router,_myData) {
         function continueRendering(){
             req.session.myData.epaos.list.forEach(function(_epao, index) {
 
-                var _deliversStandard = false,
-                    _epaoIndex = 0
+                var _epaoIndex = 0
 
                 req.session.myData.hasAMatchcount = 0
 
@@ -817,7 +837,6 @@ module.exports = function (router,_myData) {
                     req.session.myData.selectedStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
                         if(_epaoOnStandard.toUpperCase() == _epao.name.toUpperCase()){
                             _epaoIndex = index
-                            _deliversStandard = true
                             req.session.myData.hasAMatchcount++
                         }
                     });
@@ -826,25 +845,7 @@ module.exports = function (router,_myData) {
                 //LOCATION
                 if(req.session.myData.locationapplied) {
                     _epao.search = false
-
-                    var _locationMatch = false
-                
-                    if(_deliversStandard){
-                        // _locationMatch = true
-                        if(req.session.myData.selectedStandard.epaos.number <= 7) {
-                            _locationMatch = true
-                        } else if(req.session.myData.selectedStandard.epaos.number > 7 && req.session.myData.selectedStandard.epaos.number < 12){
-                            if(_epaoIndex > req.session.myData.selectedStandard.epaos.number - 3){
-                                _locationMatch = true
-                            }
-                        } else if(req.session.myData.selectedStandard.epaos.number >= 12){
-                            if(_epaoIndex < req.session.myData.selectedStandard.epaos.number - 5){
-                                _locationMatch = true
-                            }
-                        }
-                    }
-
-                    if(_locationMatch){
+                    if(_epao.locationmatch){
                         req.session.myData.hasAMatchcount++
                     }
                 }

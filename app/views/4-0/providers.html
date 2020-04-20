@@ -79,6 +79,7 @@
 
         <p class="govuk-body govuk-!-margin-bottom-8"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{myData.standard}}">Overview of {{_standardTitle|safe}}</a></p>
 
+      
     </div>
 </div>
 
@@ -104,7 +105,7 @@
                             <h2 class="govuk-heading-m">Selected filters</h2>
                         </div>
                         <div class="fat-filter__heading-action">
-                            <p><a class="govuk-link govuk-link--no-visited-state" href="providers?{{_sortQuery}}{{_standardQuery}}">Clear</a></p>
+                            <p><a class="govuk-link govuk-link--no-visited-state" href="providers?{{_sortQuery}}{{_standardQuery}}&location">Clear</a></p>
                         </div>
                     </div>
 
@@ -113,7 +114,7 @@
                     {% for _filter in myData.searchfilters %}
                         {% set _url = "providers?" + _sortQuery + _locationQuery + _standardQuery %}
                         {% if _filter.type == "location" %}
-                            {% set _url = "providers?" + _sortQuery + _searchQuery + _standardQuery %}
+                            {% set _url = "providers?" + _sortQuery + _searchQuery + _standardQuery + "&location" %}
                         {% endif %}
 
                     <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText}}</h3>
@@ -171,8 +172,26 @@
 
     </div>
     <div class="govuk-grid-column-two-thirds">
+
+
+        {% if myData.locationapplied %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Your location</h2>
+            <!-- <p class="govuk-body govuk-!-margin-bottom-2">Showing only providers who offer this training in your location.</p> -->
+            <p class="govuk-body"><span style="margin-right: 10px">{{myData.location}}</span> <a href="providers?{{_sortQuery}}{{_searchQuery}}{{_standardQuery}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;your&nbsp;location</a></p>
+        </div>
+        {% else %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Your location</h2>
+            <p class="govuk-body govuk-!-margin-bottom-2">Show only providers who offer this training in your location.</p>
+            <p class="govuk-body"><a href="#search-location" class="govuk-link govuk-link--no-visited-state" >Enter&nbsp;your&nbsp;location</a></p>
+        </div>
+        {% endif %}
+
        
         <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
+
+        
 
         <!-- Sort -->
         {% if myData.locationapplied == true and myData.displaycount > 1 %}
@@ -190,6 +209,8 @@
             <span class="govuk-!-font-weight-bold">Name</span>
         </p>
         {% endif %}
+
+
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
        
         <!-- 
@@ -394,4 +415,4 @@
 
 </script>
 
-{% endblock pageScripts %}
+{% endblock %}

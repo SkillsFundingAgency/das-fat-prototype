@@ -2,12 +2,7 @@
 {% set serviceName = "Find apprenticeship training" %}
 
 <!-- Provider selected -->
-{% set _selectedProvider = {} %}
-{% for _provider in myData["providers-new"].list %}
-    {% if myData.provider == _provider.id %}
-        {% set _selectedProvider = _provider %}
-    {% endif %}
-{% endfor %}
+{% set _selectedProvider = myData.selectedProvider %}
 {% set _providerTitle = _selectedProvider.name %}
 {% set _providerTitleForContact = _providerTitle|lower|replace(" ", "")|replace(".", "")|replace("(", "")|replace(")", "")|truncate(15, true, "") %}
 
@@ -30,15 +25,6 @@
 {% block content %}
 
 <style>
-    .fat-panel {
-        padding: 20px 20px 1px 20px;
-    }
-    .fat-panel-blocked {
-        background: #f3f2f1;
-    }
-    .fat-panel-bordered {
-        border: 1px solid #b1b4b6;
-    }
     #search-location {
         height: 40px;
         border-right: 0;
@@ -101,20 +87,26 @@
         {% if myData.standardsearchapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             <span class="govuk-caption-l">Apprenticeship training course</span>
-            <h2 class="govuk-heading-l govuk-!-margin-bottom-5">{{_standardTitle | safe}}</h2>
+            <h2 class="govuk-heading-l govuk-!-margin-bottom-3">{{_standardTitle | safe}}</h2>
+            <p class="govuk-body govuk-!-margin-bottom-5"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{_selectedStandard.larsCode}}">Overview of {{_standardTitle|safe}}</a></p>
             <!-- <p class="govuk-body govuk-!-margin-bottom-1">Achievement rate: <span class="govuk-!-font-weight-bol">68%</span> / National average: 64%</p> -->
 
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Your location</h2>
 
             {% if myData.locationapplied %}
-
-                <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}" class="govuk-link govuk-link--no-visited-state" >Change&nbsp;your&nbsp;location</a></p>
-
-                <p class="govuk-body govuk-!-margin-bottom-2">
+                <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;your&nbsp;location</a></p>
+                <!-- <p class="govuk-body govuk-!-margin-bottom-2">
                     {% if _selectedProvider.locationmatch %}
                     <strong class="govuk-tag govuk-tag--green">Available</strong>
                     {% else %}
                     <strong class="govuk-tag govuk-tag--red">Not available</strong>
+                    {% endif %}
+                </p> -->
+                <p class="govuk-body fat-availability {% if _selectedProvider.locationmatch %}fat-tick{% else %}fat-cross{% endif %}" >
+                    {% if _selectedProvider.locationmatch %}
+                    Available
+                    {% else %}
+                    Not available
                     {% endif %}
                 </p>
 
@@ -131,7 +123,6 @@
                     <li class="fat-cross">at&nbsp;your&nbsp;location</li>
                     {% endif %}
                 </ul>
-
                 <details class="govuk-details" data-module="govuk-details">
                     <summary class="govuk-details__summary">
                     <span class="govuk-details__summary-text govuk-!-font-size-16">
@@ -164,8 +155,9 @@
                     </div>
                 </details>
                 {% else %}
-                <p class="govuk-body govuk-!-margin-top-4 govuk-!-margin-bottom-0">There are other providers who offer this training in your location.</p>
-                <p class="govuk-body"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">View other providers</a></p>
+                <p class="govuk-body govuk-!-margin-top-4 govuk-!-margin-bottom-0"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">View other providers</a></p>
+                <p class="govuk-body">There are other providers who offer this training in your location.</p>
+                
                 {% endif %}
 
             {% else %}
@@ -203,14 +195,63 @@
                     <dt class="govuk-summary-list__key">Website</dt>
                     <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></dd>
                 </div>
+                <!-- <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Message</dt>
+                    <dd class="govuk-summary-list__value">
+                        <button class="govuk-button" data-module="govuk-button">
+                            Send message
+                        </button>
+                    </dd>
+                </div> -->
             </dl>
         </div>
+        {% elif myData.locationapplied %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Your location</h2>
+            <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;your&nbsp;location</a></p>
+
+            <!-- <p class="govuk-body govuk-!-margin-bottom-2">
+                {% if _selectedProvider.locationmatch %}
+                <strong class="govuk-tag govuk-tag--green">Available</strong>
+                {% else %}
+                <strong class="govuk-tag govuk-tag--red">Not available</strong>
+                {% endif %}
+            </p> -->
+            {% if _selectedProvider.locationmatch %}
+            <p class="govuk-body fat-availability fat-tick" >Available</p>
+            <p class="govuk-body">This provider offers {{myData.displaycount}} courses in your location.</p>
+            <!-- <p class="govuk-body">Select a course.</p> -->
+            {% else %}
+            <p class="govuk-body fat-availability fat-cross" >Not available</p>
+            <p class="govuk-body">This provider does not offer training in your location.</p>
+            {% endif %}
+        </div>
         {% else %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Your location</h2>
+            <!-- Enter location form -->
+            <p class="govuk-body">Check if this provider offers training in your location.</p>
+            <form action="provider" method="GET" class="govuk-!-width-three-quarters" >
+                <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
+                    <label for="search-location" class="govuk-label" >
+                        <span class="govuk-!-font-weight-bol">Enter your location</span>
+                    </label>
+                    <div class="search-input-wrapper">
+                        <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input ">
+                        <div class="search-input-submit-wrapper">
+                            <button type="submit" class="search-submit" id="search-location-submit">Enter location</button>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" value="{{_selectedStandard.larsCode}}" name="standard" >
+                <input type="hidden" value="{{_selectedProvider.id}}" name="provider" >
+            </form>
+        </div>
         <!-- <p class="govuk-body">Select a course to view available locations, training options and contact details.</p> -->
         {% endif %}
 
         <!-- General contact details -->
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">General contact details</h2>
+        <!-- <h2 class="govuk-heading-m govuk-!-margin-bottom-2">General contact details</h2> -->
         <!-- <p class="govuk-body govuk-!-margin-bottom-6">
             <a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a><br>
             078&nbsp;7856&nbsp;9856<br>
@@ -294,15 +335,19 @@
                 {% for _standard in myData.standards.list %}
                     {% if _standard.matchesProvider %}
                         <tr class="govuk-table__row">
-                            <td class="govuk-table__cell"><a href="provider?standard={{_standard.larsCode}}&provider={{_selectedProvider.id}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a></td>
+                            <td class="govuk-table__cell">
+                                <a href="provider?standard={{_standard.larsCode}}&provider={{_selectedProvider.id}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a>
+                            </td>
                             {% if myData.locationapplied %}
-                            <!-- <td class="govuk-table__cell">
-                                {% if _selectedProvider.locationmatch %}
-                                <strong class="govuk-tag govuk-tag--green">Available</strong>
-                                {% else %}
-                                <strong class="govuk-tag govuk-tag--red">Not available</strong>
-                                {% endif %}
-                            </td> -->
+                            <td class="govuk-table__cell">
+                                <p class="govuk-body govuk-!-margin-bottom-0 fat-availability {% if _selectedProvider.locationmatch %}fat-tick{% else %}fat-cross{% endif %} govuk-!-font-size-16" >
+                                    {% if _selectedProvider.locationmatch %}
+                                    Available
+                                    {% else %}
+                                    Not available
+                                    {% endif %}
+                                </p>
+                            </td>
                             {% endif %}
                             
                         </tr>
@@ -405,5 +450,4 @@
         locationInput.name = ''
     }
 </script>
-
 {% endblock %}

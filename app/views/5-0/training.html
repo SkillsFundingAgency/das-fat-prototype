@@ -1,0 +1,242 @@
+{% extends "layout.html" %}
+{% set serviceName = "Find apprenticeship training" %}
+
+<!-- Display count -->
+{% set _displayCount = myData.displaycount %}
+
+<!-- Selected route -->
+{% set _selectedRoute = {} %}
+{% for _route in myData.routes.list %}
+    {% if myData.route == _route.code %}
+        {% set _selectedRoute = _route %}
+    {% endif %}
+{% endfor %}
+
+{% set _filterOrSearchApplied = myData.levelfilterapplied or myData.routefilterapplied or myData.searchapplied %}
+
+<!-- Query strings (for use in hrefs) -->
+{% set _searchQuery = "" %}
+{% set _routefilterQuery = "" %}
+{% set _levelfilterQuery = "" %}
+{% set _sortQuery = "" %}
+{% if myData.searchapplied == true %}
+    {% set _searchQuery = "&q=" + myData.searchTerm %}
+{% endif %}
+{% if myData.routefilterapplied == true %}
+    {% set _routefilterQuery = "&route=" + myData.route %}
+{% endif %}
+{% if myData.levelfilterapplied == true %}
+    {% set _levelfilterQuery = "&level=" + myData.level %}
+{% endif %}
+{% if myData.sortapplied == true %}
+    {% set _sortQuery = "&sort=" + myData.sortby %}
+{% endif %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/breadcrumb.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <h1 class="govuk-heading-xl" >
+            Apprenticeship training courses
+        </h1>
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+
+        <!-- FILTERS  -->
+
+        <div class="fat-filter">
+
+            <div class="fat-filter__header">
+                <div class="fat-filter__header-title">
+                    <h2 class="govuk-heading-m">Filter</h2>
+                </div>
+                <div class="fat-filter__header-action">
+                </div>
+            </div>
+
+            <div class="fat-filter__content">
+
+                {% if _filterOrSearchApplied %}
+                <div class="fat-filter__selected">
+                    <div class="fat-filter__selected-heading">
+                        <div class="fat-filter__heading-title">
+                            <h2 class="govuk-heading-m">Selected filters</h2>
+                        </div>
+                        <div class="fat-filter__heading-action">
+                            <p><a class="govuk-link govuk-link--no-visited-state" href="training?{{_sortQuery}}">Clear</a></p>
+                        </div>
+                    </div>
+
+          
+                    <!-- For each filter type -->
+                    {% for _filter in myData.searchfilters %}
+                        {% set _url = "training?" + _sortQuery + _levelfilterQuery + _routefilterQuery %}
+                        {% if _filter.type == "route" %}
+                            {% set _url = "training?" + _sortQuery + _searchQuery + _levelfilterQuery %}
+                        {% elif _filter.type == "level" %}
+                            {% set _url = "training?" + _sortQuery + _searchQuery + _routefilterQuery %}
+                        {% endif %}
+                    <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText}}</h3>
+                    <ul class="fat-filter-tags">
+                        <li><a class="fat-filter__tag" href="{{_url}}"><span class="govuk-visually-hidden">Clear this filter</span> {{_filter.value}}</a></li>
+                    </ul>
+                    {% endfor %}
+                    
+                </div>
+                {% endif %}
+
+                <div class="fat-filter__options">
+
+                    <!-- Search box -->
+                    <form action="training" method="GET" >
+
+                        <button type="submit" class="govuk-button fat-filter__submit" id="filters-submit">Apply filters</button>
+
+                        <div class="govuk-form-group" data-list-search-filter >
+                            <label for="search-training" class="govuk-label" >
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Keywords</span>
+                            </label>
+                            <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-training" name="q" title="Search" class="govuk-input search-input" >
+                        </div>
+
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Sector</h2>
+                        <ul class="govuk-list govuk-!-font-size-16">
+                            <!-- <li>
+                                {% if myData.routefilterapplied == false %}
+                                All sectors
+                                {% else %}
+                                <a href="training?{{_sortQuery}}{{_searchQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state">All sectors</a>
+                                {% endif %}
+                            </li> -->
+                            {% for _route in myData.routes.list %}
+                            <li>
+                                <a href="training?route={{_route.code}}{{_sortQuery}}{{_searchQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Level</h2>
+                        <ul class="govuk-list govuk-!-font-size-16">
+                        <!-- <li>
+                            {% if myData.levelfilterapplied == false %}
+                            All levels
+                            {% else %}
+                            <a href="training?{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">All levels</a>
+                            {% endif %}
+                            </li> -->
+                            {% for _level in myData.levels2 %}
+                            <li>
+                                <a href="training?level={{_level.value}}{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">Level {{_level.value}} - {{_level.equiv2}}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+                        <p class="govuk-body govuk-!-font-size-16"><a class="govuk-link govuk-link--no-visited-state" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank">What levels mean (opens in new tab or window)</a></p>
+
+                        <input type="hidden" value="{{myData.route}}" name="route" >
+                        <input type="hidden" value="{{myData.level}}" name="level" >
+
+                        
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+
+        <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
+
+        <!-- Sort -->
+        {% if myData.searchapplied == true and _displayCount > 1 %}
+        <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
+            {% if myData.sortby == "name" %}
+            <a class="govuk-link govuk-link--no-visited-state" href="training?{{_levelfilterQuery}}{{_routefilterQuery}}{{_searchQuery}}&sort=relevance">Relevance</a>, 
+            <span class="govuk-!-font-weight-bold">Name</span>
+            {% else %}
+            <span class="govuk-!-font-weight-bold">Relevance</span>, 
+            <a class="govuk-link govuk-link--no-visited-state" href="training?{{_levelfilterQuery}}{{_routefilterQuery}}{{_searchQuery}}&sort=name">Name</a>
+            {% endif %}
+        </p>
+        {% elif _displayCount > 1 %}
+        <p class="govuk-body govuk-!-margin-bottom-6">Sorted by:
+            <span class="govuk-!-font-weight-bold">Name</span>
+        </p>
+        {% endif %}
+
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
+       
+
+        <!-- 
+            Standards list OR No results
+        -->
+        {% if _displayCount > 0 %}
+
+        <div data-list>
+            {% for _standard in myData.standards.list %}
+                {% if _standard.search == true %}
+                    {% set _standardData = [{"searchOn": _standard.autoCompleteString,"within": true,"exact": true},{"searchOn": _standard.jobRoles,"within": true,"exact": true}] %}
+                    <!-- overview -->
+                    {% set _overview = _standard.overviewOfRole|trim %}
+                    {% if _overview.slice(-1) != "." %}
+                        {% set _overview = _overview + "." %}
+                    {% endif %}
+                    <div class=" govuk-!-margin-bottom-3" data-list-item data-search-data="{{_standardData|dump}}" >
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+                            <a href="standard?standard={{_standard.larsCode}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a>
+                        </h2>
+                        <p class="govuk-body">{{_overview}}</p>
+                        <ul class="govuk-list">
+                            <!-- <li>{{_overview}}</li> -->
+                            <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Sector:</span> {{_standard.route}}</li>
+                            
+                            <!-- {% if _standard.integratedDegree == "non-degree qualification" %}
+                            <li><span class="govuk-!-font-weight-bold">Non-degree qualification</span></li>
+                            {% elif _standard.integratedDegree == "integrated degree" %}
+                            <li><span class="govuk-!-font-weight-bold">Integrated degree</span></li>
+                            {% elif _standard.integratedDegree == "non-integrated degree" %}
+                            <li><span class="govuk-!-font-weight-bold">Non-integrated degree</span></li>
+                            {% endif %}
+                            <li><span class="govuk-secondary-colour">Typical duration:</span> {{_standard.typicalDuration}} months</li>
+                            
+                            <li><span class="govuk-secondary-colour">Training providers:</span> {{_standard.providers.number}}</li> -->
+                        </ul>
+                        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-2">
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+       
+        {% else %}
+
+        <p class="govuk-body govuk-!-margin-top-4">No apprenticeship training courses for the selected filters.</p>
+
+        {% endif %}
+
+
+    </div>
+    
+</div>
+
+{% endblock %}
+
+
+{% block pageScripts %}
+<script>
+    filterVisibilityToggle({{_filterOrSearchApplied | dump | safe }})
+</script>
+{% endblock pageScripts %}

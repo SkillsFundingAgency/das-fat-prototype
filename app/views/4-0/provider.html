@@ -96,7 +96,7 @@
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Location of apprenticeship</h2>
 
             {% if myData.locationapplied %}
-                <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;the&nbsp;location</a></p>
+                <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
                 <!-- <p class="govuk-body govuk-!-margin-bottom-2">
                     {% if _matchesLocation %}
                     <strong class="govuk-tag govuk-tag--green">Available</strong>
@@ -209,7 +209,7 @@
         {% elif myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Location of apprenticeship</h2>
-            <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;the&nbsp;location</a></p>
+            <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
 
             <!-- <p class="govuk-body govuk-!-margin-bottom-2">
                 {% if _matchesLocation %}

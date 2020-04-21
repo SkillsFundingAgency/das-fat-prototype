@@ -3,6 +3,7 @@ function filterVisibilityToggle(_filtersApplied){
     var _viewIs = (jQuery(window).width() < 641) ? "mobile" : "desktop",
         _viewWas = _viewIs,
         _firstLoad = true,
+        _focusFilterPrompt = jQuery(".focus-field-prompt"),
         _filterContainer = jQuery(".fat-filter"),
         _filterHeader = jQuery(".fat-filter__header"),
         _filterToggleContainer = jQuery("<div class='fat-filter__togle-container closed'></div>"),
@@ -38,8 +39,12 @@ function filterVisibilityToggle(_filtersApplied){
     _toggleButton.on( "click", function() {
         hideShowPanel()
     });
+    _focusFilterPrompt.on( "click", function() {
+        hideShowPanel("justshow")
+        jQuery('html, body').animate({scrollTop: _filterContainer.offset().top - 50}, 20);
+    });
 
-    function hideShowPanel(){
+    function hideShowPanel(_justshow){
         if(!_optionsVisible || _viewIs == "desktop"){
             _toggleButton.text(_buttonTextOpen)
             _filterToggleContainer.removeClass("closed")
@@ -48,7 +53,7 @@ function filterVisibilityToggle(_filtersApplied){
             if(!_filtersApplied){
                 _filterHeader.show()
             } 
-        } else {
+        } else if(!_justshow) {
             _toggleButton.text(_buttonTextClosed)
             _filterToggleContainer.addClass("closed")
             _optionsVisible = false 

@@ -369,8 +369,16 @@ module.exports = function (router,_myData) {
     router.get('/' + version + '/standard', function (req, res) {
 
         req.session.myData.standard = req.query.standard || "1"
+        req.session.myData.selectedStandard = {}
+        for (var i = 0; i < req.session.myData.standards.list.length; i++) {
+            var _thisStandard = req.session.myData.standards.list[i]
+            if(_thisStandard.larsCode == req.session.myData.standard || _thisStandard.autoCompleteString.toUpperCase() == req.session.myData.standard.toUpperCase()){
+                req.session.myData.selectedStandard = _thisStandard
+            }
+        }
         req.session.myData.needToMatchCount = 1
         req.session.myData.displaycountproviders = 0
+        req.session.myData.displaycountepaos = 0
 
         //Location reset/setup
         if(req.query.location || req.session.myData.location != ""){
@@ -398,27 +406,44 @@ module.exports = function (router,_myData) {
         
         function continueRendering(){
 
+            // Providers count
             req.session.myData["providers-new"].list.forEach(function(_provider, index) {
-                
                 var _deliversStandard = false
                 req.session.myData.hasAMatchcount = 0
-
                 //STANDARD
                 if(_provider.courses.includes(parseInt(req.session.myData.standard))){
                     _deliversStandard = true
                     req.session.myData.hasAMatchcount++
                 }
-
                 //LOCATION
                 if(req.session.myData.locationapplied) {
                     if(_deliversStandard && (_provider.national || _provider.locationmatch)){
                         req.session.myData.hasAMatchcount++
                     }
                 }
-
                 //MATCHES ALL IT NEEDS TO?
                 if(req.session.myData.needToMatchCount == req.session.myData.hasAMatchcount){
                     req.session.myData.displaycountproviders++
+                }
+            });
+            // EPAOS count
+            req.session.myData.epaos.list.forEach(function(_epao, index) {
+                var _deliversStandard = false
+                req.session.myData.hasAMatchcountEPAO = 0
+                //STANDARD
+                if(req.session.myData.selectedStandard.epaos.list.includes(_epao.name)){
+                    _deliversStandard = true
+                    req.session.myData.hasAMatchcountEPAO++
+                }
+                //LOCATION
+                if(req.session.myData.locationapplied) {
+                    if(_deliversStandard && _epao.locationmatch){
+                        req.session.myData.hasAMatchcountEPAO++
+                    }
+                }
+                //MATCHES ALL IT NEEDS TO?
+                if(req.session.myData.needToMatchCount == req.session.myData.hasAMatchcountEPAO){
+                    req.session.myData.displaycountepaos++
                 }
 
             });
@@ -459,9 +484,6 @@ module.exports = function (router,_myData) {
             }
         }
 
-        // Keyword search reset/setup
-        searchFilterSetup(req,"Training provider name")
-
         //Location reset/setup
         if(req.query.location || req.session.myData.location != ""){
             req.session.myData.locationTemp = req.session.myData.location
@@ -489,6 +511,10 @@ module.exports = function (router,_myData) {
         }
 
         function continueRendering(){
+
+            // Keyword search reset/setup
+            searchFilterSetup(req,"Training provider name")
+
             _providers.forEach(function(_provider, index) {
                 
                 var _deliversStandard = false
@@ -561,12 +587,6 @@ module.exports = function (router,_myData) {
         req.session.myData.displaycount = _providers.length
         req.session.myData.needToMatchCount = 0
 
-        // Keyword search reset/setup
-        searchFilterSetup(req,"Training provider name")
-
-        // Standard filter reset/setup
-        standardFilterSetup(req)
-
         //Location filter reset/setup
         if(req.query.location || req.session.myData.location != ""){
             req.session.myData.locationTemp = req.session.myData.location
@@ -592,8 +612,14 @@ module.exports = function (router,_myData) {
         } else {
             continueRendering()
         }
-       
+
         function continueRendering(){
+
+            // Standard filter reset/setup
+            standardFilterSetup(req)
+            
+            // Keyword search reset/setup
+            searchFilterSetup(req,"Training provider name")
 
             // FILTER providers
             _providers.forEach(function(_provider, index) {
@@ -739,9 +765,6 @@ module.exports = function (router,_myData) {
             }
         }
 
-        // Keyword search reset/setup
-        searchFilterSetup(req,"Assessment organisation name")
-
         //Location reset/setup
         if((req.query.location || req.session.myData.location != "") && req.session.myData.standardfilterapplied){
             req.session.myData.locationTemp = req.session.myData.location
@@ -769,6 +792,10 @@ module.exports = function (router,_myData) {
         }
 
         function continueRendering(){
+
+            // Keyword search reset/setup
+            searchFilterSetup(req,"Assessment organisation name")
+
             _epaos.forEach(function(_epao, index) {
                 
                 var _deliversStandard = false,
@@ -843,12 +870,6 @@ module.exports = function (router,_myData) {
         req.session.myData.displaycount = req.session.myData.epaos.list.length
         req.session.myData.needToMatchCount = 0
 
-        // Keyword search reset/setup
-        searchFilterSetup(req,"Assessment organisation name")
-
-        // Standard filter reset/setup
-        standardFilterSetup(req)
-
         //Location reset/setup
         if(req.query.location || req.session.myData.location != ""){
             req.session.myData.locationTemp = req.session.myData.location
@@ -876,6 +897,13 @@ module.exports = function (router,_myData) {
         }
 
         function continueRendering(){
+    
+            // Standard filter reset/setup
+            standardFilterSetup(req)
+
+            // Keyword search reset/setup
+            searchFilterSetup(req,"Assessment organisation name")
+
             req.session.myData.epaos.list.forEach(function(_epao, index) {
 
                 var _epaoIndex = 0

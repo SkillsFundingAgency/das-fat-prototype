@@ -99,58 +99,56 @@
 
                     <!-- Search box -->
                     <form action="training" method="GET" >
-                        <div class="inner-form">
-                            <div class="search-wrapper search-wrapper-das search-wrapper-das-small govuk-form-group " data-list-search-filter >
-                                <legend style="display:none">[Search for apprenticeship training]</legend>
-                                <label for="search-training" class="govuk-label" >
-                                    <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Keywords</span>
-                                </label>
-                                <div class="search-input-wrapper">
-                                    <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-training" name="q" title="Search" class="govuk-input search-input search-input-with-button" >
-                                    <div class="search-input-submit-wrapper">
-                                        <button type="submit" class="search-submit" id="search-training-submit">Search apprenticeship training courses</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Reset/keep values -->
-                            <input type="hidden" value="{{myData.route}}" name="route" >
-                            <input type="hidden" value="{{myData.level}}" name="level" >
+
+                        <button type="submit" class="govuk-button fat-filter__submit" id="filters-submit">Apply filters</button>
+
+                        <div class="govuk-form-group" data-list-search-filter >
+                            <label for="search-training" class="govuk-label" >
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Keywords</span>
+                            </label>
+                            <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-training" name="q" title="Search" class="govuk-input search-input" >
                         </div>
-                    </form>
 
-                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Sector</h2>
-                    <ul class="govuk-list govuk-!-font-size-16">
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Sector</h2>
+                        <ul class="govuk-list govuk-!-font-size-16">
+                            <!-- <li>
+                                {% if myData.routefilterapplied == false %}
+                                All sectors
+                                {% else %}
+                                <a href="training?{{_sortQuery}}{{_searchQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state">All sectors</a>
+                                {% endif %}
+                            </li> -->
+                            {% for _route in myData.routes.list %}
+                            <li>
+                                <a href="training?route={{_route.code}}{{_sortQuery}}{{_searchQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Level</h2>
+                        <ul class="govuk-list govuk-!-font-size-16">
                         <!-- <li>
-                            {% if myData.routefilterapplied == false %}
-                            All sectors
+                            {% if myData.levelfilterapplied == false %}
+                            All levels
                             {% else %}
-                            <a href="training?{{_sortQuery}}{{_searchQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state">All sectors</a>
+                            <a href="training?{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">All levels</a>
                             {% endif %}
-                        </li> -->
-                        {% for _route in myData.routes.list %}
-                        <li>
-                            <a href="training?route={{_route.code}}{{_sortQuery}}{{_searchQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
+                            </li> -->
+                            {% for _level in myData.levels2 %}
+                            <li>
+                                <a href="training?level={{_level.value}}{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">Level {{_level.value}} - {{_level.equiv2}}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
 
-                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Level</h2>
-                    <ul class="govuk-list govuk-!-font-size-16">
-                    <!-- <li>
-                        {% if myData.levelfilterapplied == false %}
-                        All levels
-                        {% else %}
-                        <a href="training?{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">All levels</a>
-                        {% endif %}
-                        </li> -->
-                        {% for _level in myData.levels2 %}
-                        <li>
-                            <a href="training?level={{_level.value}}{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">Level {{_level.value}} - {{_level.equiv2}}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
+                        <p class="govuk-body govuk-!-font-size-16"><a class="govuk-link govuk-link--no-visited-state" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank">What levels mean (opens in new tab or window)</a></p>
 
-                    <p class="govuk-body govuk-!-font-size-16"><a class="govuk-link govuk-link--no-visited-state" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank">What levels mean (opens in new tab or window)</a></p>
+                        <input type="hidden" value="{{myData.route}}" name="route" >
+                        <input type="hidden" value="{{myData.level}}" name="level" >
+
+                        
+
+                    </form>
 
                 </div>
 

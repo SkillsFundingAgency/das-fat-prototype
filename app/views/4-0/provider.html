@@ -17,6 +17,8 @@
     {% set _defaultLocationSearchvalue = myData.location %}
 {% endif %}
 
+{% set _matchesLocation = _selectedProvider.national or _selectedProvider.locationmatch %}
+
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% include "includes/breadcrumb.html" %}
@@ -96,21 +98,21 @@
             {% if myData.locationapplied %}
                 <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;your&nbsp;location</a></p>
                 <!-- <p class="govuk-body govuk-!-margin-bottom-2">
-                    {% if _selectedProvider.locationmatch %}
+                    {% if _matchesLocation %}
                     <strong class="govuk-tag govuk-tag--green">Available</strong>
                     {% else %}
                     <strong class="govuk-tag govuk-tag--red">Not available</strong>
                     {% endif %}
                 </p> -->
-                <p class="govuk-body fat-availability {% if _selectedProvider.locationmatch %}fat-tick{% else %}fat-cross{% endif %}" >
-                    {% if _selectedProvider.locationmatch %}
+                <p class="govuk-body fat-availability {% if _matchesLocation %}fat-tick{% else %}fat-cross{% endif %}" >
+                    {% if _matchesLocation %}
                     Available
                     {% else %}
                     Not available
                     {% endif %}
                 </p>
 
-                {% if _selectedProvider.locationmatch %}
+                {% if _matchesLocation %}
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-2">This provider’s location</h2>
                 <p class="govuk-body govuk-!-margin-bottom-1">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
                 <p class="govuk-body govuk-!-margin-bottom-3">{{_selectedProvider.distance}} miles</p>
@@ -210,13 +212,13 @@
             <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;your&nbsp;location</a></p>
 
             <!-- <p class="govuk-body govuk-!-margin-bottom-2">
-                {% if _selectedProvider.locationmatch %}
+                {% if _matchesLocation %}
                 <strong class="govuk-tag govuk-tag--green">Available</strong>
                 {% else %}
                 <strong class="govuk-tag govuk-tag--red">Not available</strong>
                 {% endif %}
             </p> -->
-            {% if _selectedProvider.locationmatch %}
+            {% if _matchesLocation %}
             <p class="govuk-body fat-availability fat-tick" >Available</p>
             <p class="govuk-body">This provider offers {{myData.displaycount}} courses in your location.</p>
             <!-- <p class="govuk-body">Select a course.</p> -->
@@ -293,7 +295,7 @@
         <h2 class="govuk-heading-m govuk-!-margin-top">All courses offered ({{myData.displaycount}})</h2>
 
         <!-- {% if myData.locationapplied %} 
-        {% if _selectedProvider.locationmatch %}
+        {% if _matchesLocation %}
         <p class="govuk-body ">{{myData.displaycount}} courses offered in your location by {{_providerTitle | safe}}.</p>
         <p class="govuk-body ">Select a course to view course contact details, and to check locations and training options.</p>
         {% else %}
@@ -310,7 +312,7 @@
                     <a href="provider?standard={{_standard.larsCode}}&provider={{_selectedProvider.id}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a>
                 </p>
                 {% if myData.locationapplied %}
-                    {% if _selectedProvider.locationmatch %}
+                    {% if _matchesLocation %}
                     <strong class="govuk-tag govuk-tag--green">Available</strong>
                     {% else %}
                     <strong class="govuk-tag govuk-tag--red">Not available</strong>
@@ -339,8 +341,8 @@
                             </td>
                             {% if myData.locationapplied %}
                             <td class="govuk-table__cell">
-                                <p class="govuk-body govuk-!-margin-bottom-0 fat-availability {% if _selectedProvider.locationmatch %}fat-tick{% else %}fat-cross{% endif %} govuk-!-font-size-16" >
-                                    {% if _selectedProvider.locationmatch %}
+                                <p class="govuk-body govuk-!-margin-bottom-0 fat-availability {% if _matchesLocation %}fat-tick{% else %}fat-cross{% endif %} govuk-!-font-size-16" >
+                                    {% if _matchesLocation %}
                                     Available
                                     {% else %}
                                     Not available

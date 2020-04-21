@@ -251,3 +251,9 @@
   .filters-not-applied.closed {
     padding-top: 0;
   }
+
+  .fat-filter__submit {
+    margin-top: govuk-spacing(1);
+    margin-bottom: govuk-spacing(6); 
+    
+  }

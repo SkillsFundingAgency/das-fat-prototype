@@ -116,7 +116,7 @@
                         <!-- Location -->
                         <div class="govuk-form-group" >
                             <label for="search-location" class="govuk-label" >
-                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Location</span>
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Location of apprenticeship</span>
                             </label>
                             <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" class="govuk-input">
                         </div>
@@ -153,14 +153,14 @@
 
         {% if myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Your location</h2>
-            <p class="govuk-body"><span style="margin-right: 10px">{{myData.location}}</span> <a href="epaos-all?{{_sortQuery}}{{_standardQuery}}{{_searchQuery}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;your&nbsp;location</a></p>
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Location of apprenticeship</h2>
+            <p class="govuk-body"><span style="margin-right: 10px">{{myData.location}}</span> <a href="epaos-all?{{_sortQuery}}{{_standardQuery}}{{_searchQuery}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;the&nbsp;location</a></p>
         </div>
         {% else %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Your location</h2>
-            <p class="govuk-body govuk-!-margin-bottom-2">Show only assessment organisations who offer training in your location.</p>
-            <p class="govuk-body"><a href="#search-location" class="focus-field-prompt govuk-link govuk-link--no-visited-state" >Enter&nbsp;your&nbsp;location</a></p>
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2>
+            <p class="govuk-body govuk-!-margin-bottom-2">Show only assessment organisations who offer training for the apprenticeship location.</p>
+            <p class="govuk-body"><a href="#search-location" class="focus-field-prompt govuk-link govuk-link--no-visited-state" >Enter&nbsp;location</a></p>
         </div>
         {% endif %}
 

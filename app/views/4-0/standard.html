@@ -134,9 +134,9 @@
             <!-- Providers -->
             <h2 class="govuk-heading-l" >Training providers</h2>
 
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Your location</h2>
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2>
             {% if myData.locationapplied %}
-                <p class="govuk-body govuk-!-margin-bottom-5"><span style="margin-right: 10px">{{myData.location}}</span> <a href="standard?standard={{myData.standard}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;your&nbsp;location</a></p>
+                <p class="govuk-body govuk-!-margin-bottom-5"><span style="margin-right: 10px">{{myData.location}}</span> <a href="standard?standard={{myData.standard}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;the&nbsp;location</a></p>
                 <p class="govuk-body fat-availability {% if myData.displaycountproviders != 0 %}fat-tick{% else %}fat-cross{% endif %}" >
                     {% if myData.displaycountproviders != 0 %}
                       {{myData.displaycountproviders}} providers available
@@ -149,11 +149,11 @@
                 {% endif %}
             {% else %}
             <!-- Enter location form -->
-            <p class="govuk-body">Check if a provider can offer this training in your location.</p>
+            <p class="govuk-body">Check if a provider can offer this training for the apprenticeship location.</p>
             <form action="standard" method="GET" class="govuk-!-width-three-quarters" >
                 <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
                     <label for="search-location" class="govuk-label" >
-                        <span class="govuk-!-font-weight-bol">Enter your location</span>
+                        <span class="govuk-!-font-weight-bol">Enter location</span>
                     </label>
                     <div class="search-input-wrapper">
                         <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input ">

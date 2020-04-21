@@ -93,10 +93,10 @@
             <p class="govuk-body govuk-!-margin-bottom-5"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{_selectedStandard.larsCode}}">Overview of {{_standardTitle|safe}}</a></p>
             <!-- <p class="govuk-body govuk-!-margin-bottom-1">Achievement rate: <span class="govuk-!-font-weight-bol">68%</span> / National average: 64%</p> -->
 
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Your location</h2>
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Location of apprenticeship</h2>
 
             {% if myData.locationapplied %}
-                <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;your&nbsp;location</a></p>
+                <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;the&nbsp;location</a></p>
                 <!-- <p class="govuk-body govuk-!-margin-bottom-2">
                     {% if _matchesLocation %}
                     <strong class="govuk-tag govuk-tag--green">Available</strong>
@@ -158,16 +158,16 @@
                 </details>
                 {% else %}
                 <p class="govuk-body govuk-!-margin-top-4 govuk-!-margin-bottom-0"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">View other providers</a></p>
-                <p class="govuk-body">There are other providers who offer this training in your location.</p>
+                <p class="govuk-body">There are other providers who offer this training for the apprenticeship location.</p>
                 {% endif %}
 
             {% else %}
                 <!-- Enter location form -->
-                <p class="govuk-body">Check if this provider offers this training in your location.</p>
+                <p class="govuk-body">Check if this provider offers this training for the apprenticeship location.</p>
                 <form action="provider" method="GET" class="govuk-!-width-three-quarters" >
                     <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
                         <label for="search-location" class="govuk-label" >
-                            <span class="govuk-!-font-weight-bol">Enter your location</span>
+                            <span class="govuk-!-font-weight-bol">Enter location</span>
                         </label>
                         <div class="search-input-wrapper">
                             <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input ">
@@ -208,8 +208,8 @@
         </div>
         {% elif myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Your location</h2>
-            <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;your&nbsp;location</a></p>
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Location of apprenticeship</h2>
+            <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;the&nbsp;location</a></p>
 
             <!-- <p class="govuk-body govuk-!-margin-bottom-2">
                 {% if _matchesLocation %}
@@ -220,22 +220,22 @@
             </p> -->
             {% if _matchesLocation %}
             <p class="govuk-body fat-availability fat-tick" >Available</p>
-            <p class="govuk-body">This provider offers {{myData.displaycount}} courses in your location.</p>
+            <p class="govuk-body">This provider offers {{myData.displaycount}} courses for the apprenticeship location.</p>
             <!-- <p class="govuk-body">Select a course.</p> -->
             {% else %}
             <p class="govuk-body fat-availability fat-cross" >Not available</p>
-            <p class="govuk-body">This provider does not offer training in your location.</p>
+            <p class="govuk-body">This provider does not offer training for the apprenticeship location.</p>
             {% endif %}
         </div>
         {% else %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Your location</h2>
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2>
             <!-- Enter location form -->
-            <p class="govuk-body">Check if this provider offers training in your location.</p>
+            <p class="govuk-body">Check if this provider offers training for the apprenticeship location.</p>
             <form action="provider" method="GET" class="govuk-!-width-three-quarters" >
                 <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
                     <label for="search-location" class="govuk-label" >
-                        <span class="govuk-!-font-weight-bol">Enter your location</span>
+                        <span class="govuk-!-font-weight-bol">Enter location</span>
                     </label>
                     <div class="search-input-wrapper">
                         <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input ">
@@ -292,17 +292,17 @@
         <!-- All courses -->
         <!-- <h2 class="govuk-heading-m govuk-!-margin-top">All courses offered ({{myData.displaycount}})</h2> -->
 
-        <h2 class="govuk-heading-m govuk-!-margin-top">All courses offered ({{myData.displaycount}})</h2>
+        <h2 class="govuk-heading-m govuk-!-margin-top">Other courses offered by this provider ({{myData.displaycount}})</h2>
 
         <!-- {% if myData.locationapplied %} 
         {% if _matchesLocation %}
-        <p class="govuk-body ">{{myData.displaycount}} courses offered in your location by {{_providerTitle | safe}}.</p>
+        <p class="govuk-body ">{{myData.displaycount}} courses offered for the apprenticeship location by {{_providerTitle | safe}}.</p>
         <p class="govuk-body ">Select a course to view course contact details, and to check locations and training options.</p>
         {% else %}
         <p class="govuk-body ">{{_providerTitle | safe}} offers {{myData.displaycount}} courses.</p>
         {% endif %}
         {% endif %} -->
-        <p class="govuk-body ">Select a course to view course contact details, and to check locations and training options available.</p>
+        <p class="govuk-body ">Select a course to view locations, training options and contact details.</p>
         
 
         <!-- {% for _standard in myData.standards.list %}

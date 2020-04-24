@@ -151,62 +151,83 @@
                 {% endif %} 
             </p>
 
-            <!-- <div class="govuk-!-margin-bottom-7"> -->
-                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Employer reviews</h2>
-                <p class="govuk-body govuk-!-margin-bottom-2">
-                    {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight-bold">{{_ratingTextToShow}}</span>
-                    <!-- <span style="margin-left: 5px; color: #626a6e">({{_totalRatings}} employer ratings)</span> -->
-                </p>
-                <p class="govuk-body govuk-!-margin-bottom-2" style="color: #626a6e">{{_totalRatings}} employer ratings</p>
-                <!-- <details class="govuk-details" data-module="govuk-details">
-                    <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text">
-                        Ratings details
-                    </span>
-                    </summary> 
-                    <div class="govuk-details__text">-->
-                        <!-- <p class="govuk-body" style="color:red">Detailed breakdown of employer ratings</p> -->
-                        <ul class="govuk-list graph-list govuk-!-font-size-16 govuk-!-width-three-quarters govuk-!-margin-bottom-7">
-                            <li class="level-1">
-                                <span class="label">Excellent</span>
-                                <span class="chart">
-                                    <span class="graph">
-                                        <span class="bar" style="width: {{_selectedProvider.empRatingsPercentages['excellent']}}%"></span>
-                                    </span>
+
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Employer reviews</h2>
+            <p class="govuk-body govuk-!-margin-bottom-4">
+                {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight-bold">{{_ratingTextToShow}}</span>
+                <span style="margin-left: 5px; color: #626a6e">({{_totalRatings}} employer ratings)</span>
+            </p>
+            <!-- <p class="govuk-body govuk-!-margin-bottom-2" style="color: #626a6e">{{_totalRatings}} employer ratings</p> -->
+            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    Employer reviews detail
+                </span>
+                </summary> 
+                <div class="govuk-details__text">
+                    <!-- <p class="govuk-body" style="color:red">Detailed breakdown of employer ratings</p> -->
+                    <ul class="govuk-list graph-list govuk-!-font-size-16 govuk-!-width-three-quarters">
+                        <li class="level-1">
+                            <span class="label">Excellent</span>
+                            <span class="chart">
+                                <span class="graph">
+                                    <span class="bar" style="width: {{_selectedProvider.empRatingsPercentages['excellent']}}%"></span>
                                 </span>
-                                <span class="figure">{{_selectedProvider.empRatingsPercentages["excellent"]}}%</span>
-                            </li>
-                            <li class="level-2">
-                                <span class="label">Good</span>
-                                <span class="chart">
-                                    <span class="graph">
-                                        <span class="bar" style="width: {{_selectedProvider.empRatingsPercentages['good']}}%"></span>
-                                    </span>
+                            </span>
+                            <span class="figure">{{_selectedProvider.empRatingsPercentages["excellent"]}}%</span>
+                        </li>
+                        <li class="level-2">
+                            <span class="label">Good</span>
+                            <span class="chart">
+                                <span class="graph">
+                                    <span class="bar" style="width: {{_selectedProvider.empRatingsPercentages['good']}}%"></span>
                                 </span>
-                                <span class="figure">{{_selectedProvider.empRatingsPercentages["good"]}}%</span>
-                            </li>
-                            <li class="level-3">
-                                <span class="label">Poor</span>
-                                <span class="chart">
-                                    <span class="graph">
-                                        <span class="bar" style="width: {{_selectedProvider.empRatingsPercentages['poor']}}%"></span>
-                                    </span>
+                            </span>
+                            <span class="figure">{{_selectedProvider.empRatingsPercentages["good"]}}%</span>
+                        </li>
+                        <li class="level-3">
+                            <span class="label">Poor</span>
+                            <span class="chart">
+                                <span class="graph">
+                                    <span class="bar" style="width: {{_selectedProvider.empRatingsPercentages['poor']}}%"></span>
                                 </span>
-                                <span class="figure">{{_selectedProvider.empRatingsPercentages["poor"]}}%</span>
-                            </li>
-                            <li class="level-4">
-                                <span class="label">Very poor</span>
-                                <span class="chart">
-                                    <span class="graph">
-                                        <span class="bar" style="width: {{_selectedProvider.empRatingsPercentages['very poor']}}%"></span>
-                                    </span>
+                            </span>
+                            <span class="figure">{{_selectedProvider.empRatingsPercentages["poor"]}}%</span>
+                        </li>
+                        <li class="level-4">
+                            <span class="label">Very poor</span>
+                            <span class="chart">
+                                <span class="graph">
+                                    <span class="bar" style="width: {{_selectedProvider.empRatingsPercentages['very poor']}}%"></span>
                                 </span>
-                                <span class="figure">{{_selectedProvider.empRatingsPercentages["very poor"]}}%</span>
-                            </li>
-                        </ul>
-                    <!-- </div>
-                </details> -->
-            <!-- </div> -->
+                            </span>
+                            <span class="figure">{{_selectedProvider.empRatingsPercentages["very poor"]}}%</span>
+                        </li>
+                    </ul>
+                    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Top strengths</h2>
+                    <ol class="govuk-list govuk-list--number">
+                        <li>Working with small numbers of apprentices</li>
+                        <li>Getting new apprentices started</li>
+                        <li>Improving apprentice skills</li>
+                    </ol>
+                    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Top things to improve</h2>
+                    <ol class="govuk-list govuk-list--number">
+                        <li>Reporting on progress of apprentices</li>
+                        <li>Communication with employers</li>
+                    </ol>
+                </div>
+            </details>
+
+
+
+            <!-- Strengths
+            Working with small numbers of apprentices (50 employers)
+            Getting new apprentices started (47 employers)
+            Improving apprentice skills (34 employers)
+
+            Things to improve
+            Reporting on progress of apprentices (54 employers)
+            Communication with employers (51 employers) -->
 
        
 
@@ -426,14 +447,16 @@
             <a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a>
         </p> -->
 
-        <details class="govuk-details" data-module="govuk-details">
+        <!-- <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
             <span class="govuk-details__summary-text">
                 View general contact details
             </span>
             </summary>
-            <div class="govuk-details__text">
-                <dl class="govuk-summary-list">
+            <div class="govuk-details__text"> -->
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">General contact details</h2>
+                
+                <dl class="govuk-summary-list govuk-!-margin-bottom-7">
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Email</dt>
                         <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a></dd>
@@ -447,8 +470,8 @@
                         <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></dd>
                     </div>
                 </dl>
-            </div>
-        </details>
+            <!-- </div>
+        </details> -->
 
         
 

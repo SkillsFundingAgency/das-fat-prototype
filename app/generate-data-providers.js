@@ -5,11 +5,11 @@ module.exports = function (router,_myData) {
     //
     //
     var _newProviders = _myData["providers-new"],
-        _ofstedRatings = [0,1,2,3,4],
-        _booleans = [true,false]
         _inadequateRatings = 0,
-        _nationalTrues = 0,
-        _courseIDS = []
+        _nationals = 0,
+        _courseIDS = [],
+        _poorProviders = 0,
+        _excellentProviders = 0
 
     _myData.standards.list.forEach(function(_standard, index) {
         var _courseIDObj = {
@@ -18,12 +18,11 @@ module.exports = function (router,_myData) {
         }
         _courseIDS.push(_courseIDObj)
     });
-    // console.log(_courseIDS)
 
     _newProviders.list.forEach(function(_provider, index) {
 
         // Add - "ofsted" - 0,1,2,3,4
-        var _ofsted = _ofstedRatings[Math.floor(Math.random()*_ofstedRatings.length)];
+        var _ofsted = [0,1,2,3,4][Math.floor(Math.random()*5)];
         if(_ofsted == 4){
             _inadequateRatings++
             if(_inadequateRatings > 50){
@@ -33,10 +32,10 @@ module.exports = function (router,_myData) {
         _provider.ofsted = _ofsted
 
         // Add - "national" - true/false
-        var _national = _booleans[Math.floor(Math.random()*_booleans.length)];
+        var _national = [true,false][Math.floor(Math.random()*2)];
         if(_national == true){
-            _nationalTrues++
-            if(_nationalTrues > 500){
+            _nationals++
+            if(_nationals > 500){
                 _national = false
             }
         }
@@ -46,28 +45,122 @@ module.exports = function (router,_myData) {
         _provider.distance = Math.floor(Math.random() * 99) + 1 + Math.round(Math.random() * 10) / 10
 
         // Add - "locationmatch"
-        _provider.locationmatch = _booleans[Math.floor(Math.random()*_booleans.length)]
+        _provider.locationmatch = [true,false][Math.floor(Math.random()*2)]
 
         // Add - Courses offered (list) ------ old on standard = "providers":{"number":2}
         var _coursesToAdd = Math.floor(Math.random() * 40) + 1,
             _providersCourses = []
         for (var i = 0; i < _coursesToAdd; i++) {
-
             //find a random course
             var _randomCourse = _courseIDS[Math.floor(Math.random() * _courseIDS.length)];
-
             _providersCourses.push(_randomCourse.larsCode)
         }
-        // console.log(_providersCourses)
         _provider.courses = _providersCourses
 
+        // Add - Employer reviews data - ratings - ["excellent","good","poor","very poor"]
+        var _numberOfRatings = Math.floor(Math.random() * (62 - 16 + 1) + 16),
+            _empRatings = {
+                "excellent": 0,
+                "good": 0,
+                "poor": 0,
+                "very poor": 0
+            },
+            _goodRatings = [
+                {
+                    "rating": "excellent", 
+                    "cutoff": Math.ceil(_numberOfRatings/4)
+                },
+                {
+                    "rating": "good", 
+                    "cutoff": _numberOfRatings
+                },
+                {
+                    "rating": "poor", 
+                    "cutoff": Math.ceil(_numberOfRatings/10)
+                },
+                {
+                    "rating": "very poor", 
+                    "cutoff": Math.ceil(_numberOfRatings/_numberOfRatings)
+                }
+            ],
+            _poorRatings = [
+                {
+                    "rating": "excellent", 
+                    "cutoff": Math.ceil(_numberOfRatings/16)
+                },
+                {
+                    "rating": "good", 
+                    "cutoff": Math.ceil(_numberOfRatings/10)
+                },
+                {
+                    "rating": "poor", 
+                    "cutoff": _numberOfRatings
+                },
+                {
+                    "rating": "very poor", 
+                    "cutoff": Math.ceil(_numberOfRatings/3)
+                }
+            ],
+            _excellentRatings = [
+                {
+                    "rating": "excellent", 
+                    "cutoff": _numberOfRatings
+                },
+                {
+                    "rating": "good", 
+                    "cutoff": Math.ceil(_numberOfRatings/8)
+                },
+                {
+                    "rating": "poor", 
+                    "cutoff": Math.ceil(_numberOfRatings/32)
+                },
+                {
+                    "rating": "very poor", 
+                    "cutoff": 0
+                }
+            ]
 
-        // Add - Employer reviews data
+        //which set to use
+        var _empSetToUse = _poorRatings
+        if(_poorProviders > 200){
+            _empSetToUse = _excellentRatings
+            if(_excellentProviders > 600){
+                _empSetToUse = _goodRatings
+            }
+            _excellentProviders++
+        }
+        _poorProviders++
 
+        for (var i = 0; i < _numberOfRatings; i++) {
+
+            //for each rating to use
+            var _employerRatingToUse = _empSetToUse[Math.floor(Math.random()*4)];
+
+            //check if hit cut off
+            function checkCutoff(){
+                if(_empRatings[_employerRatingToUse.rating] > _employerRatingToUse.cutoff){
+                    _employerRatingToUse = _empSetToUse[Math.floor(Math.random()*4)];
+                    checkCutoff()
+                }
+            }
+            checkCutoff()
+            
+            //add to object
+            _empRatings[_employerRatingToUse.rating]++
+        }
+        _provider.empRatings = _empRatings
+
+        // average rating
+        var _excellentTotal = _empRatings["excellent"] * 4,
+            _goodTotal = _empRatings["good"] * 3,
+            _poorTotal = _empRatings["poor"] * 2,
+            _veryPoorTotal = _empRatings["very poor"] * 1,
+            _averageEmpRating = (_excellentTotal + _goodTotal + _poorTotal + _veryPoorTotal) / _numberOfRatings
+        _averageEmpRating = (Math.round(_averageEmpRating * 10) / 10).toFixed(1)
+        _provider.averageEmpRating = _averageEmpRating
 
         // ??????? Contact details - email,website,phone
         // ??????? About provider (free text)
-        
 
     });
 
@@ -75,7 +168,7 @@ module.exports = function (router,_myData) {
     //
     //
     //
-    console.log(JSON.stringify(_newProviders)) 
+    // console.log(JSON.stringify(_newProviders)) 
     //
     //
     //

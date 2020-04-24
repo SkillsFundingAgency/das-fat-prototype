@@ -87,6 +87,7 @@ module.exports = function (router,_myData) {
     // Location filtering
     function cityMatch(req){
         var _match = false
+        req.session.myData.locationTemp = req.session.myData.locationTemp || ""
         for (var i = 0; i < req.session.myData.citiesAutocompleteList.length; i++) {
             var _thisCity = req.session.myData.citiesAutocompleteList[i]
             if(req.session.myData.locationTemp.toUpperCase() == _thisCity.toUpperCase()){
@@ -205,7 +206,7 @@ module.exports = function (router,_myData) {
         req.session.myData = JSON.parse(JSON.stringify(_myData))
 
         // Filters defaults
-        req.session.myData.location = ""
+        //req.session.myData.location = ""
         // req.session.myData.standard = ""
         // req.session.myData.provider = ""
     }
@@ -223,6 +224,9 @@ module.exports = function (router,_myData) {
         req.session.myData.referrerpage = getRefererPage(req.headers.referer)
         //local storage clear boolean
         // req.session.myData.clearLocalStorage = (req.query.cls) ? true : false
+
+        // defaults
+        req.session.myData.location = req.session.myData.location || ""
 
         next()
     });
@@ -381,7 +385,7 @@ module.exports = function (router,_myData) {
         req.session.myData.displaycountepaos = 0
 
         //Location reset/setup
-        if(req.query.location || req.session.myData.location != ""){
+        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
             req.session.myData.locationTemp = req.session.myData.location
             if(req.query.location == ""){
                 req.session.myData.locationTemp = ""
@@ -485,7 +489,7 @@ module.exports = function (router,_myData) {
         }
 
         //Location reset/setup
-        if(req.query.location || req.session.myData.location != ""){
+        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
             req.session.myData.locationTemp = req.session.myData.location
             if(req.query.location == ""){
                 req.session.myData.locationTemp = ""
@@ -588,7 +592,7 @@ module.exports = function (router,_myData) {
         req.session.myData.needToMatchCount = 0
 
         //Location filter reset/setup
-        if(req.query.location || req.session.myData.location != ""){
+        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
             req.session.myData.locationTemp = req.session.myData.location
             if(req.query.location == ""){
                 req.session.myData.locationTemp = ""
@@ -706,7 +710,7 @@ module.exports = function (router,_myData) {
         setSelectedStandard(req,req.query.standard)
 
         //Location reset/setup
-        if(req.query.location || req.session.myData.location != ""){
+        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
             req.session.myData.locationTemp = req.session.myData.location
             if(req.query.location == ""){
                 req.session.myData.locationTemp = ""
@@ -766,7 +770,7 @@ module.exports = function (router,_myData) {
         }
 
         //Location reset/setup
-        if((req.query.location || req.session.myData.location != "") && req.session.myData.standardfilterapplied){
+        if((req.query.location || (req.session.myData.location != "" && req.session.myData.location)) && req.session.myData.standardfilterapplied){
             req.session.myData.locationTemp = req.session.myData.location
             if(req.query.location == ""){
                 req.session.myData.locationTemp = ""
@@ -871,7 +875,7 @@ module.exports = function (router,_myData) {
         req.session.myData.needToMatchCount = 0
 
         //Location reset/setup
-        if(req.query.location || req.session.myData.location != ""){
+        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
             req.session.myData.locationTemp = req.session.myData.location
             if(req.query.location == ""){
                 req.session.myData.locationTemp = ""

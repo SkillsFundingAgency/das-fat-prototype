@@ -196,6 +196,50 @@
 
         <!-- Providers -->
         {% for _provider in _providers %}
+
+            <!-- Employer Ratings -->
+            {% set _rating = _provider.averageEmpRatingPlus1 | string %}
+            {% if _rating | length == 1 %}
+                {% set _rating = _rating + ".0" %}
+            {% endif %}
+            {% set _ratingText = _provider.averageEmpRatingText %}
+
+            <!-- Total employer ratings -->
+            {% set _totalRatings = _provider.totalEmpRatings %}
+            {% if _totalRatings > 49 %}
+                {% set _totalRatings = "50+" %}
+            {% endif %}
+
+            {% if _ratingText == "Excellent" %}
+                {% set _stars = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' />" %}
+                {% set _ratingTextToShow = "Excellent" %}
+                {% set _ratingColor = "excellent-employer" %}
+                {% set _ratingTag = "govuk-tag--green" %}
+                {% set _ratingSVG = "icon-star-green" %}
+            {% elif _ratingText == "Good" %}
+                {% set _stars = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green-empty.svg' class='star-svg' />" %}
+                {% set _ratingTextToShow = "Good" %}
+                {% set _ratingColor = "good-employer" %}
+                {% set _ratingTag = "govuk-tag--green" %}
+                {% set _ratingSVG = "icon-star-green" %}
+            {% elif _ratingText == "Poor" %}
+                {% set _stars = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
+                {% set _ratingTextToShow = "Poor" %}
+                {% set _ratingColor = "poor-employer" %}
+                {% set _ratingTag = "govuk-tag--yellow" %}
+                {% set _ratingSVG = "icon-star-grey" %}
+            {% elif _ratingText == "Very poor" %}
+                {% set _stars = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
+                {% set _ratingTextToShow = "Very poor" %}
+                {% set _ratingColor = "very-poor-employer" %}
+                {% set _ratingTag = "govuk-tag--red" %}
+                {% set _ratingSVG = "icon-star-grey" %}
+            {% endif %}
+
+            
+
+            
+
             {% if _provider.search == true %}
             <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
@@ -205,20 +249,39 @@
 
                     <!-- Distance -->
                     {% if myData.locationapplied %}
-                    <li><span>{{_provider.distance}}</span> miles</li>
+                    <li class=" govuk-!-margin-top-2" style=""><span>{{_provider.distance}}</span> miles away</li>
 
                     <li>
                         <ul class="govuk-list fat-training-options govuk-!-font-size-16" >
-                            <li class="fat-tick">day&nbsp;release</li>
-                            <li class="fat-cross">block&nbsp;release</li>
+                            <!-- <li style="padding-left: 0" class=""><span>{{_provider.distance}}</span> miles away</li> -->
+                            <li class="fat-tick" >day&nbsp;release</li>
+                            <li class="fat-cross" >block&nbsp;release</li>
                             {% if _provider.distance < 20 %}
-                            <li class="fat-tick">at&nbsp;your&nbsp;location</li>
+                            <li class="fat-tick" >at&nbsp;your&nbsp;location</li>
                             {% else %}
-                            <li class="fat-cross">at&nbsp;your&nbsp;location</li>
+                            <li class="fat-cross" >at&nbsp;your&nbsp;location</li>
                             {% endif %}
                         </ul>
                     </li>
                     {% endif %}
+
+                    <!-- <li class="govuk-!-font-size-16">
+                        <span style="color: #626a6e">Employer:</span> <strong class="govuk-tag {{_ratingTag}}">{{_rating}} {{_ratingText}}</strong> 
+                    </li> -->
+
+                    <!-- <li class="govuk-!-font-size-16"><span style="color: #626a6e">Ofsted: </span>
+                        {% if _provider.ofsted == 0 %}
+                        <span class="not-rated-ofsted">Not yet rated</span>
+                        {% elif _provider.ofsted == 1 %}
+                        <span class="outstanding-ofsted">Outstanding</span>
+                        {% elif _provider.ofsted == 2 %}
+                        <span class="good-ofsted">Good</span>
+                        {% elif _provider.ofsted == 3 %}
+                        <span class="requires-imp-ofsted">Requires improvement</span>
+                        {% elif _provider.ofsted == 4 %}
+                        <span class="inadequate-ofsted">Inadequate</span>
+                        {% endif %} 
+                    </li> -->
 
                     <!-- Ofsted  -->
                     <li class="govuk-!-font-size-16">
@@ -234,6 +297,10 @@
                         {% elif _provider.ofsted == 4 %}
                         <strong class="govuk-tag govuk-tag--red">Inadequate</strong>
                         {% endif %} 
+                    </li>
+
+                    <li class="govuk-!-font-size-16">
+                        {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight">{{_ratingTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">({{_totalRatings}} employers)</span>
                     </li>
 
                     <!-- National -->

@@ -158,11 +158,47 @@ _myData.providers.list.forEach(function(_provider, index) {
 });
 
 // Set providers new
+var _goodProviders = 0,
+    _excellentProviders = 0,
+    _poorProviders = 0,
+    _veryPoorProviders = 0
 _myData.providerNewAutocompleteList = []
 _myData["providers-new"].list.forEach(function(_provider, index) {
     var _autoCompleteString = _provider.name
     _provider.autoCompleteString = _autoCompleteString
     _myData.providerNewAutocompleteList.push(_autoCompleteString);
+    //Set average rating text
+    _provider.averageEmpRating = parseFloat(_provider.averageEmpRating)
+    _provider.averageEmpRatingPlus1 = parseFloat(_provider.averageEmpRating) + 1
+    var _rating = _provider.averageEmpRating,
+        _ratingText = "Good"
+    if (_rating > 0 & _rating < 1.3){
+        _ratingText = "Very poor"
+        _veryPoorProviders++
+    } else if (_rating >= 1.3 && _rating < 2.3){
+        _ratingText = "Poor"
+        _poorProviders++
+    } else if (_rating >= 2.3 && _rating < 3.3){
+        _ratingText = "Good"
+        _goodProviders++
+    } else if (_rating >= 3.3){
+        _ratingText = "Excellent"
+        _excellentProviders++
+    }
+    _provider.averageEmpRatingText = _ratingText
+    //Set total ratings count
+    _provider.totalEmpRatings = _provider.empRatings["excellent"] + _provider.empRatings["good"] + _provider.empRatings["poor"] + _provider.empRatings["very poor"]
+    //Set percentages
+    function percentage(_total, _value){
+        var _percentage = Math.round(_value/(_total/100))
+        return _percentage
+    }
+    _provider.empRatingsPercentages = {
+        "excellent": percentage(_provider.totalEmpRatings, _provider.empRatings["excellent"]),
+        "good": percentage(_provider.totalEmpRatings, _provider.empRatings["good"]),
+        "poor": percentage(_provider.totalEmpRatings, _provider.empRatings["poor"]),
+        "very poor": percentage(_provider.totalEmpRatings, _provider.empRatings["very poor"]) 
+    }
 });
 
 // Set epaos

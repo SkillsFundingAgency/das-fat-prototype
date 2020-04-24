@@ -67,16 +67,22 @@ li.fat-cross {
     padding-left: 18px;
 }
 //FAT availaibility
-.fat-availability {
-    padding-left: 30px;
-}
 .fat-availability.fat-tick {
     color: govuk-colour("green");
-    background-size: 25px 23px;
 }
 .fat-availability.fat-cross {
     color: govuk-colour("red");
-    background-size: 20px 23px;
+}
+@media (min-width: 641px){
+    .fat-panel .fat-availability {
+        padding-left: 30px;
+    }
+    .fat-panel .fat-availability.fat-tick {
+        background-size: 23px 22px;
+    }
+    .fat-panel .fat-availability.fat-cross {
+        background-size: 18px 23px;
+    }
 }
 
 // FAT Ratings

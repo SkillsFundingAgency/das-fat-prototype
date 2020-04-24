@@ -227,6 +227,9 @@ module.exports = function (router,_myData) {
 
         // defaults
         req.session.myData.location = req.session.myData.location || ""
+        req.session.myData.standard = req.session.myData.standard || "1"
+        req.session.myData.provider = req.session.myData.provider || "1"
+        req.session.myData.epao = req.session.myData.epao || "1"
 
         next()
     });
@@ -372,7 +375,7 @@ module.exports = function (router,_myData) {
     // Standard
     router.get('/' + version + '/standard', function (req, res) {
 
-        req.session.myData.standard = req.query.standard || "1"
+        req.session.myData.standard = req.query.standard || req.session.myData.standard
         req.session.myData.selectedStandard = {}
         for (var i = 0; i < req.session.myData.standards.list.length; i++) {
             var _thisStandard = req.session.myData.standards.list[i]
@@ -474,16 +477,13 @@ module.exports = function (router,_myData) {
         req.session.myData.needToMatchCount = 0
 
         // Standard filter reset/setup
-        req.session.myData.standardfilterapplied = false
-        var _selectedStandardID = req.query.standard || req.session.myData.standard
+        req.session.myData.standardfilterapplied = true
+        req.session.myData.displaycount = 0
+        req.session.myData.needToMatchCount++
+        req.session.myData.standard = req.query.standard || req.session.myData.standard
         for (var i = 0; i < _standards.length; i++) {
-            var _thisStandard = _standards[i]
-            if(_selectedStandardID == _thisStandard.larsCode){
-                req.session.myData.standard = _selectedStandardID
-                req.session.myData.standardfilterapplied = true
-                req.session.myData.displaycount = 0
-                req.session.myData.selectedStandard = _thisStandard
-                req.session.myData.needToMatchCount++
+            if(req.session.myData.standard == _standards[i].larsCode){
+                req.session.myData.selectedStandard = _standards[i]
                 break
             }
         }
@@ -688,7 +688,8 @@ module.exports = function (router,_myData) {
         var _standards = req.session.myData.standards.list
 
         // Provider
-        req.session.myData.provider = req.query.provider
+        req.session.myData.provider = req.query.provider || req.session.myData.provider
+        
         for (var i = 0; i < req.session.myData["providers-new"].list.length; i++) {
             var _thisProvider = req.session.myData["providers-new"].list[i]
             if(req.session.myData.provider == _thisProvider.id){
@@ -755,16 +756,13 @@ module.exports = function (router,_myData) {
         req.session.myData.selectedStandard = {}
 
         // Standard filter reset/setup
-        req.session.myData.standardfilterapplied = false
-        var _selectedStandardID = req.query.standard || req.session.myData.standard
+        req.session.myData.standardfilterapplied = true
+        req.session.myData.displaycount = 0
+        req.session.myData.needToMatchCount++
+        req.session.myData.standard = req.query.standard || req.session.myData.standard
         for (var i = 0; i < _standards.length; i++) {
-            var _thisStandard = _standards[i]
-            if(_selectedStandardID == _thisStandard.larsCode){
-                req.session.myData.standard = _selectedStandardID
-                req.session.myData.standardfilterapplied = true
-                req.session.myData.displaycount = 0
-                req.session.myData.selectedStandard = _thisStandard
-                req.session.myData.needToMatchCount++
+            if(_selectedStandardID == _standards[i].larsCode){
+                req.session.myData.selectedStandard = _standards[i]
                 break
             }
         }
@@ -973,7 +971,7 @@ module.exports = function (router,_myData) {
     // Epao
     router.get('/' + version + '/epao', function (req, res) {
 
-        req.session.myData.epao = req.query.epao || "1"
+        req.session.myData.epao = req.query.epao || req.session.myData.epao
         
         res.render(version + '/epao', {
             myData:req.session.myData

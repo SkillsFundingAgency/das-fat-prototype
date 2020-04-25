@@ -761,7 +761,7 @@ module.exports = function (router,_myData) {
         req.session.myData.needToMatchCount++
         req.session.myData.standard = req.query.standard || req.session.myData.standard
         for (var i = 0; i < _standards.length; i++) {
-            if(_selectedStandardID == _standards[i].larsCode){
+            if(req.session.myData.standard == _standards[i].larsCode){
                 req.session.myData.selectedStandard = _standards[i]
                 break
             }

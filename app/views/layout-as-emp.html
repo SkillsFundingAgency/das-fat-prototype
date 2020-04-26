@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% set mainClasses = (mainClasses | default("govuk-main-wrapper--auto-spacing")) + " app-apprentice-service" %}
+{% set _currentPage = _currentPage or "" %}
+
+{% block header %}
+{% include "includes/cookie-banner.html" %}
+{# Set serviceName in config.js. #}
+{{ govukHeader({
+    homepageUrl: "https://www.gov.uk/",
+    serviceName: serviceName,
+    serviceUrl: "home",
+    containerClasses: "govuk-width-container app-apprentice-service-header"
+  }) }}
+
+<div class="das-account-header das-account-header--employer">
+    <div class="govuk-width-container">
+
+        <p class="das-account-header__title">Your employer account</p>
+        <nav class="das-user-navigation" id="das-user-navigation">
+            <ul class="das-user-navigation__list" role="menu">
+                <li role="menuitem" class="das-user-navigation__list-item">
+                    <a class="das-user-navigation__link" href="#">Help</a>
+                </li>
+                <li role="menuitem" class="das-user-navigation__list-item das-user-navigation__list-item--has-sub-menu">
+                    <a href="#" class="das-user-navigation__link">Settings</a>
+                </li>
+                <li role="menuitem" class="das-user-navigation__list-item">
+                    <a class="das-user-navigation__link" href="#">Sign out</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<nav class="das-navigation" >
+    <div class="govuk-width-container">
+        <ul class="das-navigation__list ">
+            <li class="das-navigation__list-item">
+                <a class="das-navigation__link" href="#">Home</a>
+            </li>
+            <li class="das-navigation__list-item">
+                <a class="das-navigation__link" href="#">Finance</a>
+            </li>
+            <li class="das-navigation__list-item">
+                <a class="das-navigation__link" href="#">Recruitment</a>
+            </li>
+            <li class="das-navigation__list-item">
+                <a class="das-navigation__link" href="#">Apprentices</a>
+            </li>
+            <li class="das-navigation__list-item">
+                <a class="das-navigation__link" href="#">Your team</a>
+            </li>
+
+            <li class="das-navigation__list-item">
+                <a class="das-navigation__link" href="#">Your organisations and agreements</a>
+            </li>
+
+
+
+            <li class="das-navigation__priority-list-item" id="priority-list-menu"><a
+                    class="das-navigation__priority-button" href="#">More</a>
+                <ul class="das-navigation__priority-list govuk-visually-hidden">
+                    <li class="das-navigation__list-item">
+                        <a class="das-navigation__link das-navigation__link--last" href="#">PAYE schemes</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endblock %}

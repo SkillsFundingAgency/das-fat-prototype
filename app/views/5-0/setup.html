@@ -15,17 +15,17 @@
     <div class="govuk-grid-column-one-half">
 
         <!-- Prototype version -->
-        <div class="govuk-form-group">
+        <!-- <div class="govuk-form-group">
             <label class="govuk-label" >
               Version
             </label>
             <select class="govuk-select" style="min-width: 100%" id="ptVersion" name="ptVersion" data-option="ptVersion">
                 <option {% if myData.ptVersion == 'mvs' %}selected{% endif %} value="mvs">MVS</option>
             </select>
-        </div>
+        </div> -->
 
         <!-- Start from -->
-        <div class="govuk-form-group">
+        <!-- <div class="govuk-form-group">
           <label class="govuk-label" >
             Start from
           </label>
@@ -33,7 +33,18 @@
               <option {% if myData.start == 'start' %}selected{% endif %} value="start">Start page</option>
               <option {% if myData.start == 'home' %}selected{% endif %} value="home">Home page</option>
           </select>
-      </div>
+        </div> -->
+
+        <!-- Employer account -->
+        <div class="govuk-form-group">
+          <label class="govuk-label" >
+            Employer account
+          </label>
+          <select class="govuk-select" style="min-width: 100%" id="employeraccount" name="employeraccount" data-option="employeraccount">
+            <option {% if myData.employeraccount == 'false' %}selected{% endif %} value="false">Not signed in</option>
+            <option {% if myData.employeraccount == 'true' %}selected{% endif %} value="true">Signed in</option>
+          </select>
+        </div>
 
     </div>
 
@@ -72,20 +83,20 @@
                 </tr>
             </thead>
             <tbody class="govuk-table__body">    
-                <tr class="govuk-table__row">
+                <!-- <tr class="govuk-table__row">
                     <th class="govuk-table__cell">Start</th>
                     <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="start">/start</a></td>
-                </tr>
+                </tr> -->
                 <tr class="govuk-table__row">
                     <th class="govuk-table__cell">Home</th>
                     <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="home">/home</a></td>
                 </tr>
                 <tr class="govuk-table__row">
-                    <th class="govuk-table__cell">Training list</th>
+                    <th class="govuk-table__cell">Courses list</th>
                     <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="training">/training</a></td>
                 </tr>
                 <tr class="govuk-table__row">
-                    <th class="govuk-table__cell">Training overview</th>
+                    <th class="govuk-table__cell">Course overview</th>
                     <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="standard">/standard</a></td>
                 </tr>
                 <tr class="govuk-table__row">
@@ -166,12 +177,14 @@
             var _urlBase = "https://das-fat-prototype.herokuapp.com/" + {{myData.version|dump|safe}} + "/";
             //Queries
             var _urlReset = "r=t",
-                _urlPage = _options.filter("#start").val() + "?",
-                _urlStart = "&s=" + _options.filter("#start").val(),
-                _urlptVersion = "&p=" + _options.filter("#ptVersion").val();
+                // _urlPage = _options.filter("#start").val() + "?",
+                _urlPage = "home?",
+                // _urlStart = "&s=" + _options.filter("#start").val(),
+                // _urlptVersion = "&p=" + _options.filter("#ptVersion").val(),
+                _urlEmpAccount = "&ea=" + _options.filter("#employeraccount").val();
            
             //Queries combined
-            var _urlPageQueries = _urlPage + _urlReset + _urlStart + _urlptVersion;
+            var _urlPageQueries = _urlPage + _urlReset + _urlEmpAccount;
 
             //URL text
             var _startURLText = _urlBase + _urlPageQueries,

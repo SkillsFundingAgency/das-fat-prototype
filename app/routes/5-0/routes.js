@@ -189,7 +189,6 @@ module.exports = function (router,_myData) {
     function setSelectedStandard(req, _standardParameter){
         req.session.myData.standardsearchapplied = false
         req.session.myData.selectedStandard = {}
-        req.session.myData.standard = ""
         if(_standardParameter){
             for (var i = 0; i < req.session.myData.standards.list.length; i++) {
                 var _thisStandard = req.session.myData.standards.list[i]
@@ -205,10 +204,16 @@ module.exports = function (router,_myData) {
     function reset(req){
         req.session.myData = JSON.parse(JSON.stringify(_myData))
 
-        // Filters defaults
-        //req.session.myData.location = ""
-        // req.session.myData.standard = ""
-        // req.session.myData.provider = ""
+        // Default setup
+        req.session.myData.start = "home"
+        req.session.myData.employeraccount = "false"
+
+        // Default filters
+        req.session.myData.location = ""
+        req.session.myData.standard = "1"
+        req.session.myData.provider = "1"
+        req.session.myData.epao = "1"
+
     }
 
     // Every GET and POST
@@ -219,23 +224,25 @@ module.exports = function (router,_myData) {
         //version
         req.session.myData.version = version
         //defaults for setup
-        req.session.myData.start = "home"
+        req.session.myData.start =  req.query.s || req.session.myData.start
+        req.session.myData.employeraccount =  req.query.ea || req.session.myData.employeraccount
+        req.session.myData.layout = ((req.session.myData.employeraccount == "true") ? "layout-as-emp.html" : "layout.html")
         //referrer page
         req.session.myData.referrerpage = getRefererPage(req.headers.referer)
         //local storage clear boolean
         // req.session.myData.clearLocalStorage = (req.query.cls) ? true : false
 
-        // defaults
-        req.session.myData.location = req.session.myData.location || ""
-        req.session.myData.standard = req.session.myData.standard || "1"
-        req.session.myData.provider = req.session.myData.provider || "1"
-        req.session.myData.epao = req.session.myData.epao || "1"
+        //Constant checks for query
+        req.session.myData.standard = req.query.standard || req.session.myData.standard
+        req.session.myData.provider = req.query.provider || req.session.myData.provider
+        req.session.myData.epao = req.query.epao || req.session.myData.epao
 
         next()
     });
 
     // Prototype setup
     router.get('/' + version + '/setup', function (req, res) {
+        req.session.myData.start = "home"
         res.render(version + '/setup', {
             myData:req.session.myData
         });
@@ -375,7 +382,6 @@ module.exports = function (router,_myData) {
     // Standard
     router.get('/' + version + '/standard', function (req, res) {
 
-        req.session.myData.standard = req.query.standard || req.session.myData.standard
         req.session.myData.selectedStandard = {}
         for (var i = 0; i < req.session.myData.standards.list.length; i++) {
             var _thisStandard = req.session.myData.standards.list[i]
@@ -480,7 +486,6 @@ module.exports = function (router,_myData) {
         req.session.myData.standardfilterapplied = true
         req.session.myData.displaycount = 0
         req.session.myData.needToMatchCount++
-        req.session.myData.standard = req.query.standard || req.session.myData.standard
         for (var i = 0; i < _standards.length; i++) {
             if(req.session.myData.standard == _standards[i].larsCode){
                 req.session.myData.selectedStandard = _standards[i]
@@ -687,9 +692,6 @@ module.exports = function (router,_myData) {
 
         var _standards = req.session.myData.standards.list
 
-        // Provider
-        req.session.myData.provider = req.query.provider || req.session.myData.provider
-        
         for (var i = 0; i < req.session.myData["providers-new"].list.length; i++) {
             var _thisProvider = req.session.myData["providers-new"].list[i]
             if(req.session.myData.provider == _thisProvider.id){
@@ -759,7 +761,6 @@ module.exports = function (router,_myData) {
         req.session.myData.standardfilterapplied = true
         req.session.myData.displaycount = 0
         req.session.myData.needToMatchCount++
-        req.session.myData.standard = req.query.standard || req.session.myData.standard
         for (var i = 0; i < _standards.length; i++) {
             if(req.session.myData.standard == _standards[i].larsCode){
                 req.session.myData.selectedStandard = _standards[i]
@@ -970,13 +971,9 @@ module.exports = function (router,_myData) {
 
     // Epao
     router.get('/' + version + '/epao', function (req, res) {
-
-        req.session.myData.epao = req.query.epao || req.session.myData.epao
-        
         res.render(version + '/epao', {
             myData:req.session.myData
         });
-
     });
 
 }

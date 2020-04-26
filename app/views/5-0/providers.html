@@ -285,7 +285,7 @@
 
                     <!-- Ofsted  -->
                     <li class="govuk-!-font-size-16">
-                        <span class="govuk-secondary-colour" >Ofsted rating: </span>
+                        <!-- <span class="govuk-secondary-colour" >Ofsted rating: </span> -->
                         {% if _provider.ofsted == 0 %}
                         <strong class="govuk-tag govuk-tag--grey">Not yet rated</strong>
                         {% elif _provider.ofsted == 1 %}
@@ -297,9 +297,10 @@
                         {% elif _provider.ofsted == 4 %}
                         <strong class="govuk-tag govuk-tag--red">Inadequate</strong>
                         {% endif %} 
+                        <span class="govuk-secondary-colour" >(Ofsted rating)</span>
                     </li>
 
-                    <li class="govuk-!-font-size-16">
+                    <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
                         {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight">{{_ratingTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">({{_totalRatings}} employer reviews)</span>
                     </li>
 

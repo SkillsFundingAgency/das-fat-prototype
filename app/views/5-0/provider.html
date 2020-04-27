@@ -18,35 +18,42 @@
     {% set _stars = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' />" %}
     {% set _ratingTextToShow = "Excellent" %}
     {% set _ratingColor = "excellent-employer" %}
-    {% set _ratingTag = "govuk-tag--green" %}
-    {% set _ratingSVG = "icon-star-green" %}
 {% elif _ratingText == "Good" %}
     {% set _stars = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green-empty.svg' class='star-svg' />" %}
     {% set _ratingTextToShow = "Good" %}
     {% set _ratingColor = "good-employer" %}
-    {% set _ratingTag = "govuk-tag--green" %}
-    {% set _ratingSVG = "icon-star-green" %}
 {% elif _ratingText == "Poor" %}
     {% set _stars = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
     {% set _ratingTextToShow = "Poor" %}
     {% set _ratingColor = "poor-employer" %}
-    {% set _ratingTag = "govuk-tag--yellow" %}
-    {% set _ratingSVG = "icon-star-grey" %}
 {% elif _ratingText == "Very poor" %}
     {% set _stars = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
     {% set _ratingTextToShow = "Very poor" %}
     {% set _ratingColor = "very-poor-employer" %}
-    {% set _ratingTag = "govuk-tag--red" %}
-    {% set _ratingSVG = "icon-star-grey" %}
 {% endif %}
 
-{% set _ratingTagClass = "" %}
-{% if _ratingText == "Excellent" or _ratingText == "Good" %}
-    {% set _ratingTagClass = " govuk-tag--green " %}
-{% elif _ratingText == "Poor" %}
-    {% set _ratingTagClass = " govuk-tag--yellow " %}
-{% elif _ratingText == "Very poor" %}
-    {% set _ratingTagClass = " govuk-tag--red " %}
+<!-- Ofsted -->
+{% if _selectedProvider.ofsted == 1 %}
+{% set _starsOfsted = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' />" %}
+{% set _ratingOfstedTextToShow = "Outstanding" %}
+{% set _ratingOfstedColor = "excellent-employer" %}
+{% elif _selectedProvider.ofsted == 2 %}
+{% set _starsOfsted = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green-empty.svg' class='star-svg' />" %}
+{% set _ratingOfstedTextToShow = "Good" %}
+{% set _ratingOfstedColor = "good-employer" %}
+{% elif _selectedProvider.ofsted == 3 %}
+{% set _starsOfsted = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
+{% set _ratingOfstedTextToShow = "Requires improvement" %}
+{% set _ratingOfstedColor = "poor-employer" %}
+{% elif _selectedProvider.ofsted == 4 %}
+{% set _starsOfsted = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
+{% set _ratingOfstedTextToShow = "Inadequate" %}
+{% set _ratingOfstedColor = "very-poor-employer" %}
+{% elif _selectedProvider.ofsted == 0 %}
+<!-- not rated -->
+{% set _starsOfsted = "" %}
+{% set _ratingOfstedTextToShow = "Not yet rated" %}
+{% set _ratingOfstedColor = "poor-employer" %}
 {% endif %}
 
 <!-- Standard selected -->
@@ -91,7 +98,7 @@
 
             Add National flag
             Add Achievement rates to each course in full list
-            Add Employer reviews
+            done - Add Employer reviews
 
             Course panel
             --------------
@@ -109,35 +116,8 @@
         <!-- <p class="govuk-body govuk-!-margin-bottom-6 govuk-!-font-weight-bold">National provider</p> -->
         {% endif %}
 
-        <!-- <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Ratings</h2> -->
-        <!-- <dl class="govuk-summary-list govuk-!-margin-bottom-3">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Ofsted rating</dt>
-                <dd class="govuk-summary-list__value">
-                    {% if _selectedProvider.ofsted == 0 %}
-                    <strong class="govuk-tag govuk-tag--grey">Not yet rated</strong>
-                    {% elif _selectedProvider.ofsted == 1 %}
-                    <strong class="govuk-tag govuk-tag--green">Outstanding</strong>
-                    {% elif _selectedProvider.ofsted == 2 %}
-                    <strong class="govuk-tag govuk-tag--green">Good</strong>
-                    {% elif _selectedProvider.ofsted == 3 %}
-                    <strong class="govuk-tag govuk-tag--yellow">Requires improvement</strong>
-                    {% elif _selectedProvider.ofsted == 4 %}
-                    <strong class="govuk-tag govuk-tag--red">Inadequate</strong>
-                    {% endif %} 
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Employers’ rating</dt>
-                <dd class="govuk-summary-list__value">
-                    <strong class="govuk-tag {{_ratingTagClass}}">{{_rating}} {{_ratingText}}</strong> <span style="color: #626a6e">({{_totalRatings}} reviews)</span>
-                </dd>
-            </div>
-        </dl> -->
-
         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Ofsted rating</h2>
-            <p class="govuk-body govuk-!-margin-bottom-5">
-                <!-- <span class="govuk-secondary-colour" >Ofsted rating: </span> -->
+            <!-- <p class="govuk-body govuk-!-margin-bottom-5">
                 {% if _selectedProvider.ofsted == 0 %}
                 <strong class="govuk-tag govuk-tag--grey">Not yet rated</strong>
                 {% elif _selectedProvider.ofsted == 1 %}
@@ -149,6 +129,9 @@
                 {% elif _selectedProvider.ofsted == 4 %}
                 <strong class="govuk-tag govuk-tag--red">Inadequate</strong>
                 {% endif %} 
+            </p> -->
+            <p class="govuk-body govuk-!-margin-bottom-4">
+                {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight-bold">{{_ratingOfstedTextToShow}}</span>
             </p>
 
 
@@ -157,7 +140,6 @@
                 {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight-bold">{{_ratingTextToShow}}</span>
                 <span style="margin-left: 5px; color: #626a6e">({{_totalRatings}} reviews)</span>
             </p>
-            <!-- <p class="govuk-body govuk-!-margin-bottom-2" style="color: #626a6e">{{_totalRatings}} employer ratings</p> -->
             <details class="govuk-details" data-module="govuk-details">
                 <summary class="govuk-details__summary">
                 <span class="govuk-details__summary-text">
@@ -218,61 +200,6 @@
                 </div>
             </details>
 
-
-
-            <!-- Strengths
-            Working with small numbers of apprentices (50 employers)
-            Getting new apprentices started (47 employers)
-            Improving apprentice skills (34 employers)
-
-            Things to improve
-            Reporting on progress of apprentices (54 employers)
-            Communication with employers (51 employers) -->
-
-       
-
-        <!-- Ofsted -->
-        <!-- <p class="govuk-body govuk-!-margin-bottom-3">
-            <span class="govuk-!-margin-bottom-2" style="display: inline-block;">Ofsted rating: </span>
-            {% if _selectedProvider.ofsted == 0 %}
-            <strong class="govuk-tag govuk-tag--grey">Not yet rated</strong>
-            {% elif _selectedProvider.ofsted == 1 %}
-            <strong class="govuk-tag govuk-tag--green">Outstanding</strong>
-            {% elif _selectedProvider.ofsted == 2 %}
-            <strong class="govuk-tag govuk-tag--green">Good</strong>
-            {% elif _selectedProvider.ofsted == 3 %}
-            <strong class="govuk-tag govuk-tag--yellow">Requires improvement</strong>
-            {% elif _selectedProvider.ofsted == 4 %}
-            <strong class="govuk-tag govuk-tag--red">Inadequate</strong>
-            {% endif %} 
-        </p> -->
-
-        <!-- Rating -->
-        <!-- <p class="govuk-body govuk-!-margin-bottom-7">
-            <span class="govuk-!-margin-bottom-2" style="display: inline-block;">Employer rating: </span>
-            {% if _ratingText == "Excellent" %}
-            <strong class="govuk-tag govuk-tag--green">{{_rating}} Excellent</strong> <span style="color: #626a6e">({{_totalRatings}})</span>
-            {% elif _ratingText == "Good" %}
-            <strong class="govuk-tag govuk-tag--green">{{_rating}} Good</strong> <span style="color: #626a6e">({{_totalRatings}})</span>
-            {% elif _ratingText == "Poor" %}
-            <strong class="govuk-tag govuk-tag--yellow">{{_rating}} Poor</strong> <span style="color: #626a6e">({{_totalRatings}})</span>
-            {% elif _ratingText == "Very poor" %}
-            <strong class="govuk-tag govuk-tag--red">{{_rating}} Very poor</strong> <span style="color: #626a6e">({{_totalRatings}})</span>
-            {% endif %} 
-        </p> -->
-
-        <!-- <div>
-            <p class="govuk-body govuk-!-margin-bottom-2">Employer reviews:</p>
-            <dl class="govuk-summary-list govuk-!-width-three-quarters govuk-!-margin-bottom-7">
-            {% for rating, count in _selectedProvider.empRatings %}
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">{{ rating }}</dt>
-                    <dd class="govuk-summary-list__value">{{ count }}</dd>
-                </div>
-            {% endfor %}
-            </dl>
-        </div> -->
-
         <!-- Course panel -->
         {% if myData.standardsearchapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
@@ -285,13 +212,6 @@
 
             {% if myData.locationapplied %}
                 <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
-                <!-- <p class="govuk-body govuk-!-margin-bottom-2">
-                    {% if _matchesLocation %}
-                    <strong class="govuk-tag govuk-tag--green">Available</strong>
-                    {% else %}
-                    <strong class="govuk-tag govuk-tag--red">Not available</strong>
-                    {% endif %}
-                </p> -->
                 <p class="govuk-body fat-availability {% if _matchesLocation %}fat-tick{% else %}fat-cross{% endif %}" >
                     {% if _matchesLocation %}
                     Available
@@ -303,7 +223,7 @@
                 {% if _matchesLocation %}
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-2">This provider’s location</h2>
                 <p class="govuk-body govuk-!-margin-bottom-1">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
-                <p class="govuk-body govuk-!-margin-bottom-3">{{_selectedProvider.distance}} miles</p>
+                <p class="govuk-body govuk-!-margin-bottom-3">{{_selectedProvider.distance}} mile{% if _selectedProvider.distance != 1 %}s{% endif %} away</p>
                 <ul class="govuk-list fat-training-options govuk-!-font-size-16" >
                     <li class="fat-tick">day&nbsp;release</li>
                     <li class="fat-cross">block&nbsp;release</li>
@@ -325,7 +245,7 @@
                         <ul class="govuk-list govuk-!-margin-bottom-0 govuk-!-font-size-16">
                             <li class="govuk-!-margin-bottom-6">
                                 <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-font-size-16">Unit 8 Farm Road, Glebe Estate, CV21 1GQ</p>
-                                <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-font-size-16">{{ _distance1 | round(2) }} miles</p>
+                                <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-font-size-16">{{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away</p>
                                 <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1" >
                                     <li class="fat-tick">day&nbsp;release</li>
                                     <li class="fat-cross">block&nbsp;release</li>
@@ -334,7 +254,7 @@
                             </li>
                             <li>
                                 <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-font-size-16">Watling Street, Dordon, Staffordshire, B78 1TS</p>
-                                <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-size-16">{{ _distance2 | round(2) }} miles</p>
+                                <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-size-16">{{ _distance2 | round(2) }} mile{% if _distance2 != 1 %}s{% endif %} away</p>
                                 <ul class="govuk-list fat-training-options govuk-!-margin-bottom-0 govuk-!-font-size-16 govuk-!-margin-top-1" >
                                     <li class="fat-tick">day&nbsp;release</li>
                                     <li class="fat-cross">block&nbsp;release</li>

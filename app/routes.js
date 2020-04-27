@@ -171,21 +171,27 @@ _myData["providers-new"].list.forEach(function(_provider, index) {
     _provider.averageEmpRating = parseFloat(_provider.averageEmpRating)
     _provider.averageEmpRatingPlus1 = parseFloat(_provider.averageEmpRating) + 1
     var _rating = _provider.averageEmpRating,
-        _ratingText = "Good"
+        _ratingText = "Good",
+        _ratingID = 2
     if (_rating > 0 & _rating < 1.3){
         _ratingText = "Very poor"
+        _ratingID = 4
         _veryPoorProviders++
     } else if (_rating >= 1.3 && _rating < 2.3){
         _ratingText = "Poor"
+        _ratingID = 3
         _poorProviders++
     } else if (_rating >= 2.3 && _rating < 3.3){
         _ratingText = "Good"
+        _ratingID = 2
         _goodProviders++
     } else if (_rating >= 3.3){
         _ratingText = "Excellent"
+        _ratingID = 1
         _excellentProviders++
     }
     _provider.averageEmpRatingText = _ratingText
+    _provider.averageEmpRatingID = _ratingID
     //Set total ratings count
     _provider.totalEmpRatings = _provider.empRatings["excellent"] + _provider.empRatings["good"] + _provider.empRatings["poor"] + _provider.empRatings["very poor"]
     //Set percentages

@@ -26,25 +26,42 @@
 {% endif %}
 
 <!-- Query strings (for use in hrefs) -->
-{% set _searchQuery = "" %}
-{% set _sortQuery = "" %}
-{% set _standardQuery = "" %}
 {% set _locationQuery = "" %}
+{% set _searchQuery = "" %}
+{% set _standardQuery = "" %}
+{% set _empReviewsQuery = "" %}
+{% set _ofstedRatingsQuery = "" %}
 {% if myData.searchapplied == true %}
     {% set _searchQuery = "&q=" + myData.searchTerm %}
 {% endif %}
 {% if myData.locationapplied == true %}
     {% set _locationQuery = "&location=" + myData.location %}
 {% endif %}
-{% if myData.sortapplied == true %}
-    {% set _sortQuery = "&sort=" + myData.sortby %}
-{% endif %}
 {% if myData.standardfilterapplied == true %}
     {% set _standardQuery = "&standard=" + myData.standard %}
 {% endif %}
+{% if myData.employerreviewsapplied == true %}
+    {% for _item in myData.employerreviews %}
+    {% set _empReviewsQuery = _empReviewsQuery + "&employerreviews=" + _item %}
+    {% endfor %}
+{% endif %}
+{% if myData.ofstedratingsapplied == true %}
+    {% for _item in myData.ofstedratings %}
+    {% set _ofstedRatingsQuery = _ofstedRatingsQuery + "&ofstedratings=" + _item %}
+    {% endfor %}
+{% endif %}
+
+<!-- Sort -->
+{% set _sortQuery = "" %}
+{% if myData.sortapplied == true %}
+    {% set _sortQuery = "&sort=" + myData.sortby %}
+{% endif %}
+
+
+{% set _fullURL = "providers-all?" + _sortQuery + _searchQuery + _standardQuery + _locationQuery + _empReviewsQuery + _ofstedRatingsQuery %}
 
 <!-- Filters -->
-{% set _filtersApplied = myData.searchapplied or myData.locationapplied %}
+{% set _filtersApplied = myData.searchapplied or myData.locationapplied or myData.employerreviewsapplied or myData.ofstedratingsapplied %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
@@ -101,14 +118,22 @@
           
                     <!-- For each filter type -->
                     {% for _filter in myData.searchfilters %}
-                        {% set _url = "providers?" + _sortQuery + _locationQuery + _standardQuery %}
+                        {% set _url = "providers?" + _sortQuery + _locationQuery + _standardQuery + _empReviewsQuery + _ofstedRatingsQuery %}
                         {% if _filter.type == "location" %}
-                            {% set _url = "providers?" + _sortQuery + _searchQuery + _standardQuery + "&location" %}
+                            {% set _url = "providers?" + _sortQuery + _searchQuery + _standardQuery + "&location" + _empReviewsQuery + _ofstedRatingsQuery %}
                         {% endif %}
 
                     <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText}}</h3>
                     <ul class="fat-filter-tags">
+                        {% if _filter.typeof == "array" %}
+                            {% for _item in _filter.value %}
+                                {% set _urlBit = "&" + _filter.type + "=" + _item.id %}
+                                {% set _url2 = _fullURL|replace(_urlBit,"") %}
+                                <li><a class="fat-filter__tag" href="{{_url2}}"><span class="govuk-visually-hidden">Clear this filter</span> {{_item.label}}</a></li>
+                            {% endfor %}
+                        {% else %}
                         <li><a class="fat-filter__tag" href="{{_url}}"><span class="govuk-visually-hidden">Clear this filter</span> {{_filter.value}}</a></li>
+                        {% endif %}
                     </ul>
                     {% endfor %}
                     
@@ -117,9 +142,11 @@
 
                 <div class="fat-filter__options">
 
-                    <!-- Location -->
                     <form action="providers" method="GET" >
 
+                        <button type="submit" class="fat-filter__submit govuk-button" id="filters-submit">Apply filters</button>
+
+                        <!-- Location -->
                         <div class="govuk-form-group" >
                             <label for="search-location" class="govuk-label" >
                                 <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Location of apprenticeship</span>
@@ -127,17 +154,67 @@
                             <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" class="govuk-input">
                         </div>
 
+                        <!-- Ofsted rating -->
+                        {% set _ofstedOptions = [{"id":1,"label":"Outstanding"},{"id":2,"label":"Good"},{"id":3,"label":"Requires improvement"},{"id":4,"label":"Inadequate"},{"id":0,"label":"Not yet rated"}] %}
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Ofsted rating
+                                </legend>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    {% for _ofstedOption in _ofstedOptions %}
+                                    {% set _checked = "" %}
+                                    {% for _item in myData.ofstedratings %}
+                                        {% if _item == _ofstedOption.id %}
+                                            {% set _checked = "checked" %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <div class="govuk-checkboxes__item">
+                                        <input {{_checked}} class="govuk-checkboxes__input" id="ofsted-{{_ofstedOption.id}}" name="ofstedratings" type="checkbox" value="{{_ofstedOption.id}}">
+                                        <label class="govuk-label govuk-checkboxes__label" for="ofsted-{{_ofstedOption.id}}">
+                                            {{_ofstedOption.label}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <!-- Employer reviews -->
+                        {% set _empOptions = [{"id":1,"label":"Excellent"},{"id":2,"label":"Good"},{"id":3,"label":"Poor"},{"id":4,"label":"Very poor"}] %}
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Employers rating
+                                </legend>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    {% for _empOption in _empOptions %}
+                                        {% set _checked = "" %}
+                                        {% for _item in myData.employerreviews %}
+                                            {% if _item == _empOption.id and myData.employerreviewsapplied == true %}
+                                                {% set _checked = "checked" %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <div class="govuk-checkboxes__item">
+                                            <input {{_checked}} class="govuk-checkboxes__input" id="employer-{{_empOption.id}}" name="employerreviews" type="checkbox" value="{{_empOption.id}}">
+                                            <label class="govuk-label govuk-checkboxes__label" for="employer-{{_empOption.id}}">
+                                                {{_empOption.label}}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </fieldset>
+                        </div>
+
                         <!-- Search box -->
-                        <div class="govuk-form-group" >
+                        <!-- <div class="govuk-form-group" >
                             <label for="search-providers" class="govuk-label" >
                                 <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Training provider name</span>
                             </label>
                             <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-providers" name="q" title="Search" class="govuk-input">
-                        </div>
+                        </div> -->
 
                         <input type="hidden" value="{{myData.standard}}" name="standard" >
-
-                        <button type="submit" class="fat-filter__submit govuk-button" id="filters-submit">Apply filters</button>
 
                     </form>
 
@@ -236,6 +313,30 @@
                 {% set _ratingSVG = "icon-star-grey" %}
             {% endif %}
 
+
+            <!-- Ofsted -->
+            {% if _provider.ofsted == 1 %}
+                {% set _starsOfsted = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' />" %}
+                {% set _ratingOfstedTextToShow = "Outstanding" %}
+                {% set _ratingOfstedColor = "excellent-employer" %}
+            {% elif _provider.ofsted == 2 %}
+                {% set _starsOfsted = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green-empty.svg' class='star-svg' />" %}
+                {% set _ratingOfstedTextToShow = "Good" %}
+                {% set _ratingOfstedColor = "good-employer" %}
+            {% elif _provider.ofsted == 3 %}
+                {% set _starsOfsted = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
+                {% set _ratingOfstedTextToShow = "Requires improvement" %}
+                {% set _ratingOfstedColor = "poor-employer" %}
+            {% elif _provider.ofsted == 4 %}
+                {% set _starsOfsted = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
+                {% set _ratingOfstedTextToShow = "Inadequate" %}
+                {% set _ratingOfstedColor = "very-poor-employer" %}
+            {% elif _provider.ofsted == 0 %}
+                <!-- not rated -->
+                {% set _starsOfsted = "" %}
+                {% set _ratingOfstedTextToShow = "Not yet rated" %}
+                {% set _ratingOfstedColor = "poor-employer" %}
+            {% endif %}
             
 
             
@@ -249,7 +350,7 @@
 
                     <!-- Distance -->
                     {% if myData.locationapplied %}
-                    <li class=" govuk-!-margin-top-2" style=""><span>{{_provider.distance}}</span> miles away</li>
+                    <li class=" govuk-!-margin-top-2" style=""><span>{{_provider.distance}}</span> mile{% if _provider.distance != 1 %}s{% endif %} away</li>
 
                     <li>
                         <ul class="govuk-list fat-training-options govuk-!-font-size-16" >
@@ -284,8 +385,7 @@
                     </li> -->
 
                     <!-- Ofsted  -->
-                    <li class="govuk-!-font-size-16">
-                        <!-- <span class="govuk-secondary-colour" >Ofsted rating: </span> -->
+                    <!-- <li class="govuk-!-font-size-16">
                         {% if _provider.ofsted == 0 %}
                         <strong class="govuk-tag govuk-tag--grey">Not yet rated</strong>
                         {% elif _provider.ofsted == 1 %}
@@ -298,6 +398,9 @@
                         <strong class="govuk-tag govuk-tag--red">Inadequate</strong>
                         {% endif %} 
                         <span class="govuk-secondary-colour" >(Ofsted rating)</span>
+                    </li> -->
+                    <li class="govuk-!-font-size-16">
+                        {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight">{{_ratingOfstedTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(Ofsted rating)</span>
                     </li>
 
                     <li class="govuk-!-font-size-16 govuk-!-margin-top-2">

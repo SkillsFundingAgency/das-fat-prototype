@@ -133,6 +133,44 @@ module.exports = function (router,_myData) {
         }
     }
 
+    // Ofsted filtering - setup
+    function ofstedFilterSetup(req){
+        req.session.myData.ofstedratingsapplied = false
+        if(req.session.myData.ofstedratings.length > 0){
+            req.session.myData.displaycount = 0
+            req.session.myData.needToMatchCount++
+            req.session.myData.ofstedratingsapplied = true
+            var ofstedratingsValues = []
+            req.session.myData.ofstedratings.forEach(function(_rating, index) {
+                var _IDtoLabel = {1:"Outstanding",2:"Good",3:"Requires improvement",4:"Inadequate",0:"Not yet rated"}
+                ofstedratingsValues.push({
+                    "label":_IDtoLabel[_rating],
+                    "id":_rating
+                })
+            });
+            req.session.myData.searchfilters.push({"value": ofstedratingsValues, "type": "ofstedratings", "typeText": "Ofsted rating","typeof":"array"})
+        }
+    }
+
+    // Employer reviews filtering - setup
+    function employerReviewsFilterSetup(req){
+        req.session.myData.employerreviewsapplied = false
+        if(req.session.myData.employerreviews.length > 0){
+            req.session.myData.displaycount = 0
+            req.session.myData.needToMatchCount++
+            req.session.myData.employerreviewsapplied = true
+            var employerreviewsValues = []
+            req.session.myData.employerreviews.forEach(function(_rating, index) {
+                var _IDtoLabel = {1:"Excellent",2:"Good",3:"Poor",4:"Very poor"}
+                employerreviewsValues.push({
+                    "label":_IDtoLabel[_rating],
+                    "id":_rating
+                })
+            });
+            req.session.myData.searchfilters.push({"value": employerreviewsValues, "type": "employerreviews", "typeText": "Employers rating","typeof":"array"})
+        }
+    }
+
     // Sort setup
     function sortSetup(req,_firstSortType,_secondSortType){
         req.session.myData.sortapplied = false
@@ -213,6 +251,8 @@ module.exports = function (router,_myData) {
         req.session.myData.standard = "1"
         req.session.myData.provider = "1"
         req.session.myData.epao = "1"
+        req.session.myData.employerreviews = []
+        req.session.myData.ofstedratings = []
 
     }
 
@@ -236,6 +276,22 @@ module.exports = function (router,_myData) {
         req.session.myData.standard = req.query.standard || req.session.myData.standard
         req.session.myData.provider = req.query.provider || req.session.myData.provider
         req.session.myData.epao = req.query.epao || req.session.myData.epao
+
+        req.session.myData.employerreviews = req.query.employerreviews || []
+        if(req.session.myData.employerreviews == "_unchecked"){
+            req.session.myData.employerreviews = []
+        }
+        if(!Array.isArray(req.session.myData.employerreviews)){
+            req.session.myData.employerreviews = [req.session.myData.employerreviews]
+        }
+        
+        req.session.myData.ofstedratings = req.query.ofstedratings || []
+        if(req.session.myData.ofstedratings == "_unchecked"){
+            req.session.myData.ofstedratings = []
+        }
+        if(!Array.isArray(req.session.myData.ofstedratings)){
+            req.session.myData.ofstedratings = [req.session.myData.ofstedratings]
+        }
 
         next()
     });
@@ -521,6 +577,12 @@ module.exports = function (router,_myData) {
 
         function continueRendering(){
 
+            // Ofsted ratings filter setup
+            ofstedFilterSetup(req)
+
+            // Employer reviews filter setup
+            employerReviewsFilterSetup(req)
+
             // Keyword search reset/setup
             searchFilterSetup(req,"Training provider name")
 
@@ -548,6 +610,26 @@ module.exports = function (router,_myData) {
                     if(_deliversStandard && (_provider.national || _provider.locationmatch)){
                         req.session.myData.hasAMatchcount++
                     }
+                }
+
+                // OFSTED RATING
+                if(req.session.myData.ofstedratingsapplied) {
+                    _provider.search = false
+                    req.session.myData.ofstedratings.forEach(function(_rating, index) {
+                        if(_provider.ofsted == _rating){
+                            req.session.myData.hasAMatchcount++
+                        }
+                    });
+                }
+
+                // EMPLOYER REVIEW
+                if(req.session.myData.employerreviewsapplied) {
+                    _provider.search = false
+                    req.session.myData.employerreviews.forEach(function(_rating, index) {
+                        if(_provider.averageEmpRatingID == _rating){
+                            req.session.myData.hasAMatchcount++
+                        }
+                    });
                 }
 
                 //SEARCH TERM
@@ -626,17 +708,34 @@ module.exports = function (router,_myData) {
 
             // Standard filter reset/setup
             standardFilterSetup(req)
-            
+
+            // Ofsted ratings filter setup
+            ofstedFilterSetup(req)
+
+            // Employer reviews filter setup
+            employerReviewsFilterSetup(req)
+
             // Keyword search reset/setup
             searchFilterSetup(req,"Training provider name")
 
+
+
             // FILTER providers
+            // CHECK FOR MATCHES
             _providers.forEach(function(_provider, index) {
 
                 req.session.myData.hasAMatchcount = 0
 
                 // Reset each provider
                 _provider.search = true
+    
+                //LOCATION
+                if(req.session.myData.locationapplied) {
+                    _provider.search = false
+                    if(_provider.national || _provider.locationmatch){
+                        req.session.myData.hasAMatchcount++
+                    }
+                }
     
                 //STANDARD SEARCH TERM
                 if(req.session.myData.standardsearchapplied) {
@@ -645,13 +744,25 @@ module.exports = function (router,_myData) {
                         req.session.myData.hasAMatchcount++
                     }
                 }
-    
-                //LOCATION
-                if(req.session.myData.locationapplied) {
+
+                // OFSTED RATING
+                if(req.session.myData.ofstedratingsapplied) {
                     _provider.search = false
-                    if(_provider.national || _provider.locationmatch){
-                        req.session.myData.hasAMatchcount++
-                    }
+                    req.session.myData.ofstedratings.forEach(function(_rating, index) {
+                        if(_provider.ofsted == _rating){
+                            req.session.myData.hasAMatchcount++
+                        }
+                    });
+                }
+
+                // EMPLOYER REVIEW
+                if(req.session.myData.employerreviewsapplied) {
+                    _provider.search = false
+                    req.session.myData.employerreviews.forEach(function(_rating, index) {
+                        if(_provider.averageEmpRatingID == _rating){
+                            req.session.myData.hasAMatchcount++
+                        }
+                    });
                 }
     
                 //SEARCH TERM

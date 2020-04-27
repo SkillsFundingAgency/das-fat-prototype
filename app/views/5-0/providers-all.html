@@ -327,7 +327,7 @@
                 <!-- not rated -->
                 {% set _starsOfsted = "" %}
                 {% set _ratingOfstedTextToShow = "Not yet rated" %}
-                {% set _ratingOfstedColor = "" %}
+                {% set _ratingOfstedColor = "poor-employer" %}
             {% endif %}
 
             {% if _provider.search == true %}
@@ -338,9 +338,8 @@
                 <ul class="govuk-list">
 
                     {% if myData.locationapplied %}
-                    <li><span>{{_provider.distance}}</span> mile{% if _provider.distance != 1 %}s{% endif %} away</li>
+                    <li class="{% if myData.standardsearchapplied == false %}govuk-!-margin-bottom-3{% endif %}"><span>{{_provider.distance}}</span> mile{% if _provider.distance != 1 %}s{% endif %} away</li>
                     {% endif %}
-
                     {% if myData.locationapplied and myData.standardsearchapplied %}
                     <li>
                         <ul class="govuk-list fat-training-options govuk-!-font-size-16" >

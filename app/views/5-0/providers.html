@@ -58,7 +58,7 @@
 {% endif %}
 
 
-{% set _fullURL = "providers-all?" + _sortQuery + _searchQuery + _standardQuery + _locationQuery + _empReviewsQuery + _ofstedRatingsQuery %}
+{% set _fullURL = "providers?" + _sortQuery + _searchQuery + _standardQuery + _locationQuery + _empReviewsQuery + _ofstedRatingsQuery %}
 
 <!-- Filters -->
 {% set _filtersApplied = myData.searchapplied or myData.locationapplied or myData.employerreviewsapplied or myData.ofstedratingsapplied %}
@@ -153,6 +153,34 @@
                             </label>
                             <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" class="govuk-input">
                         </div>
+
+                        <!-- Training options -->
+                        {% if myData.locationapplied %}
+                        {% set _trainingOptions = [{"id":1,"label":"Day release"},{"id":2,"label":"Block release"},{"id":3,"label":"At your location"}] %}
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Training options
+                                </legend>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    {% for _trainingOption in _trainingOptions %}
+                                    {% set _checked = "" %}
+                                    {% for _item in myData.trainingOptions %}
+                                        {% if _item == _trainingOption.id %}
+                                            {% set _checked = "checked" %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <div class="govuk-checkboxes__item">
+                                        <input {{_checked}} class="govuk-checkboxes__input" id="training-{{_trainingOption.id}}" name="trainingOptions" type="checkbox" value="{{_trainingOption.id}}">
+                                        <label class="govuk-label govuk-checkboxes__label" for="training-{{_trainingOption.id}}">
+                                            {{_trainingOption.label}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </fieldset>
+                        </div>
+                        {% endif %}
 
                         <!-- Ofsted rating -->
                         {% set _ofstedOptions = [{"id":1,"label":"Outstanding"},{"id":2,"label":"Good"},{"id":3,"label":"Requires improvement"},{"id":4,"label":"Inadequate"},{"id":0,"label":"Not yet rated"}] %}
@@ -354,14 +382,11 @@
 
                     <li>
                         <ul class="govuk-list fat-training-options govuk-!-font-size-16" >
-                            <!-- <li style="padding-left: 0" class=""><span>{{_provider.distance}}</span> miles away</li> -->
                             <li class="fat-tick" >day&nbsp;release</li>
                             <li class="fat-cross" >block&nbsp;release</li>
-                            {% if _provider.distance < 20 %}
-                            <li class="fat-tick" >at&nbsp;your&nbsp;location</li>
-                            {% else %}
-                            <li class="fat-cross" >at&nbsp;your&nbsp;location</li>
-                            {% endif %}
+                            <li {% if _provider.distance < 20 %}class="fat-tick"{% else %}class="fat-cross"{% endif %} >
+                                at&nbsp;your&nbsp;location
+                            </li>
                         </ul>
                     </li>
                     {% endif %}
@@ -399,7 +424,12 @@
                         {% endif %} 
                         <span class="govuk-secondary-colour" >(Ofsted rating)</span>
                     </li> -->
-                    <li class="govuk-!-font-size-16">
+
+                    <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                        <span style="color: #626a6e" class="govuk-!-font-size-16">68% achievement rate</span>
+                    </li>
+
+                    <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
                         {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight">{{_ratingOfstedTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(Ofsted rating)</span>
                     </li>
 

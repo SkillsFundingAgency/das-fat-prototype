@@ -167,7 +167,7 @@ module.exports = function (router,_myData) {
                     "id":_rating
                 })
             });
-            req.session.myData.searchfilters.push({"value": employerreviewsValues, "type": "employerreviews", "typeText": "Employers rating","typeof":"array"})
+            req.session.myData.searchfilters.push({"value": employerreviewsValues, "type": "employerreviews", "typeText": "Average employer review","typeof":"array"})
         }
     }
 

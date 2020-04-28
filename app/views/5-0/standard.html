@@ -129,11 +129,15 @@
             Full information on <a class="govuk-link govuk-link--no-visited-state" href="{{_selectedStandard.standardPageUrl}}" target="_blank" >{{_standardTitle | safe}}</a> is available from the Institute for Apprenticeships and Technical Education.
         </p>
 
-        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            
-            <!-- Providers -->
-            <h2 class="govuk-heading-l" >Training providers</h2>
+        
 
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5" >
+            <!-- <p class="govuk-body">{{_standardTitle | safe}}</p> -->
+            <!-- <span class="govuk-caption-m">{{_standardTitle | safe}}</span> -->
+            <h2 class="govuk-heading-l" >Find training providers for this course</h2>
+        
+            <!-- Providers -->
+            
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2>
             {% if myData.locationapplied %}
                 <p class="govuk-body govuk-!-margin-bottom-5"><span style="margin-right: 10px">{{myData.location}}</span> <a href="standard?standard={{myData.standard}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
@@ -145,7 +149,7 @@
                     {% endif %}
                 </p>
                 {% if myData.displaycountproviders != 0 %}
-                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state">View training providers</a></p>
+                <!-- <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state">View training providers</a></p> -->
                 {% endif %}
             {% else %}
             <!-- Enter location form -->
@@ -164,9 +168,6 @@
                 </div>
                 <input type="hidden" value="{{myData.standard}}" name="standard" >
             </form>
-            {% if myData.displaycountproviders != 0 %}
-                <p class="govuk-body govuk-!-font-weight-bold"><a href="providers?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View all training providers</a></p>
-                {% endif %}
             <!-- <hr>
             <p class="govuk-body-l" >
                 {% if _selectedStandard.providers2.number != 0 %}
@@ -176,8 +177,13 @@
                 {% endif %}
             </p> -->
             {% endif %}
-
+            {% if myData.locationapplied and myData.displaycountproviders != 0 %}
+                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state">View providers</a></p>
+            {% endif %}
         </div>
+        {% if myData.locationapplied == false and myData.displaycountproviders != 0 %}
+            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">View providers for this course</a></p>
+        {% endif %}
 
         <h2 class="govuk-heading-m govuk-!-margin-top-8" >
             Assessment organisations

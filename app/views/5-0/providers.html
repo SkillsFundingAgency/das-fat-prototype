@@ -380,12 +380,12 @@
                     {% if myData.locationapplied %}
                     <li class=" govuk-!-margin-top-2" style=""><span>{{_provider.distance}}</span> mile{% if _provider.distance != 1 %}s{% endif %} away</li>
 
-                    <li>
-                        <ul class="govuk-list fat-training-options govuk-!-font-size-16" >
+                    <li><span class="govuk-!-font-size-16">Training options:</span>
+                        <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1" >
                             <li class="fat-tick" >day&nbsp;release</li>
                             <li class="fat-cross" >block&nbsp;release</li>
                             <li {% if _provider.distance < 20 %}class="fat-tick"{% else %}class="fat-cross"{% endif %} >
-                                at&nbsp;your&nbsp;location
+                                in&nbsp;your&nbsp;workplace
                             </li>
                         </ul>
                     </li>

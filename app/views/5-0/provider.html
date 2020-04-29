@@ -227,14 +227,13 @@
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-2">This provider’s location</h2>
                 <p class="govuk-body govuk-!-margin-bottom-1">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
                 <p class="govuk-body govuk-!-margin-bottom-3">{{_selectedProvider.distance}} mile{% if _selectedProvider.distance != 1 %}s{% endif %} away</p>
-                <ul class="govuk-list fat-training-options govuk-!-font-size-16" >
+                <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-0">Training options:</p>
+                <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1" >
                     <li class="fat-tick">day&nbsp;release</li>
                     <li class="fat-cross">block&nbsp;release</li>
-                    {% if _selectedProvider.distance < 20 %}
-                    <li class="fat-tick">at&nbsp;your&nbsp;location</li>
-                    {% else %}
-                    <li class="fat-cross">at&nbsp;your&nbsp;location</li>
-                    {% endif %}
+                    <li {% if _selectedProvider.distance < 20 %}class="fat-tick"{% else %}class="fat-cross"{% endif %} >
+                        in&nbsp;your&nbsp;workplace
+                    </li>
                 </ul>
                 <details class="govuk-details" data-module="govuk-details">
                     <summary class="govuk-details__summary">
@@ -248,11 +247,11 @@
                         <ul class="govuk-list govuk-!-margin-bottom-0 govuk-!-font-size-16">
                             <li class="govuk-!-margin-bottom-6">
                                 <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-font-size-16">Unit 8 Farm Road, Glebe Estate, CV21 1GQ</p>
-                                <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-font-size-16">{{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away</p>
+                                <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-size-16">{{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away</p>
                                 <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1" >
                                     <li class="fat-tick">day&nbsp;release</li>
                                     <li class="fat-cross">block&nbsp;release</li>
-                                    <li class="fat-cross">at&nbsp;your&nbsp;location</li>
+                                    <li class="fat-cross" >in&nbsp;your&nbsp;workplace</li>
                                 </ul>
                             </li>
                             <li>
@@ -261,7 +260,7 @@
                                 <ul class="govuk-list fat-training-options govuk-!-margin-bottom-0 govuk-!-font-size-16 govuk-!-margin-top-1" >
                                     <li class="fat-tick">day&nbsp;release</li>
                                     <li class="fat-cross">block&nbsp;release</li>
-                                    <li class="fat-cross">at&nbsp;your&nbsp;location</li>
+                                    <li class="fat-cross">in&nbsp;your&nbsp;workplace</li>
                                 </ul>
                             </li>
                         </ul>

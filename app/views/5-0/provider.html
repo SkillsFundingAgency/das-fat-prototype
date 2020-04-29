@@ -230,9 +230,9 @@
                 <!-- <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-0">Training options:</p> -->
                 <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1" >
                     <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li>
-                    <li class="fat-tick">day&nbsp;release</li>
-                    <li class="fat-cross">block&nbsp;release</li>
-                    <li {% if _selectedProvider.distance < 20 %}class="fat-tick"{% else %}class="fat-cross"{% endif %} >
+                    <li {% if _selectedProvider.distance < 11 %}class="fat-cross"{% else %}class="fat-tick"{% endif %} >day&nbsp;release</li>
+                    <li {% if _selectedProvider.distance > 20 %}class="fat-tick"{% else %}class="fat-cross"{% endif %} >block&nbsp;release</li>
+                    <li {% if _selectedProvider.distance < 11 %}class="fat-tick"{% else %}class="fat-cross"{% endif %} >
                         in&nbsp;your&nbsp;workplace
                     </li>
                 </ul>

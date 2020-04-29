@@ -227,8 +227,9 @@
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-2">This provider’s location</h2>
                 <p class="govuk-body govuk-!-margin-bottom-1">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
                 <p class="govuk-body govuk-!-margin-bottom-3">{{_selectedProvider.distance}} mile{% if _selectedProvider.distance != 1 %}s{% endif %} away</p>
-                <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-0">Training options:</p>
+                <!-- <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-0">Training options:</p> -->
                 <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1" >
+                    <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li>
                     <li class="fat-tick">day&nbsp;release</li>
                     <li class="fat-cross">block&nbsp;release</li>
                     <li {% if _selectedProvider.distance < 20 %}class="fat-tick"{% else %}class="fat-cross"{% endif %} >
@@ -249,6 +250,7 @@
                                 <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-font-size-16">Unit 8 Farm Road, Glebe Estate, CV21 1GQ</p>
                                 <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-size-16">{{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away</p>
                                 <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1" >
+                                    <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li>
                                     <li class="fat-tick">day&nbsp;release</li>
                                     <li class="fat-cross">block&nbsp;release</li>
                                     <li class="fat-cross" >in&nbsp;your&nbsp;workplace</li>
@@ -258,6 +260,7 @@
                                 <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-font-size-16">Watling Street, Dordon, Staffordshire, B78 1TS</p>
                                 <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-size-16">{{ _distance2 | round(2) }} mile{% if _distance2 != 1 %}s{% endif %} away</p>
                                 <ul class="govuk-list fat-training-options govuk-!-margin-bottom-0 govuk-!-font-size-16 govuk-!-margin-top-1" >
+                                    <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li>
                                     <li class="fat-tick">day&nbsp;release</li>
                                     <li class="fat-cross">block&nbsp;release</li>
                                     <li class="fat-cross">in&nbsp;your&nbsp;workplace</li>

@@ -56,7 +56,7 @@
     <div class="govuk-grid-column-two-thirds">
 
         <h1 class="govuk-heading-xl" >
-            Assessment organisations
+            End-point assessment organisations
         </h1>
 
     </div>
@@ -132,7 +132,7 @@
                         <!-- Search box -->
                         <div class="govuk-form-group" >
                             <label for="search-epaos" class="govuk-label" >
-                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Assessment organisation name</span>
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">End-point assessment organisation name</span>
                             </label>
                             <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-epaos" name="q" class="govuk-input">
                         </div>
@@ -159,7 +159,7 @@
         {% else %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2>
-            <p class="govuk-body govuk-!-margin-bottom-2">Show only assessment organisations who offer training for the apprenticeship location.</p>
+            <p class="govuk-body govuk-!-margin-bottom-2">Show only end-point assessment organisations who offer training for the apprenticeship location.</p>
             <p class="govuk-body"><a href="#search-location" class="focus-field-prompt govuk-link govuk-link--no-visited-state" >Enter&nbsp;location</a></p>
         </div>
         {% endif %}
@@ -208,7 +208,7 @@
 
         {% else %}
 
-        <p class="govuk-body govuk-!-margin-top-4">No assessment organisations for the selected filters.</p>
+        <p class="govuk-body govuk-!-margin-top-4">No end-point assessment organisations for the selected filters.</p>
 
         {% endif %}
 

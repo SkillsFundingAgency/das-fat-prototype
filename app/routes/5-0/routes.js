@@ -908,7 +908,7 @@ module.exports = function (router,_myData) {
         function continueRendering(){
 
             // Keyword search reset/setup
-            searchFilterSetup(req,"Assessment organisation name")
+            searchFilterSetup(req,"End-point assessment organisation name")
 
             _epaos.forEach(function(_epao, index) {
                 
@@ -1016,7 +1016,7 @@ module.exports = function (router,_myData) {
             standardFilterSetup(req)
 
             // Keyword search reset/setup
-            searchFilterSetup(req,"Assessment organisation name")
+            searchFilterSetup(req,"End-point assessment organisation name")
 
             req.session.myData.epaos.list.forEach(function(_epao, index) {
 

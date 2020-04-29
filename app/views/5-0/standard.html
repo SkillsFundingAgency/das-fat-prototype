@@ -186,21 +186,21 @@
         {% endif %}
 
         <h2 class="govuk-heading-m govuk-!-margin-top-8" >
-            Assessment organisations
+            End-point assessment organisations
         </h2>
         {% if myData.displaycountepaos == 0 %}
-        <p class="govuk-body">No assessment organisations are available for this course.</p>
+        <p class="govuk-body">No end-point assessment organisations are available for this course.</p>
         {% else %}
             {% if myData.locationapplied %}
                 {% if myData.displaycountepaos == 1 %}
-                    <p class="govuk-body govuk-!-margin-bottom-2">{{myData.displaycountepaos}} assessment organisation available.</p>
-                    <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View assessment organisation</a></p>
+                    <p class="govuk-body govuk-!-margin-bottom-2">{{myData.displaycountepaos}} end-point assessment organisation available.</p>
+                    <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisation</a></p>
                 {% else %}
-                    <p class="govuk-body govuk-!-margin-bottom-2">{{myData.displaycountepaos}} assessment organisations available.</p>
-                    <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View assessment organisations</a></p>
+                    <p class="govuk-body govuk-!-margin-bottom-2">{{myData.displaycountepaos}} end-point assessment organisations available.</p>
+                    <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisations</a></p>
                 {% endif %}
             {% else %}
-                <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View assessment organisations</a></p>
+                <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisations</a></p>
             {% endif %}
         {% endif %}
 

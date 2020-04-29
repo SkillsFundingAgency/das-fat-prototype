@@ -86,7 +86,9 @@
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Maximum funding</dt>
-                <dd class="govuk-summary-list__value">£{{_selectedStandard.maxFundingFormatted}}</dd>
+                <dd class="govuk-summary-list__value">
+                    £{{_selectedStandard.maxFundingFormatted}} <br><span class="govuk-!-font-size-16 govuk-secondary-colour">Maximum amount government will fund <br>for apprenticeship training.</span>
+                </dd>
             </div>
             {% if _selectedStandard.typicalJobTitles.length > 0 %}
             <div class="govuk-summary-list__row">

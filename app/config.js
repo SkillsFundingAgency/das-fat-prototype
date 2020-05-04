@@ -31,7 +31,7 @@ module.exports = {
   // Enable or disable Browser Sync
   useBrowserSync: 'true',
 
-  apimAuthKey : '',
+  apimAuthKey : (process.env.APIM_API_KEY !== undefined ? process.env.APIM_API_KEY : '{YOUR_KEY}'),
 
-  apiBaseUrl : 'https://das-poc-fat2-alphaapi-as.azurewebsites.net'
+  apiBaseUrl : (process.env.APIM_BASE_URL !== undefined ? process.env.APIM_BASE_URL : '{BASE_URL}')
 }

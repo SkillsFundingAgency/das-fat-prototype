@@ -264,7 +264,7 @@ module.exports = function (router,_myData) {
 
         const request = require('request');
         const options ={
-            url: config.apiBaseUrl + '/api/courses/standards/',
+            url: config.apiBaseUrl + 'fatv2/trainingcourses/',
             headers: {
                 'Ocp-Apim-Subscription-Key':config.apimAuthKey
             }
@@ -396,7 +396,7 @@ module.exports = function (router,_myData) {
 
         const request = require('request');
         const options ={
-            url: config.apiBaseUrl + '/api/courses/standards/' + req.session.myData.standard,
+            url: config.apiBaseUrl + 'fatv2/trainingcourses/' + req.session.myData.standard,
             headers: {
                 'Ocp-Apim-Subscription-Key':config.apimAuthKey
             }

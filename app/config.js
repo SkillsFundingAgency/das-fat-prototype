@@ -29,6 +29,9 @@ module.exports = {
   cookieText: 'GOV.UK uses cookies to make the site simpler. <a href="#">Find out more about cookies</a>',
 
   // Enable or disable Browser Sync
-  useBrowserSync: 'true'
+  useBrowserSync: 'true',
 
+  apimAuthKey : (process.env.APIM_API_KEY !== undefined ? process.env.APIM_API_KEY : '{YOUR_KEY}'),
+
+  apiBaseUrl : (process.env.APIM_BASE_URL !== undefined ? process.env.APIM_BASE_URL : '{BASE_URL}')
 }

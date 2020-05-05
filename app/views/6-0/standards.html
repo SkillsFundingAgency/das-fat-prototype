@@ -215,7 +215,7 @@
             </thead>
             <tbody class="govuk-table__body">
             {% for _standard in myData.standards.list %}
-
+            {% if _standard.regulated == true %}
               <tr class="govuk-table__row">
                 <td class="govuk-table__cell">
                   {{_standard.larsCode}} - {{_standard.autoCompleteString}}<br><br>{{_standard.integratedDegree}}
@@ -230,7 +230,7 @@
                   {{_standard.regulationDetail|dump|safe}}
                 </td>
               </tr>
-
+{% endif %}
             {% endfor %}
           </tbody>
         </table>

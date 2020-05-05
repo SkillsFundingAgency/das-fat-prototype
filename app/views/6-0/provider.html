@@ -15,38 +15,38 @@
 {% set _totalRatings = _selectedProvider.totalEmpRatings %}
 
 {% if _ratingText == "Excellent" %}
-    {% set _stars = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' />" %}
+    {% set _stars = "<img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' />" %}
     {% set _ratingTextToShow = "Excellent" %}
     {% set _ratingColor = "excellent-employer" %}
 {% elif _ratingText == "Good" %}
-    {% set _stars = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green-empty.svg' class='star-svg' />" %}
+    {% set _stars = "<img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green-empty.svg' class='star-svg star-svg-large' />" %}
     {% set _ratingTextToShow = "Good" %}
     {% set _ratingColor = "good-employer" %}
 {% elif _ratingText == "Poor" %}
-    {% set _stars = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
+    {% set _stars = "<img src='/public/images/icon-star-grey.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' />" %}
     {% set _ratingTextToShow = "Poor" %}
     {% set _ratingColor = "poor-employer" %}
 {% elif _ratingText == "Very poor" %}
-    {% set _stars = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
+    {% set _stars = "<img src='/public/images/icon-star-grey.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' />" %}
     {% set _ratingTextToShow = "Very poor" %}
     {% set _ratingColor = "very-poor-employer" %}
 {% endif %}
 
 <!-- Ofsted -->
 {% if _selectedProvider.ofsted == 1 %}
-{% set _starsOfsted = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' />" %}
+{% set _starsOfsted = "<img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' />" %}
 {% set _ratingOfstedTextToShow = "Outstanding" %}
 {% set _ratingOfstedColor = "excellent-employer" %}
 {% elif _selectedProvider.ofsted == 2 %}
-{% set _starsOfsted = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green-empty.svg' class='star-svg' />" %}
+{% set _starsOfsted = "<img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green-empty.svg' class='star-svg star-svg-large' />" %}
 {% set _ratingOfstedTextToShow = "Good" %}
 {% set _ratingOfstedColor = "good-employer" %}
 {% elif _selectedProvider.ofsted == 3 %}
-{% set _starsOfsted = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
+{% set _starsOfsted = "<img src='/public/images/icon-star-grey.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' />" %}
 {% set _ratingOfstedTextToShow = "Requires improvement" %}
 {% set _ratingOfstedColor = "poor-employer" %}
 {% elif _selectedProvider.ofsted == 4 %}
-{% set _starsOfsted = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
+{% set _starsOfsted = "<img src='/public/images/icon-star-grey.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' />" %}
 {% set _ratingOfstedTextToShow = "Inadequate" %}
 {% set _ratingOfstedColor = "very-poor-employer" %}
 {% elif _selectedProvider.ofsted == 0 %}
@@ -83,122 +83,98 @@
     .autocomplete__hint {
         height: 40px;
     }
+    .graph, .bar {
+        border: 0 !important;
+        border-radius: 10px !important;
+        height: 15px !important;
+    }
+    .bar {
+        min-width: 10px !important;
+    }
+    .bar-zero {
+        min-width: 0px !important;
+    }
+    .graph {
+        background: #efefef !important;
+    }
 </style>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
         <span class="govuk-caption-xl">Training provider</span>
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-6" >
             {{_providerTitle | safe}}
         </h1>
 
-        <!-- 
-            TODO:
-
-            Add National flag
-            Add Achievement rates to each course in full list
-            done - Add Employer reviews
-
-            Course panel
-            --------------
-            Add Achievement rates
-
-                done - Add locations - see FIU
-                    - done - Closest location
-                    - done - Delivery modes on each location 
-                    - done - Distance away on each location
-                    - ??? - not needed - Contact details for each location
-
-        -->
-
-        {% if _selectedProvider.national %}
-        <!-- <p class="govuk-body govuk-!-margin-bottom-6 govuk-!-font-weight-bold">National provider</p> -->
-        {% endif %}
-
+        <!-- Ofsted -->
         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Ofsted rating</h2>
-            <!-- <p class="govuk-body govuk-!-margin-bottom-5">
-                {% if _selectedProvider.ofsted == 0 %}
-                <strong class="govuk-tag govuk-tag--grey">Not yet rated</strong>
-                {% elif _selectedProvider.ofsted == 1 %}
-                <strong class="govuk-tag govuk-tag--green">Outstanding</strong>
-                {% elif _selectedProvider.ofsted == 2 %}
-                <strong class="govuk-tag govuk-tag--green">Good</strong>
-                {% elif _selectedProvider.ofsted == 3 %}
-                <strong class="govuk-tag govuk-tag--yellow">Requires improvement</strong>
-                {% elif _selectedProvider.ofsted == 4 %}
-                <strong class="govuk-tag govuk-tag--red">Inadequate</strong>
-                {% endif %} 
-            </p> -->
-            <p class="govuk-body govuk-!-margin-bottom-4">
-                {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight-bold">{{_ratingOfstedTextToShow}}</span>
-            </p>
+        <p class="govuk-body-l govuk-!-margin-bottom-4" >
+            {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight-bold">{{_ratingOfstedTextToShow}}</span>
+        </p>
 
-
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Employer reviews</h2>
-            <p class="govuk-body govuk-!-margin-bottom-4">
-                {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight-bold">{{_ratingTextToShow}}</span>
-                <span style="margin-left: 5px; color: #626a6e">({{_totalRatings}} reviews)</span>
-            </p>
-            <details class="govuk-details" data-module="govuk-details">
-                <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                    View more details
-                </span>
-                </summary> 
-                <div class="govuk-details__text">
-                    <!-- <p class="govuk-body" style="color:red">Detailed breakdown of employer ratings</p> -->
-                    <ul class="govuk-list graph-list govuk-!-width-three-quarters">
-                        <li class="level-1">
-                            <span class="label">Excellent</span>
-                            <span class="chart">
-                                <span class="graph">
-                                    <span class="bar" style="width: {{_selectedProvider.empRatingsPercentages['excellent']}}%"></span>
-                                </span>
+        <!-- Employer reviews -->
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Employer reviews</h2>
+        <p class="govuk-body-l govuk-!-margin-bottom-4">
+            {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight-bold">{{_ratingTextToShow}}</span><span class="govuk-body govuk-!-font-size" style="color: #626a6e; margin-left: 10px;">({{_totalRatings}} reviews)</span>
+        </p>
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text govuk-!-font-size">
+                View more details
+            </span>
+            </summary> 
+            <div class="govuk-details__text">
+                <ul class="govuk-list graph-list govuk-!-width-three-quarters">
+                    <li class="level-1">
+                        <span class="label">Excellent</span>
+                        <span class="chart">
+                            <span class="graph">
+                                <span class="bar {% if _selectedProvider.empRatingsPercentages['excellent'] == 0 %}bar-zero{% endif %}" style="width: {{_selectedProvider.empRatingsPercentages['excellent']}}%"></span>
                             </span>
-                            <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatingsPercentages["excellent"]}}%</span>
-                        </li>
-                        <li class="level-2">
-                            <span class="label">Good</span>
-                            <span class="chart">
-                                <span class="graph">
-                                    <span class="bar" style="width: {{_selectedProvider.empRatingsPercentages['good']}}%"></span>
-                                </span>
+                        </span>
+                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatingsPercentages["excellent"]}}%</span>
+                    </li>
+                    <li class="level-2">
+                        <span class="label">Good</span>
+                        <span class="chart">
+                            <span class="graph">
+                                <span class="bar {% if _selectedProvider.empRatingsPercentages['good'] == 0 %}bar-zero{% endif %}" style="width: {{_selectedProvider.empRatingsPercentages['good']}}%"></span>
                             </span>
-                            <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatingsPercentages["good"]}}%</span>
-                        </li>
-                        <li class="level-3">
-                            <span class="label">Poor</span>
-                            <span class="chart">
-                                <span class="graph">
-                                    <span class="bar" style="width: {{_selectedProvider.empRatingsPercentages['poor']}}%"></span>
-                                </span>
+                        </span>
+                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatingsPercentages["good"]}}%</span>
+                    </li>
+                    <li class="level-3">
+                        <span class="label">Poor</span>
+                        <span class="chart">
+                            <span class="graph">
+                                <span class="bar {% if _selectedProvider.empRatingsPercentages['poor'] == 0 %}bar-zero{% endif %}" style="width: {{_selectedProvider.empRatingsPercentages['poor']}}%"></span>
                             </span>
-                            <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatingsPercentages["poor"]}}%</span>
-                        </li>
-                        <li class="level-4">
-                            <span class="label">Very poor</span>
-                            <span class="chart">
-                                <span class="graph">
-                                    <span class="bar" style="width: {{_selectedProvider.empRatingsPercentages['very poor']}}%"></span>
-                                </span>
+                        </span>
+                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatingsPercentages["poor"]}}%</span>
+                    </li>
+                    <li class="level-4">
+                        <span class="label">Very poor</span>
+                        <span class="chart">
+                            <span class="graph">
+                                <span class="bar {% if _selectedProvider.empRatingsPercentages['very poor'] == 0 %}bar-zero{% endif %}" style="width: {{_selectedProvider.empRatingsPercentages['very poor']}}%"></span>
                             </span>
-                            <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatingsPercentages["very poor"]}}%</span>
-                        </li>
-                    </ul>
-                    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Strengths</h2>
-                    <ol class="govuk-list govuk-list--number">
-                        <li>Working with small numbers of apprentices</li>
-                        <li>Getting new apprentices started</li>
-                        <li>Improving apprentice skills</li>
-                    </ol>
-                    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Things to improve</h2>
-                    <ol class="govuk-list govuk-list--number">
-                        <li>Reporting on progress of apprentices</li>
-                        <li>Communication with employers</li>
-                    </ol>
-                </div>
-            </details>
+                        </span>
+                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatingsPercentages["very poor"]}}%</span>
+                    </li>
+                </ul>
+                <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Strengths</h2>
+                <ol class="govuk-list govuk-list--number">
+                    <li>Working with small numbers of apprentices</li>
+                    <li>Getting new apprentices started</li>
+                    <li>Improving apprentice skills</li>
+                </ol>
+                <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Things to improve</h2>
+                <ol class="govuk-list govuk-list--number">
+                    <li>Reporting on progress of apprentices</li>
+                    <li>Communication with employers</li>
+                </ol>
+            </div>
+        </details>
 
         <!-- Course panel -->
         {% if myData.standardsearchapplied %}
@@ -361,86 +337,30 @@
                 <input type="hidden" value="{{_selectedProvider.id}}" name="provider" >
             </form>
         </div>
-        <!-- <p class="govuk-body">Select a course to view available locations, training options and contact details.</p> -->
         {% endif %}
-
-        <!-- General contact details -->
-        <!-- <h2 class="govuk-heading-m govuk-!-margin-bottom-2">General contact details</h2> -->
-        <!-- <p class="govuk-body govuk-!-margin-bottom-6">
-            <a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a><br>
-            078&nbsp;7856&nbsp;9856<br>
-            <a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a>
-        </p> -->
-
-        <!-- <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-            <span class="govuk-details__summary-text">
-                View general contact details
-            </span>
-            </summary>
-            <div class="govuk-details__text"> -->
-                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">General contact details</h2>
-                
-                <dl class="govuk-summary-list govuk-!-margin-bottom-7">
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Email</dt>
-                        <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Telephone</dt>
-                        <dd class="govuk-summary-list__value">078&nbsp;7856&nbsp;9856</dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Website</dt>
-                        <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></dd>
-                    </div>
-                </dl>
-            <!-- </div>
-        </details> -->
+        
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">General contact details</h2>
+        
+        <dl class="govuk-summary-list govuk-!-margin-bottom-7">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Email</dt>
+                <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a></dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Telephone</dt>
+                <dd class="govuk-summary-list__value">078&nbsp;7856&nbsp;9856</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Website</dt>
+                <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></dd>
+            </div>
+        </dl>
 
         <!-- All courses -->
-        <!-- <h2 class="govuk-heading-m govuk-!-margin-top">All courses offered ({{myData.displaycount}})</h2> -->
-
         <h2 class="govuk-heading-m govuk-!-margin-top">Courses offered by this provider ({{myData.displaycount}})</h2>
-
-        <!-- {% if myData.locationapplied %} 
-        {% if _matchesLocation %}
-        <p class="govuk-body ">{{myData.displaycount}} courses offered for the apprenticeship location by {{_providerTitle | safe}}.</p>
-        <p class="govuk-body ">Select a course to view course contact details, and to check locations and training options.</p>
-        {% else %}
-        <p class="govuk-body ">{{_providerTitle | safe}} offers {{myData.displaycount}} courses.</p>
-        {% endif %}
-        {% endif %} -->
         <p class="govuk-body ">Select a course to view locations, training options and contact details.</p>
         
-
-        <!-- {% for _standard in myData.standards.list %}
-            {% if _standard.matchesProvider %}
-            <div class=" govuk-!-margin-bottom-3" data-list-item data-search-data="{{_standardData|dump}}" >
-                <p class="govuk-body govuk-!-margin-bottom-2">
-                    <a href="provider?standard={{_standard.larsCode}}&provider={{_selectedProvider.id}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a>
-                </p>
-                {% if myData.locationapplied %}
-                    {% if _matchesLocation %}
-                    <strong class="govuk-tag govuk-tag--green">Available</strong>
-                    {% else %}
-                    <strong class="govuk-tag govuk-tag--red">Not available</strong>
-                    {% endif %}
-                {% endif %}
-            </div>
-            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
-            {% endif %}
-        {% endfor %} -->
-
         <table class="govuk-table">
-            <!-- <caption class="govuk-table__caption">Month you apply</caption> -->
-            <!-- <thead class="govuk-table__head">
-              <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header app-custom-class">Date</th>
-                <th scope="col" class="govuk-table__header app-custom-class">Rate for vehicles</th>
-                <th scope="col" class="govuk-table__header app-custom-class">Rate for bicycles</th>
-              </tr>
-            </thead> -->
             <tbody class="govuk-table__body">
                 {% for _standard in myData.standards.list %}
                     {% if _standard.matchesProvider %}
@@ -465,38 +385,6 @@
                 {% endfor %}
             </tbody>
           </table>
-
-
-        <!-- <h2 class="govuk-heading-m" >Provider</h2>
-        <ol class="govuk-list govuk-list--number" style=" ">
-            <li style="">Provider name</li>
-            <li>Trading name (if exist)</li>
-            <li>UKPRN</li>
-            <li style="">Ofsted rating</li>
-            <li style="">National / Not national</li>
-            <li style="">Contact details (what are these/where are these)</li>
-            <li style="">About provider (free text)</li>
-            <li>Employer reviews data</li>
-            <li>Courses offered (list)</li>
-            <li style="list-style: none;">
-                <h2 class="govuk-heading-m govuk-!-margin-top-6">per each Course</h2>
-                <ol class="govuk-list govuk-list--number">
-                    <li>Achievement rate (based on SSA tier 2)</li>
-                    <li>About apprenticeship (free text)</li>
-                    <li>Contact details (website / email / phone / contact us webpage)</li>
-                    <li style="list-style: none;">
-                        <h2 class="govuk-heading-m govuk-!-margin-top-6">per each Location</h2>
-                        <ol class="govuk-list govuk-list--number">
-                            <li>Delivery modes</li>
-                            <li>venue name</li>
-                            <li>venue address</li>
-                            <li>venue contact details (phone, email, website)</li>
-                            <li>Distance from employer (if employer location known)</li>
-                        </ol>
-                    </li>
-                </ol>
-            </li>
-        </ol> -->
 
     </div>
     <div class="govuk-grid-column-one-third">

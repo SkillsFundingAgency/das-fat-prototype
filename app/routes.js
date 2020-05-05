@@ -93,6 +93,18 @@ _myData.standards.list.forEach(function(_standard, index) {
     //     console.log(_standard.larsCode + " - " + _standard.coreSkillsCount + " - " + _standard.title + " (level " + _standard.level + ")")
     // }
 
+    //Set regulated data
+    if(_standard.regulated){
+        _standard.regulationDetail.forEach(function(_regulationDetail, index) {
+            if(_regulationDetail.name == "Training provider" || _regulationDetail.name == "Training provider "){
+                _standard.regulatedProvider = true
+            }
+            if(_regulationDetail.name == "EPAO" || _regulationDetail.name == "EPAO "){
+                _standard.regulatedEPAO = true
+            }
+        });
+    }
+
     //Set Providers on each standard
     _standard.providers2 = {
         "number": 0,

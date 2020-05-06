@@ -191,7 +191,6 @@
             {% for _standard in myData.standards.list %}
                 {% if _standard.search == true %}
                     {% set _standardData = [{"searchOn": _standard.autoCompleteString,"within": true,"exact": true},{"searchOn": _standard.jobRoles,"within": true,"exact": true}] %}
-                    <!-- overview -->
                     {% set _overview = _standard.overviewOfRole|trim %}
                     {% if _overview.slice(-1) != "." %}
                         {% set _overview = _overview + "." %}
@@ -202,19 +201,7 @@
                         </h2>
                         <p class="govuk-body">{{_overview}}</p>
                         <ul class="govuk-list">
-                            <!-- <li>{{_overview}}</li> -->
                             <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Sector:</span> {{_standard.route}}</li>
-                            
-                            <!-- {% if _standard.integratedDegree == "non-degree qualification" %}
-                            <li><span class="govuk-!-font-weight-bold">Non-degree qualification</span></li>
-                            {% elif _standard.integratedDegree == "integrated degree" %}
-                            <li><span class="govuk-!-font-weight-bold">Integrated degree</span></li>
-                            {% elif _standard.integratedDegree == "non-integrated degree" %}
-                            <li><span class="govuk-!-font-weight-bold">Non-integrated degree</span></li>
-                            {% endif %}
-                            <li><span class="govuk-secondary-colour">Typical duration:</span> {{_standard.typicalDuration}} months</li>
-                            
-                            <li><span class="govuk-secondary-colour">Training providers:</span> {{_standard.providers.number}}</li> -->
                         </ul>
                         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-top-2">
                     </div>

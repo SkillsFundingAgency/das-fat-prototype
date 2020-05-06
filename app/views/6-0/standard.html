@@ -193,22 +193,32 @@
             <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">View providers for this course</a></p>
         {% endif %}
 
-        <h2 class="govuk-heading-m govuk-!-margin-top-8" >
-            End-point assessment organisations
-        </h2>
-        {% if myData.displaycountepaos == 0 %}
-        <p class="govuk-body">No end-point assessment organisations are available for this course.</p>
+
+
+        <!-- EPAOS -->
+        {% if _selectedStandard.integratedDegree == "integrated degree" %}
+            <h2 class="govuk-heading-m govuk-!-margin-top-8" >
+                End-point assessment organisation
+            </h2>
+            <p class="govuk-body">The training provider will also conduct the end-point assessment for {{_standardTitle | safe}}.</p>
         {% else %}
-            {% if myData.locationapplied %}
-                {% if myData.displaycountepaos == 1 %}
-                    <p class="govuk-body govuk-!-margin-bottom-2">{{myData.displaycountepaos}} end-point assessment organisation available.</p>
-                    <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisation</a></p>
+            <h2 class="govuk-heading-m govuk-!-margin-top-8" >
+                End-point assessment organisations
+            </h2>
+            {% if myData.displaycountepaos == 0 %}
+            <p class="govuk-body">No end-point assessment organisations are available for this course.</p>
+            {% else %}
+                {% if myData.locationapplied %}
+                    {% if myData.displaycountepaos == 1 %}
+                        <p class="govuk-body govuk-!-margin-bottom-2">{{myData.displaycountepaos}} end-point assessment organisation available.</p>
+                        <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisation</a></p>
+                    {% else %}
+                        <p class="govuk-body govuk-!-margin-bottom-2">{{myData.displaycountepaos}} end-point assessment organisations available.</p>
+                        <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisations</a></p>
+                    {% endif %}
                 {% else %}
-                    <p class="govuk-body govuk-!-margin-bottom-2">{{myData.displaycountepaos}} end-point assessment organisations available.</p>
                     <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisations</a></p>
                 {% endif %}
-            {% else %}
-                <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisations</a></p>
             {% endif %}
         {% endif %}
 

@@ -72,7 +72,12 @@
         
         <!-- Summary -->
         <dl class="govuk-summary-list">
-            {% if _selectedStandard.regulatedProvider %}
+            {% if _selectedStandard.regulatedProvider6 or _selectedStandard.regulatedProvider7 %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Regulated occupation</dt>
+                <dd class="govuk-summary-list__value">{{_standardTitle | safe}} needs a training provider who is approved by the appropriate regulatory body.</dd>
+            </div>
+            {% elif _selectedStandard.regulatedProvider %}
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Regulated occupation</dt>
                 <dd class="govuk-summary-list__value">{{_standardTitle | safe}} needs a training provider who is approved by {{_selectedStandard.regulatedBody}}.</dd>

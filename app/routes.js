@@ -94,15 +94,36 @@ _myData.standards.list.forEach(function(_standard, index) {
     // }
 
     //Set regulated data
+    var _EPAOOnly = true
     if(_standard.regulated){
-        _standard.regulationDetail.forEach(function(_regulationDetail, index) {
-            if(_regulationDetail.name == "Training provider" || _regulationDetail.name == "Training provider "){
+        _standard.regulatedEPAOOnly = false
+        if(_standard.regulationDetail.length > 0){
+            // Training provider (6)
+            if(_standard.regulatedBody == ""){
                 _standard.regulatedProvider = true
+                _standard.regulatedProvider6 = true
+                _EPAOOnly = false
             }
-            if(_regulationDetail.name == "EPAO" || _regulationDetail.name == "EPAO "){
-                _standard.regulatedEPAO = true
-            }
-        });
+            _standard.regulationDetail.forEach(function(_regulationDetail, index) {
+                // EPAO (1,2,5)
+                if(_regulationDetail.name == "EPAO" || _regulationDetail.name == "EPAO "){
+                    _standard.regulatedEPAO = true
+                }
+                // Training provider (1,2,3,4)
+                if(_regulationDetail.name == "Training provider" || _regulationDetail.name == "Training provider "){
+                    _standard.regulatedProvider = true
+                    _EPAOOnly = false
+                }
+            });
+        } else {
+            // Training provider (7)
+            _standard.regulatedProvider = true
+            _standard.regulatedProvider7 = true
+            _EPAOOnly = false
+        }
+        if(_standard.regulatedEPAO && _EPAOOnly){
+            _standard.regulatedEPAOOnly = true
+        }
     }
 
     //Set Providers on each standard

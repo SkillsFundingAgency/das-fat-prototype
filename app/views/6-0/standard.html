@@ -72,17 +72,6 @@
         
         <!-- Summary -->
         <dl class="govuk-summary-list">
-            {% if _selectedStandard.regulatedProvider6 or _selectedStandard.regulatedProvider7 %}
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Regulated occupation</dt>
-                <dd class="govuk-summary-list__value">{{_standardTitle | safe}} needs a training provider who is approved by the appropriate regulatory body.</dd>
-            </div>
-            {% elif _selectedStandard.regulatedProvider %}
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Regulated occupation</dt>
-                <dd class="govuk-summary-list__value">{{_standardTitle | safe}} needs a training provider who is approved by {{_selectedStandard.regulatedBody}}.</dd>
-            </div>
-            {% endif %}
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Level</dt>
                 <dd class="govuk-summary-list__value">{{_standardLevel.value}}</dd>
@@ -148,6 +137,14 @@
             <!-- <p class="govuk-body">{{_standardTitle | safe}}</p> -->
             <!-- <span class="govuk-caption-m">{{_standardTitle | safe}}</span> -->
             <h2 class="govuk-heading-l" >Find training providers for this course</h2>
+
+            {% if _selectedStandard.regulatedProvider6 or _selectedStandard.regulatedProvider7 %}
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Regulated occupation</h2>
+            <p class="govuk-body">{{_standardTitle | safe}} needs a training provider who is approved by the appropriate regulatory body.</p>
+            {% elif _selectedStandard.regulatedProvider %}
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Regulated occupation</h2>
+            <p class="govuk-body">{{_standardTitle | safe}} needs a training provider who is approved by {{_selectedStandard.regulatedBody}}.</p>
+            {% endif %}
         
             <!-- Providers -->
             

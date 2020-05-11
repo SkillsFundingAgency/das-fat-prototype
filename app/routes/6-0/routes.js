@@ -446,6 +446,7 @@ module.exports = function (router,_myData) {
             }
         }
         req.session.myData.needToMatchCount = 1
+        req.session.myData.countproviders = 0
         req.session.myData.displaycountproviders = 0
         req.session.myData.displaycountepaos = 0
 
@@ -483,6 +484,7 @@ module.exports = function (router,_myData) {
                 if(_provider.courses.includes(parseInt(req.session.myData.standard))){
                     _deliversStandard = true
                     req.session.myData.hasAMatchcount++
+                    req.session.myData.countproviders++
                 }
                 //LOCATION
                 if(req.session.myData.locationapplied) {

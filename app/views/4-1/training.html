@@ -187,7 +187,7 @@
         {% if _displayCount > 0 %}
 
         <div data-list>
-            {% for _standard in myData.standards.list %}
+            {% for _standard in myData.standardsApi %}
                 {% if _standard.search == true %}
                     {% set _standardData = [{"searchOn": _standard.autoCompleteString,"within": true,"exact": true},{"searchOn": _standard.jobRoles,"within": true,"exact": true}] %}
                     <!-- overview -->

@@ -294,13 +294,13 @@ module.exports = function (router,_myData) {
             var standards = (JSON.parse(body).courses)
             var sectors = (JSON.parse(body).sectors)
             var levels = (JSON.parse(body).levels)
-            req.session.myData.standards.list = standards;
+            req.session.myData.standardsApi = standards;
 
             //Sort
             sortSetup(req,"name","relevance")
 
             req.session.myData.searchfilters = []
-            req.session.myData.displaycount = req.session.myData.standards.list.length
+            req.session.myData.displaycount = standards.length
             req.session.myData.needToMatchCount = 0
 
             // Keyword search reset/setup
@@ -336,7 +336,7 @@ module.exports = function (router,_myData) {
 
             }
 
-            req.session.myData.standards.list.forEach(function(_standard, index) {
+            standards.forEach(function(_standard, index) {
 
                 req.session.myData.hasAMatchcount = 0
 

@@ -134,74 +134,71 @@
         
 
         <!-- Providers -->
+
         {% if myData.countproviders == 0 %}
 
-        <h2 class="govuk-heading-m govuk-!-margin-top" >
-            Training providers
-        </h2>
-        <p class="govuk-body">No training providers are available for this course.</p>
+            <h2 class="govuk-heading-m" >Training providers</h2>
+            <p class="govuk-body govuk-!-margin-bottom-6">No training providers are available for this course.</p>
 
         {% else %}
 
-        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5" >
-            <h2 class="govuk-heading-l" >Find training providers for this course</h2>
+            {% set _buttonVisible = false %}
+            {% if myData.displaycountproviders == 0 %}
+                {% set _buttonVisible = true %}
+            {% elif myData.locationapplied != true %}
+                {% set _buttonVisible = true %}
+            {% endif %}
 
-            {% if _selectedStandard.regulatedProvider6 or _selectedStandard.regulatedProvider7 %}
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Regulated occupation</h2>
-            <p class="govuk-body">{{_standardTitle | safe}} needs a training provider who is approved by the appropriate regulatory body.</p>
-            {% elif _selectedStandard.regulatedProvider %}
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Regulated occupation</h2>
-            <p class="govuk-body">{{_standardTitle | safe}} needs a training provider who is approved by {{_selectedStandard.regulatedBody}}.</p>
-            {% endif %}
-        
-            <!-- Providers -->
-            
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2>
-            {% if myData.locationapplied %}
-                <p class="govuk-body govuk-!-margin-bottom-5"><span style="margin-right: 10px">{{myData.location}}</span> <a href="standard?standard={{myData.standard}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
-                <p class="govuk-body fat-availability {% if myData.displaycountproviders != 0 %}fat-tick{% else %}fat-cross{% endif %}" >
+            <div class="fat-panel fat-panel-blocked {% if _buttonVisible %}govuk-!-margin-bottom-5{% else %}govuk-!-margin-bottom-8{% endif %}" >
+                <h2 class="govuk-heading-l" >Find training providers for this course</h2>
+
+                <!-- Regulated -->
+                {% if _selectedStandard.regulatedProvider6 or _selectedStandard.regulatedProvider7 %}
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Regulated occupation</h2>
+                    <p class="govuk-body">{{_standardTitle | safe}} needs a training provider who is approved by the appropriate regulatory body.</p>
+                {% elif _selectedStandard.regulatedProvider %}
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Regulated occupation</h2>
+                    <p class="govuk-body">{{_standardTitle | safe}} needs a training provider who is approved by {{_selectedStandard.regulatedBody}}.</p>
+                {% endif %}
+                
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2>
+                
+                {% if myData.locationapplied %}
+
+                    <p class="govuk-body govuk-!-margin-bottom-5"><span style="margin-right: 10px">{{myData.location}}</span> <a href="standard?standard={{myData.standard}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
+                    <p class="govuk-body fat-availability {% if myData.displaycountproviders != 0 %}fat-tick{% else %}fat-cross{% endif %}" >{{myData.displaycountproviders}} provider{% if myData.displaycountproviders != 1 %}s{% endif %} available for the course and apprenticeship location</p>
+                    
                     {% if myData.displaycountproviders != 0 %}
-                      {{myData.displaycountproviders}} providers available
-                    {% else %}
-                        None available
+                        <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state">View providers for this course</a></p>
                     {% endif %}
-                </p>
-                {% if myData.displaycountproviders != 0 %}
-                <!-- <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state">View training providers</a></p> -->
-                {% endif %}
-            {% else %}
-            <!-- Enter location form -->
-            <p class="govuk-body">Check if a provider can offer this training for the apprenticeship location.</p>
-            <form action="standard" method="GET" class="govuk-!-width-three-quarters" >
-                <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
-                    <label for="search-location" class="govuk-label" >
-                        <span class="govuk-!-font-weight-bol">Enter location</span>
-                    </label>
-                    <div class="search-input-wrapper">
-                        <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input ">
-                        <div class="search-input-submit-wrapper">
-                            <button type="submit" class="search-submit" id="search-location-submit">Enter location</button>
-                        </div>
-                    </div>
-                </div>
-                <input type="hidden" value="{{myData.standard}}" name="standard" >
-            </form>
-            <!-- <hr>
-            <p class="govuk-body-l" >
-                {% if _selectedStandard.providers2.number != 0 %}
-                {{_selectedStandard.providers2.number}} providers offer this training 
+
                 {% else %}
-                None available
+
+                    <p class="govuk-body">Check if a provider can offer this training for the apprenticeship location.</p>
+                    <form action="standard" method="GET" class="govuk-!-width-three-quarters" >
+                        <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
+                            <label for="search-location" class="govuk-label" >
+                                <span class="govuk-!-font-weight-bol">Enter location</span>
+                            </label>
+                            <div class="search-input-wrapper">
+                                <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input ">
+                                <div class="search-input-submit-wrapper">
+                                    <button type="submit" class="search-submit" id="search-location-submit">Enter location</button>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" value="{{myData.standard}}" name="standard" >
+                    </form>
+
                 {% endif %}
-            </p> -->
+
+            </div>
+            
+            {% if myData.displaycountproviders == 0 %}
+                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-8"><a href="providers?standard={{myData.standard}}&location" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">[karen writing content for this]</a></p>
+            {% elif myData.locationapplied != true %}
+                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-8"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">View providers for this course</a></p>
             {% endif %}
-            {% if myData.locationapplied and myData.displaycountproviders != 0 %}
-                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state">View providers</a></p>
-            {% endif %}
-        </div>
-        {% if myData.locationapplied != true and myData.displaycountproviders != 0 %}
-            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">View providers for this course</a></p>
-        {% endif %}
 
         {% endif %}
 
@@ -209,28 +206,18 @@
 
         <!-- EPAOS -->
         {% if _selectedStandard.integratedDegree == "integrated degree" %}
-            <h2 class="govuk-heading-m govuk-!-margin-top-8" >
+            <h2 class="govuk-heading-m" >
                 End-point assessment organisation
             </h2>
             <p class="govuk-body">The training provider will also conduct the end-point assessment for {{_standardTitle | safe}}.</p>
         {% else %}
-            <h2 class="govuk-heading-m govuk-!-margin-top-8" >
+            <h2 class="govuk-heading-m" >
                 End-point assessment organisations
             </h2>
-            {% if myData.displaycountepaos == 0 %}
-            <p class="govuk-body">No end-point assessment organisations are available for this course.</p>
+            {% if myData.countepaos == 0 %}
+                <p class="govuk-body">0 end-point assessment organisations are available for this course.</p>
             {% else %}
-                {% if myData.locationapplied %}
-                    {% if myData.displaycountepaos == 1 %}
-                        <p class="govuk-body govuk-!-margin-bottom-2">{{myData.displaycountepaos}} end-point assessment organisation available.</p>
-                        <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisation</a></p>
-                    {% else %}
-                        <p class="govuk-body govuk-!-margin-bottom-2">{{myData.displaycountepaos}} end-point assessment organisations available.</p>
-                        <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisations</a></p>
-                    {% endif %}
-                {% else %}
-                    <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisations</a></p>
-                {% endif %}
+                <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisations</a></p>
             {% endif %}
         {% endif %}
 

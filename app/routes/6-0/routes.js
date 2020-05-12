@@ -447,6 +447,7 @@ module.exports = function (router,_myData) {
         }
         req.session.myData.needToMatchCount = 1
         req.session.myData.countproviders = 0
+        req.session.myData.countepaos = 0
         req.session.myData.displaycountproviders = 0
         req.session.myData.displaycountepaos = 0
 
@@ -505,6 +506,7 @@ module.exports = function (router,_myData) {
                 if(req.session.myData.selectedStandard.epaos.list.includes(_epao.name)){
                     _deliversStandard = true
                     req.session.myData.hasAMatchcountEPAO++
+                    req.session.myData.countepaos++
                 }
                 //LOCATION
                 if(req.session.myData.locationapplied) {

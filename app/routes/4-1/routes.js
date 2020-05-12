@@ -261,10 +261,29 @@ module.exports = function (router,_myData) {
     // Training
     router.get('/' + version + '/training', function (req, res) {
 
+        var baseUrl = config.apiBaseUrl + 'fatv2/trainingcourses/'
+        var queryParams = ''
+        req.session.myData.selectedLevelApi = ''
+        req.session.myData.selectedRouteApi = ''
+        if(req.query.level) {
+            queryParams = '?level=' + req.query.level
+            req.session.myData.selectedLevelApi = req.query.level;
+        }
+
+        if(req.query.route) {
+            var route = req.query.route
+            if(queryParams){
+                queryParams = queryParams + "&sector=" + route
+            } else {
+                queryParams = '?sector=' + route
+            }
+            req.session.myData.selectedRouteApi = route;
+        }
+        baseUrl = baseUrl + queryParams;
 
         const request = require('request');
         const options ={
-            url: config.apiBaseUrl + 'fatv2/trainingcourses/',
+            url: baseUrl,
             headers: {
                 'Ocp-Apim-Subscription-Key':config.apimAuthKey
             }
@@ -273,6 +292,8 @@ module.exports = function (router,_myData) {
         //Get all data from API
         function callback(error, response, body) {
             var standards = (JSON.parse(body).courses)
+            var sectors = (JSON.parse(body).sectors)
+            var levels = (JSON.parse(body).levels)
             req.session.myData.standards.list = standards;
 
             //Sort
@@ -289,18 +310,13 @@ module.exports = function (router,_myData) {
             req.session.myData.routefilterapplied = false
             req.session.myData.route = ""
             req.session.myData.selectedRoute = ""
-            if(req.query.route){
-                for (var i = 0; i < req.session.myData.routes.list.length; i++) {
-                    var _thisRoute = req.session.myData.routes.list[i]
-                    if(req.query.route == _thisRoute.code){
-                        req.session.myData.route = req.query.route
-                        req.session.myData.routefilterapplied = true
-                        req.session.myData.displaycount = 0
-                        req.session.myData.selectedRoute = _thisRoute
-                        req.session.myData.searchfilters.push({"value": req.session.myData.selectedRoute.name,"type": "route","typeText": "Sector"})
-                        req.session.myData.needToMatchCount++
-                        break
-                    }
+            req.session.myData.routeApi = sectors
+            if(req.session.myData.selectedRouteApi){
+                var selectSectorItem = sectors.find(obj => obj.name === req.session.myData.selectedRouteApi)
+                if(selectSectorItem){
+                    req.session.myData.route = selectSectorItem.name
+                    req.session.myData.selectedRoute = selectSectorItem
+                    req.session.myData.searchfilters.push({"value": selectSectorItem.name,"type": "route","typeText": "Sector"})
                 }
             }
 
@@ -308,19 +324,16 @@ module.exports = function (router,_myData) {
             req.session.myData.levelfilterapplied = false
             req.session.myData.level = ""
             req.session.myData.selectedLevel = ""
-            if(req.query.level){
-                for (var i = 0; i < req.session.myData.levels2.length; i++) {
-                    var _thisLevel = req.session.myData.levels2[i]
-                    if(req.query.level == _thisLevel.value){
-                        req.session.myData.level = req.query.level
-                        req.session.myData.levelfilterapplied = true
-                        req.session.myData.selectedLevel = _thisLevel
-                        req.session.myData.searchfilters.push({"value": "Level " + req.session.myData.selectedLevel.value + " - " + req.session.myData.selectedLevel.equiv,"type": "level","typeText": "Level"})
-                        req.session.myData.displaycount = 0
-                        req.session.myData.needToMatchCount++
-                        break
-                    }
+            req.session.myData.levelsApi = levels
+            if(req.session.myData.selectedLevelApi){
+                var item = levels.find(obj => obj.code === parseInt(req.session.myData.selectedLevelApi))
+
+                if(item) {
+                    req.session.myData.level = item.code
+                    req.session.myData.selectedLevel = item
+                    req.session.myData.searchfilters.push({"value": "Level " + item.code + " - " + item.name,"type": "level","typeText": "Level"})
                 }
+
             }
 
             req.session.myData.standards.list.forEach(function(_standard, index) {
@@ -329,22 +342,6 @@ module.exports = function (router,_myData) {
 
                 // Reset each standard
                 _standard.search = true
-
-                //ROUTE
-                if(req.session.myData.routefilterapplied) {
-                    _standard.search = false
-                    if(_standard.route.toUpperCase() == req.session.myData.selectedRoute.name.toUpperCase()) {
-                        req.session.myData.hasAMatchcount++
-                    }
-                }
-
-                //LEVEL
-                if(req.session.myData.levelfilterapplied) {
-                    _standard.search = false
-                    if(_standard.level.toString() == req.session.myData.selectedLevel.value) {
-                        req.session.myData.hasAMatchcount++
-                    }
-                }
 
                 //SEARCH TERM
                 if(req.session.myData.searchapplied) {

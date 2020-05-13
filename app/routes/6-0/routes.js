@@ -489,7 +489,11 @@ module.exports = function (router,_myData) {
                 }
                 //LOCATION
                 if(req.session.myData.locationapplied) {
-                    if(_deliversStandard && (_provider.national || _provider.locationmatch)){
+                    var _providerBlacklisted = false
+                    if(req.session.myData.standard == 34){
+                        _providerBlacklisted = true
+                    }
+                    if(_deliversStandard && (_provider.national || _provider.locationmatch) && !_providerBlacklisted){
                         req.session.myData.hasAMatchcount++
                     }
                 }
@@ -610,8 +614,12 @@ module.exports = function (router,_myData) {
 
                 //LOCATION
                 if(req.session.myData.locationapplied) {
+                    var _providerBlacklisted = false
+                    if(req.session.myData.standard == 34){
+                        _providerBlacklisted = true
+                    }
                     _provider.search = false
-                    if(_deliversStandard && (_provider.national || _provider.locationmatch)){
+                    if(_deliversStandard && (_provider.national || _provider.locationmatch) && !_providerBlacklisted){
                         req.session.myData.hasAMatchcount++
                     }
                 }

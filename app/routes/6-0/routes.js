@@ -482,7 +482,11 @@ module.exports = function (router,_myData) {
                 var _deliversStandard = false
                 req.session.myData.hasAMatchcount = 0
                 //STANDARD
-                if(_provider.courses.includes(parseInt(req.session.myData.standard))){
+                var _courseBlacklisted = false
+                if(req.session.myData.standard == 36){
+                    _courseBlacklisted = true
+                }
+                if(_provider.courses.includes(parseInt(req.session.myData.standard)) && !_courseBlacklisted){
                     _deliversStandard = true
                     req.session.myData.hasAMatchcount++
                     req.session.myData.countproviders++

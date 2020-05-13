@@ -138,7 +138,7 @@
         {% if myData.countproviders == 0 %}
 
             <h2 class="govuk-heading-m" >Training providers</h2>
-            <p class="govuk-body govuk-!-margin-bottom-6">No training providers are available for this course.</p>
+            <p class="govuk-body govuk-!-margin-bottom-6">0 training providers are available for this course.</p>
 
         {% else %}
 
@@ -166,7 +166,7 @@
                 {% if myData.locationapplied %}
 
                     <p class="govuk-body govuk-!-margin-bottom-5"><span style="margin-right: 10px">{{myData.location}}</span> <a href="standard?standard={{myData.standard}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
-                    <p class="govuk-body fat-availability {% if myData.displaycountproviders != 0 %}fat-tick{% else %}fat-cross{% endif %}" >{{myData.displaycountproviders}} provider{% if myData.displaycountproviders != 1 %}s{% endif %} available for the course and apprenticeship location</p>
+                    <p class="govuk-body fat-availability {% if myData.displaycountproviders != 0 %}fat-tick{% else %}fat-cross{% endif %}" >{{myData.displaycountproviders}} provider{% if myData.displaycountproviders != 1 %}s{% endif %} available for this course and apprenticeship location</p>
                     
                     {% if myData.displaycountproviders != 0 %}
                         <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state">View providers for this course</a></p>
@@ -195,7 +195,7 @@
             </div>
             
             {% if myData.displaycountproviders == 0 %}
-                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-8"><a href="providers?standard={{myData.standard}}&location" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">[karen writing content for this]</a></p>
+                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-8"><a href="providers?standard={{myData.standard}}&location" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">Remove location and view all providers for this course</a></p>
             {% elif myData.locationapplied != true %}
                 <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-8"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">View providers for this course</a></p>
             {% endif %}

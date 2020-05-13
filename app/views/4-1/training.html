@@ -12,7 +12,7 @@
     {% endif %}
 {% endfor %}
 
-{% set _filterOrSearchApplied = myData.levelfilterapplied or myData.routefilterapplied or myData.searchapplied %}
+{% set _filterOrSearchApplied = myData.selectedLevel or myData.routefilterapplied or myData.searchapplied %}
 
 <!-- Query strings (for use in hrefs) -->
 {% set _searchQuery = "" %}
@@ -22,11 +22,11 @@
 {% if myData.searchapplied == true %}
     {% set _searchQuery = "&q=" + myData.searchTerm %}
 {% endif %}
-{% if myData.routefilterapplied == true %}
-    {% set _routefilterQuery = "&route=" + myData.route %}
+{% if myData.selectedRouteApi %}
+    {% set _routefilterQuery = "&route=" + myData.selectedRouteApi %}
 {% endif %}
-{% if myData.levelfilterapplied == true %}
-    {% set _levelfilterQuery = "&level=" + myData.level %}
+{% if myData.selectedLevelApi %}
+    {% set _levelfilterQuery = "&level=" + myData.selectedLevelApi %}
 {% endif %}
 {% if myData.sortapplied == true %}
     {% set _sortQuery = "&sort=" + myData.sortby %}
@@ -118,9 +118,9 @@
                                 <a href="training?{{_sortQuery}}{{_searchQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state">All sectors</a>
                                 {% endif %}
                             </li> -->
-                            {% for _route in myData.routes.list %}
+                            {% for _route in myData.routeApi %}
                             <li>
-                                <a href="training?route={{_route.code}}{{_sortQuery}}{{_searchQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a>
+                                <a href="training?route={{_route.name}}{{_sortQuery}}{{_searchQuery}}{{_levelfilterQuery}}" class="govuk-link govuk-link--no-visited-state">{{_route.name}}</a>
                             </li>
                             {% endfor %}
                         </ul>
@@ -134,9 +134,9 @@
                             <a href="training?{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">All levels</a>
                             {% endif %}
                             </li> -->
-                            {% for _level in myData.levels2 %}
+                            {% for _level in myData.levelsApi %}
                             <li>
-                                <a href="training?level={{_level.value}}{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">Level {{_level.value}} - {{_level.equiv2}}</a>
+                                <a href="training?level={{_level.code}}{{_sortQuery}}{{_searchQuery}}{{_routefilterQuery}}" class="govuk-link govuk-link--no-visited-state">Level {{_level.code}} - {{_level.name}}</a>
                             </li>
                             {% endfor %}
                         </ul>
@@ -187,7 +187,7 @@
         {% if _displayCount > 0 %}
 
         <div data-list>
-            {% for _standard in myData.standards.list %}
+            {% for _standard in myData.standardsApi %}
                 {% if _standard.search == true %}
                     {% set _standardData = [{"searchOn": _standard.autoCompleteString,"within": true,"exact": true},{"searchOn": _standard.jobRoles,"within": true,"exact": true}] %}
                     <!-- overview -->

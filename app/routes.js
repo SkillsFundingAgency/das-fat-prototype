@@ -46,6 +46,18 @@ var _myData = {
             "equiv2": "master’s degree"
         }
     ],
+    "regions": [
+        {"id":1,"label":"North East"},
+        {"id":2,"label":"North West"},
+        {"id":3,"label":"Yorkshire and the Humber"},
+        {"id":4,"label":"East Midlands"},
+        {"id":5,"label":"West Midlands"},
+        {"id":6,"label":"East of England"},
+        {"id":7,"label":"London"},
+        {"id":8,"label":"South East"},
+        {"id":9,"label":"South West"},
+        {"id":10,"label":"All England"}
+    ],
     "providers": require(__dirname + '/data/providers.json'),
     "providers-new": require(__dirname + '/data/providers-new.json'),
     "epaos": require(__dirname + '/data/epaos.json')
@@ -253,6 +265,8 @@ _myData.epaos.list.forEach(function(_epao, index) {
         _locationmatch = (_locationmatchFalses++ > 24)
     }
     _epao.locationmatch = _locationmatch  
+    //Convert regions to array
+    _epao.regions = _epao.regions.split(',');
 });
 // Set cities list
 _myData.citiesAutocompleteList = []

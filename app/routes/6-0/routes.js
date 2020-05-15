@@ -171,6 +171,28 @@ module.exports = function (router,_myData) {
         }
     }
 
+    // EPAO region filtering - setup
+    function regionFilterSetup(req){
+        req.session.myData.regionfiltersapplied = false
+        if(req.session.myData.regionfilters.length > 0){
+            req.session.myData.displaycount = 0
+            req.session.myData.needToMatchCount++
+            req.session.myData.regionfiltersapplied = true
+            var regionfiltersValues = []
+            req.session.myData.regionfilters.forEach(function(_region, index) {
+                req.session.myData.regions.forEach(function(_regionToCheck, index) {
+                    if(_regionToCheck.id == _region){
+                        regionfiltersValues.push({
+                            "label":_regionToCheck.label,
+                            "id":_regionToCheck.id
+                        })
+                    }
+                });
+            });
+            req.session.myData.searchfilters.push({"value": regionfiltersValues, "type": "regionfilters", "typeText": "Delivery area","typeof":"array"})
+        }
+    }
+
     // Sort setup
     function sortSetup(req,_firstSortType,_secondSortType){
         req.session.myData.sortapplied = false
@@ -253,6 +275,7 @@ module.exports = function (router,_myData) {
         req.session.myData.epao = "1"
         req.session.myData.employerreviews = []
         req.session.myData.ofstedratings = []
+        req.session.myData.regionfilters = []
 
     }
 
@@ -291,6 +314,14 @@ module.exports = function (router,_myData) {
         }
         if(!Array.isArray(req.session.myData.ofstedratings)){
             req.session.myData.ofstedratings = [req.session.myData.ofstedratings]
+        }
+
+        req.session.myData.regionfilters = req.query.regionfilters || []
+        if(req.session.myData.regionfilters == "_unchecked"){
+            req.session.myData.regionfilters = []
+        }
+        if(!Array.isArray(req.session.myData.regionfilters)){
+            req.session.myData.regionfilters = [req.session.myData.regionfilters]
         }
 
         next()
@@ -994,45 +1025,49 @@ module.exports = function (router,_myData) {
     router.get('/' + version + '/epaos-all', function (req, res) {
 
         //Sort
-        sortSetup(req,"name","distance")
+        sortSetup(req,"name")
 
         req.session.myData.searchfilters = []
         req.session.myData.displaycount = req.session.myData.epaos.list.length
         req.session.myData.needToMatchCount = 0
 
         //Location reset/setup
-        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
-            req.session.myData.locationTemp = req.session.myData.location
-            if(req.query.location == ""){
-                req.session.myData.locationTemp = ""
-            } else if (req.query.location) {
-                req.session.myData.locationTemp = req.query.location.trim()
-            }
-            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
-                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
-                if(cityMatch(req) || _postCodeMatch) {
-                    req.session.myData.displaycount = 0
-                    req.session.myData.needToMatchCount++
-                    req.session.myData.location = req.session.myData.locationTemp
-                    req.session.myData.locationapplied = true
-                    req.session.myData.searchfilters.push({"value": req.session.myData.location, "type": "location", "typeText": "Location of apprenticeship"})
-                } else {
-                    req.session.myData.locationapplied = false
-                    req.session.myData.location = ""
-                }
-                continueRendering()
-            });
-        } else {
-            continueRendering()
-        }
+        // if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
+        //     req.session.myData.locationTemp = req.session.myData.location
+        //     if(req.query.location == ""){
+        //         req.session.myData.locationTemp = ""
+        //     } else if (req.query.location) {
+        //         req.session.myData.locationTemp = req.query.location.trim()
+        //     }
+        //     require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
+        //         var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
+        //         if(cityMatch(req) || _postCodeMatch) {
+        //             req.session.myData.displaycount = 0
+        //             req.session.myData.needToMatchCount++
+        //             req.session.myData.location = req.session.myData.locationTemp
+        //             req.session.myData.locationapplied = true
+        //             req.session.myData.searchfilters.push({"value": req.session.myData.location, "type": "location", "typeText": "Location of apprenticeship"})
+        //         } else {
+        //             req.session.myData.locationapplied = false
+        //             req.session.myData.location = ""
+        //         }
+        //         continueRendering()
+        //     });
+        // } else {
+        //     continueRendering()
+        // }
+        continueRendering()
 
         function continueRendering(){
+
+            // Keyword search reset/setup
+            searchFilterSetup(req,"End-point assessment organisation name")
     
             // Standard filter reset/setup
             standardFilterSetup(req)
 
-            // Keyword search reset/setup
-            searchFilterSetup(req,"End-point assessment organisation name")
+            // Region filter setup
+            regionFilterSetup(req)
 
             req.session.myData.epaos.list.forEach(function(_epao, index) {
 
@@ -1042,6 +1077,14 @@ module.exports = function (router,_myData) {
 
                 // Reset each epao
                 _epao.search = true
+
+                //SEARCH TERM
+                if(req.session.myData.searchapplied) {
+                    var _searchesToDo = [
+                        {"searchOn": _epao.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
+                    ]
+                    checkStandardSearchTerm(req,_epao,_searchesToDo)
+                }
 
                 //STANDARD SEARCH TERM
                 if(req.session.myData.standardsearchapplied) {
@@ -1054,21 +1097,23 @@ module.exports = function (router,_myData) {
                     });
                 }
 
-                //LOCATION
-                if(req.session.myData.locationapplied) {
+                // REGION
+                if(req.session.myData.regionfiltersapplied) {
                     _epao.search = false
-                    if(_epao.locationmatch){
-                        req.session.myData.hasAMatchcount++
-                    }
+                    req.session.myData.regionfilters.forEach(function(_region, index) {
+                        if(_epao.regions.includes(_region.toString())){
+                            req.session.myData.hasAMatchcount++
+                        }
+                    });
                 }
 
-                //SEARCH TERM
-                if(req.session.myData.searchapplied) {
-                    var _searchesToDo = [
-                        {"searchOn": _epao.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
-                    ]
-                    checkStandardSearchTerm(req,_epao,_searchesToDo)
-                }
+                //LOCATION
+                // if(req.session.myData.locationapplied) {
+                //     _epao.search = false
+                //     if(_epao.locationmatch){
+                //         req.session.myData.hasAMatchcount++
+                //     }
+                // }
 
                 //MATCHES ALL IT NEEDS TO?
                 if(req.session.myData.needToMatchCount > 0 && req.session.myData.needToMatchCount == req.session.myData.hasAMatchcount){
@@ -1078,15 +1123,7 @@ module.exports = function (router,_myData) {
 
             });
 
-            if(req.session.myData.locationapplied){
-                if(req.session.myData.sortby == "name"){
-                    sortEPAOs(req, "name")
-                } else {
-                    sortEPAOs(req, "distance")
-                }
-            } else {
-                sortEPAOs(req, "name")
-            }
+            sortEPAOs(req, "name")
 
             res.render(version + '/epaos-all', {
                 myData:req.session.myData
@@ -1098,6 +1135,36 @@ module.exports = function (router,_myData) {
 
     // Epao
     router.get('/' + version + '/epao', function (req, res) {
+
+        var _standards = req.session.myData.standards.list
+
+        for (var i = 0; i < req.session.myData["epaos"].list.length; i++) {
+            var _thisEPAO = req.session.myData["epaos"].list[i]
+            if(req.session.myData.epao == _thisEPAO.id){
+                req.session.myData.selectedEPAO = _thisEPAO
+            }
+        }
+
+        // EPAO - standards list
+        req.session.myData.displaycount = 0
+        for (var i = 0; i < _standards.length; i++) {
+            var _thisStandard = _standards[i]
+            
+            if(_thisStandard.epaos == undefined){
+                console.log(_thisStandard.larsCode + " - " + _thisStandard.epaos)
+            } else {
+                // console.log(_thisStandard.larsCode + " - " + _thisStandard.epaos)
+            }
+
+            _thisStandard.matchesEPAO = false
+            _thisStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
+                if(_epaoOnStandard.toUpperCase() == req.session.myData.selectedEPAO.name.toUpperCase()){
+                    req.session.myData.displaycount++
+                    _thisStandard.matchesEPAO = true
+                }
+            });
+        }
+
         res.render(version + '/epao', {
             myData:req.session.myData
         });

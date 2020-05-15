@@ -40,10 +40,11 @@
 {% block header %}
   {% include "includes/cookie-banner.html" %}
   {# Set serviceName in config.js. #}
+  {# Set serviceUrl in config.js. #}
   {{ govukHeader({
     homepageUrl: "https://www.gov.uk/",
     serviceName: serviceName,
-    serviceUrl: "home",
+    serviceUrl: serviceUrl,
     containerClasses: "govuk-width-container"
   }) }}
 {% endblock %}

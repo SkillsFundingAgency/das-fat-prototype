@@ -1,13 +1,7 @@
 {% extends myData.layout %}
 {% set serviceName = "Find apprenticeship training" %}
 
-{% set _selectedEPAO = {} %}
-{% for _epao in myData.epaos.list %}
-    {% if myData.epao == _epao.id %}
-        {% set _selectedEPAO = _epao %}
-    {% endif %}
-{% endfor %}
-
+{% set _selectedEPAO = myData.selectedEPAO %}
 {% set _epaoTitle = _selectedEPAO.name %}
 
 {% block beforeContent %}
@@ -24,25 +18,91 @@
         <p class="govuk-body" ><span class="govuk-!-font-weight-bold">{{ name }}</span>: {{ item | dump }}</p>
         {% endfor %} -->
 
-        <span class="govuk-caption-xl">End-point assessment organisation</span>
+        <span class="govuk-caption-xl">End-point assessment organisation (EPAO)</span>
         <h1 class="govuk-heading-xl" >
-            {{_epaoTitle | safe}}
+            {{_epaoTitle | safe}} 
         </h1>
 
-        <div class="govuk-inset-text">
-            
-            <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Email</h3>
-            <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="#">{{_selectedEPAO.email}}</a></p>
-            
-            <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Telephone</h3>
-            <p class="govuk-body">{{_selectedEPAO.phone}}</p>
+        <!-- <h2 class="govuk-heading-m govuk-!-margin-bottom-2">EPAO ID</h2>
+        <p class="govuk-body">{{_selectedEPAO.epaoID}}</p> -->
+        <!-- <p class="govuk-body-l"><span class="govuk-!-font-weight-bold">ID:</span> {{_selectedEPAO.epaoID}}</p> -->
 
-            <h3 class="govuk-heading-s govuk-!-margin-bottom-1">URL</h3>
-            <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="#">{{_selectedEPAO.website}}</a></p>
-            
-            
 
-        </div>
+        <dl class="govuk-summary-list govuk-!-margin-bottom-7">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">EPAO ID</dt>
+                <dd class="govuk-summary-list__value">{{_selectedEPAO.epaoID}}</dd>
+            </div>
+            {% if _selectedEPAO.contactname %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Contact name</dt>
+                <dd class="govuk-summary-list__value">{{_selectedEPAO.contactname}}</dd>
+            </div>
+            {% endif %}
+            {% if _selectedEPAO.email %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Email</dt>
+                <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">{{_selectedEPAO.email}}</a></dd>
+            </div>
+            {% endif %}
+            {% if _selectedEPAO.phone %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Telephone</dt>
+                <dd class="govuk-summary-list__value">{{_selectedEPAO.phone}}</dd>
+            </div>
+            {% endif %}
+            {% if _selectedEPAO.website %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Website</dt>
+                <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">{{_selectedEPAO.website}}</a></dd>
+            </div>
+            {% endif %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Address</dt>
+                <dd class="govuk-summary-list__value">
+                    {{_epaoTitle | safe}}
+                    {% if _selectedEPAO.address1 %}<br>{{_selectedEPAO.address1}}{% endif %}
+                    {% if _selectedEPAO.address2 %}<br>{{_selectedEPAO.address2}}{% endif %}
+                    {% if _selectedEPAO.address3 %}<br>{{_selectedEPAO.address3}}{% endif %}
+                    {% if _selectedEPAO.address4 %}<br>{{_selectedEPAO.address4}}{% endif %}
+                    {% if _selectedEPAO.postcode %}<br>{{_selectedEPAO.postcode}}{% endif %}
+                </dd>
+            </div>
+        </dl>
+
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Delivery areas</h2>
+        
+        <!-- Regions labels -->
+        <p class="govuk-body">
+        {% for _epaoRegion in _selectedEPAO.regions %}
+            {% set _loopLast = loop.last %}
+            {% set _moreThanOne = _selectedEPAO.regions.length > 1 %}
+            {% for _region in myData.regions %}
+                {% if _epaoRegion == _region.id %}
+                {% if _moreThanOne and _loopLast %} and {% endif %}{{_region.label}}{% if _moreThanOne and _loopLast == false %}, {% endif %}{% if _loopLast %}.{% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        </p>
+
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship courses assessed by this EPAO ({{myData.displaycount}})</h2>
+
+        <table class="govuk-table">
+            <tbody class="govuk-table__body">
+                {% for _standard in myData.standards.list %}
+                    {% if _standard.matchesEPAO %}
+                        <tr class="govuk-table__row">
+                            <!-- <td class="govuk-table__cell">
+                                <a href="provider?standard={{_standard.larsCode}}&provider={{_selectedProvider.id}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a>
+                            </td> -->
+                            <td class="govuk-table__cell">
+                                {{_standard.title}} (level&nbsp;{{_standard.level}})
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
 
     </div>
     <div class="govuk-grid-column-one-third">

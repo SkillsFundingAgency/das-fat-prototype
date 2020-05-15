@@ -1093,6 +1093,7 @@ module.exports = function (router,_myData) {
 
                 //SEARCH TERM
                 if(req.session.myData.searchapplied) {
+                    _epao.search = false
                     var _searchesToDo = [
                         {"searchOn": _epao.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
                     ]
@@ -1104,6 +1105,9 @@ module.exports = function (router,_myData) {
                     _epao.search = false
                     req.session.myData.regionfilters.forEach(function(_region, index) {
                         if(_epao.regions.includes(_region.toString())){
+                            req.session.myData.hasAMatchcount++
+                        }
+                        if(_epao.regions.includes("10")){
                             req.session.myData.hasAMatchcount++
                         }
                     });

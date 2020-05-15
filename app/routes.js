@@ -96,7 +96,6 @@ _myData.routes.list.sort(function(a,b){
 });
 
 var _epaosOnStandards = require(__dirname + '/data/epaos-on-standards.json')
-
 // for test data
 var _epaosOnStandardsCounts = {}
 for (var _epaoLarsCode in _epaosOnStandards) {
@@ -268,7 +267,9 @@ _myData["providers-new"].list.forEach(function(_provider, index) {
 // Set epaos
 _myData.epaoAutocompleteList = []
 var _locationmatchFalses = 0
+var _standardsOnEPAOsCounts = {}
 _myData.epaos.list.forEach(function(_epao, index) {
+    //autocomplete string
     var _autoCompleteString = _epao.name
     _epao.autoCompleteString = _autoCompleteString
     _myData.epaoAutocompleteList.push(_autoCompleteString);
@@ -280,7 +281,21 @@ _myData.epaos.list.forEach(function(_epao, index) {
     _epao.locationmatch = _locationmatch  
     //Convert regions to array
     _epao.regions = _epao.regions.split(',');
+    //number of standards
+    var _stdCount = 0
+    for (var i = 0; i < _myData.standards.list.length; i++) {
+        var _thisStandard = _myData.standards.list[i]
+        _thisStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
+            if(_epaoOnStandard.toUpperCase() == _epao.name.toUpperCase()){
+                _stdCount++
+            }
+        });
+    }
+    _epao.stdCount = _stdCount
+    _standardsOnEPAOsCounts[_stdCount] = (_standardsOnEPAOsCounts[_stdCount] || 0) + 1
 });
+_myData.standardsOnEPAOsCounts = _standardsOnEPAOsCounts
+
 // Set cities list
 _myData.citiesAutocompleteList = []
 require(__dirname + '/data/cities.json').list.forEach(function(_city, index) {
@@ -296,6 +311,7 @@ _myData.citiesAutocompleteList.sort(function(a,b){
     }
     return 0;
 });
+
 
 require('./routes/1-0/routes.js')(router,JSON.parse(JSON.stringify(_myData)));
 require('./routes/2-0/routes.js')(router,JSON.parse(JSON.stringify(_myData)));

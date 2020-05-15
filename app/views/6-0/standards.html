@@ -272,10 +272,10 @@
       <details class="govuk-details" data-module="govuk-details" >
         <summary class="govuk-details__summary">
           <span class="govuk-details__summary-text">
-            EPAOs
+            EPAOs on standards counts
           </summary>
           <div class="govuk-details__text">
-            <h2 class="govuk-heading-l" >EPAOs counts</h2>
+            <h2 class="govuk-heading-l" >EPAOs on standards counts</h2>
 
 
             <table class="govuk-table govuk-!-font-size-14">
@@ -305,18 +305,47 @@
               {% endfor %}
             </tbody>
           </table>
-
-
-
-
-
-
-
-
-
-
           </div>
         </details>
+
+        <details class="govuk-details" data-module="govuk-details" >
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              Standards on EPAOs counts
+            </summary>
+            <div class="govuk-details__text">
+              <h2 class="govuk-heading-l" >Standards on EPAOs counts</h2>
+  
+  
+              <table class="govuk-table govuk-!-font-size-14">
+                <thead class="govuk-table__head" >
+                  <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header"># standards</th>
+                    <th scope="col" class="govuk-table__header"># EPAOs</th>
+                    <th scope="col" class="govuk-table__header">cumulative</th>
+                  </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                  {% set cumulative = 0 %}
+                  {% for _key, _count in myData.standardsOnEPAOsCounts %}
+                  {% set cumulative = cumulative + _count %}
+                  <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">
+                      {{_key}}
+                    </td>
+                    <td class="govuk-table__cell" >
+                      {{_count}}
+                    </td>
+                    <td class="govuk-table__cell" >
+                      {{cumulative}}
+                    </td>
+                  </tr>
+                  
+                {% endfor %}
+              </tbody>
+            </table>
+            </div>
+          </details>
 
     <!-- <p class="govuk-body" >{{myData.standards.list|dump|safe}}</p> -->
 

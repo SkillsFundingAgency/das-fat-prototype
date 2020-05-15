@@ -12,7 +12,7 @@
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% if myData.service == "epao" %}
-        {% include "includes/breadcrumb-epaos.html" %}
+        <a href="epaos-all" class="govuk-back-link">Back</a>
     {% else %}
         {% include "includes/breadcrumb.html" %}
     {% endif %}
@@ -65,8 +65,14 @@
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Address</dt>
                 <dd class="govuk-summary-list__value">
+
+                    {% if _epaoTitle | safe != _selectedEPAO.address1 %}
                     {{_epaoTitle | safe}}
                     {% if _selectedEPAO.address1 %}<br>{{_selectedEPAO.address1}}{% endif %}
+                    {% else %}
+                    {% if _selectedEPAO.address1 %}{{_selectedEPAO.address1}}{% endif %}
+                    {% endif %}
+
                     {% if _selectedEPAO.address2 %}<br>{{_selectedEPAO.address2}}{% endif %}
                     {% if _selectedEPAO.address3 %}<br>{{_selectedEPAO.address3}}{% endif %}
                     {% if _selectedEPAO.address4 %}<br>{{_selectedEPAO.address4}}{% endif %}

@@ -84,7 +84,7 @@
             </div>
         </dl>
 
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Delivery areas</h2>
+        <h2 class="govuk-heading-m ">Delivery areas</h2>
         
         <!-- Regions labels -->
         <p class="govuk-body">
@@ -99,16 +99,13 @@
         {% endfor %}
         </p>
 
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship courses assessed by this EPAO ({{myData.displaycount}})</h2>
+        <h2 class="govuk-heading-m ">Apprenticeship courses assessed by this EPAO ({{myData.displaycount}})</h2>
 
-        <table class="govuk-table">
+        <!-- <table class="govuk-table">
             <tbody class="govuk-table__body">
                 {% for _standard in myData.standards.list %}
                     {% if _standard.matchesEPAO %}
                         <tr class="govuk-table__row">
-                            <!-- <td class="govuk-table__cell">
-                                <a href="provider?standard={{_standard.larsCode}}&provider={{_selectedProvider.id}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a>
-                            </td> -->
                             <td class="govuk-table__cell">
                                 {{_standard.title}} (level&nbsp;{{_standard.level}})
                             </td>
@@ -116,7 +113,27 @@
                     {% endif %}
                 {% endfor %}
             </tbody>
-        </table>
+        </table> -->
+
+        {% if myData.displaycount == 1 %}
+        <p class="govuk-body">
+            {% for _standard in myData.standards.list %}
+                {% if _standard.matchesEPAO %}
+                    {{_standard.title}} (level&nbsp;{{_standard.level}})
+                {% endif %}
+            {% endfor %}
+        </p>
+        {% else %}
+        <ul class="govuk-list govuk-list--bullet">
+            {% for _standard in myData.standards.list %}
+                {% if _standard.matchesEPAO %}
+                    <li>
+                        {{_standard.title}} (level&nbsp;{{_standard.level}})
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% endif %}
 
     </div>
     <div class="govuk-grid-column-one-third">

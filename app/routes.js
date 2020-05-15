@@ -95,6 +95,20 @@ _myData.routes.list.sort(function(a,b){
     return 0;
 });
 
+var _epaosOnStandards = require(__dirname + '/data/epaos-on-standards.json')
+
+// for test data
+var _epaosOnStandardsCounts = {}
+for (var _epaoLarsCode in _epaosOnStandards) {
+    var _epaos = _epaosOnStandards[_epaoLarsCode]
+    if(_epaosOnStandards[_epaoLarsCode] == "EPAO in principle - application pending"){
+        _epaosOnStandardsCounts["principle"] = (_epaosOnStandardsCounts["principle"] || 0) + 1
+    } else {
+        _epaosOnStandardsCounts[_epaos.length] = (_epaosOnStandardsCounts[_epaos.length] || 0) + 1
+    }
+}
+_myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
+
 // Set ssa + route counts
 var _routeCounts = {},
     _ssaCounts = {}
@@ -151,7 +165,6 @@ _myData.standards.list.forEach(function(_standard, index) {
     })
 
     //Set EPAOs on each standard
-    var _epaosOnStandards = require(__dirname + '/data/epaos-on-standards.json')
     for (var _epaoLarsCode in _epaosOnStandards) {
         if(_standard.larsCode == _epaoLarsCode){
             var _epaos = _epaosOnStandards[_epaoLarsCode],

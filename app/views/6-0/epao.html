@@ -1,12 +1,21 @@
 {% extends myData.layout %}
-{% set serviceName = "Find apprenticeship training" %}
+{% if myData.service == "epao" %}
+    {% set serviceName = "Register of end-point assessment organisations" %}
+    {% set serviceUrl = "epaos-all" %}
+{% else %}
+    {% set serviceName = "Find apprenticeship training" %}
+{% endif %}
 
 {% set _selectedEPAO = myData.selectedEPAO %}
 {% set _epaoTitle = _selectedEPAO.name %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
-    {% include "includes/breadcrumb.html" %}
+    {% if myData.service == "epao" %}
+        {% include "includes/breadcrumb-epaos.html" %}
+    {% else %}
+        {% include "includes/breadcrumb.html" %}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -29,10 +38,6 @@
 
 
         <dl class="govuk-summary-list govuk-!-margin-bottom-7">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">EPAO ID</dt>
-                <dd class="govuk-summary-list__value">{{_selectedEPAO.epaoID}}</dd>
-            </div>
             {% if _selectedEPAO.contactname %}
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Contact name</dt>
@@ -54,7 +59,7 @@
             {% if _selectedEPAO.website %}
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Website</dt>
-                <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">{{_selectedEPAO.website}}</a></dd>
+                <dd class="govuk-summary-list__value"><a target="_blank" class="govuk-link govuk-link--no-visited-state" href="#">{{_selectedEPAO.website}}</a></dd>
             </div>
             {% endif %}
             <div class="govuk-summary-list__row">
@@ -67,6 +72,15 @@
                     {% if _selectedEPAO.address4 %}<br>{{_selectedEPAO.address4}}{% endif %}
                     {% if _selectedEPAO.postcode %}<br>{{_selectedEPAO.postcode}}{% endif %}
                 </dd>
+            </div>
+        
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">EPAO ID</dt>
+                <dd class="govuk-summary-list__value">{{_selectedEPAO.epaoID}}</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Type</dt>
+                <dd class="govuk-summary-list__value">{{_selectedEPAO.type}}</dd>
             </div>
         </dl>
 

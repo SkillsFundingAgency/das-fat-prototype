@@ -35,6 +35,23 @@
           </select>
         </div> -->
 
+        <!-- FAT or EPAO register -->
+        <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend">Service</legend>
+                <div class="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input {% if myData.service == 'fat' %}checked{% endif %} class="govuk-radios__input" data-option="service-1" id="service-1" name="service" type="radio" value="fat">
+                        <label class="govuk-label govuk-radios__label" for="service-1">FAT (Find apprenticeship training)</label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input {% if myData.service == 'epao' %}checked{% endif %} class="govuk-radios__input" data-option="service-2" id="service-2" name="service" type="radio" value="epao">
+                        <label class="govuk-label govuk-radios__label" for="service-2">EPAO register</label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
         <!-- Employer account -->
         <div class="govuk-form-group">
           <label class="govuk-label" >
@@ -74,70 +91,74 @@
     <div class="govuk-grid-column-full">
 
         <h2 class="govuk-heading-m">Full page list</h2>
-
         <table class="govuk-table">
-            <thead class="govuk-table__head">
+            <!-- <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
                 <th scope="col" class="govuk-table__header">Page</th>
                 <th scope="col" class="govuk-table__header">Link</th>
                 </tr>
-            </thead>
+            </thead> -->
             <tbody class="govuk-table__body">    
                 <!-- <tr class="govuk-table__row">
                     <th class="govuk-table__cell">Start</th>
                     <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="start">/start</a></td>
                 </tr> -->
                 <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">FAT</h2></th>
+                </tr>
+
+                <tr class="govuk-table__row">
                     <th class="govuk-table__cell">Home</th>
-                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="home">/home</a></td>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="home?r=t">/home</a></td>
                 </tr>
                 <tr class="govuk-table__row">
                     <th class="govuk-table__cell">Courses list</th>
-                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="training">/training</a></td>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="training?r=t">/training</a></td>
                 </tr>
                 <tr class="govuk-table__row">
                     <th class="govuk-table__cell">Course overview</th>
-                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="standard">/standard</a></td>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="standard?r=t">/standard</a></td>
                 </tr>
                 <tr class="govuk-table__row">
                     <th class="govuk-table__cell">Providers (all) list</th>
-                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="providers-all">/providers-all</a></td>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="providers-all?r=t">/providers-all</a></td>
                 </tr>
                 <tr class="govuk-table__row">
                     <th class="govuk-table__cell">Providers (for a standard) list</th>
-                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="providers?standard=274">/providers?standard=274</a></td>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="providers?standard=274&r=t">/providers?standard=274</a></td>
                 </tr>
                 <tr class="govuk-table__row">
                     <th class="govuk-table__cell">Provider overview</th>
-                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provider">/provider</a></td>
-                </tr>
-                <tr class="govuk-table__row">
-                    <th class="govuk-table__cell">EPAOs (all) list</th>
-                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epaos-all">/epaos-all</a></td>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provider?r=t">/provider</a></td>
                 </tr>
                 <tr class="govuk-table__row">
                     <th class="govuk-table__cell">EPAOs (for a standard) list</th>
-                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epaos?standard=274">/epaos?standard=274</a></td>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epaos?standard=274&r=t">/epaos?standard=274</a></td>
                 </tr>
                 <tr class="govuk-table__row">
                     <th class="govuk-table__cell">EPAO overview</th>
-                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epao">/epao</a></td>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epao?r=t">/epao</a></td>
                 </tr>
-            </tbody>
-        </table>
 
-
-
-        <h2 class="govuk-heading-m govuk-!-margin-top-9">Test pages</h2>
-
-        <table class="govuk-table">
-            <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">Page</th>
-                <th scope="col" class="govuk-table__header">Link</th>
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">EPAO register</h2></th>
                 </tr>
-            </thead>
-            <tbody class="govuk-table__body">    
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAOs (all) list</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epaos-all?&r=t&s=epao">/epaos-all</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAO overview</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epao?r=t&s=epao">/epao</a></td>
+                </tr>
+
+
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-8">-- Test data / pages --</h2></th>
+                </tr>
+
                 <tr class="govuk-table__row">
                     <th class="govuk-table__cell">_Setup prototype</th>
                     <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="setup">/setup</a></td>
@@ -146,6 +167,7 @@
                     <th class="govuk-table__cell">_Display test data</th>
                     <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="standards">/standards</a></td>
                 </tr>
+
             </tbody>
         </table>
     </div>
@@ -179,12 +201,15 @@
             var _urlReset = "r=t",
                 // _urlPage = _options.filter("#start").val() + "?",
                 _urlPage = "home?",
-                // _urlStart = "&s=" + _options.filter("#start").val(),
                 // _urlptVersion = "&p=" + _options.filter("#ptVersion").val(),
+                _urlService = "&s=" + $('input[name=service]:checked').val(),
                 _urlEmpAccount = "&ea=" + _options.filter("#employeraccount").val();
+            if(_urlService == "&s=epao"){
+                _urlPage = "epaos-all?"
+            }
            
             //Queries combined
-            var _urlPageQueries = _urlPage + _urlReset + _urlEmpAccount;
+            var _urlPageQueries = _urlPage + _urlReset + _urlEmpAccount + _urlService;
 
             //URL text
             var _startURLText = _urlBase + _urlPageQueries,

@@ -267,6 +267,7 @@ module.exports = function (router,_myData) {
         // Default setup
         req.session.myData.start = "home"
         req.session.myData.employeraccount = "false"
+        req.session.myData.service = "fat"
 
         // Default filters
         req.session.myData.location = ""
@@ -290,6 +291,7 @@ module.exports = function (router,_myData) {
         req.session.myData.start =  req.query.s || req.session.myData.start
         req.session.myData.employeraccount =  req.query.ea || req.session.myData.employeraccount
         req.session.myData.layout = ((req.session.myData.employeraccount == "true") ? "layout-as-emp.html" : "layout.html")
+        req.session.myData.service =  req.query.s || req.session.myData.service
         //referrer page
         req.session.myData.referrerpage = getRefererPage(req.headers.referer)
         //local storage clear boolean
@@ -1060,12 +1062,12 @@ module.exports = function (router,_myData) {
 
         function continueRendering(){
 
-            // Keyword search reset/setup
-            searchFilterSetup(req,"End-point assessment organisation name")
-    
             // Standard filter reset/setup
             standardFilterSetup(req)
 
+            // Keyword search reset/setup
+            searchFilterSetup(req,"EPAO name")
+    
             // Region filter setup
             regionFilterSetup(req)
 
@@ -1078,14 +1080,6 @@ module.exports = function (router,_myData) {
                 // Reset each epao
                 _epao.search = true
 
-                //SEARCH TERM
-                if(req.session.myData.searchapplied) {
-                    var _searchesToDo = [
-                        {"searchOn": _epao.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
-                    ]
-                    checkStandardSearchTerm(req,_epao,_searchesToDo)
-                }
-
                 //STANDARD SEARCH TERM
                 if(req.session.myData.standardsearchapplied) {
                     _epao.search = false
@@ -1095,6 +1089,14 @@ module.exports = function (router,_myData) {
                             req.session.myData.hasAMatchcount++
                         }
                     });
+                }
+
+                //SEARCH TERM
+                if(req.session.myData.searchapplied) {
+                    var _searchesToDo = [
+                        {"searchOn": _epao.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
+                    ]
+                    checkStandardSearchTerm(req,_epao,_searchesToDo)
                 }
 
                 // REGION
@@ -1149,13 +1151,6 @@ module.exports = function (router,_myData) {
         req.session.myData.displaycount = 0
         for (var i = 0; i < _standards.length; i++) {
             var _thisStandard = _standards[i]
-            
-            if(_thisStandard.epaos == undefined){
-                console.log(_thisStandard.larsCode + " - " + _thisStandard.epaos)
-            } else {
-                // console.log(_thisStandard.larsCode + " - " + _thisStandard.epaos)
-            }
-
             _thisStandard.matchesEPAO = false
             _thisStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
                 if(_epaoOnStandard.toUpperCase() == req.session.myData.selectedEPAO.name.toUpperCase()){

@@ -57,7 +57,7 @@
     <div class="govuk-grid-column-two-thirds">
 
         <h1 class="govuk-heading-xl" >
-            End-point assessment organisations
+            End-point assessment organisations (EPAOs)
         </h1>
 
     </div>
@@ -132,20 +132,20 @@
                             <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" class="govuk-input">
                         </div> -->
 
-                        <!-- Search box -->
-                        <div class="govuk-form-group" >
-                            <label for="search-epaos" class="govuk-label" >
-                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">End-point assessment organisation name</span>
-                            </label>
-                            <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-epaos" name="q" class="govuk-input">
-                        </div>
-
                         <!-- Course -->
                         <div class="govuk-form-group" >
                             <label for="search-training" class="govuk-label" >
                                 <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Course name</span>
                             </label>
                             <input type="search" value="{% if myData.standardsearchapplied == true %}{{myData.standardSearchTerm}}{% endif %}" id="search-training" name="standard" class="govuk-input">
+                        </div>
+
+                        <!-- Search box -->
+                        <div class="govuk-form-group" >
+                            <label for="search-epaos" class="govuk-label" >
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">EPAO name</span>
+                            </label>
+                            <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-epaos" name="q" class="govuk-input">
                         </div>
 
                         <!-- Regions -->

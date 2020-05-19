@@ -67,21 +67,47 @@ li.fat-cross {
     background-size: 12px 20px;
     padding-left: 18px;
 }
+// -2 is v6 onwards
+li.fat-tick-2,
+li.fat-cross-2 {
+    display: inline;
+}
+.fat-tick-2,
+.fat-cross-2 {
+    padding-left: 22px;
+}
+.fat-tick-2 {
+    background: url(/public/images/icon-green-tick-2.svg) 0 0 no-repeat;
+    background-size: 16px 18px;
+}
+.fat-cross-2 {
+    background: url(/public/images/icon-red-cross-2.svg) 0 0 no-repeat;
+    background-size: 12px 18px;
+    padding-left: 19px;
+}
+.middot {
+    display: inline; 
+    margin: 0 5px;
+}
 //FAT availaibility
-.fat-availability.fat-tick {
+.fat-availability.fat-tick,
+.fat-availability.fat-tick-2 {
     color: govuk-colour("green");
 }
-.fat-availability.fat-cross {
+.fat-availability.fat-cross,
+.fat-availability.fat-cross-2 {
     color: govuk-colour("red");
 }
 @media (min-width: 641px){
     .fat-panel .fat-availability {
         padding-left: 30px;
     }
-    .fat-panel .fat-availability.fat-tick {
+    .fat-panel .fat-availability.fat-tick,
+    .fat-panel .fat-availability.fat-tick-2 {
         background-size: 23px 22px;
     }
-    .fat-panel .fat-availability.fat-cross {
+    .fat-panel .fat-availability.fat-cross,
+    .fat-panel .fat-availability.fat-cross-2 {
         background-size: 18px 23px;
     }
 }

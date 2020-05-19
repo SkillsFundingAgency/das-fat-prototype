@@ -191,7 +191,7 @@
 
             {% if myData.locationapplied %}
                 <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
-                <p class="govuk-body fat-availability {% if _matchesLocation %}fat-tick{% else %}fat-cross{% endif %}" >
+                <p class="govuk-body fat-availability {% if _matchesLocation %}fat-tick-2{% else %}fat-cross-2{% endif %}" >
                     {% if _matchesLocation %}
                     Available
                     {% else %}
@@ -202,12 +202,14 @@
                 {% if _matchesLocation %}
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-2">This provider’s location</h2>
                 <p class="govuk-body govuk-!-margin-bottom-1">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
-                <p class="govuk-body govuk-!-margin-bottom-3">{{_selectedProvider.distance}} mile{% if _selectedProvider.distance != 1 %}s{% endif %} away</p>
+                <p class="govuk-body govuk-!-margin-bottom-2">{{_selectedProvider.distance}} mile{% if _selectedProvider.distance != 1 %}s{% endif %} away</p>
                 <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1" >
-                    <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li>
-                    <li {% if _selectedProvider.distance < 11 %}class="fat-cross"{% else %}class="fat-tick"{% endif %} >day&nbsp;release</li>
-                    <li {% if _selectedProvider.distance > 20 %}class="fat-tick"{% else %}class="fat-cross"{% endif %} >block&nbsp;release</li>
-                    <li {% if _selectedProvider.distance < 11 %}class="fat-tick"{% else %}class="fat-cross"{% endif %} >
+                    <!-- <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li> -->
+                    <li {% if _selectedProvider.distance < 11 %}class="fat-cross-2"{% else %}class="fat-tick-2"{% endif %} >day&nbsp;release</li>
+                    <li class="middot" >&#183;</li>
+                    <li {% if _selectedProvider.distance > 20 %}class="fat-tick-2"{% else %}class="fat-cross-2"{% endif %} >block&nbsp;release</li>
+                    <li class="middot" >&#183;</li>
+                    <li {% if _selectedProvider.distance < 11 %}class="fat-tick-2"{% else %}class="fat-cross-2"{% endif %} >
                         in&nbsp;your&nbsp;workplace
                     </li>
                 </ul>
@@ -232,20 +234,24 @@
                                     <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-font-size-16">Unit 8 Farm Road, Glebe Estate, CV21 1GQ</p>
                                     <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-size-16">{{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away</p>
                                     <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1" >
-                                        <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li>
-                                        <li class="fat-tick">day&nbsp;release</li>
-                                        <li class="fat-cross">block&nbsp;release</li>
-                                        <li class="fat-cross" >in&nbsp;your&nbsp;workplace</li>
+                                        <!-- <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li> -->
+                                        <li class="fat-tick-2">day&nbsp;release</li>
+                                        <li class="middot" >&#183;</li>
+                                        <li class="fat-cross-2">block&nbsp;release</li>
+                                        <li class="middot" >&#183;</li>
+                                        <li class="fat-cross-2" >in&nbsp;your&nbsp;workplace</li>
                                     </ul>
                                 </li>
                                 <li>
                                     <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-font-size-16">Watling Street, Dordon, Staffordshire, B78 1TS</p>
                                     <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-size-16">{{ _distance2 | round(2) }} mile{% if _distance2 != 1 %}s{% endif %} away</p>
                                     <ul class="govuk-list fat-training-options govuk-!-margin-bottom-0 govuk-!-font-size-16 govuk-!-margin-top-1" >
-                                        <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li>
-                                        <li class="fat-tick">day&nbsp;release</li>
-                                        <li class="fat-cross">block&nbsp;release</li>
-                                        <li class="fat-cross">in&nbsp;your&nbsp;workplace</li>
+                                        <!-- <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li> -->
+                                        <li class="fat-tick-2">day&nbsp;release</li>
+                                        <li class="middot" >&#183;</li>
+                                        <li class="fat-cross-2">block&nbsp;release</li>
+                                        <li class="middot" >&#183;</li>
+                                        <li class="fat-cross-2">in&nbsp;your&nbsp;workplace</li>
                                     </ul>
                                 </li>
                             </ul>
@@ -316,11 +322,11 @@
                 {% endif %}
             </p> -->
             {% if _matchesLocation %}
-            <p class="govuk-body fat-availability fat-tick" >Available</p>
+            <p class="govuk-body fat-availability fat-tick-2" >Available</p>
             <p class="govuk-body">This provider offers {{myData.displaycount}} courses for the apprenticeship location.</p>
             <!-- <p class="govuk-body">Select a course.</p> -->
             {% else %}
-            <p class="govuk-body fat-availability fat-cross" >Not available</p>
+            <p class="govuk-body fat-availability fat-cross-2" >Not available</p>
             <p class="govuk-body">This provider does not offer training for the apprenticeship location.</p>
             {% endif %}
         </div>
@@ -378,7 +384,7 @@
                             </td>
                             {% if myData.locationapplied %}
                             <td class="govuk-table__cell">
-                                <p class="govuk-body govuk-!-margin-bottom-0 fat-availability {% if _matchesLocation %}fat-tick{% else %}fat-cross{% endif %} govuk-!-font-size-16" >
+                                <p class="govuk-body govuk-!-margin-bottom-0 fat-availability {% if _matchesLocation %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-font-size-16" >
                                     {% if _matchesLocation %}
                                     Available
                                     {% else %}

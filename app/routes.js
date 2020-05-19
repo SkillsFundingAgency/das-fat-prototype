@@ -63,7 +63,6 @@ var _myData = {
     "epaos": require(__dirname + '/data/epaos.json')
 }
 
-// Uncomment to generate standards.json data - it will magically appear in the console
 // DO NOT UNCOMMENT AND PUSH LIVE
 // require('./generate-data-standards.js')(router,_myData);
 // require('./generate-data-providers.js')(router,_myData);
@@ -112,6 +111,8 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 var _routeCounts = {},
     _ssaCounts = {}
 _myData.standardAutocompleteList = []
+var _regulatedProvider6 = 0,
+    _regulatedProvider7 = 0
 _myData.standards.list.forEach(function(_standard, index) {
     // console.log(_standard.coreSkillsCount)
     // if(_standard.coreSkillsCount > 0) {
@@ -120,6 +121,7 @@ _myData.standards.list.forEach(function(_standard, index) {
 
     //Set regulated data
     var _EPAOOnly = true
+    
     if(_standard.regulated){
         _standard.regulatedEPAOOnly = false
         if(_standard.regulationDetail.length > 0){
@@ -127,6 +129,7 @@ _myData.standards.list.forEach(function(_standard, index) {
             if(_standard.regulatedBody == ""){
                 _standard.regulatedProvider = true
                 _standard.regulatedProvider6 = true
+                _regulatedProvider6++
                 _EPAOOnly = false
             }
             _standard.regulationDetail.forEach(function(_regulationDetail, index) {
@@ -144,6 +147,7 @@ _myData.standards.list.forEach(function(_standard, index) {
             // Training provider (7)
             _standard.regulatedProvider = true
             _standard.regulatedProvider7 = true
+            _regulatedProvider7++
             _EPAOOnly = false
         }
         if(_standard.regulatedEPAO && _EPAOOnly){
@@ -196,6 +200,8 @@ _myData.standards.list.forEach(function(_standard, index) {
     _ssaCounts[_standard.ssa1.toLowerCase()] = (_ssaCounts[_standard.ssa1.toLowerCase()] || 0) + 1
     _ssaCounts[_standard.ssa2.toLowerCase()] = (_ssaCounts[_standard.ssa2.toLowerCase()] || 0) + 1
 });
+// console.log("_regulatedProvider6 = " + _regulatedProvider6)
+// console.log("_regulatedProvider7 = " + _regulatedProvider7)
 _myData.routes.list.forEach(function(_route, index) {
     _route.standardsCount = _routeCounts[_route.name.toLowerCase()] || 0;
 });

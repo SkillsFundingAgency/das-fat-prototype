@@ -149,7 +149,7 @@
                 {% if myData.locationapplied %}
 
                     <p class="govuk-body govuk-!-margin-bottom-5"><span style="margin-right: 10px">{{myData.location}}</span> <a href="standard?standard={{myData.standard}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
-                    <p class="govuk-body fat-availability {% if _displaycountproviders != 0 %}fat-tick{% else %}fat-cross{% endif %}" >{{_displaycountproviders}} provider{% if _displaycountproviders != 1 %}s{% endif %} available for this apprenticeship location</p>
+                    <p class="govuk-body fat-availability {% if _displaycountproviders != 0 %}fat-tick-2{% else %}fat-cross-2{% endif %}" >{{_displaycountproviders}} provider{% if _displaycountproviders != 1 %}s{% endif %} available for this apprenticeship location</p>
                     
                     {% if _displaycountproviders != 0 %}
                         <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state">View providers for this course</a></p>

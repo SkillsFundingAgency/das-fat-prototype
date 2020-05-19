@@ -379,12 +379,12 @@
 
                     <li>
                         <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
-                            <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li>
-                            <li {% if _provider.distance < 8 %}class="fat-cross"{% else %}class="fat-tick"{% endif %} >day&nbsp;release</li>
-                            <li {% if _provider.distance > 20 %}class="fat-tick"{% else %}class="fat-cross"{% endif %} >block&nbsp;release</li>
-                            <li {% if _provider.distance < 8 %}class="fat-tick"{% else %}class="fat-cross"{% endif %} >
-                                in&nbsp;your&nbsp;workplace
-                            </li>
+                            <!-- <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li> -->
+                            <li {% if _provider.distance < 8 %}class="fat-cross-2"{% else %}class="fat-tick-2"{% endif %} >day&nbsp;release</li>
+                            <li class="middot" >&#183;</li>
+                            <li {% if _provider.distance > 20 %}class="fat-tick-2"{% else %}class="fat-cross-2"{% endif %} >block&nbsp;release</li>
+                            <li class="middot" >&#183;</li>
+                            <li {% if _provider.distance < 8 %}class="fat-tick-2"{% else %}class="fat-cross-2"{% endif %} >in&nbsp;your&nbsp;workplace</li>
                         </ul>
                     </li>
 
@@ -400,22 +400,26 @@
                             {% set _distance1 = _provider.distance + 2.8 %}
                             {% set _distance2 = _distance1 + 5.3 %}
                             <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0 govuk-!-font-size-16 ">
-                                <li class="">
-                                    <!-- <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-size-16">{{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away</p> -->
-                                    <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-bottom-2" >
-                                        <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">{{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away:</span></li>
-                                        <li class="fat-tick">day&nbsp;release</li>
-                                        <li class="fat-cross">block&nbsp;release</li>
-                                        <li class="fat-cross" >in&nbsp;your&nbsp;workplace</li>
+                                <li class="govuk-!-margin-bottom-0">
+                                    <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-bottom-0" >
+                                        <li style="display: inline-block; min-width: 110px"><span class="govuk-!-font-size-16">{{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away</span></li>
+                                        <li class="middot" >&#183;</li>
+                                        <li class="fat-tick-2">day&nbsp;release</li>
+                                        <li class="middot" >&#183;</li>
+                                        <li class="fat-cross-2">block&nbsp;release</li>
+                                        <li class="middot" >&#183;</li>
+                                        <li class="fat-cross-2" >in&nbsp;your&nbsp;workplace</li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-bottom-0 " >
-                                        <!-- <p class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-size-16">{{ _distance2 | round(2) }} mile{% if _distance2 != 1 %}s{% endif %} away</p> -->
-                                        <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">{{ _distance2 | round(2) }} mile{% if _distance2 != 1 %}s{% endif %} away:</span></li>
-                                        <li class="fat-tick">day&nbsp;release</li>
-                                        <li class="fat-cross">block&nbsp;release</li>
-                                        <li class="fat-cross">in&nbsp;your&nbsp;workplace</li>
+                                    <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-bottom-0 govuk-!-margin-top-0" >
+                                        <li style="display: inline-block; min-width: 110px"><span class="govuk-!-font-size-16">{{ _distance2 | round(2) }} mile{% if _distance2 != 1 %}s{% endif %} away</span></li>
+                                        <li class="middot" >&#183;</li>
+                                        <li class="fat-tick-2">day&nbsp;release</li>
+                                        <li class="middot" >&#183;</li>
+                                        <li class="fat-cross-2">block&nbsp;release</li>
+                                        <li class="middot" >&#183;</li>
+                                        <li class="fat-cross-2">in&nbsp;your&nbsp;workplace</li>
                                     </ul>
                                 </li>
                             </ul>
@@ -425,7 +429,7 @@
                     {% endif %}
 
                     <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                        <span class="govuk-!-font-size-16">68% achievement rate</span>
+                        <span class="govuk-!-font-size-16">68% Achievement rate</span>
                     </li>
 
                     <li class="govuk-!-font-size-16 govuk-!-margin-top-2">

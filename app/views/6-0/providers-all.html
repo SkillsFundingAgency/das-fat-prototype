@@ -208,6 +208,7 @@
                                 </div>
                             </fieldset>
                         </div>
+
                         <!-- Employer reviews -->
                         {% set _empOptions = [{"id":1,"label":"Excellent"},{"id":2,"label":"Good"},{"id":3,"label":"Poor"},{"id":4,"label":"Very poor"}] %}
                         <div class="govuk-form-group">
@@ -233,6 +234,25 @@
                                 </div>
                             </fieldset>
                         </div>
+
+                        <!-- National -->
+                        {% if myData.standardsearchapplied %}
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    [National]
+                                </legend>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="national-1" name="national" type="checkbox" value="national">
+                                        <label class="govuk-label govuk-checkboxes__label" for="national-1">
+                                            [Show only national]
+                                        </label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        {% endif %}
 
                         <!-- Search box -->
                         <!-- <div class="govuk-form-group" >

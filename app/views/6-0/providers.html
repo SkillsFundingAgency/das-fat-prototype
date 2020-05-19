@@ -373,9 +373,15 @@
                 </h2>
                 <ul class="govuk-list">
 
+                    <!-- Other locations -->
+                    {% set _otherLocations = false %}
+                    {% if _provider.distance < 4 or (_provider.distance > 6 and _provider.distance < 9) %}
+                        {% set _otherLocations = true %}
+                    {% endif %}
+
                     <!-- Distance -->
                     {% if myData.locationapplied %}
-                    <li class="govuk-!-margin-top-2"><span>{{_provider.distance}}</span> mile{% if _provider.distance != 1 %}s{% endif %} away</li>
+                    <li class="govuk-!-margin-top-2"><span>{{_provider.distance}}</span> mile{% if _provider.distance != 1 %}s{% endif %} away{% if _otherLocations %}{% endif %}</li>
 
                     <li>
                         <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
@@ -395,33 +401,33 @@
                         {% endif %}
                     
                         {% if _otherLocations %}
-                        <li class="govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-4">
-                            <span style="display: block" class="govuk-!-margin-bottom-0 govuk-!-font-weight-bold">Other locations:</span>
-                            {% set _distance1 = _provider.distance + 2.8 %}
-                            {% set _distance2 = _distance1 + 5.3 %}
-                            <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0 govuk-!-font-size-16 ">
-                                <li class="govuk-!-margin-bottom-0">
-                                    <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-bottom-0" >
-                                        <li style="display: inline-block; min-width: 110px"><span class="govuk-!-font-size-16">{{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away</span></li>
-                                        <li class="middot" >&#183;</li>
-                                        <li class="fat-tick-2">day&nbsp;release</li>
-                                        <li class="middot" >&#183;</li>
-                                        <li class="fat-cross-2">block&nbsp;release</li>
-                                        <li class="middot" >&#183;</li>
-                                        <li class="fat-cross-2" >in&nbsp;your&nbsp;workplace</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-bottom-0 govuk-!-margin-top-0" >
-                                        <li style="display: inline-block; min-width: 110px"><span class="govuk-!-font-size-16">{{ _distance2 | round(2) }} mile{% if _distance2 != 1 %}s{% endif %} away</span></li>
-                                        <li class="middot" >&#183;</li>
-                                        <li class="fat-tick-2">day&nbsp;release</li>
-                                        <li class="middot" >&#183;</li>
-                                        <li class="fat-cross-2">block&nbsp;release</li>
-                                        <li class="middot" >&#183;</li>
-                                        <li class="fat-cross-2">in&nbsp;your&nbsp;workplace</li>
-                                    </ul>
-                                </li>
+                        <li class="govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-2"><span style="display: block" class="govuk-!-margin-bottom-0 govuk-!-font-weight-bold">Other locations:</span></li>
+                        {% set _distance1 = _provider.distance + 2.8 %}
+                        {% set _distance2 = _distance1 + 5.3 %}
+                        <!-- <li class="govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-2">
+                            {{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away (closest)
+                        </li> -->
+                        <li class="govuk-!-margin-bottom-3">
+                            <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
+                                <!-- <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li> -->
+                                <li class="fat-tick-2" >day&nbsp;release</li>
+                                <li class="middot" >&#183;</li>
+                                <li class="fat-cross-2" >block&nbsp;release</li>
+                                <li class="middot" >&#183;</li>
+                                <li class="fat-cross-2" >in&nbsp;your&nbsp;workplace</li>
+                            </ul>
+                        </li>
+                        <!-- <li class="govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-2">
+                            {{ _distance2 | round(2) }} mile{% if _distance2 != 1 %}s{% endif %} away (closest)
+                        </li> -->
+                        <li class="govuk-!-margin-bottom-3">
+                            <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
+                                <!-- <li style="display: inline-block; min-width: 110px"><span class="govuk-!-font-size-16">{{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away</span></li> -->
+                                <li class="fat-tick-2" >day&nbsp;release</li>
+                                <li class="middot" >&#183;</li>
+                                <li class="fat-tick-2" >block&nbsp;release</li>
+                                <li class="middot" >&#183;</li>
+                                <li class="fat-cross-2" >in&nbsp;your&nbsp;workplace</li>
                             </ul>
                         </li>
                         {% endif %}

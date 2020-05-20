@@ -189,7 +189,7 @@ module.exports = function (router,_myData) {
                     }
                 });
             });
-            req.session.myData.searchfilters.push({"value": regionfiltersValues, "type": "regionfilters", "typeText": "Delivery area","typeof":"array"})
+            req.session.myData.searchfilters.push({"value": regionfiltersValues, "type": "regionfilters", "typeText": "Delivery areas","typeof":"array"})
         }
     }
 
@@ -1104,10 +1104,7 @@ module.exports = function (router,_myData) {
                 if(req.session.myData.regionfiltersapplied) {
                     _epao.search = false
                     req.session.myData.regionfilters.forEach(function(_region, index) {
-                        if(_epao.regions.includes(_region.toString())){
-                            req.session.myData.hasAMatchcount++
-                        }
-                        if(_epao.regions.includes("10")){
+                        if(_epao.regions.includes(_region.toString()) || _epao.regions.includes("10")){
                             req.session.myData.hasAMatchcount++
                         }
                     });

@@ -289,10 +289,12 @@ _myData.epaos.list.forEach(function(_epao, index) {
     _epao.regions = _epao.regions.split(',');
     //number of standards
     var _stdCount = 0
+    _epao.standards = []
     for (var i = 0; i < _myData.standards.list.length; i++) {
         var _thisStandard = _myData.standards.list[i]
         _thisStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
             if(_epaoOnStandard.toUpperCase() == _epao.name.toUpperCase()){
+                _epao.standards.push(_thisStandard.autoCompleteString)
                 _stdCount++
             }
         });

@@ -154,7 +154,7 @@
                         <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Area delivered to
+                                    Delivery areas
                                 </legend>
                                 <div class="govuk-checkboxes govuk-checkboxes--small">
                                     {% for _regionOption in _regionOptions %}
@@ -213,15 +213,23 @@
                 {% set _moreThanOne = _epao.regions.length > 1 %}
                 {% for _region in myData.regions %}
                     {% if _epaoRegion == _region.id %}
-                        {% if _moreThanOne and _loopLast %}
-                            {% set _deliveryAreasLabel = _deliveryAreasLabel + " and " %}
-                        {% endif %}
                         {% set _deliveryAreasLabel = _deliveryAreasLabel + _region.label %}
                         {% if _moreThanOne and _loopLast == false %}
                             {% set _deliveryAreasLabel = _deliveryAreasLabel + ", " %}
                         {% endif %}
                     {% endif %}
                 {% endfor %}
+            {% endfor %}
+        
+            <!-- Courses label -->
+            {% set _coursesLabel = "" %}
+            {% for _epaoCourse in _epao.standards %}
+                {% set _loopLast = loop.last %}
+                {% set _moreThanOne = _epao.standards.length > 1 %}
+                    {% set _coursesLabel = _coursesLabel + _epaoCourse %}
+                    {% if _moreThanOne and _loopLast == false %}
+                        {% set _coursesLabel = _coursesLabel + ", " %}
+                    {% endif %}
             {% endfor %}
 
             <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
@@ -230,6 +238,21 @@
                 </h2>
                 <ul class="govuk-list">
                     <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Delivery areas:</span> {{_deliveryAreasLabel}}</li>
+                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Courses assessed: </span>
+                        <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-1">
+                            {% set _loop = 0 %}
+                            {% set _maxShown = 5 %}
+                            {% set _maxShownMinus1 = _maxShown - 1 %}
+                            {% for _epaoCourse in _epao.standards %}
+                                {% set _loop = loop.index %}
+                                {% if _loop < _maxShown or _epao.standards.length == _maxShown %}
+                                <li class="govuk-!-font-size-16">{{_epaoCourse}}</li>
+                                {% elif _loop == _maxShown %}
+                                <li class="govuk-!-font-size-16 ">...plus {{_epao.stdCount - _maxShownMinus1}} more</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
                 </ul>
             </div>
             <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">

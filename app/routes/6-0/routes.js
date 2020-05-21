@@ -105,8 +105,10 @@ module.exports = function (router,_myData) {
         req.session.myData.searchapplied = false
         req.session.myData.searchTerm = ""
         if(req.query.q && req.query.q != ""){
-            req.session.myData.needToMatchCount++
             req.session.myData.displaycount = 0
+            req.session.myData.displaycountExcludingLocation = 0
+            req.session.myData.needToMatchCount++
+            req.session.myData.needToMatchCountExcludingLocation++
             req.session.myData.searchapplied = true
             req.session.myData.searchTerm = req.query.q.trim()
             req.session.myData.searchfilters.push({"value": "‘" + req.session.myData.searchTerm + "’", "type": "search", "typeText": _selectedLabel})
@@ -138,7 +140,9 @@ module.exports = function (router,_myData) {
         req.session.myData.ofstedratingsapplied = false
         if(req.session.myData.ofstedratings.length > 0){
             req.session.myData.displaycount = 0
+            req.session.myData.displaycountExcludingLocation = 0
             req.session.myData.needToMatchCount++
+            req.session.myData.needToMatchCountExcludingLocation++
             req.session.myData.ofstedratingsapplied = true
             var ofstedratingsValues = []
             req.session.myData.ofstedratings.forEach(function(_rating, index) {
@@ -157,7 +161,9 @@ module.exports = function (router,_myData) {
         req.session.myData.employerreviewsapplied = false
         if(req.session.myData.employerreviews.length > 0){
             req.session.myData.displaycount = 0
+            req.session.myData.displaycountExcludingLocation = 0
             req.session.myData.needToMatchCount++
+            req.session.myData.needToMatchCountExcludingLocation++
             req.session.myData.employerreviewsapplied = true
             var employerreviewsValues = []
             req.session.myData.employerreviews.forEach(function(_rating, index) {
@@ -168,6 +174,19 @@ module.exports = function (router,_myData) {
                 })
             });
             req.session.myData.searchfilters.push({"value": employerreviewsValues, "type": "employerreviews", "typeText": "Average employer review","typeof":"array"})
+        }
+    }
+
+    // National filtering - setup
+    function nationalFilterSetup(req){
+        req.session.myData.nationalapplied = false
+        if(req.session.myData.national.length > 0){
+            req.session.myData.displaycount = 0
+            req.session.myData.displaycountExcludingLocation = 0
+            req.session.myData.needToMatchCount++
+            req.session.myData.needToMatchCountExcludingLocation++
+            req.session.myData.nationalapplied = true
+            req.session.myData.searchfilters.push({"value": "All England", "type": "national", "typeText": "Delivery area"})
         }
     }
 
@@ -206,6 +225,7 @@ module.exports = function (router,_myData) {
     function checkStandardSearchTerm(req, _item, _searchesToDo){
         
         _item.search = false
+        _item.searchExcludingLocation = false
         _item.searchrelevance = 0
 
         var _matchedsearch = false
@@ -242,6 +262,7 @@ module.exports = function (router,_myData) {
         }
         if(_matchedsearch && _item.searchrelevance > 1){
             req.session.myData.hasAMatchcount++
+            req.session.myData.hasAMatchcountExcludingLocation++
         }
     }
 
@@ -277,6 +298,7 @@ module.exports = function (router,_myData) {
         req.session.myData.employerreviews = []
         req.session.myData.ofstedratings = []
         req.session.myData.regionfilters = []
+        req.session.myData.national = []
 
     }
 
@@ -324,6 +346,14 @@ module.exports = function (router,_myData) {
         }
         if(!Array.isArray(req.session.myData.regionfilters)){
             req.session.myData.regionfilters = [req.session.myData.regionfilters]
+        }
+
+        req.session.myData.national = req.query.national || []
+        if(req.session.myData.national == "_unchecked"){
+            req.session.myData.national = []
+        }
+        if(!Array.isArray(req.session.myData.national)){
+            req.session.myData.national = [req.session.myData.national]
         }
 
         next()
@@ -581,12 +611,16 @@ module.exports = function (router,_myData) {
         req.session.myData.searchfilters = []
         req.session.myData.selectedStandard = {}
         req.session.myData.displaycount = _providers.length
+        req.session.myData.displaycountExcludingLocation = _providers.length
         req.session.myData.needToMatchCount = 0
+        req.session.myData.needToMatchCountExcludingLocation = 0
 
         // Standard filter reset/setup
         req.session.myData.standardfilterapplied = true
         req.session.myData.displaycount = 0
+        req.session.myData.displaycountExcludingLocation = 0
         req.session.myData.needToMatchCount++
+        req.session.myData.needToMatchCountExcludingLocation++
         for (var i = 0; i < _standards.length; i++) {
             if(req.session.myData.standard == _standards[i].larsCode){
                 req.session.myData.selectedStandard = _standards[i]
@@ -628,6 +662,9 @@ module.exports = function (router,_myData) {
             // Employer reviews filter setup
             employerReviewsFilterSetup(req)
 
+            // National filter setup
+            nationalFilterSetup(req)
+
             // Keyword search reset/setup
             searchFilterSetup(req,"Training provider name")
 
@@ -636,16 +673,22 @@ module.exports = function (router,_myData) {
                 var _deliversStandard = false
                 
                 req.session.myData.hasAMatchcount = 0
+                req.session.myData.hasAMatchcountExcludingLocation = 0
 
                 // Reset each provider
                 _provider.search = true
+                _provider.searchExcludingLocation = true
 
                 //STANDARD
                 if(req.session.myData.standardfilterapplied) {
                     _provider.search = false
+                    _provider.searchExcludingLocation = false
+                    _provider.deliversStandard = false
                     if(_provider.courses.includes(req.session.myData.selectedStandard.larsCode)){
                         _deliversStandard = true
+                        _provider.deliversStandard = true
                         req.session.myData.hasAMatchcount++
+                        req.session.myData.hasAMatchcountExcludingLocation++
                     }
                 }
 
@@ -664,9 +707,11 @@ module.exports = function (router,_myData) {
                 // OFSTED RATING
                 if(req.session.myData.ofstedratingsapplied) {
                     _provider.search = false
+                    _provider.searchExcludingLocation = false
                     req.session.myData.ofstedratings.forEach(function(_rating, index) {
                         if(_provider.ofsted == _rating){
                             req.session.myData.hasAMatchcount++
+                            req.session.myData.hasAMatchcountExcludingLocation++
                         }
                     });
                 }
@@ -674,11 +719,23 @@ module.exports = function (router,_myData) {
                 // EMPLOYER REVIEW
                 if(req.session.myData.employerreviewsapplied) {
                     _provider.search = false
+                    _provider.searchExcludingLocation = false
                     req.session.myData.employerreviews.forEach(function(_rating, index) {
                         if(_provider.averageEmpRatingID == _rating){
                             req.session.myData.hasAMatchcount++
+                            req.session.myData.hasAMatchcountExcludingLocation++
                         }
                     });
+                }
+
+                // NATIONAL
+                if(req.session.myData.nationalapplied) {
+                    _provider.search = false
+                    _provider.searchExcludingLocation = false
+                    if(_provider.national){
+                        req.session.myData.hasAMatchcount++
+                        req.session.myData.hasAMatchcountExcludingLocation++
+                    }
                 }
 
                 //SEARCH TERM
@@ -693,6 +750,11 @@ module.exports = function (router,_myData) {
                 if(req.session.myData.needToMatchCount > 0 && req.session.myData.needToMatchCount == req.session.myData.hasAMatchcount){
                     _provider.search = true
                     req.session.myData.displaycount++
+                }
+                //MATCHES ALL IT NEEDS TO?
+                if(req.session.myData.needToMatchCountExcludingLocation > 0 && req.session.myData.needToMatchCountExcludingLocation == req.session.myData.hasAMatchcountExcludingLocation){
+                    _provider.searchExcludingLocation = true
+                    req.session.myData.displaycountExcludingLocation++
                 }
 
             });

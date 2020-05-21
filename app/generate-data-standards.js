@@ -20,6 +20,7 @@ module.exports = function (router,_myData) {
         _have3Keywords = 0,
         _have4Keywords = 0,
         _haveOverview = 0,
+        _dontHaveOverviews = "",
         _titleContainsIntegrated = 0,
         _titleContainsDegree = 0,
         _titleContainsClosed = 0;
@@ -122,6 +123,8 @@ module.exports = function (router,_myData) {
             //KEYWORDS COUNTS
             if(_stdObj.overviewOfRole.length > 0) {
                 _haveOverview++
+            } else {
+                _dontHaveOverviews = _dontHaveOverviews + _stdObj.title + " (level " + _stdObj.level + ")..."
             }
 
             //MAP CORE SKILLS
@@ -203,6 +206,7 @@ module.exports = function (router,_myData) {
                     console.log("Have an overview: " + _haveOverview)
                     // Dont have overview text
                     console.log("Do not have an overview: " + (_activeStds.length - _haveOverview))
+                    console.log("Standards without overviews: " + _dontHaveOverviews)
                     // Overview contains HTML characters
                     // console.log("Overview contains HTML characters: " + _containsHTMLTags)
                     // Title contains strings

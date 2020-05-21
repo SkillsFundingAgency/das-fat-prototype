@@ -31,6 +31,7 @@
 {% set _standardQuery = "" %}
 {% set _empReviewsQuery = "" %}
 {% set _ofstedRatingsQuery = "" %}
+{% set _nationalQuery = "" %}
 {% if myData.searchapplied == true %}
     {% set _searchQuery = "&q=" + myData.searchTerm %}
 {% endif %}
@@ -50,6 +51,11 @@
     {% set _ofstedRatingsQuery = _ofstedRatingsQuery + "&ofstedratings=" + _item %}
     {% endfor %}
 {% endif %}
+{% if myData.nationalapplied == true %}
+    {% for _item in myData.national %}
+    {% set _nationalQuery = _nationalQuery + "&national=" + _item %}
+    {% endfor %}
+{% endif %}
 
 <!-- Sort -->
 {% set _sortQuery = "" %}
@@ -58,10 +64,10 @@
 {% endif %}
 
 
-{% set _fullURL = "providers?" + _sortQuery + _searchQuery + _standardQuery + _locationQuery + _empReviewsQuery + _ofstedRatingsQuery %}
+{% set _fullURL = "providers?" + _sortQuery + _searchQuery + _standardQuery + _locationQuery + _empReviewsQuery + _ofstedRatingsQuery + _nationalQuery %}
 
 <!-- Filters -->
-{% set _filtersApplied = myData.searchapplied or myData.locationapplied or myData.employerreviewsapplied or myData.ofstedratingsapplied %}
+{% set _filtersApplied = myData.searchapplied or myData.locationapplied or myData.employerreviewsapplied or myData.ofstedratingsapplied or myData.nationalapplied %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
@@ -118,9 +124,12 @@
           
                     <!-- For each filter type -->
                     {% for _filter in myData.searchfilters %}
-                        {% set _url = "providers?" + _sortQuery + _locationQuery + _standardQuery + _empReviewsQuery + _ofstedRatingsQuery %}
+                        {% set _url = "providers?" + _sortQuery + _locationQuery + _standardQuery + _empReviewsQuery + _ofstedRatingsQuery + _nationalQuery %}
                         {% if _filter.type == "location" %}
-                            {% set _url = "providers?" + _sortQuery + _searchQuery + _standardQuery + "&location" + _empReviewsQuery + _ofstedRatingsQuery %}
+                            {% set _url = "providers?" + _sortQuery + _searchQuery + _standardQuery + "&location" + _empReviewsQuery + _ofstedRatingsQuery + _nationalQuery %}
+                        {% endif %}
+                        {% if _filter.type == "national" %}
+                            {% set _url = "providers?" + _sortQuery + _locationQuery + _standardQuery + _empReviewsQuery + _ofstedRatingsQuery %}
                         {% endif %}
 
                     <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText}}</h3>
@@ -238,13 +247,13 @@
                         <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    [National]
+                                    Delivery area
                                 </legend>
                                 <div class="govuk-checkboxes govuk-checkboxes--small">
                                     <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="national-1" name="national" type="checkbox" value="national">
+                                        <input {% if myData.nationalapplied %}checked{% endif %} class="govuk-checkboxes__input" id="national-1" name="national" type="checkbox" value="national">
                                         <label class="govuk-label govuk-checkboxes__label" for="national-1">
-                                            [Show only national]
+                                            All England
                                         </label>
                                     </div>
                                 </div>
@@ -276,7 +285,7 @@
         {% if myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Location of apprenticeship</h2>
-            <p class="govuk-body"><span style="margin-right: 10px">{{myData.location}}</span> <a href="providers?{{_sortQuery}}{{_searchQuery}}{{_standardQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
+            <p class="govuk-body"><span style="margin-right: 10px">{{myData.location}}</span> <a href="providers?{{_sortQuery}}{{_searchQuery}}{{_standardQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}{{_nationalQuery}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
         </div>
         {% else %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
@@ -285,21 +294,23 @@
             <p class="govuk-body"><a href="#search-location" class="focus-field-prompt govuk-link govuk-link--no-visited-state" >Enter&nbsp;location</a></p>
         </div>
         {% endif %}
-
        
         <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
 
-        
+        <!-- No results for filters -->
+        {% if myData.displaycount == 0 %}
+        <p class="govuk-body govuk-!-margin-top-4">No training providers for the selected filters.</p>
+        {% endif %}
 
         <!-- Sort -->
         {% if myData.locationapplied == true and myData.displaycount > 1 %}
         <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
             {% if myData.sortby == "name" %}
-            <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}&sort=distance">Distance (nearest first)</a>, 
+            <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}{{_nationalQuery}}&sort=distance">Distance (nearest first)</a>, 
             <span class="govuk-!-font-weight-bold">Name</span>
             {% else %}
             <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>, 
-            <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}&sort=name">Name</a>
+            <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}{{_nationalQuery}}&sort=name">Name</a>
             {% endif %}
         </p>
         {% elif myData.displaycount > 1 %}
@@ -314,9 +325,36 @@
         <!-- 
             Providers list OR No results
         -->
-        {% if myData.displaycount > 0 %}
+
+        {% set _displayClosestInstead = myData.locationapplied and myData.displaycount == 0 %}
+        {% set _useDetailsComponent = false %}
+        
+        <!-- Location applied, no results -->
+        {% if _displayClosestInstead and myData.displaycountExcludingLocation > 0 %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5 govuk-!-margin-top-9">
+            <p class="govuk-body">{{myData.displaycountExcludingLocation}} training provider{% if myData.displaycountExcludingLocation != 1 %}s{% endif %} found that do{% if myData.displaycountExcludingLocation == 1 %}es{% endif %} not currently deliver to the apprenticeship location.</p>
+        </div>
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+
+
+
+            {% if _useDetailsComponent %}
+            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                    Training providers
+                </span>
+                </summary>
+                <div class="govuk-details__text">
+                
+            
+            {% endif %}
+           
+        {% endif %}
+
 
         <!-- Providers -->
+        {% set _closestCount = 0 %}
         {% for _provider in _providers %}
 
             <!-- Employer Ratings -->
@@ -383,103 +421,105 @@
                 {% set _ratingOfstedColor = "poor-employer" %}
             {% endif %}
 
-            {% if _provider.search == true %}
-            <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
-                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                    <a href="provider?provider={{_provider.id}}{{_standardQuery}}" class="govuk-link govuk-link--no-visited-state">{{_provider.name}}</a>
-                </h2>
-                <ul class="govuk-list">
 
-                    <!-- Other locations -->
-                    {% set _otherLocations = false %}
-                    {% if _provider.distance < 4 or (_provider.distance > 6 and _provider.distance < 9) %}
-                        {% set _otherLocations = true %}
-                    {% endif %}
+            {% if _provider.search == true or (_displayClosestInstead and _provider.searchExcludingLocation == true) %}
 
-                    <!-- Distance -->
-                    {% if myData.locationapplied %}
-                    <li class="govuk-!-margin-top-2"><span>{{_provider.distance}}</span> mile{% if _provider.distance != 1 %}s{% endif %} away{% if _otherLocations %}{% endif %}</li>
+                {% set _closestCount = _closestCount + 1 %}
 
-                    <li>
-                        <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
-                            <!-- <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li> -->
-                            <li {% if _provider.distance < 8 %}class="fat-cross-2"{% else %}class="fat-tick-2"{% endif %} >day&nbsp;release</li>
-                            <li class="middot" >&#183;</li>
-                            <li {% if _provider.distance > 20 %}class="fat-tick-2"{% else %}class="fat-cross-2"{% endif %} >block&nbsp;release</li>
-                            <li class="middot" >&#183;</li>
-                            <li {% if _provider.distance < 8 %}class="fat-tick-2"{% else %}class="fat-cross-2"{% endif %} >in&nbsp;your&nbsp;workplace</li>
-                        </ul>
-                    </li>
+                {% if (_displayClosestInstead) or _displayClosestInstead != true %}
+                
+                <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+                        <a href="provider?provider={{_provider.id}}{{_standardQuery}}" class="govuk-link govuk-link--no-visited-state">{{_provider.name}}</a>
+                    </h2>
+                    <ul class="govuk-list">
 
                         <!-- Other locations -->
                         {% set _otherLocations = false %}
                         {% if _provider.distance < 4 or (_provider.distance > 6 and _provider.distance < 9) %}
                             {% set _otherLocations = true %}
                         {% endif %}
-                    
-                        {% if _otherLocations %}
-                        <li class="govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-2"><span style="display: block" class="govuk-!-margin-bottom-0 govuk-!-font-weight-bold">Other locations:</span></li>
-                        {% set _distance1 = _provider.distance + 2.8 %}
-                        {% set _distance2 = _distance1 + 5.3 %}
-                        <!-- <li class="govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-2">
-                            {{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away (closest)
-                        </li> -->
-                        <li class="govuk-!-margin-bottom-3">
+
+                        <!-- Distance -->
+                        {% if myData.locationapplied %}
+                        <li class="govuk-!-margin-top-2"><span>{{_provider.distance}}</span> mile{% if _provider.distance != 1 %}s{% endif %} away{% if _otherLocations %}{% endif %}</li>
+
+                        <li>
                             <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
                                 <!-- <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li> -->
-                                <li class="fat-tick-2" >day&nbsp;release</li>
+                                <li {% if _provider.distance < 8 %}class="fat-cross-2"{% else %}class="fat-tick-2"{% endif %} >day&nbsp;release</li>
                                 <li class="middot" >&#183;</li>
-                                <li class="fat-cross-2" >block&nbsp;release</li>
+                                <li {% if _provider.distance > 20 %}class="fat-tick-2"{% else %}class="fat-cross-2"{% endif %} >block&nbsp;release</li>
                                 <li class="middot" >&#183;</li>
-                                <li class="fat-cross-2" >in&nbsp;your&nbsp;workplace</li>
+                                <li {% if _provider.distance < 8 %}class="fat-tick-2"{% else %}class="fat-cross-2"{% endif %} >in&nbsp;your&nbsp;workplace</li>
                             </ul>
                         </li>
-                        <!-- <li class="govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-2">
-                            {{ _distance2 | round(2) }} mile{% if _distance2 != 1 %}s{% endif %} away (closest)
-                        </li> -->
-                        <li class="govuk-!-margin-bottom-3">
-                            <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
-                                <!-- <li style="display: inline-block; min-width: 110px"><span class="govuk-!-font-size-16">{{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away</span></li> -->
-                                <li class="fat-tick-2" >day&nbsp;release</li>
-                                <li class="middot" >&#183;</li>
-                                <li class="fat-tick-2" >block&nbsp;release</li>
-                                <li class="middot" >&#183;</li>
-                                <li class="fat-cross-2" >in&nbsp;your&nbsp;workplace</li>
-                            </ul>
-                        </li>
+
+                            <!-- Other locations -->
+                            {% set _otherLocations = false %}
+                            {% if _provider.distance < 4 or (_provider.distance > 6 and _provider.distance < 9) %}
+                                {% set _otherLocations = true %}
+                            {% endif %}
+                        
+                            {% if _otherLocations %}
+                            <li class="govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-2"><span style="display: block" class="govuk-!-margin-bottom-0 govuk-!-font-weight-bold">Other locations:</span></li>
+                            {% set _distance1 = _provider.distance + 2.8 %}
+                            {% set _distance2 = _distance1 + 5.3 %}
+                            <!-- <li class="govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-2">
+                                {{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away (closest)
+                            </li> -->
+                            <li>
+                                <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
+                                    <li class="fat-tick-2" >day&nbsp;release</li>
+                                    <li class="middot" >&#183;</li>
+                                    <li class="fat-cross-2" >block&nbsp;release</li>
+                                    <li class="middot" >&#183;</li>
+                                    <li class="fat-cross-2" >in&nbsp;your&nbsp;workplace</li>
+                                </ul>
+                            </li>
+                            <li class="govuk-!-margin-bottom-3">
+                                <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
+                                    <li class="fat-tick-2" >day&nbsp;release</li>
+                                    <li class="middot" >&#183;</li>
+                                    <li class="fat-tick-2" >block&nbsp;release</li>
+                                    <li class="middot" >&#183;</li>
+                                    <li class="fat-cross-2" >in&nbsp;your&nbsp;workplace</li>
+                                </ul>
+                            </li>
+                            {% endif %}
+
                         {% endif %}
 
-                    {% endif %}
+                        <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                            <span class="govuk-!-font-size-16">68% achievement rate</span>
+                        </li>
 
-                    <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                        <span class="govuk-!-font-size-16">68% Achievement rate</span>
-                    </li>
+                        <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                            {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight">{{_ratingOfstedTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(Ofsted rating)</span>
+                        </li>
 
-                    <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                        {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight">{{_ratingOfstedTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(Ofsted rating)</span>
-                    </li>
+                        <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                            {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight">{{_ratingTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">({{_totalRatings}} employer reviews)</span>
+                        </li>
 
-                    <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                        {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight">{{_ratingTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">({{_totalRatings}} employer reviews)</span>
-                    </li>
+                        <!-- National -->
+                        {% if _provider.national %}
+                        <!-- <li class="govuk-!-font-size-16" ><span class="govuk-secondary-colour" style="color:red">National</span></li> -->
+                        {% else %}
+                        {% endif %}
 
-                    <!-- National -->
-                    {% if _provider.national == true %}
-                    <!-- <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Availability:</span> National</li> -->
-                    {% else %}
-                    <!-- <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Availability:</span> Specific locations</li> -->
-                    {% endif %}
+                    </ul>
+                </div>
+                <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+                {% endif %}
 
-                </ul>
-            </div>
-            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
             {% endif %}
+
         {% endfor %}
 
-        {% else %}
-
-        <p class="govuk-body govuk-!-margin-top-4">No training providers for the selected filters.</p>
-
+        {% if _displayClosestInstead and _useDetailsComponent and myData.displaycountExcludingLocation > 0 %}
+            </div>
+        </details>
         {% endif %}
 
     </div>

@@ -191,8 +191,8 @@
 
             {% if myData.locationapplied %}
                 <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
-                <p class="govuk-body fat-availability {% if _matchesLocation %}fat-tick-2{% else %}fat-cross-2{% endif %}" >
-                    {% if _matchesLocation %}
+                <p class="govuk-body fat-availability {% if _matchesLocation == false %}fat-tick-2{% else %}fat-cross-2{% endif %}" >
+                    {% if _matchesLocation == false %}
                     Available
                     {% else %}
                     Not available

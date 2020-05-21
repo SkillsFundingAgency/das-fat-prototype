@@ -1,28 +1,22 @@
 {% extends "layout.html" %}
 {% set serviceName = "Find apprenticeship training" %}
 
-{% set _selectedStandard = {} %}
-{% for _standard in myData.standards.list %}
-    {% if myData.standard == _standard.larsCode %}
-        {% set _selectedStandard = _standard %}
-    {% endif %}
-{% endfor %}
 
-{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+{% set _standardTitle = myData.selectedStandard.title + " (level&nbsp;" + myData.selectedStandard.level + ")" %}
 
-{% set _providerAutocompleteList = myData.providerAutocompleteList %} 
+{% set _providerAutocompleteList = myData.providerAutocompleteList %}
 {% set _providers = myData["providers-new"].list %}
 
 {% set _defaultSearchvalue = "" %}
 {% if myData.searchapplied == true %}
-    {% set _defaultSearchvalue = myData.searchTerm %}
+{% set _defaultSearchvalue = myData.searchTerm %}
 {% endif %}
 
 {% set _citiesAutocompleteList = myData.citiesAutocompleteList %}
 
 {% set _defaultLocationSearchvalue = "" %}
 {% if myData.locationapplied == true %}
-    {% set _defaultLocationSearchvalue = myData.location %}
+{% set _defaultLocationSearchvalue = myData.location %}
 {% endif %}
 
 <!-- Query strings (for use in hrefs) -->
@@ -31,24 +25,24 @@
 {% set _standardQuery = "" %}
 {% set _locationQuery = "" %}
 {% if myData.searchapplied == true %}
-    {% set _searchQuery = "&q=" + myData.searchTerm %}
+{% set _searchQuery = "&q=" + myData.searchTerm %}
 {% endif %}
 {% if myData.locationapplied == true %}
-    {% set _locationQuery = "&location=" + myData.location %}
+{% set _locationQuery = "&location=" + myData.location %}
 {% endif %}
 {% if myData.sortapplied == true %}
-    {% set _sortQuery = "&sort=" + myData.sortby %}
+{% set _sortQuery = "&sort=" + myData.sortby %}
 {% endif %}
 {% if myData.standardfilterapplied == true %}
-    {% set _standardQuery = "&standard=" + myData.standard %}
+{% set _standardQuery = "&standard=" + myData.standard %}
 {% endif %}
 
 <!-- Filters -->
 {% set _filtersApplied = myData.searchapplied or myData.locationapplied %}
 
 {% block beforeContent %}
-    {% include "includes/alpha-banner.html" %}
-    {% include "includes/breadcrumb.html" %}
+{% include "includes/alpha-banner.html" %}
+{% include "includes/breadcrumb.html" %}
 {% endblock %}
 
 {% block content %}
@@ -68,7 +62,7 @@
 
         <p class="govuk-body govuk-!-margin-bottom-8"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{myData.standard}}">Overview of {{_standardTitle|safe}}</a></p>
 
-      
+
     </div>
 </div>
 
@@ -98,20 +92,20 @@
                         </div>
                     </div>
 
-          
+
                     <!-- For each filter type -->
                     {% for _filter in myData.searchfilters %}
-                        {% set _url = "providers?" + _sortQuery + _locationQuery + _standardQuery %}
-                        {% if _filter.type == "location" %}
-                            {% set _url = "providers?" + _sortQuery + _searchQuery + _standardQuery + "&location" %}
-                        {% endif %}
+                    {% set _url = "providers?" + _sortQuery + _locationQuery + _standardQuery %}
+                    {% if _filter.type == "location" %}
+                    {% set _url = "providers?" + _sortQuery + _searchQuery + _standardQuery + "&location" %}
+                    {% endif %}
 
                     <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText}}</h3>
                     <ul class="fat-filter-tags">
                         <li><a class="fat-filter__tag" href="{{_url}}"><span class="govuk-visually-hidden">Clear this filter</span> {{_filter.value}}</a></li>
                     </ul>
                     {% endfor %}
-                    
+
                 </div>
                 {% endif %}
 
@@ -150,7 +144,6 @@
     </div>
     <div class="govuk-grid-column-two-thirds">
 
-
         {% if myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Location of apprenticeship</h2>
@@ -164,19 +157,19 @@
         </div>
         {% endif %}
 
-       
+
         <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
 
-        
+
 
         <!-- Sort -->
         {% if myData.locationapplied == true and myData.displaycount > 1 %}
         <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
             {% if myData.sortby == "name" %}
-            <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}&sort=distance">Distance (nearest first)</a>, 
+            <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}&sort=distance">Distance (nearest first)</a>,
             <span class="govuk-!-font-weight-bold">Name</span>
             {% else %}
-            <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>, 
+            <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>,
             <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}&sort=name">Name</a>
             {% endif %}
         </p>
@@ -188,65 +181,78 @@
 
 
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
-       
-        <!-- 
+
+        <!--
             Providers list OR No results
         -->
         {% if myData.displaycount > 0 %}
-
         <!-- Providers -->
-        {% for _provider in _providers %}
-            {% if _provider.search == true %}
-            <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
-                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                    <a href="provider?provider={{_provider.id}}{{_standardQuery}}" class="govuk-link govuk-link--no-visited-state">{{_provider.name}}</a>
-                </h2>
-                <ul class="govuk-list">
+        {% for _provider in myData.providersApi %}
 
-                    <!-- Distance -->
-                    {% if myData.locationapplied %}
-                    <li><span>{{_provider.distance}}</span> miles</li>
+        <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+                <a href="provider?provider={{_provider.ukprn}}{{_standardQuery}}" class="govuk-link govuk-link--no-visited-state">{{_provider.providerName}}</a>
+            </h2>
+            <ul class="govuk-list">
 
-                    <li>
-                        <ul class="govuk-list fat-training-options govuk-!-font-size-16" >
-                            <li class="fat-tick">day&nbsp;release</li>
-                            <li class="fat-cross">block&nbsp;release</li>
-                            {% if _provider.distance < 20 %}
-                            <li class="fat-tick">at&nbsp;your&nbsp;location</li>
+                <!-- Distance -->
+                {% if myData.locationapplied %}
+
+                <li><span>{{_provider.locationName}}</span></li>
+                <li><span>{{_provider.distanceInMiles}}</span> mile{% if _provider.distanceInMiles > 1 %}s{% endif %}</li>
+
+
+                <li>
+                    <ul class="govuk-list fat-training-options govuk-!-font-size-16" >
+
+
+                            {% if _provider.deliveryModes.includes('DayRelease') %}
+                                <li class="fat-tick">day&nbsp;release</li>
                             {% else %}
-                            <li class="fat-cross">at&nbsp;your&nbsp;location</li>
+                                <li class="fat-cross">day&nbsp;release</li>
                             {% endif %}
-                        </ul>
-                    </li>
+                            {% if _provider.deliveryModes.includes('BlockRelease') %}
+                                <li class="fat-tick">block&nbsp;release</li>
+                            {% else %}
+                                <li class="fat-cross">block&nbsp;release</li>
+                            {% endif %}
+                            {% if _provider.deliveryModes.includes('100PercentEmployer') %}
+                                <li class="fat-tick">at&nbsp;your&nbsp;location</li>
+                            {% else %}
+                                <li class="fat-cross">at&nbsp;your&nbsp;location</li>
+                            {% endif %}
+
+                    </ul>
+                </li>
+                {% endif %}
+
+                <!-- Ofsted  -->
+                <li class="govuk-!-font-size-16">
+                    <span class="govuk-secondary-colour" >Ofsted rating: </span>
+                    {% if _provider.ofsted == 0 %}
+                    <strong class="govuk-tag govuk-tag--grey">Not yet rated</strong>
+                    {% elif _provider.ofsted == 1 %}
+                    <strong class="govuk-tag govuk-tag--green">Outstanding</strong>
+                    {% elif _provider.ofsted == 2 %}
+                    <strong class="govuk-tag govuk-tag--green">Good</strong>
+                    {% elif _provider.ofsted == 3 %}
+                    <strong class="govuk-tag govuk-tag--yellow">Requires improvement</strong>
+                    {% elif _provider.ofsted == 4 %}
+                    <strong class="govuk-tag govuk-tag--red">Inadequate</strong>
                     {% endif %}
+                </li>
 
-                    <!-- Ofsted  -->
-                    <li class="govuk-!-font-size-16">
-                        <span class="govuk-secondary-colour" >Ofsted rating: </span>
-                        {% if _provider.ofsted == 0 %}
-                        <strong class="govuk-tag govuk-tag--grey">Not yet rated</strong>
-                        {% elif _provider.ofsted == 1 %}
-                        <strong class="govuk-tag govuk-tag--green">Outstanding</strong>
-                        {% elif _provider.ofsted == 2 %}
-                        <strong class="govuk-tag govuk-tag--green">Good</strong>
-                        {% elif _provider.ofsted == 3 %}
-                        <strong class="govuk-tag govuk-tag--yellow">Requires improvement</strong>
-                        {% elif _provider.ofsted == 4 %}
-                        <strong class="govuk-tag govuk-tag--red">Inadequate</strong>
-                        {% endif %} 
-                    </li>
+                <!-- National -->
+                {% if _provider.national == true %}
+                <!-- <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Availability:</span> National</li> -->
+                {% else %}
+                <!-- <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Availability:</span> Specific locations</li> -->
+                {% endif %}
 
-                    <!-- National -->
-                    {% if _provider.national == true %}
-                    <!-- <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Availability:</span> National</li> -->
-                    {% else %}
-                    <!-- <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Availability:</span> Specific locations</li> -->
-                    {% endif %}
+            </ul>
+        </div>
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
 
-                </ul>
-            </div>
-            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
-            {% endif %}
         {% endfor %}
 
         {% else %}
@@ -256,7 +262,7 @@
         {% endif %}
 
     </div>
-    
+
 </div>
 
 {% endblock %}
@@ -272,8 +278,8 @@
     //AUTOCOMPLETE PROVIDERS
     function suggestProviders(query, populateResults) {
         var results = {{_providerAutocompleteList | dump | safe }},
-            providers = {{_providers | dump | safe }},
-            filteredResults = []
+        providers = {{_providers | dump | safe }},
+        filteredResults = []
         providers.forEach(function(_provider, index) {
             var _searchesToDo = [
                     {"searchOn": _provider.autoCompleteString,"within": true,"exact": true}
@@ -303,7 +309,7 @@
         })
         populateResults(filteredResults)
     }
-    
+
     var providerInput = document.querySelector('#search-providers')
     if (providerInput) {
         var providerInputID = providerInput.id,
@@ -336,9 +342,9 @@
 
         // Cities
         var _citiesResults = {{_citiesAutocompleteList | dump | safe }},
-            _filteredCitiesResults = _citiesResults.filter(
-                result => result.toUpperCase().startsWith(query.trim().toUpperCase())
-            )
+        _filteredCitiesResults = _citiesResults.filter(
+            result => result.toUpperCase().startsWith(query.trim().toUpperCase())
+        )
         _filteredCitiesResults.sort(function(a,b){
             var returnValue = 0;
             if (a.toUpperCase() < b.toUpperCase()){

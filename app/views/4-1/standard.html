@@ -129,7 +129,7 @@
                 <p class="govuk-body govuk-!-margin-bottom-5"><span style="margin-right: 10px">{{myData.location}}</span> <a href="standard?standard={{myData.standard}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
                 <p class="govuk-body fat-availability {% if myData.displaycountproviders != 0 %}fat-tick{% else %}fat-cross{% endif %}" >
                     {% if myData.displaycountproviders != 0 %}
-                      {{myData.displaycountproviders}} providers available
+                      {{_selectedStandard.providersAtLocation}} providers available
                     {% else %}
                         None available
                     {% endif %}

@@ -106,8 +106,6 @@ module.exports = function (router,_myData) {
         req.session.myData.searchapplied = false
         req.session.myData.searchTerm = ""
         if(req.query.q && req.query.q != ""){
-            req.session.myData.needToMatchCount++
-            req.session.myData.displaycount = 0
             req.session.myData.searchapplied = true
             req.session.myData.searchTerm = req.query.q.trim()
             req.session.myData.searchfilters.push({"value": "‘" + req.session.myData.searchTerm + "’", "type": "search", "typeText": _selectedLabel})
@@ -279,6 +277,15 @@ module.exports = function (router,_myData) {
             }
             req.session.myData.selectedRouteApi = route;
         }
+
+        if(req.query.q) {
+            var keyword = req.query.q;
+            if(queryParams){
+                queryParams = queryParams + '&keyword=' + keyword
+            } else{
+                queryParams = '?keyword=' + keyword
+            }
+        }
         baseUrl = baseUrl + queryParams;
 
         const request = require('request');
@@ -336,41 +343,16 @@ module.exports = function (router,_myData) {
 
             }
 
-            standards.forEach(function(_standard, index) {
+             standards.forEach(function(_standard, index) {
+                 req.session.myData.hasAMatchcount = 0
 
-                req.session.myData.hasAMatchcount = 0
+                 _standard.search = true
 
-                // Reset each standard
-                _standard.search = true
-
-                //SEARCH TERM
-                if(req.session.myData.searchapplied) {
-                    var _searchesToDo = [
-                        {"searchOn": _standard.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"},
-                        {"searchOn": _standard.title,"exactrelevance": 99999,"withinrelevance": 10000,"ifmatch": "exit"},
-                        {"searchOn": _standard.jobRoles,"exactrelevance": 5000,"withinrelevance": 100,"ifmatch": "carryon"},
-                        {"searchOn": _standard.keywords,"exactrelevance": 1000,"ifmatch": "carryon"}
-                    ]
-                    checkStandardSearchTerm(req,_standard,_searchesToDo)
-                }
-
-                //MATCHES ALL IT NEEDS TO?
-                if(req.session.myData.needToMatchCount > 0 && req.session.myData.needToMatchCount == req.session.myData.hasAMatchcount){
-                    _standard.search = true
-                    req.session.myData.displaycount++
-                }
-
+                 if(req.session.myData.needToMatchCount > 0 && req.session.myData.needToMatchCount == req.session.myData.hasAMatchcount){
+                     _standard.search = true
+                 }
             });
 
-            if(req.session.myData.searchapplied){
-                if(req.session.myData.sortby == "name"){
-                    sortStandards(req, "name")
-                } else {
-                    sortStandards(req, "searchrelevance")
-                }
-            } else {
-                sortStandards(req, "name")
-            }
 
             res.render(version + '/training', {
                 myData:req.session.myData
@@ -485,104 +467,73 @@ module.exports = function (router,_myData) {
     // Providers
     router.get('/' + version + '/providers', function (req, res) {
 
-        //Sort
-        sortSetup(req,"name","distance")
+        const request = require('request');
 
-        var _providers = req.session.myData["providers-new"].list,
-            _standards = req.session.myData.standards.list
+        var baseUrl = config.apiBaseUrl + 'fatv2/trainingcourses/' + req.query.standard + '/providers'
+        if(req.query.location) {
+            baseUrl = baseUrl + '?location=' +req.query.location.split(',')[0]
+        }
 
-        req.session.myData.searchfilters = []
-        req.session.myData.selectedStandard = {}
-        req.session.myData.displaycount = _providers.length
-        req.session.myData.needToMatchCount = 0
-
-        // Standard filter reset/setup
-        req.session.myData.standardfilterapplied = false
-        var _selectedStandardID = req.query.standard || req.session.myData.standard
-        for (var i = 0; i < _standards.length; i++) {
-            var _thisStandard = _standards[i]
-            if(_selectedStandardID == _thisStandard.larsCode){
-                req.session.myData.standard = _selectedStandardID
-                req.session.myData.standardfilterapplied = true
-                req.session.myData.displaycount = 0
-                req.session.myData.selectedStandard = _thisStandard
-                req.session.myData.needToMatchCount++
-                break
+        const options ={
+            url: baseUrl,
+            headers: {
+                'Ocp-Apim-Subscription-Key':config.apimAuthKey
             }
         }
 
-        //Location reset/setup
-        if(req.query.location || req.session.myData.location != ""){
-            req.session.myData.locationTemp = req.session.myData.location
-            if(req.query.location == ""){
-                req.session.myData.locationTemp = ""
-            } else if (req.query.location) {
-                req.session.myData.locationTemp = req.query.location.trim()
+        function callback(error, response, body) {
+            var standard = (JSON.parse(body).standard)
+            var providers = (JSON.parse(body).providers)
+
+
+            //Sort
+            sortSetup(req,"name","distance")
+
+            req.session.myData.searchfilters = []
+            req.session.myData.selectedStandard = {}
+            req.session.myData.displaycount = providers.length
+            req.session.myData.needToMatchCount = 0
+            req.session.myData.providersApi = providers
+
+            req.session.myData.standardfilterapplied = false
+            var _selectedStandardID = req.query.standard || req.session.myData.standard
+            if(_selectedStandardID){
+                req.session.myData.standard = _selectedStandardID
+                req.session.myData.standardfilterapplied = true
+                req.session.myData.selectedStandard = standard
             }
-            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
-                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
-                if(cityMatch(req) || _postCodeMatch) {
-                    req.session.myData.displaycount = 0
-                    req.session.myData.needToMatchCount++
-                    req.session.myData.locationapplied = true
-                    req.session.myData.location = req.session.myData.locationTemp
-                    req.session.myData.searchfilters.push({"value": req.session.myData.location, "type": "location", "typeText": "Location of apprenticeship"})
-                } else {
-                    req.session.myData.locationapplied = false
-                    req.session.myData.location = ""
+
+            // Standard filter reset/setup
+
+            //Location reset/setup
+            if(req.query.location || req.session.myData.location != ""){
+                req.session.myData.locationTemp = req.session.myData.location
+                if(req.query.location == ""){
+                    req.session.myData.locationTemp = ""
+                } else if (req.query.location) {
+                    req.session.myData.locationTemp = req.query.location.trim()
                 }
+                require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
+                    var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
+                    if(cityMatch(req) || _postCodeMatch) {
+                        req.session.myData.locationapplied = true
+                        req.session.myData.location = req.session.myData.locationTemp
+                        req.session.myData.searchfilters.push({"value": req.session.myData.location, "type": "location", "typeText": "Location of apprenticeship"})
+                    } else {
+                        req.session.myData.locationapplied = false
+                        req.session.myData.location = ""
+                    }
+                    continueRendering()
+                });
+            } else {
                 continueRendering()
-            });
-        } else {
-            continueRendering()
+            }
         }
 
         function continueRendering(){
 
             // Keyword search reset/setup
             searchFilterSetup(req,"Training provider name")
-
-            _providers.forEach(function(_provider, index) {
-                
-                var _deliversStandard = false
-                
-                req.session.myData.hasAMatchcount = 0
-
-                // Reset each provider
-                _provider.search = true
-
-                //STANDARD
-                if(req.session.myData.standardfilterapplied) {
-                    _provider.search = false
-                    if(_provider.courses.includes(req.session.myData.selectedStandard.larsCode)){
-                        _deliversStandard = true
-                        req.session.myData.hasAMatchcount++
-                    }
-                }
-
-                //LOCATION
-                if(req.session.myData.locationapplied) {
-                    _provider.search = false
-                    if(_deliversStandard && (_provider.national || _provider.locationmatch)){
-                        req.session.myData.hasAMatchcount++
-                    }
-                }
-
-                //SEARCH TERM
-                if(req.session.myData.searchapplied) {
-                    var _searchesToDo = [
-                        {"searchOn": _provider.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
-                    ]
-                    checkStandardSearchTerm(req,_provider,_searchesToDo)
-                }
-
-                //MATCHES ALL IT NEEDS TO?
-                if(req.session.myData.needToMatchCount > 0 && req.session.myData.needToMatchCount == req.session.myData.hasAMatchcount){
-                    _provider.search = true
-                    req.session.myData.displaycount++
-                }
-
-            });
 
             if(req.session.myData.locationapplied){
                 if(req.session.myData.sortby == "name"){
@@ -599,6 +550,8 @@ module.exports = function (router,_myData) {
             });
 
         }
+
+        request(options,callback);
 
     });
 
@@ -714,7 +667,7 @@ module.exports = function (router,_myData) {
         req.session.myData.provider = req.query.provider
         for (var i = 0; i < req.session.myData["providers-new"].list.length; i++) {
             var _thisProvider = req.session.myData["providers-new"].list[i]
-            if(req.session.myData.provider == _thisProvider.id){
+            if(req.session.myData.provider == _thisProvider.ukprn){
                 req.session.myData.selectedProvider = _thisProvider
             }
         }

@@ -191,15 +191,15 @@
 
             {% if myData.locationapplied %}
                 <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
-                <p class="govuk-body fat-availability {% if _matchesLocation == false %}fat-tick-2{% else %}fat-cross-2{% endif %}" >
-                    {% if _matchesLocation == false %}
+                <p class="govuk-body fat-availability {% if _matchesLocation %}fat-tick-2{% else %}fat-cross-2{% endif %}" >
+                    {% if _matchesLocation %}
                     Available
                     {% else %}
                     Not available
                     {% endif %}
                 </p>
 
-                {% if _matchesLocation %}
+
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-2">This provider’s location</h2>
                 <p class="govuk-body govuk-!-margin-bottom-1">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
                 <p class="govuk-body govuk-!-margin-bottom-2">{{_selectedProvider.distance}} mile{% if _selectedProvider.distance != 1 %}s{% endif %} away</p>
@@ -253,11 +253,6 @@
                 </ul>
                 {% endif %}
 
-                {% else %}
-                <p class="govuk-body govuk-!-margin-top-4 govuk-!-margin-bottom-0"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">View other providers</a></p>
-                <p class="govuk-body">There are other providers who offer this training for the apprenticeship location.</p>
-                {% endif %}
-
             {% else %}
                 <!-- Enter location form -->
                 <p class="govuk-body">Check if this provider offers this training for the apprenticeship location.</p>
@@ -302,6 +297,12 @@
                     </dd>
                 </div> -->
             </dl>
+
+            {% if myData.locationapplied %}
+                <p class="govuk-body govuk-!-margin-top-4 govuk-!-margin-bottom-0"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">View other providers</a></p>
+                <p class="govuk-body">There are other providers who offer this training for the apprenticeship location.</p>
+            {% endif %}
+            
         </div>
         {% elif myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">

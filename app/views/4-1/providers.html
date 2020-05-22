@@ -202,28 +202,30 @@
                 <li><span>{{_provider.distanceInMiles}}</span> mile{% if _provider.distanceInMiles > 1 %}s{% endif %}</li>
 
 
-                <li>
-                    <ul class="govuk-list fat-training-options govuk-!-font-size-16" >
+                    {% if _provider.deliveryModes %}
+                    <li>
+                        <ul class="govuk-list fat-training-options govuk-!-font-size-16" >
 
 
-                            {% if _provider.deliveryModes.includes('DayRelease') %}
-                                <li class="fat-tick">day&nbsp;release</li>
-                            {% else %}
-                                <li class="fat-cross">day&nbsp;release</li>
-                            {% endif %}
-                            {% if _provider.deliveryModes.includes('BlockRelease') %}
-                                <li class="fat-tick">block&nbsp;release</li>
-                            {% else %}
-                                <li class="fat-cross">block&nbsp;release</li>
-                            {% endif %}
-                            {% if _provider.deliveryModes.includes('100PercentEmployer') %}
-                                <li class="fat-tick">at&nbsp;your&nbsp;location</li>
-                            {% else %}
-                                <li class="fat-cross">at&nbsp;your&nbsp;location</li>
-                            {% endif %}
+                                {% if _provider.deliveryModes.includes('DayRelease') %}
+                                    <li class="fat-tick">day&nbsp;release</li>
+                                {% else %}
+                                    <li class="fat-cross">day&nbsp;release</li>
+                                {% endif %}
+                                {% if _provider.deliveryModes.includes('BlockRelease') %}
+                                    <li class="fat-tick">block&nbsp;release</li>
+                                {% else %}
+                                    <li class="fat-cross">block&nbsp;release</li>
+                                {% endif %}
+                                {% if _provider.deliveryModes.includes('100PercentEmployer') %}
+                                    <li class="fat-tick">at&nbsp;your&nbsp;location</li>
+                                {% else %}
+                                    <li class="fat-cross">at&nbsp;your&nbsp;location</li>
+                                {% endif %}
 
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
+                    {% endif %}
                 {% endif %}
 
                 <!-- Ofsted  -->

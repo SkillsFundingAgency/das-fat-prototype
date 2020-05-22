@@ -1067,15 +1067,7 @@ module.exports = function (router,_myData) {
 
             });
 
-            if(req.session.myData.locationapplied){
-                if(req.session.myData.sortby == "name"){
-                    sortEPAOs(req, "name")
-                } else {
-                    sortEPAOs(req, "distance")
-                }
-            } else {
-                sortEPAOs(req, "name")
-            }
+            sortEPAOs(req, "name")
 
             res.render(version + '/epaos', {
                 myData:req.session.myData
@@ -1223,9 +1215,37 @@ module.exports = function (router,_myData) {
             });
         }
 
-        res.render(version + '/epao', {
-            myData:req.session.myData
-        });
+        //Selected standard
+        setSelectedStandard(req,req.query.standard)
+
+        //Location reset/setup
+        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
+            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
+                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
+                if(cityMatch(req) || _postCodeMatch) {
+                    req.session.myData.locationapplied = true
+                    req.session.myData.location = req.session.myData.locationTemp
+                } else {
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
+                }
+                continueRendering()
+            });
+        } else {
+            continueRendering()
+        }
+        
+        function continueRendering(){
+            res.render(version + '/epao', {
+                myData:req.session.myData
+            });
+        }
     });
 
 }

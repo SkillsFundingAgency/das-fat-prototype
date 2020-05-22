@@ -272,19 +272,12 @@ _myData["providers-new"].list.forEach(function(_provider, index) {
 
 // Set epaos
 _myData.epaoAutocompleteList = []
-var _locationmatchFalses = 0
 var _standardsOnEPAOsCounts = {}
 _myData.epaos.list.forEach(function(_epao, index) {
     //autocomplete string
     var _autoCompleteString = _epao.name
     _epao.autoCompleteString = _autoCompleteString
     _myData.epaoAutocompleteList.push(_autoCompleteString);
-    //Set location matches
-    var _locationmatch = [true,false][Math.floor(Math.random()*2)];
-    if(_locationmatch == false){
-        _locationmatch = (_locationmatchFalses++ > 24)
-    }
-    _epao.locationmatch = _locationmatch  
     //Convert regions to array
     _epao.regions = _epao.regions.split(',');
     //number of standards

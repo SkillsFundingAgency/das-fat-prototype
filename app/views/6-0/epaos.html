@@ -124,12 +124,12 @@
                         </div>
 
                         <!-- Search box -->
-                        <div class="govuk-form-group" >
+                        <!-- <div class="govuk-form-group" >
                             <label for="search-epaos" class="govuk-label" >
                                 <span class="govuk-!-font-weight-bold govuk-!-font-size-24">End-point assessment organisation name</span>
                             </label>
                             <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-epaos" name="q" class="govuk-input">
-                        </div>
+                        </div> -->
 
                         <input type="hidden" value="{{myData.standard}}" name="standard" >
 
@@ -155,7 +155,7 @@
         {% else %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2>
-            <p class="govuk-body govuk-!-margin-bottom-2">Show only end-point assessment organisations who offer this training for the apprenticeship location.</p>
+            <p class="govuk-body govuk-!-margin-bottom-2">Show only end-point assessment organisations who offer assessments of this training for the apprenticeship location.</p>
             <p class="govuk-body"><a href="#search-location" class="focus-field-prompt govuk-link govuk-link--no-visited-state" >Enter&nbsp;location</a></p>
         </div>
         {% endif %}
@@ -163,21 +163,10 @@
         <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
 
         <!-- Sort -->
-        {% if myData.locationapplied == true and myData.displaycount > 1 %}
-        <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
-            {% if myData.sortby == "name" %}
-            <a class="govuk-link govuk-link--no-visited-state" href="epaos?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}&sort=distance">Distance (nearest first)</a>, 
-            <span class="govuk-!-font-weight-bold">Name</span>
-            {% else %}
-            <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>, 
-            <a class="govuk-link govuk-link--no-visited-state" href="epaos?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}&sort=name">Name</a>
-            {% endif %}
-        </p>
-        {% elif myData.displaycount > 1 %}
         <p class="govuk-body govuk-!-margin-bottom-6">Sorted by:
             <span class="govuk-!-font-weight-bold">Name</span>
         </p>
-        {% endif %}
+
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
        
         <!-- 
@@ -191,12 +180,12 @@
             {% if _epao.search == true %}
             <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                    <a href="epao?epao={{_epao.id}}" class="govuk-link govuk-link--no-visited-state">{{_epao.name}}</a>
+                    <a href="epao?epao={{_epao.id}}{{_standardQuery}}" class="govuk-link govuk-link--no-visited-state">{{_epao.name}}</a>
                 </h2>
                 {% if myData.locationapplied %}
-                <ul class="govuk-list">
+                <!-- <ul class="govuk-list">
                     <li><span>{{_epao.distance}}</span> miles</li>
-                </ul>
+                </ul> -->
                 {% endif %}
             </div>
             <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">

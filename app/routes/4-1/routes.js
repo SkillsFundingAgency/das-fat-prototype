@@ -373,9 +373,16 @@ module.exports = function (router,_myData) {
         req.session.myData.displaycountproviders = 0
         req.session.myData.displaycountepaos = 0
 
+        var baseUrl = config.apiBaseUrl + 'fatv2/trainingcourses/' + req.session.myData.standard
+        if(req.query.location) {
+            baseUrl = baseUrl + '?location=' +req.query.location.split(',')[0]
+        } else if(req.session.myData.locationapplied) {
+            baseUrl = baseUrl + '?location=' + req.session.myData.location
+        }
+
         const request = require('request');
         const options ={
-            url: config.apiBaseUrl + 'fatv2/trainingcourses/' + req.session.myData.standard,
+            url: baseUrl,
             headers: {
                 'Ocp-Apim-Subscription-Key':config.apimAuthKey
             }
@@ -472,6 +479,8 @@ module.exports = function (router,_myData) {
         var baseUrl = config.apiBaseUrl + 'fatv2/trainingcourses/' + req.query.standard + '/providers'
         if(req.query.location) {
             baseUrl = baseUrl + '?location=' +req.query.location.split(',')[0]
+        } else if(req.session.myData.locationapplied) {
+            baseUrl = baseUrl + '?location=' + req.session.myData.location
         }
 
         const options ={

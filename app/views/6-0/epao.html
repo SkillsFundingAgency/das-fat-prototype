@@ -68,7 +68,7 @@
  
              {% else %}
                  <!-- Enter location form -->
-                 <p class="govuk-body">[Check if this EPAO offers assessments of this training for the apprenticeship location.]</p>
+                 <p class="govuk-body">Check if this EPAO offers assessments of this training for the apprenticeship location.</p>
                  <form action="epao" method="GET" class="govuk-!-width-three-quarters" >
                      <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
                          <label for="search-location" class="govuk-label" >
@@ -94,17 +94,17 @@
 
              {% if _matchesLocation %}
              <p class="govuk-body fat-availability fat-tick-2" >Available</p>
-             <p class="govuk-body">[This EPAO offers {{myData.displaycount}} courses for the apprenticeship location.]</p>
+             <p class="govuk-body">This EPAO offers assessments for {{myData.displaycount}} course{% if myData.displaycount != 1 %}s{% endif %} for the apprenticeship location.</p>
              {% else %}
              <p class="govuk-body fat-availability fat-cross-2" >Not available</p>
-             <p class="govuk-body">[This EPAO does not offer assessments for the apprenticeship location.]</p>
+             <p class="govuk-body">This EPAO does not offer assessments for the apprenticeship location.</p>
              {% endif %}
          </div>
          {% else %}
          <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
              <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2>
              <!-- Enter location form -->
-             <p class="govuk-body">[Check if this EPAO offers assessments for the apprenticeship location.]</p>
+             <p class="govuk-body">Check if this EPAO offers assessments for the apprenticeship location.</p>
              <form action="epao" method="GET" class="govuk-!-width-three-quarters" >
                  <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
                      <label for="search-location" class="govuk-label" >

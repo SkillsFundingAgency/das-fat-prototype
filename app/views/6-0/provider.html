@@ -200,7 +200,7 @@
                 </p>
 
 
-                <h2 class="govuk-heading-s govuk-!-margin-bottom-2">This provider’s location</h2>
+                <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{_providerTitle | safe}}’s nearest location</h2>
                 <p class="govuk-body govuk-!-margin-bottom-1">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
                 <p class="govuk-body govuk-!-margin-bottom-2">{{_selectedProvider.distance}} mile{% if _selectedProvider.distance != 1 %}s{% endif %} away</p>
                 <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1" >
@@ -255,7 +255,7 @@
 
             {% else %}
                 <!-- Enter location form -->
-                <p class="govuk-body">Check if this provider offers this training for the apprenticeship location.</p>
+                <p class="govuk-body">Check {{_providerTitle | safe}}’s nearest location and training options.</p>
                 <form action="provider" method="GET" class="govuk-!-width-three-quarters" >
                     <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
                         <label for="search-location" class="govuk-label" >
@@ -329,7 +329,7 @@
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2>
             <!-- Enter location form -->
-            <p class="govuk-body">Check if this provider offers training for the apprenticeship location.</p>
+            <p class="govuk-body">Check if {{_providerTitle | safe}} offers training for the apprenticeship location.</p>
             <form action="provider" method="GET" class="govuk-!-width-three-quarters" >
                 <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
                     <label for="search-location" class="govuk-label" >

@@ -69,6 +69,11 @@
 
 {% set _matchesLocation = _selectedProvider.national or _selectedProvider.locationmatch %}
 
+{% set _selectedMatchesLocation = _matchesLocation %}
+{% if _selectedStandard.larsCode == 34 %}
+    {% set _selectedMatchesLocation = false %}
+{% endif %}
+
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% include "includes/breadcrumb.html" %}
@@ -191,8 +196,8 @@
 
             {% if myData.locationapplied %}
                 <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
-                <p class="govuk-body fat-availability {% if _matchesLocation %}fat-tick-2{% else %}fat-cross-2{% endif %}" >
-                    {% if _matchesLocation %}
+                <p class="govuk-body fat-availability {% if _selectedMatchesLocation %}fat-tick-2{% else %}fat-cross-2{% endif %}" >
+                    {% if _selectedMatchesLocation %}
                     Available
                     {% else %}
                     Not available
@@ -308,14 +313,6 @@
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Location of apprenticeship</h2>
             <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
-
-            <!-- <p class="govuk-body govuk-!-margin-bottom-2">
-                {% if _matchesLocation %}
-                <strong class="govuk-tag govuk-tag--green">Available</strong>
-                {% else %}
-                <strong class="govuk-tag govuk-tag--red">Not available</strong>
-                {% endif %}
-            </p> -->
             {% if _matchesLocation %}
             <p class="govuk-body fat-availability fat-tick-2" >Available</p>
             <p class="govuk-body">This provider offers {{myData.displaycount}} courses for the apprenticeship location.</p>
@@ -372,6 +369,10 @@
         <table class="govuk-table">
             <tbody class="govuk-table__body">
                 {% for _standard in myData.standards.list %}
+                    {% set _match = true %}
+                    {% if _standard.larsCode == 34 or _matchesLocation == false %}
+                        {% set _match = false %}
+                    {% endif %}
                     {% if _standard.matchesProvider %}
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell">
@@ -379,11 +380,11 @@
                             </td>
                             {% if myData.locationapplied %}
                             <td class="govuk-table__cell">
-                                <p class="govuk-body govuk-!-margin-bottom-0 fat-availability {% if _matchesLocation %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-font-size-16" >
-                                    {% if _matchesLocation %}
-                                    Available
+                                <p class="govuk-body govuk-!-margin-bottom-0 fat-availability {% if _match %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-font-size-16" >
+                                    {% if _match %}
+                                        Available
                                     {% else %}
-                                    Not available
+                                        Not available
                                     {% endif %}
                                 </p>
                             </td>

@@ -480,7 +480,7 @@ module.exports = function (router,_myData) {
         if(req.query.location) {
             baseUrl = baseUrl + '?location=' +req.query.location.split(',')[0]
         } else if(req.session.myData.locationapplied) {
-            baseUrl = baseUrl + '?location=' + req.session.myData.location
+            baseUrl = baseUrl + '?location=' + req.session.myData.location.split(',')[0]
         }
 
         const options ={

@@ -1,0 +1,355 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+
+    <h1 class="govuk-heading-l">Snippets of the standards data stored in prototype</h1>
+
+    <details class="govuk-details" data-module="govuk-details">
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          Routes
+      </summary>
+      <div class="govuk-details__text">
+        <h2 class="govuk-heading-l">Routes</h2>
+        <table class="govuk-table">
+          <thead class="govuk-table__head" >
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">name</th>
+              <th scope="col" class="govuk-table__header">standardsCount</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+          {% for _route in myData.routes.list %}
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">
+                {{_route.name}}
+              </th>
+              <th class="govuk-table__header">
+                {{_route.standardsCount}}
+              </th>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>   
+      </div>
+    </details>
+
+    <details class="govuk-details" data-module="govuk-details">
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          SSAs tier 1
+      </summary>
+      <div class="govuk-details__text">
+        <h2 class="govuk-heading-l">SSAs tier 1</h2>
+        <table class="govuk-table">
+          <thead class="govuk-table__head" >
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">code</th>
+              <th scope="col" class="govuk-table__header">name</th>
+              <th scope="col" class="govuk-table__header">standardsCount</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+          {% for _ssa in myData.ssa.list %}
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">
+                {{_ssa.code}}
+              </th>
+              <th class="govuk-table__header">
+                {{_ssa.name}}
+              </th>
+              <th class="govuk-table__header">
+                {{_ssa.standardsCount}}
+              </th>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table> 
+      </div>
+    </details>
+
+    <details class="govuk-details" data-module="govuk-details">
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          SSAs tier 2
+      </summary>
+      <div class="govuk-details__text">
+        <h2 class="govuk-heading-l">SSAs tier 2</h2>
+        <table class="govuk-table">
+          <thead class="govuk-table__head" >
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">code</th>
+              <th scope="col" class="govuk-table__header">name</th>
+              <th scope="col" class="govuk-table__header">standardsCount</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+          {% for _ssa in myData.ssa.list %}
+            {% for _ssa2 in _ssa.ssa2s %}
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                {{_ssa2.code}}
+              </td>
+              <td class="govuk-table__cell">
+                {{_ssa2.name}}
+              </td>
+              <td class="govuk-table__cell" >
+                {{_ssa2.standardsCount}}
+              </td>
+            </tr>
+            {% endfor %}
+          {% endfor %}
+          </tbody>
+        </table> 
+      </div>
+    </details>
+
+    <details class="govuk-details" data-module="govuk-details">
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          SSAs tier 1 + tier 2
+      </summary>
+      <div class="govuk-details__text">
+        <h2 class="govuk-heading-l">SSAs tier 1 + tier 2</h2>
+        <table class="govuk-table">
+          <thead class="govuk-table__head" >
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">code</th>
+              <th scope="col" class="govuk-table__header">name</th>
+              <th scope="col" class="govuk-table__header">standardsCount</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+          {% for _ssa in myData.ssa.list %}
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">
+                {{_ssa.code}}
+              </th>
+              <th class="govuk-table__header">
+                {{_ssa.name}}
+              </th>
+              <th class="govuk-table__header">
+                {{_ssa.standardsCount}}
+              </th>
+            </tr>
+            {% for _ssa2 in _ssa.ssa2s %}
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                {{_ssa2.code}}
+              </td>
+              <td class="govuk-table__cell">
+                {{_ssa2.name}}
+              </td>
+              <td class="govuk-table__cell" >
+                {{_ssa2.standardsCount}}
+              </td>
+            </tr>
+            {% endfor %}
+          {% endfor %}
+          </tbody>
+        </table> 
+      </div>
+    </details>
+
+    <details class="govuk-details" data-module="govuk-details">
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          Standards
+      </summary>
+      <div class="govuk-details__text">
+          <h2 class="govuk-heading-l">{{myData.standards.list|length}} standards</h2>
+          <table class="govuk-table">
+            <thead class="govuk-table__head" >
+              <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">code</th>
+                <th scope="col" class="govuk-table__header">name</th>
+                <th scope="col" class="govuk-table__header">level</th>
+                <th scope="col" class="govuk-table__header">route<br>pathway<br>cluster</th>
+                <th scope="col" class="govuk-table__header">ssa1<br>ssa2</th>
+              </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+            {% for _standard in myData.standards.list %}
+              <tr class="govuk-table__row">
+                <td class="govuk-table__cell">
+                  {{_standard.larsCode}}
+                </td>
+                <td class="govuk-table__cell">
+                  {{_standard.title}}
+                </td>
+                <td class="govuk-table__cell" >
+                  {{_standard.level}}
+                </td>
+                <td class="govuk-table__cell" >
+                  <span class="govuk-!-font-weight-bold">{{_standard.route}}</span><br><br>{{_standard.pathway}}<br><br>{{_standard.cluster}}
+                  </td>
+                <td class="govuk-table__cell" >
+                  {{_standard.ssa1}}<br><br>{{_standard.ssa2}}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details class="govuk-details" data-module="govuk-details" >
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          Regulated
+      </summary>
+      <div class="govuk-details__text">
+        <h2 class="govuk-heading-l" >Regulated standards - example data</h2>
+        <table class="govuk-table">
+            <thead class="govuk-table__head" >
+              <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">course</th>
+                <th scope="col" class="govuk-table__header">regulated</th>
+                <th scope="col" class="govuk-table__header">regulatedBody</th>
+                <th scope="col" class="govuk-table__header">regulationDetail</th>
+              </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+            {% for _standard in myData.standards.list %}
+            {% if _standard.regulated == true %}
+              <tr class="govuk-table__row">
+                <td class="govuk-table__cell">
+                  {{_standard.larsCode}} - {{_standard.autoCompleteString}}<br><br>{{_standard.integratedDegree}}
+                </td>
+                <td class="govuk-table__cell" {% if _standard.regulated == true %}style="background: greenyellow"{% elif _standard.regulated == false %}style="background: pink"{% else %}{% endif %} >
+                  {{_standard.regulated}}
+                </td>
+                <td class="govuk-table__cell" >
+                  {{_standard.regulatedBody}}
+                </td>
+                <td class="govuk-table__cell" >
+                  {{_standard.regulationDetail|dump|safe}}
+                </td>
+              </tr>
+{% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </details>
+
+    <details class="govuk-details" data-module="govuk-details" >
+      <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+          Last date for new starters
+        </summary>
+        <div class="govuk-details__text">
+          <h2 class="govuk-heading-l" >Last date for new starts</h2>
+          <table class="govuk-table">
+              <thead class="govuk-table__head" >
+                <tr class="govuk-table__row">
+                  <th scope="col" class="govuk-table__header">course</th>
+                  <th scope="col" class="govuk-table__header">lastDateStarts</th>
+                </tr>
+              </thead>
+              <tbody class="govuk-table__body">
+              {% for _standard in myData.standards.list %}
+                {% if _standard.lastDateStarts %}
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">
+                    {{_standard.larsCode}} - {{_standard.autoCompleteString}}
+                  </td>
+                  <td class="govuk-table__cell" >
+                    {{_standard.lastDateStarts}}
+                  </td>
+                </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </details>
+    
+      <details class="govuk-details" data-module="govuk-details" >
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">
+            EPAOs on standards counts
+          </summary>
+          <div class="govuk-details__text">
+            <h2 class="govuk-heading-l" >EPAOs on standards counts</h2>
+
+
+            <table class="govuk-table govuk-!-font-size-14">
+              <thead class="govuk-table__head" >
+                <tr class="govuk-table__row">
+                  <th scope="col" class="govuk-table__header"># epaos</th>
+                  <th scope="col" class="govuk-table__header"># standards</th>
+                  <th scope="col" class="govuk-table__header">cumulative</th>
+                </tr>
+              </thead>
+              <tbody class="govuk-table__body">
+                {% set cumulative = 0 %}
+                {% for _key, _count in myData.epaosOnStandardsCounts %}
+                {% set cumulative = cumulative + _count %}
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">
+                    {{_key}}
+                  </td>
+                  <td class="govuk-table__cell" >
+                    {{_count}}
+                  </td>
+                  <td class="govuk-table__cell" >
+                    {{cumulative}}
+                  </td>
+                </tr>
+                
+              {% endfor %}
+            </tbody>
+          </table>
+          </div>
+        </details>
+
+        <details class="govuk-details" data-module="govuk-details" >
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              Standards on EPAOs counts
+            </summary>
+            <div class="govuk-details__text">
+              <h2 class="govuk-heading-l" >Standards on EPAOs counts</h2>
+  
+  
+              <table class="govuk-table govuk-!-font-size-14">
+                <thead class="govuk-table__head" >
+                  <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header"># standards</th>
+                    <th scope="col" class="govuk-table__header"># EPAOs</th>
+                    <th scope="col" class="govuk-table__header">cumulative</th>
+                  </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                  {% set cumulative = 0 %}
+                  {% for _key, _count in myData.standardsOnEPAOsCounts %}
+                  {% set cumulative = cumulative + _count %}
+                  <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">
+                      {{_key}}
+                    </td>
+                    <td class="govuk-table__cell" >
+                      {{_count}}
+                    </td>
+                    <td class="govuk-table__cell" >
+                      {{cumulative}}
+                    </td>
+                  </tr>
+                  
+                {% endfor %}
+              </tbody>
+            </table>
+            </div>
+          </details>
+
+    <!-- <p class="govuk-body" >{{myData.standards.list|dump|safe}}</p> -->
+
+    </div>
+</div>
+
+{% endblock %}

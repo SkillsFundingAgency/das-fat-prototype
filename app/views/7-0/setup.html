@@ -1,0 +1,229 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-m">Prototype {{myData.version}} setup</h1>
+
+        <p class="govuk-body" >
+              <a href="setup?r=true" class="govuk-link govuk-link--no-visited-state">Reset</a>
+          </p>  
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+    </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+
+        <!-- Prototype version -->
+        <!-- <div class="govuk-form-group">
+            <label class="govuk-label" >
+              Version
+            </label>
+            <select class="govuk-select" style="min-width: 100%" id="ptVersion" name="ptVersion" data-option="ptVersion">
+                <option {% if myData.ptVersion == 'mvs' %}selected{% endif %} value="mvs">MVS</option>
+            </select>
+        </div> -->
+
+        <!-- Start from -->
+        <!-- <div class="govuk-form-group">
+          <label class="govuk-label" >
+            Start from
+          </label>
+          <select class="govuk-select" style="min-width: 100%" id="start" name="start" data-option="start">
+              <option {% if myData.start == 'start' %}selected{% endif %} value="start">Start page</option>
+              <option {% if myData.start == 'home' %}selected{% endif %} value="home">Home page</option>
+          </select>
+        </div> -->
+
+        <!-- FAT or EPAO register -->
+        <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend">Service</legend>
+                <div class="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input {% if myData.service == 'fat' %}checked{% endif %} class="govuk-radios__input" data-option="service-1" id="service-1" name="service" type="radio" value="fat">
+                        <label class="govuk-label govuk-radios__label" for="service-1">FAT (Find apprenticeship training)</label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input {% if myData.service == 'epao' %}checked{% endif %} class="govuk-radios__input" data-option="service-2" id="service-2" name="service" type="radio" value="epao">
+                        <label class="govuk-label govuk-radios__label" for="service-2">EPAO register</label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <!-- Employer account -->
+        <div class="govuk-form-group">
+          <label class="govuk-label" >
+            Employer account
+          </label>
+          <select class="govuk-select" style="min-width: 100%" id="employeraccount" name="employeraccount" data-option="employeraccount">
+            <option {% if myData.employeraccount == 'false' %}selected{% endif %} value="false">Not signed in</option>
+            <option {% if myData.employeraccount == 'true' %}selected{% endif %} value="true">Signed in</option>
+          </select>
+        </div>
+
+    </div>
+
+    <div class="govuk-grid-column-one-half" >
+
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <p class="govuk-body" id="start-url" style="display:none">
+            <a href="#" role="button" draggable="false" class="govuk-button">Start prototype</a>
+        </p>
+
+        <p class="govuk-body" >
+            <span class="govuk-!-font-weight-bold">Shareable link:</span><br>
+            <span class="govuk-body" id="start-url-label" style="display:none"></span>
+        </p>
+
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <h2 class="govuk-heading-m">Full page list</h2>
+        <table class="govuk-table">
+            <!-- <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Page</th>
+                <th scope="col" class="govuk-table__header">Link</th>
+                </tr>
+            </thead> -->
+            <tbody class="govuk-table__body">    
+                <!-- <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Start</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="start">/start</a></td>
+                </tr> -->
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">FAT</h2></th>
+                </tr>
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Home</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="home?r=t">/home</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Courses list</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="training?r=t">/training</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Course overview</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="standard?r=t">/standard</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Providers (all) list</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="providers-all?r=t">/providers-all</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Providers (for a standard) list</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="providers?standard=274&r=t">/providers?standard=274</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider overview</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provider?r=t">/provider</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAOs (for a standard) list</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epaos?standard=274&r=t">/epaos?standard=274</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAO overview</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epao?r=t">/epao</a></td>
+                </tr>
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">EPAO register</h2></th>
+                </tr>
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAOs (all) list</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epaos-all?&r=t&s=epao">/epaos-all</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAO overview</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epao?r=t&s=epao">/epao</a></td>
+                </tr>
+
+
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-8">-- Test data / pages --</h2></th>
+                </tr>
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">_Setup prototype</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="setup">/setup</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">_Display test data</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="standards">/standards</a></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <p class="govuk-body" >{{myData.apiData|dump|safe}}</p>
+    </div>
+</div> -->
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+    $(document).ready(function(){
+
+        var _startURL = $("#start-url a"),
+            _startURLLabel = $("#start-url-label"),
+            _options = $("[data-option]")
+
+        _options.change(function(){
+            setValues()
+        }).trigger("change");
+
+        //SET VALUES
+        function setValues(){
+            //Base URL
+            var _urlBase = "https://das-fat-prototype.herokuapp.com/" + {{myData.version|dump|safe}} + "/";
+            //Queries
+            var _urlReset = "r=t",
+                // _urlPage = _options.filter("#start").val() + "?",
+                _urlPage = "home?",
+                // _urlptVersion = "&p=" + _options.filter("#ptVersion").val(),
+                _urlService = "&s=" + $('input[name=service]:checked').val(),
+                _urlEmpAccount = "&ea=" + _options.filter("#employeraccount").val();
+            if(_urlService == "&s=epao"){
+                _urlPage = "epaos-all?"
+            }
+           
+            //Queries combined
+            var _urlPageQueries = _urlPage + _urlReset + _urlEmpAccount + _urlService;
+
+            //URL text
+            var _startURLText = _urlBase + _urlPageQueries,
+                _startURLHREF =  _urlPageQueries;
+            // update label
+            _startURLLabel
+                .text(_startURLText)
+                .show()
+            //update link
+            _startURL
+                .attr("href", _startURLHREF)
+                .parent().show()
+        }
+
+    });
+</script>
+{% endblock %}

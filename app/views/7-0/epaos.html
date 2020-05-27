@@ -1,0 +1,330 @@
+{% extends myData.layout %}
+{% set serviceName = "Find apprenticeship training" %}
+
+{% set _selectedStandard = {} %}
+{% for _standard in myData.standards.list %}
+    {% if myData.standard == _standard.larsCode %}
+        {% set _selectedStandard = _standard %}
+    {% endif %}
+{% endfor %}
+
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% set _epaoAutocompleteList = myData.epaoAutocompleteList %} 
+{% set _epaos = myData.epaos.list %}
+
+{% set _defaultSearchvalue = "" %}
+{% if myData.searchapplied == true %}
+    {% set _defaultSearchvalue = myData.searchTerm %}
+{% endif %}
+
+{% set _citiesAutocompleteList = myData.citiesAutocompleteList %}
+
+{% set _defaultLocationSearchvalue = "" %}
+{% if myData.locationapplied == true %}
+    {% set _defaultLocationSearchvalue = myData.location %}
+{% endif %}
+
+<!-- Query strings (for use in hrefs) -->
+{% set _searchQuery = "" %}
+{% set _sortQuery = "" %}
+{% set _standardQuery = "" %}
+{% set _locationQuery = "" %}
+{% if myData.searchapplied == true %}
+    {% set _searchQuery = "&q=" + myData.searchTerm %}
+{% endif %}
+{% if myData.locationapplied == true %}
+    {% set _locationQuery = "&location=" + myData.location %}
+{% endif %}
+{% if myData.sortapplied == true %}
+    {% set _sortQuery = "&sort=" + myData.sortby %}
+{% endif %}
+{% if myData.standardfilterapplied == true %}
+    {% set _standardQuery = "&standard=" + myData.standard %}
+{% endif %}
+
+<!-- Filters -->
+{% set _filtersApplied = myData.searchapplied or myData.locationapplied %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/breadcrumb.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-4" >
+            <span class="govuk-caption-xl">End-point assessment organisations for</span>
+            {{_standardTitle|safe}}
+        </h1>
+
+        <p class="govuk-body govuk-!-margin-bottom-8"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{myData.standard}}">Overview of {{_standardTitle|safe}}</a></p>
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+
+        <!-- FILTERS  -->
+
+        <div class="fat-filter">
+
+            <div class="fat-filter__header">
+                <div class="fat-filter__header-title">
+                    <h2 class="govuk-heading-m">Filter</h2>
+                </div>
+                <div class="fat-filter__header-action">
+                </div>
+            </div>
+
+            <div class="fat-filter__content">
+
+                {% if _filtersApplied %}
+                <div class="fat-filter__selected">
+                    <div class="fat-filter__selected-heading">
+                        <div class="fat-filter__heading-title">
+                            <h2 class="govuk-heading-m">Selected filters</h2>
+                        </div>
+                        <div class="fat-filter__heading-action">
+                            <p><a class="govuk-link govuk-link--no-visited-state" href="epaos?{{_sortQuery}}{{_standardQuery}}&location">Clear</a></p>
+                        </div>
+                    </div>
+
+          
+                    <!-- For each filter type -->
+                    {% for _filter in myData.searchfilters %}
+                        {% set _url = "epaos?" + _sortQuery + _locationQuery + _standardQuery %}
+                        {% if _filter.type == "location" %}
+                            {% set _url = "epaos?" + _sortQuery + _searchQuery + _standardQuery + "&location" %}
+                        {% endif %}
+
+                    <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText}}</h3>
+                    <ul class="fat-filter-tags">
+                        <li><a class="fat-filter__tag" href="{{_url}}"><span class="govuk-visually-hidden">Clear this filter</span> {{_filter.value}}</a></li>
+                    </ul>
+                    {% endfor %}
+                    
+                </div>
+                {% endif %}
+
+                <div class="fat-filter__options">
+
+                    <form action="epaos" method="GET" >
+
+                        <!-- Location -->
+                        <div class="govuk-form-group" >
+                            <label for="search-location" class="govuk-label" >
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Location of apprenticeship</span>
+                            </label>
+                            <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" class="govuk-input">
+                        </div>
+
+                        <!-- Search box -->
+                        <!-- <div class="govuk-form-group" >
+                            <label for="search-epaos" class="govuk-label" >
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">End-point assessment organisation name</span>
+                            </label>
+                            <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-epaos" name="q" class="govuk-input">
+                        </div> -->
+
+                        <input type="hidden" value="{{myData.standard}}" name="standard" >
+
+                        <button type="submit" class="fat-filter__submit govuk-button" id="filters-submit">Apply filters</button>
+                        
+                    </form>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="govuk-grid-column-two-thirds">
+
+        {% if myData.locationapplied %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Location of apprenticeship</h2>
+            <p class="govuk-body"><span style="margin-right: 10px">{{myData.location}}</span> <a href="epaos?{{_sortQuery}}{{_standardQuery}}{{_searchQuery}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
+        </div>
+        {% else %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2>
+            <p class="govuk-body govuk-!-margin-bottom-2">Show only end-point assessment organisations who offer assessments of this training for the apprenticeship location.</p>
+            <p class="govuk-body"><a href="#search-location" class="focus-field-prompt govuk-link govuk-link--no-visited-state" >Enter&nbsp;location</a></p>
+        </div>
+        {% endif %}
+       
+        <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
+
+        <!-- Sort -->
+        <p class="govuk-body govuk-!-margin-bottom-6">Sorted by:
+            <span class="govuk-!-font-weight-bold">Name</span>
+        </p>
+
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+       
+        <!-- 
+            epaos list OR No results
+        -->
+
+        {% if myData.displaycount > 0 %}
+
+        <!-- epaos -->
+        {% for _epao in _epaos %}
+            {% if _epao.search == true %}
+            <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+                    <a href="epao?epao={{_epao.id}}{{_standardQuery}}" class="govuk-link govuk-link--no-visited-state">{{_epao.name}}</a>
+                </h2>
+                {% if myData.locationapplied %}
+                <!-- <ul class="govuk-list">
+                    <li><span>{{_epao.distance}}</span> miles</li>
+                </ul> -->
+                {% endif %}
+            </div>
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+            {% endif %}
+        {% endfor %}
+
+        {% else %}
+
+        <p class="govuk-body govuk-!-margin-top-4">No end-point assessment organisations for the selected filters.</p>
+
+        {% endif %}
+
+    </div>
+    
+</div>
+
+{% endblock %}
+
+
+{% block pageScripts %}
+<script>
+
+    filterVisibilityToggle({{_filtersApplied | dump | safe }})
+
+    function fireApplyFilters(){setTimeout(function(){ $("#filters-submit").trigger("click") },200);}
+
+    //AUTOCOMPLETE epaoS
+    function suggestEPAOs(query, populateResults) {
+        var results = {{_epaoAutocompleteList | dump | safe }},
+            epaos = {{_epaos | dump | safe }},
+            filteredResults = []
+        epaos.forEach(function(_epao, index) {
+            var _searchesToDo = [
+                    {"searchOn": _epao.autoCompleteString,"within": true,"exact": true}
+                ],
+                _epaoMatched = false
+            for (var i = 0; i < _searchesToDo.length; i++) {
+                var _thisItem = _searchesToDo[i]
+                if(Array.isArray(_thisItem.searchOn)){
+                    _thisItem.searchOn.forEach(function(_arrayPart, index) {
+                        doSearches(_arrayPart)
+                    });
+                } else {
+                    doSearches(_thisItem.searchOn)
+                }
+                function doSearches(_itemToSearch){
+                    //Exact check
+                    if(_thisItem.exact & _itemToSearch.toUpperCase() == query.trim().toUpperCase()){
+                        _epaoMatched = true
+                    }
+                    // Within check
+                    if(_thisItem.within & _itemToSearch.toUpperCase().indexOf(query.trim().toUpperCase()) != -1){
+                        _epaoMatched = true
+                    }
+                }
+            }
+            (_epaoMatched) && (filteredResults.push(_epao.autoCompleteString))
+        })
+        populateResults(filteredResults)
+    }
+
+    var epaoInput = document.querySelector('#search-epaos')
+    if (epaoInput) {
+        var epaoInputID = epaoInput.id,
+            epaoElement = document.createElement('div'),
+            defaultSearchvalue = {{_defaultSearchvalue | dump | safe }}
+        epaoElement.className = "autocomplete__parent_wrapper";
+        epaoInput.parentNode.insertBefore(epaoElement, epaoInput)
+        accessibleAutocomplete({
+            // other options
+            element: epaoElement,
+            id: epaoInputID,
+            name: epaoInput.name,
+            source: suggestEPAOs,
+            defaultValue: defaultSearchvalue,
+            minLength: 3,
+            confirmOnBlur: false,
+            autoselect: true,
+            onConfirm: fireApplyFilters,
+            displayMenu: 'overlay'
+        })
+        epaoInput.style.display = 'none'
+        epaoInput.id = epaoInputID + '-old'
+        epaoInput.name = ''
+    }
+
+
+    // Locations 
+    function suggestLocations(query, populateResults) {
+        var _allSuggestions = []
+
+        // Cities
+        var _citiesResults = {{_citiesAutocompleteList | dump | safe }},
+            _filteredCitiesResults = _citiesResults.filter(
+                result => result.toUpperCase().startsWith(query.trim().toUpperCase())
+            )
+        _filteredCitiesResults.sort(function(a,b){
+            var returnValue = 0;
+            if (a.toUpperCase() < b.toUpperCase()){
+                returnValue = -1
+            } else if(a.toUpperCase() > b.toUpperCase()){
+                returnValue = 1
+            }
+            return returnValue
+        });
+
+        // Postcodes
+        $.getJSON('https://api.postcodes.io/postcodes/' + query + '/autocomplete', function(body){
+            var _postcodes = body.result || []
+            _allSuggestions = _allSuggestions.concat(_filteredCitiesResults,_postcodes)
+            populateResults(_allSuggestions)
+        })
+    }
+
+    var locationInput = document.querySelector('#search-location')
+    if (locationInput) {
+        var locationInputID = locationInput.id,
+            locationElement = document.createElement('div'),
+            defaultLocationSearchvalue = {{_defaultLocationSearchvalue | dump | safe }}
+        locationElement.className = "autocomplete__parent_wrapper";
+        locationInput.parentNode.insertBefore(locationElement, locationInput)
+        accessibleAutocomplete({
+            // other options
+            element: locationElement,
+            id: locationInputID,
+            name: locationInput.name,
+            source: suggestLocations,
+            defaultValue: defaultLocationSearchvalue,
+            minLength: 1,
+            confirmOnBlur: false,
+            autoselect: true,
+            onConfirm: fireApplyFilters,
+            displayMenu: 'overlay'
+        })
+        locationInput.style.display = 'none'
+        locationInput.id = locationInputID + '-old'
+        locationInput.name = ''
+    }
+
+</script>
+
+{% endblock pageScripts %}

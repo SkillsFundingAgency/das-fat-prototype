@@ -347,6 +347,45 @@
             </div>
           </details>
 
+          <details class="govuk-details" data-module="govuk-details" >
+            <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text">
+                Standard statuses (29 May 2020)
+              </summary>
+              <div class="govuk-details__text">
+                <h2 class="govuk-heading-l" >Standard statuses (29 May 2020)</h2>
+
+                {% set _statuses = { 'Approved for delivery': 549,'Withdrawn': 39,'In development': 114,'Proposal in development': 23,'Retired': 12,'Potential standard': 2 } %}
+
+                <p class="govuk-body">Of all 739 standards in API (https://www.instituteforapprenticeships.org/api/apprenticeshipstandards)</p>
+    
+                <table class="govuk-table govuk-!-font-size-14">
+                  <thead class="govuk-table__head" >
+                    <tr class="govuk-table__row">
+                      <th scope="col" class="govuk-table__header">Status</th>
+                      <th scope="col" class="govuk-table__header"># standards</th>
+                    </tr>
+                  </thead>
+                  <tbody class="govuk-table__body">
+                    {% set cumulative = 0 %}
+                    {% for _key, _count in _statuses %}
+                    {% set cumulative = cumulative + _count %}
+                    <tr class="govuk-table__row">
+                      <td class="govuk-table__cell">
+                        {{_key}}
+                      </td>
+                      <td class="govuk-table__cell" >
+                        {{_count}}
+                      </td>
+                    </tr>
+                    
+                  {% endfor %}
+                </tbody>
+              </table>
+              </div>
+            </details>
+          
+          
     <!-- <p class="govuk-body" >{{myData.standards.list|dump|safe}}</p> -->
 
     </div>

@@ -95,7 +95,13 @@ _myData.routes.list.sort(function(a,b){
 });
 
 var _epaosOnStandards = require(__dirname + '/data/epaos-on-standards.json')
+
+
+///
+///
 // for test data
+///
+///
 var _epaosOnStandardsCounts = {}
 for (var _epaoLarsCode in _epaosOnStandards) {
     var _epaos = _epaosOnStandards[_epaoLarsCode]
@@ -107,7 +113,20 @@ for (var _epaoLarsCode in _epaosOnStandards) {
 }
 _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 
+// for pulling out counts of statuses on all stds in IFATE api
+// require("request").get("https://www.instituteforapprenticeships.org/api/apprenticeshipstandards", (error, response, body) => {
+//     var _apiData = JSON.parse(body),
+//         _statusTypes = {}
+//     console.log(_apiData.length + " standards in API (https://www.instituteforapprenticeships.org/api/apprenticeshipstandards)")
+//     _apiData.forEach(function(_standard, index) {
+//         _statusTypes[_standard.status] = (_statusTypes[_standard.status] || 0) + 1
+//     });
+//     console.log(_statusTypes)
+// });
+// var distinctStatuses = [...new Set(_apiData.map(function(data){return data.statuses}))];
+
 // Set ssa + route counts
+// Regulated
 var _routeCounts = {},
     _ssaCounts = {}
 _myData.standardAutocompleteList = []
@@ -312,7 +331,6 @@ _myData.citiesAutocompleteList.sort(function(a,b){
     }
     return 0;
 });
-
 
 require('./routes/1-0/routes.js')(router,JSON.parse(JSON.stringify(_myData)));
 require('./routes/2-0/routes.js')(router,JSON.parse(JSON.stringify(_myData)));

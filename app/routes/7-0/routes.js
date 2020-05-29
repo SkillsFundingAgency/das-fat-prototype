@@ -289,6 +289,7 @@ module.exports = function (router,_myData) {
         req.session.myData.start = "home"
         req.session.myData.employeraccount = "false"
         req.session.myData.service = "fat"
+        req.session.myData.phase = "latest"
 
         // Default filters
         req.session.myData.location = ""
@@ -310,10 +311,11 @@ module.exports = function (router,_myData) {
         //version
         req.session.myData.version = version
         //defaults for setup
-        req.session.myData.start =  req.query.s || req.session.myData.start
+        req.session.myData.start =  req.query.st || req.session.myData.start
         req.session.myData.employeraccount =  req.query.ea || req.session.myData.employeraccount
         req.session.myData.layout = ((req.session.myData.employeraccount == "true") ? "layout-as-emp.html" : "layout.html")
         req.session.myData.service =  req.query.s || req.session.myData.service
+        req.session.myData.phase =  req.query.p || req.session.myData.phase
         //referrer page
         req.session.myData.referrerpage = getRefererPage(req.headers.referer)
         //local storage clear boolean

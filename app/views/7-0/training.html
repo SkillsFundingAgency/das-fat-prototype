@@ -54,7 +54,7 @@
     <div class="govuk-grid-column-one-third">
 
         <!-- FILTERS  -->
-
+        {% if myData.phase != "dev1" %}
         <div class="fat-filter">
 
             <div class="fat-filter__header">
@@ -156,6 +156,7 @@
             </div>
 
         </div>
+        {% endif %}
 
     </div>
     <div class="govuk-grid-column-two-thirds">

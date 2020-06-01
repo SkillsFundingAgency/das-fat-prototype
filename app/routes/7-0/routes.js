@@ -233,6 +233,27 @@ module.exports = function (router,_myData) {
         }
     }
 
+    // Level filters - setup
+    function levelFilterSetup(req){
+        req.session.myData.levelfilterapplied = false
+        if(req.session.myData.levelfilters.length > 0){
+            req.session.myData.displaycount = 0
+            req.session.myData.needToMatchCount++
+            req.session.myData.levelfilterapplied = true
+            var levelfiltersValues = []
+            req.session.myData.levelfilters.forEach(function(_levelFilter, index) {
+                var _level = req.session.myData.levels2.find(obj => obj.value === _levelFilter)
+                if(_level){
+                    levelfiltersValues.push({
+                        "label":"Level " + _level.value + " - " + _level.equiv2,
+                        "id":_level.value
+                    })
+                }
+            });
+            req.session.myData.searchfilters.push({"value": levelfiltersValues, "type": "levelfilters", "typeText": "Level","typeof":"array"})
+        }
+    }
+
     // Sort setup
     function sortSetup(req,_firstSortType,_secondSortType){
         req.session.myData.sortapplied = false
@@ -322,6 +343,7 @@ module.exports = function (router,_myData) {
         req.session.myData.regionfilters = []
         req.session.myData.national = []
         req.session.myData.routefilters = []
+        req.session.myData.levelfilters = []
 
     }
 
@@ -350,54 +372,25 @@ module.exports = function (router,_myData) {
 
 
         //
-        //
         // Fixes for checkbox values in query string - turns them into arrays
         //
-        //
-        req.session.myData.employerreviews = req.query.employerreviews || []
-        if(req.session.myData.employerreviews == "_unchecked"){
-            req.session.myData.employerreviews = []
-        }
-        if(!Array.isArray(req.session.myData.employerreviews)){
-            req.session.myData.employerreviews = [req.session.myData.employerreviews]
-        }
-        
-        req.session.myData.ofstedratings = req.query.ofstedratings || []
-        if(req.session.myData.ofstedratings == "_unchecked"){
-            req.session.myData.ofstedratings = []
-        }
-        if(!Array.isArray(req.session.myData.ofstedratings)){
-            req.session.myData.ofstedratings = [req.session.myData.ofstedratings]
-        }
-
-        req.session.myData.regionfilters = req.query.regionfilters || []
-        if(req.session.myData.regionfilters == "_unchecked"){
-            req.session.myData.regionfilters = []
-        }
-        if(!Array.isArray(req.session.myData.regionfilters)){
-            req.session.myData.regionfilters = [req.session.myData.regionfilters]
-        }
-
-        req.session.myData.national = req.query.national || []
-        if(req.session.myData.national == "_unchecked"){
-            req.session.myData.national = []
-        }
-        if(!Array.isArray(req.session.myData.national)){
-            req.session.myData.national = [req.session.myData.national]
-        }
-
-        req.session.myData.routefilters = req.query.routefilters || []
-        if(req.session.myData.routefilters == "_unchecked"){
-            req.session.myData.routefilters = []
-        }
-        if(!Array.isArray(req.session.myData.routefilters)){
-            req.session.myData.routefilters = [req.session.myData.routefilters]
-        }
-        //
-        //
-        // END - Fixes for checkbox values in query string - turns them into arrays
-        //
-        //
+        var _checkboxQueries = [
+            "employerreviews",
+            "ofstedratings",
+            "regionfilters",
+            "national",
+            "routefilters",
+            "levelfilters"
+        ]
+        _checkboxQueries.forEach(function(_checkboxQuery, index) {
+            req.session.myData[_checkboxQuery] = req.query[_checkboxQuery] || []
+            if(req.session.myData[_checkboxQuery] == "_unchecked"){
+                req.session.myData[_checkboxQuery] = []
+            }
+            if(!Array.isArray(req.session.myData[_checkboxQuery])){
+                req.session.myData[_checkboxQuery] = [req.session.myData[_checkboxQuery]]
+            }
+        });
 
         next()
     });
@@ -449,23 +442,7 @@ module.exports = function (router,_myData) {
         routeFilterSetup(req)
 
         // Level filter reset/setup
-        req.session.myData.levelfilterapplied = false
-        req.session.myData.level = ""
-        req.session.myData.selectedLevel = ""
-        if(req.query.level){
-            for (var i = 0; i < req.session.myData.levels2.length; i++) {
-                var _thisLevel = req.session.myData.levels2[i]
-                if(req.query.level == _thisLevel.value){
-                    req.session.myData.level = req.query.level
-                    req.session.myData.levelfilterapplied = true
-                    req.session.myData.selectedLevel = _thisLevel
-                    req.session.myData.searchfilters.push({"value": "Level " + req.session.myData.selectedLevel.value + " - " + req.session.myData.selectedLevel.equiv,"type": "level","typeText": "Level"})
-                    req.session.myData.displaycount = 0
-                    req.session.myData.needToMatchCount++
-                    break
-                }
-            }
-        }
+        levelFilterSetup(req)
 
         req.session.myData.standards.list.forEach(function(_standard, index) {
 
@@ -486,7 +463,8 @@ module.exports = function (router,_myData) {
             //LEVEL
             if(req.session.myData.levelfilterapplied) {
                 _standard.search = false
-                if(_standard.level.toString() == req.session.myData.selectedLevel.value) {
+                var _level = req.session.myData.levelfilters.find(obj => obj === _standard.level.toString())
+                if(_level){
                     req.session.myData.hasAMatchcount++
                 }
             }

@@ -123,8 +123,9 @@
         
 
         <!-- Providers -->
-        {% set _displaycountproviders = myData.displaycountproviders %}
         
+        {% set _displaycountproviders = myData.displaycountproviders %}
+        {% if myData.phase != "dev1" %}
         {% if myData.countproviders == 0 %}
 
             <h2 class="govuk-heading-m" >Training providers</h2>
@@ -181,6 +182,7 @@
 
             </div>
 
+        {% endif %}
         {% endif %}
 
         <!-- EPAOS -->

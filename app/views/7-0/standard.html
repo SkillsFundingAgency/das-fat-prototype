@@ -47,9 +47,13 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <!-- {% for name, item in _selectedStandard %}
-        <p class="govuk-body" ><span class="govuk-!-font-weight-bold">{{ name }}</span>: {{ item | dump }}</p>
-        {% endfor %} -->
+        {% if _selectedStandard.lastDateStarts %}
+        <div class="alert-blue alert-blue-no-heading govuk-!-margin-bottom-7">
+			<p class="govuk-body">
+				{{_standardTitle | safe}} is available for new starts until 31 October 2020.
+			</p>
+		</div>
+        {% endif %}
 
         <span class="govuk-caption-xl">Apprenticeship training course</span>
         <h1 class="govuk-heading-xl" >

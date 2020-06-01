@@ -106,6 +106,15 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
+
+        {% if _selectedProvider.noNewStarts %}
+        <div class="alert-blue alert-blue-no-heading govuk-!-margin-bottom-7">
+			<p class="govuk-body">
+				{{_providerTitle | safe}} is currently unable to start any apprenticeship training courses.
+			</p>
+		</div>
+        {% endif %}
+
         <span class="govuk-caption-xl">Training provider</span>
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-6" >
             {{_providerTitle | safe}}

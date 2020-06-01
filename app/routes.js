@@ -218,6 +218,13 @@ _myData.standards.list.forEach(function(_standard, index) {
     _routeCounts[_standard.route.toLowerCase()] = (_routeCounts[_standard.route.toLowerCase()] || 0) + 1
     _ssaCounts[_standard.ssa1.toLowerCase()] = (_ssaCounts[_standard.ssa1.toLowerCase()] || 0) + 1
     _ssaCounts[_standard.ssa2.toLowerCase()] = (_ssaCounts[_standard.ssa2.toLowerCase()] || 0) + 1
+
+    //Set route code
+    var _selectedRoute = _myData.routes.list.find(obj => obj.name.toLowerCase() === _standard.route.toLowerCase())
+    if(_selectedRoute){
+        _standard.routecode = _selectedRoute.code
+    }
+
 });
 // console.log("_regulatedProvider6 = " + _regulatedProvider6)
 // console.log("_regulatedProvider7 = " + _regulatedProvider7)

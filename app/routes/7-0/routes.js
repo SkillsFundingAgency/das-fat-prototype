@@ -212,6 +212,27 @@ module.exports = function (router,_myData) {
         }
     }
 
+    // Route filters - setup
+    function routeFilterSetup(req){
+        req.session.myData.routefilterapplied = false
+        if(req.session.myData.routefilters.length > 0){
+            req.session.myData.displaycount = 0
+            req.session.myData.needToMatchCount++
+            req.session.myData.routefilterapplied = true
+            var routefiltersValues = []
+            req.session.myData.routefilters.forEach(function(_routeFilter, index) {
+                var _route = req.session.myData.routes.list.find(obj => obj.code.toString() === _routeFilter)
+                if(_route){
+                    routefiltersValues.push({
+                        "label":_route.name,
+                        "id":_route.code
+                    })
+                }
+            });
+            req.session.myData.searchfilters.push({"value": routefiltersValues, "type": "routefilters", "typeText": "Sector","typeof":"array"})
+        }
+    }
+
     // Sort setup
     function sortSetup(req,_firstSortType,_secondSortType){
         req.session.myData.sortapplied = false
@@ -300,6 +321,7 @@ module.exports = function (router,_myData) {
         req.session.myData.ofstedratings = []
         req.session.myData.regionfilters = []
         req.session.myData.national = []
+        req.session.myData.routefilters = []
 
     }
 
@@ -326,6 +348,12 @@ module.exports = function (router,_myData) {
         req.session.myData.provider = req.query.provider || req.session.myData.provider
         req.session.myData.epao = req.query.epao || req.session.myData.epao
 
+
+        //
+        //
+        // Fixes for checkbox values in query string - turns them into arrays
+        //
+        //
         req.session.myData.employerreviews = req.query.employerreviews || []
         if(req.session.myData.employerreviews == "_unchecked"){
             req.session.myData.employerreviews = []
@@ -357,6 +385,19 @@ module.exports = function (router,_myData) {
         if(!Array.isArray(req.session.myData.national)){
             req.session.myData.national = [req.session.myData.national]
         }
+
+        req.session.myData.routefilters = req.query.routefilters || []
+        if(req.session.myData.routefilters == "_unchecked"){
+            req.session.myData.routefilters = []
+        }
+        if(!Array.isArray(req.session.myData.routefilters)){
+            req.session.myData.routefilters = [req.session.myData.routefilters]
+        }
+        //
+        //
+        // END - Fixes for checkbox values in query string - turns them into arrays
+        //
+        //
 
         next()
     });
@@ -403,25 +444,9 @@ module.exports = function (router,_myData) {
 
         // Keyword search reset/setup
         searchFilterSetup(req,"Keywords")
-
-        // Route filter reset/setup
-        req.session.myData.routefilterapplied = false
-        req.session.myData.route = ""
-        req.session.myData.selectedRoute = ""
-        if(req.query.route){
-            for (var i = 0; i < req.session.myData.routes.list.length; i++) {
-                var _thisRoute = req.session.myData.routes.list[i]
-                if(req.query.route == _thisRoute.code){
-                    req.session.myData.route = req.query.route
-                    req.session.myData.routefilterapplied = true
-                    req.session.myData.displaycount = 0
-                    req.session.myData.selectedRoute = _thisRoute
-                    req.session.myData.searchfilters.push({"value": req.session.myData.selectedRoute.name,"type": "route","typeText": "Sector"})
-                    req.session.myData.needToMatchCount++
-                    break
-                }
-            }
-        }
+        
+        // Route filter setup
+        routeFilterSetup(req)
 
         // Level filter reset/setup
         req.session.myData.levelfilterapplied = false
@@ -452,7 +477,8 @@ module.exports = function (router,_myData) {
             //ROUTE
             if(req.session.myData.routefilterapplied) {
                 _standard.search = false
-                if(_standard.route.toUpperCase() == req.session.myData.selectedRoute.name.toUpperCase()) {
+                var _route = req.session.myData.routefilters.find(obj => obj === _standard.routecode.toString())
+                if(_route){
                     req.session.myData.hasAMatchcount++
                 }
             }

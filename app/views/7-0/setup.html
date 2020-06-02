@@ -53,32 +53,49 @@
           </select>
         </div>
 
-        <!-- Prototype version -->
-        <div class="govuk-form-group">
-            <label class="govuk-label" >
-                Phase <span style="color:red">(dev setting)</span> 
-            </label>
-            <select class="govuk-select" style="min-width: 100%" id="phase" name="phase" data-option="phase">
-                <option {% if myData.phase == 'latest' %}selected{% endif %} value="latest">Latest design</option>
-                <option {% if myData.phase == 'dev1' %}selected{% endif %} value="dev1">DEV 1</option>
-            </select>
-        </div>
-
-        <!-- <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset">
-                <legend class="govuk-fieldset__legend">Phase (development settings)</legend>
-                <div class="govuk-radios">
-                    <div class="govuk-radios__item">
-                        <input {% if myData.phase == 'latest' %}checked{% endif %} class="govuk-radios__input" data-option="phase-1" id="phase-1" name="phase" type="radio" value="latest">
-                        <label class="govuk-label govuk-radios__label" for="phase-1">Latest design</label>
-                    </div>
-                    <div class="govuk-radios__item">
-                        <input {% if myData.phase == 'dev1' %}checked{% endif %} class="govuk-radios__input" data-option="phase-2" id="phase-2" name="phase" type="radio" value="dev1">
-                        <label class="govuk-label govuk-radios__label" for="phase-2">DEV 1</label>
-                    </div>
+        <!-- Components -->
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text">
+                Component visibility <span style="color:red; text-decoration: none">(dev setting)</span> 
+              </span>
+            </summary>
+            <div class="govuk-details__text">
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <!-- <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                            Components <span style="color:red">(dev setting)</span> 
+                        </legend> -->
+                        
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmpcfk != 'false' %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmpcfk" id="cmpcfk" name="cmpcfk" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmpcfk">
+                                            Courses - filter - keyword
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmpcfs != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmpcfs" id="cmpcfs" name="cmpcfs" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmpcfs">
+                                            Courses - filter - sector
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmpcfl != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmpcfl" id="cmpcfl" name="cmpcfl" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmpcfl">
+                                            Courses - filter - level
+                                        </label>
+                                    </div>
+                                </div>
+                            
+                    </fieldset>
                 </div>
-            </fieldset>
-        </div> -->
+            </div>
+        </details>
 
     </div>
 
@@ -204,7 +221,7 @@
 
         var _startURL = $("#start-url a"),
             _startURLLabel = $("#start-url-label"),
-            _options = $("[data-option]")
+            _options = $("[data-option]");
 
         _options.change(function(){
             setValues()
@@ -215,19 +232,29 @@
             //Base URL
             var _urlBase = "https://das-fat-prototype.herokuapp.com/" + {{myData.version|dump|safe}} + "/";
             //Queries
-            var _urlReset = "r=t",
-                // _urlPage = _options.filter("#start").val() + "?",
+            var _urlComponents = "",
+                _urlReset = "r=t",
                 _urlPage = "home?",
                 _urlService = "&s=" + $('input[name=service]:checked').val(),
-                // _urlPhase = "&p=" + $('input[name=phase]:checked').val(),
-                _urlPhase = "&p=" + _options.filter("#phase").val(),
                 _urlEmpAccount = "&ea=" + _options.filter("#employeraccount").val();
             if(_urlService == "&s=epao"){
                 _urlPage = "epaos-all?"
             }
+
+            // Components queries
+            var _components = {
+                    "cmpcfk": $('input[name=cmpcfk]:checked').val() || "false",
+                    "cmpcfs": $('input[name=cmpcfs]:checked').val() || "false",
+                    "cmpcfl": $('input[name=cmpcfl]:checked').val() || "false"
+                };
+            for (var [component, visibility] of Object.entries(_components)) {
+                if(visibility == "false"){
+                    _urlComponents = _urlComponents + "&" + component + "=false"
+                }
+            }
            
             //Queries combined
-            var _urlPageQueries = _urlPage + _urlReset + _urlEmpAccount + _urlService + _urlPhase;
+            var _urlPageQueries = _urlPage + _urlReset + _urlEmpAccount + _urlService + _urlComponents;
 
             //URL text
             var _startURLText = _urlBase + _urlPageQueries,

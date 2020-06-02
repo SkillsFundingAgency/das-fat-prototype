@@ -331,7 +331,19 @@ module.exports = function (router,_myData) {
         req.session.myData.start = "home"
         req.session.myData.employeraccount = "false"
         req.session.myData.service = "fat"
-        req.session.myData.phase = "latest"
+        // req.session.myData.phase = "latest"
+
+        // Dev settings
+        // KEY: 
+        // cmp = component
+            // c = course 
+                // f = filter 
+                // k = keyword
+                // s = sector
+                // l = level
+        req.session.myData.cmpcfk = "true"
+        req.session.myData.cmpcfs = "true"
+        req.session.myData.cmpcfl = "true"
 
         // Default filters
         req.session.myData.location = ""
@@ -359,7 +371,11 @@ module.exports = function (router,_myData) {
         req.session.myData.employeraccount =  req.query.ea || req.session.myData.employeraccount
         req.session.myData.layout = ((req.session.myData.employeraccount == "true") ? "layout-as-emp.html" : "layout.html")
         req.session.myData.service =  req.query.s || req.session.myData.service
-        req.session.myData.phase =  req.query.p || req.session.myData.phase
+        // req.session.myData.phase =  req.query.p || req.session.myData.phase
+        //component visibility - for devs
+        req.session.myData.cmpcfk =  req.query.cmpcfk || req.session.myData.cmpcfk
+        req.session.myData.cmpcfs =  req.query.cmpcfs || req.session.myData.cmpcfs
+        req.session.myData.cmpcfl =  req.query.cmpcfl || req.session.myData.cmpcfl
         //referrer page
         req.session.myData.referrerpage = getRefererPage(req.headers.referer)
         //local storage clear boolean

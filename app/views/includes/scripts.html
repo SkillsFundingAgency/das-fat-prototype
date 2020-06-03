@@ -16,6 +16,9 @@
 
 <script>
   $(document).ready(function(){
-    $("a:contains('Built by')").replaceWith( "Built by the <a class='govuk-footer__link' href='#'>Education and Skills Funding Agency</a>" );
+    var _builtByLink = $("a:contains('Built by the Education and Skills Funding Agency')"),
+        _classes = _builtByLink.attr('class'),
+        _href = _builtByLink.attr('href')
+    _builtByLink.replaceWith( "Built by the <a class='" + _classes + "' href='" + _href + "'>Education and Skills Funding Agency</a>" );
   });
 </script>

@@ -99,6 +99,7 @@
     <div class="govuk-grid-column-one-third">
 
         <!-- FILTERS  -->
+        {% if myData.cmppfl != "false" or myData.cmppfo != "false" or myData.cmppfe != "false" or myData.cmppfd != "false" %}
         <div class="fat-filter" >
 
             <div class="fat-filter__header">
@@ -155,6 +156,7 @@
 
                         <button type="submit" class="fat-filter__submit govuk-button" id="filters-submit">Apply filters</button>
 
+                        {% if myData.cmppfl != "false" %}
                         <!-- Location -->
                         <div class="govuk-form-group" >
                             <label for="search-location" class="govuk-label" >
@@ -162,7 +164,7 @@
                             </label>
                             <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" class="govuk-input">
                         </div>
-
+                        
                         <!-- Training options -->
                         {% if myData.locationapplied %}
                         {% set _trainingOptions = [{"id":1,"label":"Day release"},{"id":2,"label":"Block release"},{"id":3,"label":"In your workplace"}] %}
@@ -191,6 +193,9 @@
                         </div>
                         {% endif %}
 
+                        {% endif %}
+
+                        {% if myData.cmppfo != "false" %}
                         <!-- Ofsted rating -->
                         {% set _ofstedOptions = [{"id":1,"label":"Outstanding"},{"id":2,"label":"Good"},{"id":3,"label":"Requires improvement"},{"id":4,"label":"Inadequate"},{"id":0,"label":"Not yet rated"}] %}
                         <div class="govuk-form-group">
@@ -216,7 +221,9 @@
                                 </div>
                             </fieldset>
                         </div>
+                        {% endif %}
 
+                        {% if myData.cmppfe != "false" %}
                         <!-- Employer reviews -->
                         {% set _empOptions = [{"id":1,"label":"Excellent"},{"id":2,"label":"Good"},{"id":3,"label":"Poor"},{"id":4,"label":"Very poor"}] %}
                         <div class="govuk-form-group">
@@ -242,7 +249,9 @@
                                 </div>
                             </fieldset>
                         </div>
+                        {% endif %}
 
+                        {% if myData.cmppfd != "false" %}
                         <!-- National -->
                         <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
@@ -259,6 +268,7 @@
                                 </div>
                             </fieldset>
                         </div>
+                        {% endif %}
 
                         <!-- Search box -->
                         <!-- <div class="govuk-form-group" >
@@ -277,11 +287,13 @@
             </div>
 
         </div>
+        {% endif %}
 
     </div>
     <div class="govuk-grid-column-two-thirds">
 
 
+        {% if myData.cmppfl != "false" %}
         {% if myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Location of apprenticeship</h2>
@@ -293,6 +305,7 @@
             <p class="govuk-body govuk-!-margin-bottom-2">Show only providers who offer this training for the apprenticeship location.</p>
             <p class="govuk-body"><a href="#search-location" class="focus-field-prompt govuk-link govuk-link--no-visited-state" >Enter&nbsp;location</a></p>
         </div>
+        {% endif %}
         {% endif %}
        
         <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
@@ -490,17 +503,23 @@
 
                         {% endif %}
 
+                        {% if myData.cmppda != "false" %}
                         <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
                             <span class="govuk-!-font-size-16">68% achievement rate</span>
                         </li>
+                        {% endif %}
 
+                        {% if myData.cmppdo != "false" %}
                         <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
                             {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight">{{_ratingOfstedTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(Ofsted rating)</span>
                         </li>
+                        {% endif %}
 
+                        {% if myData.cmppde != "false" %}
                         <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
                             {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight">{{_ratingTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">({{_totalRatings}} employer reviews)</span>
                         </li>
+                        {% endif %}
 
                         <!-- National -->
                         {% if _provider.national %}

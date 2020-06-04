@@ -328,8 +328,8 @@ module.exports = function (router,_myData) {
         req.session.myData = JSON.parse(JSON.stringify(_myData))
 
         // Default setup
-        req.session.myData.start = "home"
         req.session.myData.employeraccount = "false"
+        req.session.myData.epaoinfat = "true"
         req.session.myData.service = "fat"
         // req.session.myData.phase = "latest"
 
@@ -341,9 +341,22 @@ module.exports = function (router,_myData) {
                 // k = keyword
                 // s = sector
                 // l = level
+            // p = provider
+                // f = filter
+                // l = location
+                // o = ofsted 
+                // e = employer reviews 
+                // d = delivery area
         req.session.myData.cmpcfk = "true"
         req.session.myData.cmpcfs = "true"
         req.session.myData.cmpcfl = "true"
+        req.session.myData.cmppfl = "true"
+        req.session.myData.cmppfo = "true"
+        req.session.myData.cmppfe = "true"
+        req.session.myData.cmppfd = "true"
+        req.session.myData.cmppda = "true"
+        req.session.myData.cmppdo = "true"
+        req.session.myData.cmppde = "true"
 
         // Default filters
         req.session.myData.location = ""
@@ -357,6 +370,8 @@ module.exports = function (router,_myData) {
         req.session.myData.routefilters = []
         req.session.myData.levelfilters = []
 
+        req.session.myData.returnURL = "epaos"
+
     }
 
     // Every GET and POST
@@ -366,20 +381,40 @@ module.exports = function (router,_myData) {
         }
         //version
         req.session.myData.version = version
+
+        // Reset page validation to false by default. Will only be set to true, if applicable, on a POST of a page
+        req.session.myData.validationErrors = {}
+        req.session.myData.validationError = "false"
+        req.session.myData.includeValidation =  req.query.includeValidation || req.session.myData.includeValidation
+
         //defaults for setup
-        req.session.myData.start =  req.query.st || req.session.myData.start
         req.session.myData.employeraccount =  req.query.ea || req.session.myData.employeraccount
+        req.session.myData.epaoinfat =  req.query.epaofat || req.session.myData.epaoinfat
         req.session.myData.layout = ((req.session.myData.employeraccount == "true") ? "layout-as-emp.html" : "layout.html")
         req.session.myData.service =  req.query.s || req.session.myData.service
         // req.session.myData.phase =  req.query.p || req.session.myData.phase
+        
         //component visibility - for devs
+        //courses
         req.session.myData.cmpcfk =  req.query.cmpcfk || req.session.myData.cmpcfk
         req.session.myData.cmpcfs =  req.query.cmpcfs || req.session.myData.cmpcfs
         req.session.myData.cmpcfl =  req.query.cmpcfl || req.session.myData.cmpcfl
+        //providers
+        req.session.myData.cmppfl =  req.query.cmppfl || req.session.myData.cmppfl
+        req.session.myData.cmppfo =  req.query.cmppfo || req.session.myData.cmppfo
+        req.session.myData.cmppfe =  req.query.cmppfe || req.session.myData.cmppfe
+        req.session.myData.cmppfd =  req.query.cmppfd || req.session.myData.cmppfd
+        req.session.myData.cmppda =  req.query.cmppda || req.session.myData.cmppda
+        req.session.myData.cmppdo =  req.query.cmppdo || req.session.myData.cmppdo
+        req.session.myData.cmppde =  req.query.cmppde || req.session.myData.cmppde
+        
         //referrer page
         req.session.myData.referrerpage = getRefererPage(req.headers.referer)
         //local storage clear boolean
         // req.session.myData.clearLocalStorage = (req.query.cls) ? true : false
+
+
+        req.session.myData.returnURL =  req.query.returnURL || req.session.myData.returnURL
 
         //Constant checks for query
         req.session.myData.standard = req.query.standard || req.session.myData.standard
@@ -413,7 +448,6 @@ module.exports = function (router,_myData) {
 
     // Prototype setup
     router.get('/' + version + '/setup', function (req, res) {
-        req.session.myData.start = "home"
         res.render(version + '/setup', {
             myData:req.session.myData
         });
@@ -426,21 +460,20 @@ module.exports = function (router,_myData) {
         });
     });
 
-    // Start
-    router.get('/' + version + '/start', function (req, res) {
-        res.render(version + '/start', {
-            myData:req.session.myData
-        });
-    });
-
     // Home
     router.get('/' + version + '/home', function (req, res) {
         res.render(version + '/home', {
             myData:req.session.myData
         });
     });
-    
 
+    // Home - EPAO
+    router.get('/' + version + '/home-epao', function (req, res) {
+        res.render(version + '/home-epao', {
+            myData:req.session.myData
+        });
+    });
+    
     // Training
     router.get('/' + version + '/training', function (req, res) {
 
@@ -1267,6 +1300,69 @@ module.exports = function (router,_myData) {
             res.render(version + '/epao', {
                 myData:req.session.myData
             });
+        }
+    });
+
+    // EPAO - look by
+    router.get('/' + version + '/epao-how', function (req, res) {
+        res.render(version + '/epao-how', {
+            myData: req.session.myData
+        });
+    });
+    router.post('/' + version + '/epao-how', function (req, res) {
+        req.session.myData.epaohowAnswerTemp = req.body.epaohowAnswer
+        if(req.session.myData.includeValidation == "false"){
+            req.session.myData.epaohowAnswerTemp = req.session.myData.epaohowAnswerTemp || "Yes"
+        }
+        if(!req.session.myData.epaohowAnswerTemp){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.epaohowAnswer = {
+                "anchor": "epaohow-1",
+                "message": "Select a way to find an end-point assessment organisation"
+            }
+        }
+
+        if(req.session.myData.validationError == "true") {
+            res.render(version + '/epao-how', {
+                myData: req.session.myData
+            });
+        } else {
+            req.session.myData.epaohowAnswer = req.session.myData.epaohowAnswerTemp
+            if(req.session.myData.epaohowAnswerTemp == "all") {
+                res.redirect(301, '/' + version + '/epaos-all');
+            } else {
+                res.redirect(301, '/' + version + '/epao-course');
+            }
+        }
+    });
+
+    // EPAO - course
+    router.get('/' + version + '/epao-course', function (req, res) {
+        res.render(version + '/epao-course', {
+            myData: req.session.myData
+        });
+    });
+    router.post('/' + version + '/epao-course', function (req, res) {
+        req.session.myData.epaocourseAnswerTemp = req.body.epaocourseAnswer
+        if(req.session.myData.includeValidation == "false"){
+            req.session.myData.epaocourseAnswerTemp = req.session.myData.epaocourseAnswerTemp || req.session.myData.standards.list[0].larsCode
+        }
+        if(!req.session.myData.epaocourseAnswerTemp){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.epaocourseAnswer = {
+                "anchor": "epaocourse-1",
+                "message": "Select an apprenticeship training course"
+            }
+        }
+
+        if(req.session.myData.validationError == "true") {
+            res.render(version + '/epao-course', {
+                myData: req.session.myData
+            });
+        } else {
+            req.session.myData.epaocourseAnswer = req.session.myData.epaocourseAnswerTemp
+            req.session.myData.epaocourseAnswerTemp = ''
+            res.redirect(301, '/' + version + '/epaos?s=epao&standard=' + req.session.myData.epaocourseAnswer);
         }
     });
 

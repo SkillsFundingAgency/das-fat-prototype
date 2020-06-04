@@ -3,6 +3,7 @@ const router = express.Router()
 
 // Base session data
 var _myData = {
+    "includeValidation": "true",
     "standards": require(__dirname + '/data/standards.json'),
     "ssa": require(__dirname + '/data/ssa.json'),
     "routes": require(__dirname + '/data/routes.json'),
@@ -116,11 +117,14 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 // for pulling out counts of statuses on all stds in IFATE api
 // require("request").get("https://www.instituteforapprenticeships.org/api/apprenticeshipstandards", (error, response, body) => {
 //     var _apiData = JSON.parse(body),
-//         _statusTypes = {}
+//         _statusTypes = {},
+//         _versionTypes = {}
 //     console.log(_apiData.length + " standards in API (https://www.instituteforapprenticeships.org/api/apprenticeshipstandards)")
 //     _apiData.forEach(function(_standard, index) {
 //         _statusTypes[_standard.status] = (_statusTypes[_standard.status] || 0) + 1
+//         _versionTypes["version " + _standard.version] = (_versionTypes["version " + _standard.version] || 0) + 1
 //     });
+//     console.log(_versionTypes)
 //     console.log(_statusTypes)
 // });
 // var distinctStatuses = [...new Set(_apiData.map(function(data){return data.statuses}))];

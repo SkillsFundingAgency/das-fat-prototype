@@ -1,16 +1,15 @@
 
-{% set _breadcrumbText = "Register of end-point assessment organisations" %}
+{% set _breadcrumbText = "Home: " + serviceName %}
 {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
-
+    <!-- {
+        text: "GOV.UK",
+        href: "https://www.gov.uk/guidance/register-of-end-point-assessment-organisations"
+    },-->
 {{ govukBreadcrumbs({
 items: [
     {
-        text: "GOV.UK",
-        href: "https://www.gov.uk/guidance/register-of-end-point-assessment-organisations"
-    },
-    {
         text: _breadcrumbText,
-        href: ""
-    }
+        href: "home-epao"
+    } 
 ]
 }) }}

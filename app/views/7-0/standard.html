@@ -189,19 +189,21 @@
         {% endif %}
 
         <!-- EPAOS -->
-        {% if _selectedStandard.integratedDegree == "integrated degree" %}
-            <h2 class="govuk-heading-m" >
-                End-point assessment organisation
-            </h2>
-            <p class="govuk-body">The training provider will also conduct the end-point assessment for {{_standardTitle | safe}}.</p>
-        {% else %}
-            <h2 class="govuk-heading-m" >
-                End-point assessment organisations
-            </h2>
-            {% if myData.countepaos == 0 %}
-                <p class="govuk-body">0 end-point assessment organisations are available for this course.</p>
+        {% if myData.epaoinfat != "false" %}
+            {% if _selectedStandard.integratedDegree == "integrated degree" %}
+                <h2 class="govuk-heading-m" >
+                    End-point assessment organisation
+                </h2>
+                <p class="govuk-body">The training provider will also conduct the end-point assessment for {{_standardTitle | safe}}.</p>
             {% else %}
-                <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisations</a></p>
+                <h2 class="govuk-heading-m" >
+                    End-point assessment organisations
+                </h2>
+                {% if myData.countepaos == 0 %}
+                    <p class="govuk-body">0 end-point assessment organisations are available for this course.</p>
+                {% else %}
+                    <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisations</a></p>
+                {% endif %}
             {% endif %}
         {% endif %}
 

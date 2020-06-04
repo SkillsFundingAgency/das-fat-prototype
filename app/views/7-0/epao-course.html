@@ -1,0 +1,96 @@
+{% extends myData.layout %}
+{% set serviceName = "Find an end-point assessment organisation" %}
+{% set serviceUrl = "home-epao" %}
+
+{% set _inError = myData.validationError %}
+
+{% block pageTitle %} 
+{% if _inError == "true" %}Error: {% endif %}
+[Page title here]
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="home-epao" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <form method="POST" class="form">
+
+            {% if _inError == "true" %}
+            <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+                <h2 class="govuk-error-summary__title" id="error-summary-title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        {% for name, item in myData.validationErrors %}
+                        <li>
+                            <a href="#{{item.anchor}}">{{item.message}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <h1 class="govuk-heading-xl" >
+             [choose course]
+            </h1>
+
+            <!-- Course -->
+            <div class="govuk-form-group {% if myData.validationErrors.epaocourseAnswer %}govuk-form-group--error{% endif %} ">
+                <label class="govuk-label" for="epaocourseAnswer">
+                    Apprenticeship training course
+                </label>
+                {% if myData.validationErrors.epaocourseAnswer %}
+                <span id="epaocourseAnswer-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span>
+                    {{myData.validationErrors.epaocourseAnswer.message}}
+                </span>
+                {% endif %}
+                <div class="autocomplete-wrapper" >
+                    <select class="govuk-select autocomplete-element {% if myData.validationErrors.epaocourseAnswer %}govuk-input--error{% endif %}" id="epaocourse-1" name="epaocourseAnswer">
+                        <option value="">Select an apprenticeship training course</option>
+                        {% for _course in myData.standards.list %}
+                        <option {% if _course.larsCode == myData.epaocourseAnswerTemp %}selected{% endif %} value="{{_course.larsCode}}">{{_course.autoCompleteString}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="govuk-button">
+                Continue
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block pageScripts %}
+<script>
+  $(document).ready(function() {
+    $('.autocomplete-element').each(function() {
+    //   var _defaultValue = '{{_defaultValue}}';
+      var selectEl = document.querySelector('#' + $(this).attr('id') )
+      accessibleAutocomplete.enhanceSelectElement({
+        autoselect: false,
+        defaultValue: '',
+        minLength: 3,
+        selectElement: selectEl,
+        placeholder: 'Start typing to search for an apprenticeship training course',
+        showAllValues: false,
+        displayMenu: "overlay"
+      })
+    })
+  })
+</script>
+{% endblock %}

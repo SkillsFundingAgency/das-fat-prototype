@@ -1,7 +1,7 @@
 {% extends myData.layout %}
 {% if myData.service == "epao" %}
-    {% set serviceName = "Register of end-point assessment organisations" %}
-    {% set serviceUrl = "epaos-all" %}
+    {% set serviceName = "Find an end-point assessment organisation" %}
+    {% set serviceUrl = "home-epao" %}
 {% else %}
     {% set serviceName = "Find apprenticeship training" %}
 {% endif %}
@@ -25,13 +25,22 @@
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% if myData.service == "epao" %}
-        <a href="epaos-all" class="govuk-back-link">Back</a>
+        <a href="{{myData.returnURL}}" class="govuk-back-link">Back</a>
     {% else %}
         {% include "includes/breadcrumb.html" %}
     {% endif %}
 {% endblock %}
 
 {% block content %}
+<style>
+    #search-location {
+        height: 40px;
+        border-right: 0;
+    }
+    .autocomplete__hint {
+        height: 40px;
+    }
+</style>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -45,14 +54,16 @@
             {{_epaoTitle | safe}} 
         </h1>
 
-        {% if myData.service != "epao" %}
+        {% if myData.service != "epao" or (myData.service == "epao" and myData.returnURL == "epaos") %}
 
          <!-- Course panel -->
          {% if myData.standardsearchapplied %}
          <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
              <span class="govuk-caption-l">Apprenticeship training course</span>
              <h2 class="govuk-heading-l govuk-!-margin-bottom-3">{{_standardTitle | safe}}</h2>
+             {% if myData.service != "epao" %}
              <p class="govuk-body govuk-!-margin-bottom-5"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{_selectedStandard.larsCode}}">Overview of {{_standardTitle|safe}}</a></p>
+             {% endif %}
 
              <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Location of apprenticeship</h2>
  
@@ -172,7 +183,7 @@
             </div> -->
         </dl>
 
-        {% if myData.service == "epao" %}
+        
 
         <!-- REGISTER  -->
 
@@ -189,6 +200,8 @@
             {% endfor %}
         {% endfor %}
         </p>
+
+        {% if myData.service == "epao" %}
 
         <h2 class="govuk-heading-m ">Apprenticeship courses assessed by this EPAO ({{myData.displaycount}})</h2>
         {% if myData.displaycount == 1 %}

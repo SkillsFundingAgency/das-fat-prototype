@@ -1,10 +1,7 @@
 {% extends myData.layout %}
-{% if myData.service == "epao" %}
-    {% set serviceName = "Find an end-point assessment organisation" %}
-    {% set serviceUrl = "home-epao" %}
-{% else %}
-    {% set serviceName = "Find apprenticeship training" %}
-{% endif %}
+
+{% set serviceName = "Find an end-point assessment organisation" %}
+{% set serviceUrl = "home-epao" %}
 
 {% set _selectedStandard = {} %}
 {% for _standard in myData.standards.list %}
@@ -53,43 +50,51 @@
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
-    {% if myData.service == "epao" %}
-        <a href="epao-course" class="govuk-back-link">Back</a>
-    {% else %}
-        {% include "includes/breadcrumb.html" %}
-    {% endif %}
+    <a href="epao-course" class="govuk-back-link">Back</a>
 {% endblock %}
 
 {% block content %}
 
+<style>
+    #search-location {
+        height: 40px;
+        border-right: 0;
+    }
+    .autocomplete__hint {
+        height: 40px;
+    }
+</style>
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-xl {% if myData.service != 'epao' %}govuk-!-margin-bottom-4{% endif %}" >
-            <span class="govuk-caption-xl">End-point assessment organisations for</span>
-            {{_standardTitle|safe}}
+        <h1 class="govuk-heading-xl" >
+            {% if myData.displaycount == 0 and myData.locationapplied != true %}
+            [Drop out as 0 EPAOs]
+            {% else %}
+            End-point assessment organisations for {{_standardTitle|safe}}
+            {% endif %}
         </h1>
 
-        {% if myData.service != "epao" %}
-        <p class="govuk-body govuk-!-margin-bottom-8"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{myData.standard}}">Overview of {{_standardTitle|safe}}</a></p>
-        {% endif %}
+        {% if myData.displaycount == 0 and myData.locationapplied != true %}
+            <h2 class="govuk-heading-m" style="color:red">[0 EPAOs]</h2>
+            {% if _selectedStandard.epaos.inprinciple == true %}
+            <h2 class="govuk-heading-m" style="color:red">{{_standardTitle|safe}} has an EPAO in principle</h2>
+            {% else %}
+            <h2 class="govuk-heading-m" style="color:red">{{_standardTitle|safe}} DOES NOT have an EPAO in principle</h2>
+            {% endif %}
+        {% else %}
 
     </div>
 </div>
 
-{% if myData.service == "epao" and myData.displaycount == 0 and myData.locationapplied != true %}
+
+
+{% set _useFilter = false %}
+{% set _useFilter2 = false %}
+
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h2 class="govuk-heading-m" style="color:red">[0 EPAOs]</h2>
-        {% if _selectedStandard.epaos.inprinciple == true %}
-        <h2 class="govuk-heading-m" style="color:red">{{_standardTitle|safe}} has an EPAO in principle</h2>
-        {% endif %}
-    </div>
-</div>
-{% else %}
-{% set _useFilter = true %}
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-one-third">
 
         <!-- FILTERS  -->
 
@@ -136,7 +141,7 @@
 
                 <div class="fat-filter__options">
 
-                    <form action="epaos" method="GET" >
+                    <form action="epaos-2" method="GET" >
 
                         <button type="submit" class="fat-filter__submit govuk-button" id="filters-submit">Apply filters</button>
 
@@ -196,9 +201,6 @@
         </div>
         {% endif %}
 
-    </div>
-    <div class="govuk-grid-column-two-thirds">
-
         {% if _useFilter %}
         {% if myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
@@ -212,6 +214,49 @@
             <p class="govuk-body"><a href="#search-location" class="focus-field-prompt govuk-link govuk-link--no-visited-state" >Enter&nbsp;location</a></p>
         </div>
         {% endif %}
+        {% endif %}
+
+        {% if _useFilter2 %}
+        {% if myData.locationapplied == false %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <!-- <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2> -->
+            <p class="govuk-body govuk-!-margin-bottom-2">Show only end-point assessment organisations who offer assessments of this training for the apprenticeship location.</p>
+            <!-- <p class="govuk-body"><a href="#search-location" class="focus-field-prompt govuk-link govuk-link--no-visited-state" >Enter&nbsp;location</a></p> -->
+            <form action="epaos-2" method="GET" >
+                <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small " >
+                    <legend style="display:none">[Search for an assessment organisation]</legend>
+                    <label for="search-location" class="govuk-label" >
+                        <span class="">Enter location of apprenticeship</span>
+                    </label>
+                    <div class="search-input-wrapper">
+                        <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" class="govuk-input ">
+                        <div class="search-input-submit-wrapper">
+                            <button type="submit" class="search-submit" id="search-location-submit">Location of apprenticeship</button>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" value="{{myData.standard}}" name="standard" >
+            </form>
+        </div>
+        {% endif %}
+        
+
+
+        <!-- <form action="epaos" method="GET" >
+            <div class="govuk-form-group" >
+                <label for="search-location" class="govuk-label" >
+                    <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Location of apprenticeship</span>
+                </label>
+                <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-epaos" name="q" class="govuk-input">
+            </div>
+        </form>
+
+        <div class="govuk-form-group" >
+            <label for="search-location" class="govuk-label" >
+                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Location of apprenticeship</span>
+            </label>
+            <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" class="govuk-input">
+        </div> -->
         {% endif %}
        
         <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
@@ -250,7 +295,7 @@
 
             <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                    <a href="epao?epao={{_epao.id}}{{_standardQuery}}&returnURL=epaos" class="govuk-link govuk-link--no-visited-state">{{_epao.name}}</a>
+                    <a href="epao?epao={{_epao.id}}{{_standardQuery}}&returnURL=epaos-2" class="govuk-link govuk-link--no-visited-state">{{_epao.name}}</a>
                 </h2>
                 <ul class="govuk-list">
                     <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Delivery areas:</span> {{_deliveryAreasLabel}}</li>
@@ -285,6 +330,7 @@
     filterVisibilityToggle({{_filtersApplied | dump | safe }})
 
     function fireApplyFilters(){setTimeout(function(){ $("#filters-submit").trigger("click") },200);}
+    function fireLocationSearch(){setTimeout(function(){ $("#search-location-submit").trigger("click") },200);}
 
     //AUTOCOMPLETE epaoS
     function suggestEPAOs(query, populateResults) {
@@ -391,7 +437,7 @@
             minLength: 1,
             confirmOnBlur: false,
             autoselect: true,
-            onConfirm: fireApplyFilters,
+            onConfirm: fireLocationSearch,
             displayMenu: 'overlay'
         })
         locationInput.style.display = 'none'
@@ -400,5 +446,4 @@
     }
 
 </script>
-
 {% endblock pageScripts %}

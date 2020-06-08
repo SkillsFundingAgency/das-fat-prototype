@@ -200,7 +200,12 @@
                     End-point assessment organisations
                 </h2>
                 {% if myData.countepaos == 0 %}
-                    <p class="govuk-body">0 end-point assessment organisations are available for this course.</p>
+                    {% if _selectedStandard.epaos.inprinciple %}
+                        <p class="govuk-body">Currently there are no end-point assessment organisations (EPAO) available; we are working with potential EPAOs to assess {{_standardTitle | safe}}.</p>
+                    {% else %}
+                        <p class="govuk-body">Currently there are no end-point assessment organisations available to assess {{_standardTitle | safe}}.</p>  
+                    {% endif %}
+                    <p class="govuk-body">If you have any queries please contact the <a href="https://help.apprenticeships.education.gov.uk/hc/en-gb" class="govuk-link govuk-link--no-visited-state">helpdesk</a>.</p>
                 {% else %}
                     <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisations</a></p>
                 {% endif %}

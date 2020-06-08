@@ -1134,6 +1134,118 @@ module.exports = function (router,_myData) {
 
     });
 
+    // EPAOs - 2 - for the EPAO journey
+    router.get('/' + version + '/epaos-2', function (req, res) {
+
+        //Sort
+        sortSetup(req,"name","distance")
+
+        var _epaos = req.session.myData.epaos.list,
+            _standards = req.session.myData.standards.list
+
+        req.session.myData.searchfilters = []
+        req.session.myData.displaycount = _epaos.length
+        req.session.myData.needToMatchCount = 0
+        req.session.myData.selectedStandard = {}
+
+        // Standard filter reset/setup
+        req.session.myData.standardfilterapplied = true
+        req.session.myData.displaycount = 0
+        req.session.myData.needToMatchCount++
+        for (var i = 0; i < _standards.length; i++) {
+            if(req.session.myData.standard == _standards[i].larsCode){
+                req.session.myData.selectedStandard = _standards[i]
+                break
+            }
+        }
+
+        //Location reset/setup
+        if((req.query.location || (req.session.myData.location != "" && req.session.myData.location)) && req.session.myData.standardfilterapplied){
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
+            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
+                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
+                if(cityMatch(req) || _postCodeMatch) {
+                    req.session.myData.displaycount = 0
+                    req.session.myData.needToMatchCount++
+                    req.session.myData.location = req.session.myData.locationTemp
+                    req.session.myData.locationapplied = true
+                    req.session.myData.searchfilters.push({"value": req.session.myData.location, "type": "location", "typeText": "Location of apprenticeship"})
+                } else {
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
+                }
+                continueRendering()
+            });
+        } else {
+            continueRendering()
+        }
+
+        function continueRendering(){
+
+            // Keyword search reset/setup
+            searchFilterSetup(req,"End-point assessment organisation name")
+
+            _epaos.forEach(function(_epao, index) {
+                
+                var _deliversStandard = false,
+                    _epaoIndex = 0
+
+                req.session.myData.hasAMatchcount = 0
+
+                // Reset each epao
+                _epao.search = true
+
+                //STANDARD
+                if(req.session.myData.standardfilterapplied) {
+                    _epao.search = false
+                    req.session.myData.selectedStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
+                        if(_epaoOnStandard.toUpperCase() == _epao.name.toUpperCase()){
+                            _epaoIndex = index
+                            _deliversStandard = true
+                            req.session.myData.hasAMatchcount++
+                        }
+                    });
+                }
+
+                //LOCATION
+                if(req.session.myData.locationapplied) {
+                    _epao.search = false
+                    if(_epao.locationmatch){
+                        req.session.myData.hasAMatchcount++
+                    }
+                }
+
+                //SEARCH TERM
+                if(req.session.myData.searchapplied) {
+                    var _searchesToDo = [
+                        {"searchOn": _epao.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
+                    ]
+                    checkStandardSearchTerm(req,_epao,_searchesToDo)
+                }
+
+                //MATCHES ALL IT NEEDS TO?
+                if(req.session.myData.needToMatchCount > 0 && req.session.myData.needToMatchCount == req.session.myData.hasAMatchcount){
+                    _epao.search = true
+                    req.session.myData.displaycount++
+                }
+
+            });
+
+            sortEPAOs(req, "name")
+
+            res.render(version + '/epaos-2', {
+                myData:req.session.myData
+            });
+
+        }
+
+    });
+
     // EPAOS
     router.get('/' + version + '/epaos-all', function (req, res) {
 
@@ -1364,7 +1476,7 @@ module.exports = function (router,_myData) {
         } else {
             req.session.myData.epaocourseAnswer = req.session.myData.epaocourseAnswerTemp
             req.session.myData.epaocourseAnswerTemp = ''
-            res.redirect(301, '/' + version + '/epaos?s=epao&standard=' + req.session.myData.epaocourseAnswer);
+            res.redirect(301, '/' + version + '/epaos-2?s=epao&standard=' + req.session.myData.epaocourseAnswer);
         }
     });
 

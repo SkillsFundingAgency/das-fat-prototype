@@ -8,7 +8,7 @@
 {% set _selectedStandard = myData.selectedStandard %}
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
-{% set _epaoCount = req.session.myData.epaoCount or _selectedStandard.epaos.number %}
+{% set _epaoCount = myData.epaoCount or _selectedStandard.epaos.number %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}

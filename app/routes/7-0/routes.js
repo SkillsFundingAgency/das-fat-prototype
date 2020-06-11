@@ -315,7 +315,7 @@ module.exports = function (router,_myData) {
         if(_standardParameter){
             for (var i = 0; i < req.session.myData.standards.list.length; i++) {
                 var _thisStandard = req.session.myData.standards.list[i]
-                if(_thisStandard.larsCode == _standardParameter || _thisStandard.autoCompleteString.toUpperCase() == _standardParameter.toUpperCase()){
+                if(_thisStandard.larsCode.toString() == _standardParameter.toString() || _thisStandard.autoCompleteString.toUpperCase() == _standardParameter.toString().toUpperCase()){
                     req.session.myData.standardsearchapplied = true
                     req.session.myData.selectedStandard = _thisStandard
                     req.session.myData.standard = _thisStandard.larsCode
@@ -1005,7 +1005,7 @@ module.exports = function (router,_myData) {
         }
 
         //Selected standard
-        setSelectedStandard(req,req.query.standard)
+        setSelectedStandard(req,req.session.myData.standard)
 
         //Location reset/setup
         if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
@@ -1377,7 +1377,7 @@ module.exports = function (router,_myData) {
         // Selected EPAO
         req.session.myData.selectedEPAO = req.session.myData.epaos.list.find(obj => obj.id == req.session.myData.epao)
 
-        setSelectedStandard(req,req.query.standard)
+        setSelectedStandard(req,req.session.myData.standard)
 
         res.render(version + '/epao-2', {
             myData:req.session.myData
@@ -1409,15 +1409,16 @@ module.exports = function (router,_myData) {
             });
         } else {
             req.session.myData.epaocourseAnswer = req.session.myData.epaocourseAnswerTemp
+            req.session.myData.standard = req.session.myData.epaocourseAnswer
             req.session.myData.epaolocationAnswerApplied = false
             req.session.myData.epaocourseAnswerTemp = ''
 
-            setSelectedStandard(req,req.session.myData.epaocourseAnswer)
+            setSelectedStandard(req,req.session.myData.standard)
 
             if(req.session.myData.selectedStandard.epaos.number == 0){
                 //0 EPAOs
                 req.session.myData.returnURLepaodropout = "epao-course"
-                req.session.myData.dropout = "epaolocation"
+                req.session.myData.dropout = "epaocourse"
                 res.redirect(301, '/' + version + '/epao-dropout?s=epao&standard=' + req.session.myData.standard);
             } else {
                 var _hasANonNational = false
@@ -1459,6 +1460,8 @@ module.exports = function (router,_myData) {
             return 0;
         });
 
+        setSelectedStandard(req,req.session.myData.standard)
+
         res.render(version + '/epao-location', {
             myData: req.session.myData
         });
@@ -1487,17 +1490,10 @@ module.exports = function (router,_myData) {
 
             var _matches = 0,
                 _matchedEPAOid = 1
-            req.session.myData.epaos.list.forEach(function(_epao, index) {
-                var _hasAMatchcount = 0
-                req.session.myData.selectedStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
-                    if(_epaoOnStandard.toUpperCase() == _epao.name.toUpperCase()){
-                        _hasAMatchcount++
-                    }
-                });
-                if(_epao.regions.includes(req.session.myData.epaolocationAnswer.toString()) || _epao.regions.includes("10")){
-                    _hasAMatchcount++
-                }
-                if(_hasAMatchcount == 2){
+           
+            req.session.myData.selectedStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
+                var _epao = req.session.myData.epaos.list.find(obj => obj.name.toUpperCase() === _epaoOnStandard.toUpperCase())
+                if(_epao && (_epao.regions.includes(req.session.myData.epaolocationAnswer.toString()) || _epao.regions.includes("10"))){
                     _matchedEPAOid = _epao.id
                     _matches++
                 }
@@ -1527,7 +1523,7 @@ module.exports = function (router,_myData) {
     // EPAO dropout
     router.get('/' + version + '/epao-dropout', function (req, res) {
 
-        setSelectedStandard(req,req.query.standard)
+        setSelectedStandard(req,req.session.myData.standard)
 
         res.render(version + '/epao-dropout', {
             myData:req.session.myData

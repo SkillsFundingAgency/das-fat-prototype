@@ -26,7 +26,7 @@
             {% endif %}
         </h1>
 
-        <p class="govuk-body govuk-!-margin-bottom-6"><span class="govuk-!-font-weight-bold">Showing assessment organisations for </span><br> {{_standardTitle|safe}}</p>
+        <p class="govuk-body govuk-!-margin-bottom-6"><span class="govuk-!-font-weight-bold">Showing assessment organisations for </span><br> {{_standardTitle|safe}}{% if myData.epaolocationAnswerApplied %} in {{myData.selectedRegion.label}}{% endif %}</p>
         <!-- <p class="govuk-body govuk-!-margin-bottom-6"> <span class="govuk-!-font-weight-bold">Location:</span><br> [location here]</p> -->
 
         {% if _selectedStandard.epaos.number == 0 %}

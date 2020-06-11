@@ -20,23 +20,16 @@
     <div class="govuk-grid-column-two-thirds">
 
         <h1 class="govuk-heading-xl" >
-            [Drop out as 0 EPAOs]
+            0 assessment organisations
         </h1>
 
-        <!-- IF dropout is from course -->
-        {% if myData.dropout == "epaolocation" %}
-        <h2 class="govuk-heading-m" style="color:red">[0 EPAOs for course AND location]</h2>
-        <h2 class="govuk-heading-m" style="color:red">[{{_standardTitle|safe}} has EPAOs but none for your location]</h2>
-        {% else %}
-        <h2 class="govuk-heading-m" style="color:red">[0 EPAOs for course]</h2>
+        <p class="govuk-body govuk-!-margin-bottom-6"> <span class="govuk-!-font-weight-bold">Apprenticeship training course:</span><br> {{_standardTitle|safe}}{% if myData.epaolocationAnswerApplied %} in {{myData.selectedRegion.label}}{% endif %}</p>
 
-            {% if _selectedStandard.epaos.inprinciple == true %}
-            <h2 class="govuk-heading-m" style="color:red">{{_standardTitle|safe}} has an EPAO in principle</h2>
-            {% else %}
-            <h2 class="govuk-heading-m" style="color:red">{{_standardTitle|safe}} DOES NOT have an EPAO in principle</h2>
-            {% endif %}
 
-        {% endif %}
+        <p class="govuk-body">The Education and Skills Funding Agency (ESFA) can advise you what to do next.</p>
+        <a class="govuk-button govuk-link govuk-link--no-visited-state" href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us">
+            Contact ESFA
+        </a>
 
     </div>
 </div>

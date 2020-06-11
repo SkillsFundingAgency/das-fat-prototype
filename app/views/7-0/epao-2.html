@@ -8,6 +8,8 @@
 {% set _selectedStandard = myData.selectedStandard %}
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
+{% set _epaoCount = req.session.myData.epaoCount or _selectedStandard.epaos.number %}
+
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     <a href="{{myData.returnURLepao2}}" class="govuk-back-link">Back</a>
@@ -18,19 +20,23 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        <span class="govuk-caption-xl">End-point assessment organisation (EPAO)</span>
         <h1 class="govuk-heading-xl" >
             {{_selectedEPAO.name}} 
         </h1>
 
-        <h2 class="govuk-heading-l">Course: {{_standardTitle | safe}}</h2>
-        <h2 class="govuk-heading-l">Location: TO DO</h2>
+        <p class="govuk-body "><span class="govuk-!-font-weight-bold">Assessment organisation for </span><br> {{_standardTitle|safe}}{% if myData.epaolocationAnswerApplied %} in {{myData.selectedRegion.label}}{% endif %}</p>
 
         <dl class="govuk-summary-list">
             {% if _selectedEPAO.contactname %}
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Contact name</dt>
                 <dd class="govuk-summary-list__value">{{_selectedEPAO.contactname}}</dd>
+            </div>
+            {% endif %}
+            {% if _selectedEPAO.website %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Website</dt>
+                <dd class="govuk-summary-list__value"><a target="_blank" class="govuk-link govuk-link--no-visited-state" href="#">{{_selectedEPAO.website}}</a></dd>
             </div>
             {% endif %}
             {% if _selectedEPAO.email %}
@@ -41,16 +47,11 @@
             {% endif %}
             {% if _selectedEPAO.phone %}
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Telephone</dt>
+                <dt class="govuk-summary-list__key">Phone number</dt>
                 <dd class="govuk-summary-list__value">{{_selectedEPAO.phone}}</dd>
             </div>
             {% endif %}
-            {% if _selectedEPAO.website %}
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Website</dt>
-                <dd class="govuk-summary-list__value"><a target="_blank" class="govuk-link govuk-link--no-visited-state" href="#">{{_selectedEPAO.website}}</a></dd>
-            </div>
-            {% endif %}
+            
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Address</dt>
                 <dd class="govuk-summary-list__value">
@@ -61,17 +62,15 @@
                     {% if _selectedEPAO.postcode %}<br>{{_selectedEPAO.postcode}}{% endif %}
                 </dd>
             </div>
-        
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">EPAO ID</dt>
-                <dd class="govuk-summary-list__value">{{_selectedEPAO.epaoID}}</dd>
-            </div>
-            <!-- <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Type</dt>
-                <dd class="govuk-summary-list__value">{{_selectedEPAO.type}}</dd>
-            </div> -->
         </dl>
 
+        {% if _epaoCount == 1 %}
+        <p class="govuk-body ">{{_selectedEPAO.name}} is the only assessment organisation for {{_standardTitle|safe}}{% if myData.epaolocationAnswerApplied %} in {{myData.selectedRegion.label}}{% endif %}.</p>
+        {% else %}
+        <p class="govuk-body ">{{_selectedEPAO.name}} is 1 of {{myData.epaoCount}} assessment organisations for {{_standardTitle|safe}}{% if myData.epaolocationAnswerApplied %} in {{myData.selectedRegion.label}}{% endif %}.</p>
+        <p class="govuk-body govuk-!-margin-bottom-6"><a href="{{myData.returnURLepao2}}" class="govuk-link govuk-link--no-visited-state"> View the other assessment organisations</a></p>
+        {% endif %}
+        
     </div>
     <div class="govuk-grid-column-one-third">
        &nbsp;

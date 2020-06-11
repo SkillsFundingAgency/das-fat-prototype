@@ -1430,6 +1430,7 @@ module.exports = function (router,_myData) {
                         }
                     }
                 });
+                req.session.myData.epaoCount = req.session.myData.selectedStandard.epaos.number
                 if(_hasANonNational){
                     //1 or more Non National EPAOs
                     res.redirect(301, '/' + version + '/epao-location?s=epao&standard=' + req.session.myData.epaocourseAnswer);
@@ -1475,7 +1476,7 @@ module.exports = function (router,_myData) {
             req.session.myData.validationError = "true"
             req.session.myData.validationErrors.epaolocationAnswer = {
                 "anchor": "epaolocation-1",
-                "message": "Select an apprenticeship training location"
+                "message": "Select where the apprenticeship is"
             }
         }
 
@@ -1487,6 +1488,10 @@ module.exports = function (router,_myData) {
             req.session.myData.epaolocationAnswer = req.session.myData.epaolocationAnswerTemp
             req.session.myData.epaolocationAnswerApplied = true
             req.session.myData.epaolocationAnswerTemp = ''
+
+            req.session.myData.selectedRegion = req.session.myData.regions.find(obj => obj.id == req.session.myData.epaolocationAnswer)
+
+            // req.session.myData.selectedRegion = 
 
             var _matches = 0,
                 _matchedEPAOid = 1
@@ -1505,6 +1510,7 @@ module.exports = function (router,_myData) {
                 req.session.myData.dropout = "epaolocation"
                 res.redirect(301, '/' + version + '/epao-dropout?s=epao&standard=' + req.session.myData.standard);
             } else {
+                req.session.myData.epaoCount = _matches
                 if(_matches == 1) {
                     // direct to EPAO
                     req.session.myData.returnURLepao2 = "epao-location"

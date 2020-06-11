@@ -57,7 +57,7 @@
     <div class="govuk-grid-column-two-thirds">
 
         <h1 class="govuk-heading-xl" >
-            End-point assessment organisations (EPAOs)
+            Assessment organisations
         </h1>
 
     </div>
@@ -141,12 +141,12 @@
                         </div>
 
                         <!-- Search box -->
-                        <div class="govuk-form-group" >
+                        <!-- <div class="govuk-form-group" >
                             <label for="search-epaos" class="govuk-label" >
-                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">EPAO name</span>
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Name</span>
                             </label>
                             <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-epaos" name="q" class="govuk-input">
-                        </div>
+                        </div> -->
 
                         <!-- Regions -->
 
@@ -154,7 +154,7 @@
                         <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Delivery areas
+                                    Locations
                                 </legend>
                                 <div class="govuk-checkboxes govuk-checkboxes--small">
                                     {% for _regionOption in _regionOptions %}
@@ -237,7 +237,7 @@
                     <a href="epao?epao={{_epao.id}}" class="govuk-link govuk-link--no-visited-state">{{_epao.name}}</a>
                 </h2>
                 <ul class="govuk-list">
-                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Delivery areas:</span> {{_deliveryAreasLabel}}</li>
+                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Location</span> {{_deliveryAreasLabel}}</li>
                     <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Courses assessed: </span>
                         <ul class="govuk-list govuk-list--bullet govuk-!-margin-top-1">
                             {% set _loop = 0 %}
@@ -261,7 +261,7 @@
 
         {% else %}
 
-        <p class="govuk-body govuk-!-margin-top-4">No end-point assessment organisations for the selected filters.</p>
+        <p class="govuk-body govuk-!-margin-top-4">No assessment organisations for the selected filters.</p>
 
         {% endif %}
 

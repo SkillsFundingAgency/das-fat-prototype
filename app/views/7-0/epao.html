@@ -1,10 +1,5 @@
 {% extends myData.layout %}
-{% if myData.service == "epao" %}
-    {% set serviceName = "Find an end-point assessment organisation" %}
-    {% set serviceUrl = "home-epao" %}
-{% else %}
-    {% set serviceName = "Find apprenticeship training" %}
-{% endif %}
+{% set serviceName = "Find apprenticeship training" %}
 
 {% set _selectedEPAO = myData.selectedEPAO %}
 {% set _epaoTitle = _selectedEPAO.name %}
@@ -24,11 +19,7 @@
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
-    {% if myData.service == "epao" %}
-        <a href="{{myData.returnURL}}" class="govuk-back-link">Back</a>
-    {% else %}
-        {% include "includes/breadcrumb.html" %}
-    {% endif %}
+    {% include "includes/breadcrumb.html" %}
 {% endblock %}
 
 {% block content %}
@@ -54,16 +45,15 @@
             {{_epaoTitle | safe}} 
         </h1>
 
-        {% if myData.service != "epao" or (myData.service == "epao" and myData.returnURL == "epaos-2") %}
 
          <!-- Course panel -->
          {% if myData.standardsearchapplied %}
          <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
              <span class="govuk-caption-l">Apprenticeship training course</span>
              <h2 class="govuk-heading-l govuk-!-margin-bottom-3">{{_standardTitle | safe}}</h2>
-             {% if myData.service != "epao" %}
+
              <p class="govuk-body govuk-!-margin-bottom-5"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{_selectedStandard.larsCode}}">Overview of {{_standardTitle|safe}}</a></p>
-             {% endif %}
+
 
              <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Location of apprenticeship</h2>
  
@@ -134,8 +124,6 @@
          </div>
          {% endif %}
 
-         {% endif %}
-
 
         <dl class="govuk-summary-list govuk-!-margin-bottom-7">
             {% if _selectedEPAO.contactname %}
@@ -201,30 +189,6 @@
         {% endfor %}
         </p>
 
-        {% if myData.service == "epao" %}
-
-        <h2 class="govuk-heading-m ">Apprenticeship courses assessed by this EPAO ({{myData.displaycount}})</h2>
-        {% if myData.displaycount == 1 %}
-        <p class="govuk-body">
-            {% for _standard in myData.standards.list %}
-                {% if _standard.matchesEPAO %}
-                    {{_standard.title}} (level&nbsp;{{_standard.level}})
-                {% endif %}
-            {% endfor %}
-        </p>
-        {% else %}
-        <ul class="govuk-list govuk-list--bullet">
-            {% for _standard in myData.standards.list %}
-                {% if _standard.matchesEPAO %}
-                    <li>
-                        {{_standard.title}} (level&nbsp;{{_standard.level}})
-                    </li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% else %}
-
 
         <!-- FAT -->
 
@@ -243,9 +207,6 @@
                 {% endfor %}
             </tbody>
         </table>
-
-
-        {% endif %}
 
     </div>
     <div class="govuk-grid-column-one-third">

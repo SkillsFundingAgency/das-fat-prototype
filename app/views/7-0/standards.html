@@ -8,6 +8,8 @@
 
     <h1 class="govuk-heading-l">Snippets of the standards data stored in prototype</h1>
 
+    <h1 class="govuk-heading-xl" style="color:red">This is all TEST data and may/may not reflect real world data</h1>
+
     <details class="govuk-details" data-module="govuk-details">
       <summary class="govuk-details__summary">
         <span class="govuk-details__summary-text">
@@ -384,6 +386,49 @@
               </table>
               </div>
             </details>
+
+            <details class="govuk-details" data-module="govuk-details" >
+              <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                  Standards with 1 EPAO
+                </summary>
+                <div class="govuk-details__text">
+                  <h2 class="govuk-heading-l" >Standards with 1 EPAO</h2>
+  
+  
+                  <table class="govuk-table govuk-!-font-size-14">
+                    <thead class="govuk-table__head" >
+                      <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header">Standard</th>
+                        <th scope="col" class="govuk-table__header">EPAO</th>
+                        <th scope="col" class="govuk-table__header">Regions</th>
+                      </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                      
+                      {% for _standard in myData.standards.list %}
+                      {% if _standard.epaos.number == 1 %}
+                      <tr class="govuk-table__row">
+                        <td class="govuk-table__cell">
+                          {{_standard.title}}
+                        </td>
+                        <td class="govuk-table__cell">
+                          {{_standard.epaos.list[0]}}
+                        </td>
+                        <td class="govuk-table__cell" >
+                          {% for _epao in myData.epaos.list %}
+                          {% if _epao.name == _standard.epaos.list[0] %}
+                          {{_epao.regions}}
+                          {% endif %}
+                          {% endfor %}
+                        </td>
+                      </tr>
+                      {% endif %}
+                    {% endfor %}
+                  </tbody>
+                </table>
+                </div>
+              </details>
           
           
     <!-- <p class="govuk-body" >{{myData.standards.list|dump|safe}}</p> -->

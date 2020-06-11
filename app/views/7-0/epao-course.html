@@ -39,14 +39,15 @@
             {% endif %}
 
             <h1 class="govuk-heading-xl" >
-                Enter your apprentice’s training course
+                What is the apprenticeship training course?
+                <!-- Which apprenticeship training course do you need assessing? -->
             </h1>
 
             <!-- Course -->
             <div class="govuk-form-group {% if myData.validationErrors.epaocourseAnswer %}govuk-form-group--error{% endif %} ">
-                <label class="govuk-label" for="epaocourseAnswer">
+                <!-- <label class="govuk-label" for="epaocourseAnswer">
                     Apprenticeship training course
-                </label>
+                </label> -->
                 {% if myData.validationErrors.epaocourseAnswer %}
                 <span id="epaocourseAnswer-error" class="govuk-error-message">
                     <span class="govuk-visually-hidden">Error:</span>

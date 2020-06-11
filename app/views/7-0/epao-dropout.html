@@ -1,0 +1,44 @@
+{% extends myData.layout %}
+{% set serviceName = "Find an end-point assessment organisation" %}
+{% set serviceUrl = "home-epao" %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block pageTitle %} 
+[Page title here]
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="{{myData.returnURLepaodropout}}" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl" >
+            [Drop out as 0 EPAOs]
+        </h1>
+
+        <!-- IF dropout is from course -->
+        {% if myData.dropout != "epaolocation" %}
+        <h2 class="govuk-heading-m" style="color:red">[0 EPAOs]</h2>
+        {% if _selectedStandard.epaos.inprinciple == true %}
+        <h2 class="govuk-heading-m" style="color:red">{{_standardTitle|safe}} has an EPAO in principle</h2>
+        {% else %}
+        <h2 class="govuk-heading-m" style="color:red">{{_standardTitle|safe}} DOES NOT have an EPAO in principle</h2>
+        {% endif %}
+
+        {% else %}
+        <!-- IF dropout is from location -->
+        <!-- TODO -->
+        <h2 class="govuk-heading-m" style="color:red">[0 EPAOs for course AND location]</h2>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

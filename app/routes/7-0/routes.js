@@ -372,7 +372,17 @@ module.exports = function (router,_myData) {
         req.session.myData.routefilters = []
         req.session.myData.levelfilters = []
 
-        req.session.myData.returnURL = "epaos"
+
+        //Defautl back link values
+        req.session.myData.returnURLepaos2 = "epao-course"
+        req.session.myData.returnURLepao2 = "epaos-2"
+        req.session.myData.returnURLepaodropout = "epao-course"
+        
+
+        //Default answers
+        req.session.myData.epaocourseAnswer = 1
+        req.session.myData.epaolocationAnswer = 1
+        req.session.myData.epaolocationAnswerApplied = false
 
     }
 
@@ -415,9 +425,15 @@ module.exports = function (router,_myData) {
         //local storage clear boolean
         // req.session.myData.clearLocalStorage = (req.query.cls) ? true : false
 
+        // TODO actually make thsi work because it doesnt :D 
+        req.session.myData.returnURLepaos2 =  req.query.returnURLepaos2 || req.session.myData.returnURLepaos2
+        req.session.myData.returnURLepaos2 = req.body.returnURLepaos2 || req.session.myData.returnURLepaos2
+        req.session.myData.returnURLepao2 =  req.query.returnURLepao2 || req.session.myData.returnURLepao2
+        req.session.myData.returnURLepao2 = req.body.returnURLepao2 || req.session.myData.returnURLepao2
+        req.session.myData.returnURLepaodropout =  req.query.returnURLepaodropout || req.session.myData.returnURLepaodropout
+        req.session.myData.returnURLepaodropout = req.body.returnURLepaodropout || req.session.myData.returnURLepaodropout
 
-        req.session.myData.returnURL =  req.query.returnURL || req.session.myData.returnURL
-
+        
         //Constant checks for query
         req.session.myData.standard = req.query.standard || req.session.myData.standard
         req.session.myData.provider = req.query.provider || req.session.myData.provider
@@ -1137,112 +1153,50 @@ module.exports = function (router,_myData) {
     // EPAOs - 2 - for the EPAO journey
     router.get('/' + version + '/epaos-2', function (req, res) {
 
-        //Sort
-        sortSetup(req,"name","distance")
-
-        var _epaos = req.session.myData.epaos.list,
-            _standards = req.session.myData.standards.list
-
-        req.session.myData.searchfilters = []
-        req.session.myData.displaycount = _epaos.length
-        req.session.myData.needToMatchCount = 0
-        req.session.myData.selectedStandard = {}
-
-        // Standard filter reset/setup
-        req.session.myData.standardfilterapplied = true
         req.session.myData.displaycount = 0
-        req.session.myData.needToMatchCount++
-        for (var i = 0; i < _standards.length; i++) {
-            if(req.session.myData.standard == _standards[i].larsCode){
-                req.session.myData.selectedStandard = _standards[i]
-                break
-            }
+        req.session.myData.needToMatchCount = 1
+
+        setSelectedStandard(req,req.session.myData.standard)
+
+        if(req.session.myData.epaolocationAnswerApplied) {
+            req.session.myData.needToMatchCount++
         }
 
-        //Location reset/setup
-        if((req.query.location || (req.session.myData.location != "" && req.session.myData.location)) && req.session.myData.standardfilterapplied){
-            req.session.myData.locationTemp = req.session.myData.location
-            if(req.query.location == ""){
-                req.session.myData.locationTemp = ""
-            } else if (req.query.location) {
-                req.session.myData.locationTemp = req.query.location.trim()
-            }
-            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
-                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
-                if(cityMatch(req) || _postCodeMatch) {
-                    req.session.myData.displaycount = 0
-                    req.session.myData.needToMatchCount++
-                    req.session.myData.location = req.session.myData.locationTemp
-                    req.session.myData.locationapplied = true
-                    req.session.myData.searchfilters.push({"value": req.session.myData.location, "type": "location", "typeText": "Location of apprenticeship"})
-                } else {
-                    req.session.myData.locationapplied = false
-                    req.session.myData.location = ""
+        req.session.myData.epaos.list.forEach(function(_epao, index) {
+
+            req.session.myData.hasAMatchcount = 0
+
+            // Reset each epao
+            _epao.search = false
+
+            //STANDARD
+            req.session.myData.selectedStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
+                if(_epaoOnStandard.toUpperCase() == _epao.name.toUpperCase()){
+                    req.session.myData.hasAMatchcount++
                 }
-                continueRendering()
             });
-        } else {
-            continueRendering()
-        }
 
-        function continueRendering(){
+            //REGION
+            if(req.session.myData.epaolocationAnswerApplied) {
+                _epao.search = false
+                if(_epao.regions.includes(req.session.myData.epaolocationAnswer.toString()) || _epao.regions.includes("10")){
+                    req.session.myData.hasAMatchcount++
+                }
+            }
 
-            // Keyword search reset/setup
-            searchFilterSetup(req,"End-point assessment organisation name")
-
-            _epaos.forEach(function(_epao, index) {
-                
-                var _deliversStandard = false,
-                    _epaoIndex = 0
-
-                req.session.myData.hasAMatchcount = 0
-
-                // Reset each epao
+            //MATCHES ALL IT NEEDS TO?
+            if(req.session.myData.needToMatchCount > 0 && req.session.myData.needToMatchCount == req.session.myData.hasAMatchcount){
                 _epao.search = true
+                req.session.myData.displaycount++
+            }
 
-                //STANDARD
-                if(req.session.myData.standardfilterapplied) {
-                    _epao.search = false
-                    req.session.myData.selectedStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
-                        if(_epaoOnStandard.toUpperCase() == _epao.name.toUpperCase()){
-                            _epaoIndex = index
-                            _deliversStandard = true
-                            req.session.myData.hasAMatchcount++
-                        }
-                    });
-                }
+        });
 
-                //LOCATION
-                if(req.session.myData.locationapplied) {
-                    _epao.search = false
-                    if(_epao.locationmatch){
-                        req.session.myData.hasAMatchcount++
-                    }
-                }
+        sortEPAOs(req, "name")
 
-                //SEARCH TERM
-                if(req.session.myData.searchapplied) {
-                    var _searchesToDo = [
-                        {"searchOn": _epao.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"}
-                    ]
-                    checkStandardSearchTerm(req,_epao,_searchesToDo)
-                }
-
-                //MATCHES ALL IT NEEDS TO?
-                if(req.session.myData.needToMatchCount > 0 && req.session.myData.needToMatchCount == req.session.myData.hasAMatchcount){
-                    _epao.search = true
-                    req.session.myData.displaycount++
-                }
-
-            });
-
-            sortEPAOs(req, "name")
-
-            res.render(version + '/epaos-2', {
-                myData:req.session.myData
-            });
-
-        }
+        res.render(version + '/epaos-2', {
+            myData:req.session.myData
+        });
 
     });
 
@@ -1359,7 +1313,7 @@ module.exports = function (router,_myData) {
 
     });
 
-    // Epao
+    // EPAO
     router.get('/' + version + '/epao', function (req, res) {
 
         var _standards = req.session.myData.standards.list
@@ -1417,37 +1371,17 @@ module.exports = function (router,_myData) {
         }
     });
 
-    // EPAO - look by
-    router.get('/' + version + '/epao-how', function (req, res) {
-        res.render(version + '/epao-how', {
-            myData: req.session.myData
-        });
-    });
-    router.post('/' + version + '/epao-how', function (req, res) {
-        req.session.myData.epaohowAnswerTemp = req.body.epaohowAnswer
-        if(req.session.myData.includeValidation == "false"){
-            req.session.myData.epaohowAnswerTemp = req.session.myData.epaohowAnswerTemp || "Yes"
-        }
-        if(!req.session.myData.epaohowAnswerTemp){
-            req.session.myData.validationError = "true"
-            req.session.myData.validationErrors.epaohowAnswer = {
-                "anchor": "epaohow-1",
-                "message": "Select a way to find an end-point assessment organisation"
-            }
-        }
+    // EPAO 2
+    router.get('/' + version + '/epao-2', function (req, res) {
 
-        if(req.session.myData.validationError == "true") {
-            res.render(version + '/epao-how', {
-                myData: req.session.myData
-            });
-        } else {
-            req.session.myData.epaohowAnswer = req.session.myData.epaohowAnswerTemp
-            if(req.session.myData.epaohowAnswerTemp == "all") {
-                res.redirect(301, '/' + version + '/epaos-all');
-            } else {
-                res.redirect(301, '/' + version + '/epao-course');
-            }
-        }
+        // Selected EPAO
+        req.session.myData.selectedEPAO = req.session.myData.epaos.list.find(obj => obj.id == req.session.myData.epao)
+
+        setSelectedStandard(req,req.query.standard)
+
+        res.render(version + '/epao-2', {
+            myData:req.session.myData
+        });
     });
 
     // EPAO - course
@@ -1475,9 +1409,129 @@ module.exports = function (router,_myData) {
             });
         } else {
             req.session.myData.epaocourseAnswer = req.session.myData.epaocourseAnswerTemp
+            req.session.myData.epaolocationAnswerApplied = false
             req.session.myData.epaocourseAnswerTemp = ''
-            res.redirect(301, '/' + version + '/epaos-2?s=epao&standard=' + req.session.myData.epaocourseAnswer);
+
+            setSelectedStandard(req,req.session.myData.epaocourseAnswer)
+
+            if(req.session.myData.selectedStandard.epaos.number == 0){
+                //0 EPAOs
+                req.session.myData.returnURLepaodropout = "epao-course"
+                req.session.myData.dropout = "epaolocation"
+                res.redirect(301, '/' + version + '/epao-dropout?s=epao&standard=' + req.session.myData.standard);
+            } else {
+                var _hasANonNational = false
+                req.session.myData.epaos.list.forEach(function(_epao, index) {
+                    if(_epao.regions != 10){
+                        var _nonNational = req.session.myData.selectedStandard.epaos.list.find(obj => obj === _epao.name)
+                        if(_nonNational){
+                            _hasANonNational = true
+                        }
+                    }
+                });
+                if(_hasANonNational){
+                    //1 or more Non National EPAOs
+                    res.redirect(301, '/' + version + '/epao-location?s=epao&standard=' + req.session.myData.epaocourseAnswer);
+                } else if (req.session.myData.selectedStandard.epaos.number == 1)  {
+                    //Single National EPAO
+                    req.session.myData.returnURLepao2 = "epao-course"
+                    var _epao = req.session.myData.epaos.list.find(obj => obj.name === req.session.myData.selectedStandard.epaos.list[0])
+                    res.redirect(301, '/' + version + '/epao-2?s=epao&epao=' + _epao.id + '&standard=' + req.session.myData.standard);
+                } else {
+                    //More than 1 National EPAOs
+                    req.session.myData.returnURLepaos2 = "epao-course"
+                    res.redirect(301, '/' + version + '/epaos-2?s=epao&standard=' + req.session.myData.standard);
+                }
+            }
         }
+    });
+
+    // EPAO - location
+    router.get('/' + version + '/epao-location', function (req, res) {
+
+        req.session.myData.newregions = req.session.myData.regions
+        req.session.myData.newregions.sort(function(a,b){
+            if (a.label.toUpperCase() < b.label.toUpperCase()){
+                return -1
+            } else if(a.label.toUpperCase() > b.label.toUpperCase()){
+                return 1
+            }
+            return 0;
+        });
+
+        res.render(version + '/epao-location', {
+            myData: req.session.myData
+        });
+    });
+    router.post('/' + version + '/epao-location', function (req, res) {
+        req.session.myData.epaolocationAnswerTemp = req.body.epaolocationAnswer
+        if(req.session.myData.includeValidation == "false"){
+            req.session.myData.epaolocationAnswerTemp = req.session.myData.epaolocationAnswerTemp || 1
+        }
+        if(!req.session.myData.epaolocationAnswerTemp){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.epaolocationAnswer = {
+                "anchor": "epaolocation-1",
+                "message": "Select an apprenticeship training location"
+            }
+        }
+
+        if(req.session.myData.validationError == "true") {
+            res.render(version + '/epao-location', {
+                myData: req.session.myData
+            });
+        } else {
+            req.session.myData.epaolocationAnswer = req.session.myData.epaolocationAnswerTemp
+            req.session.myData.epaolocationAnswerApplied = true
+            req.session.myData.epaolocationAnswerTemp = ''
+
+            var _matches = 0,
+                _matchedEPAOid = 1
+            req.session.myData.epaos.list.forEach(function(_epao, index) {
+                var _hasAMatchcount = 0
+                req.session.myData.selectedStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
+                    if(_epaoOnStandard.toUpperCase() == _epao.name.toUpperCase()){
+                        _hasAMatchcount++
+                    }
+                });
+                if(_epao.regions.includes(req.session.myData.epaolocationAnswer.toString()) || _epao.regions.includes("10")){
+                    _hasAMatchcount++
+                }
+                if(_hasAMatchcount == 2){
+                    _matchedEPAOid = _epao.id
+                    _matches++
+                }
+            });
+
+            if(_matches == 0) {
+                // dropout
+                req.session.myData.returnURLepaodropout = "epao-location"
+                req.session.myData.dropout = "epaolocation"
+                res.redirect(301, '/' + version + '/epao-dropout?s=epao&standard=' + req.session.myData.standard);
+            } else {
+                if(_matches == 1) {
+                    // direct to EPAO
+                    req.session.myData.returnURLepao2 = "epao-location"
+                    res.redirect(301, '/' + version + '/epao-2?s=epao&epao=' + _matchedEPAOid + '&standard=' + req.session.myData.standard);
+                } else {
+                    // more than 1 epao
+                    req.session.myData.returnURLepaos2 = "epao-location"
+                    res.redirect(301, '/' + version + '/epaos-2?s=epao&standard=' + req.session.myData.epaocourseAnswer);
+                }
+            }
+
+
+        }
+    });
+
+    // EPAO dropout
+    router.get('/' + version + '/epao-dropout', function (req, res) {
+
+        setSelectedStandard(req,req.query.standard)
+
+        res.render(version + '/epao-dropout', {
+            myData:req.session.myData
+        });
     });
 
 }

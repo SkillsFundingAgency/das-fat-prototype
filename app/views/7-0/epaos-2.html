@@ -19,24 +19,10 @@
     <div class="govuk-grid-column-two-thirds">
 
         <h1 class="govuk-heading-xl" >
-            {% if _selectedStandard.epaos.number == 0 %}
-            [Drop out as 0 EPAOs]
-            {% else %}
             {{myData.displaycount}} assessment organisation{% if myData.displaycount != 1 %}s{% endif %}
-            {% endif %}
         </h1>
 
-        <p class="govuk-body govuk-!-margin-bottom-6"><span class="govuk-!-font-weight-bold">Showing assessment organisations for </span><br> {{_standardTitle|safe}}{% if myData.epaolocationAnswerApplied %} in {{myData.selectedRegion.label}}{% endif %}</p>
-        <!-- <p class="govuk-body govuk-!-margin-bottom-6"> <span class="govuk-!-font-weight-bold">Location:</span><br> [location here]</p> -->
-
-        {% if _selectedStandard.epaos.number == 0 %}
-            <h2 class="govuk-heading-m" style="color:red">[0 EPAOs]</h2>
-            {% if _selectedStandard.epaos.inprinciple == true %}
-            <h2 class="govuk-heading-m" style="color:red">{{_standardTitle|safe}} has an EPAO in principle</h2>
-            {% else %}
-            <h2 class="govuk-heading-m" style="color:red">{{_standardTitle|safe}} DOES NOT have an EPAO in principle</h2>
-            {% endif %}
-        {% else %}
+        <p class="govuk-body govuk-!-margin-bottom-6"><span class="govuk-!-font-weight-bold">Showing assessment organisations for </span><br> {{_standardTitle|safe}} that assess {% if myData.epaolocationAnswerApplied %}in {{myData.selectedRegion.label}}{% else %}throughout England{% endif %}</p>
 
     </div>
 </div>
@@ -44,16 +30,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-       
-        <!-- <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2> -->
-
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
-       
-        <!-- 
-            epaos list
-        -->
-
-        {% if myData.displaycount > 0 %}
 
         <!-- epaos -->
         {% for _epao in _epaos %}
@@ -87,7 +64,7 @@
                 </h2>
                 <ul class="govuk-list">
                     
-                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-color">{{_addressLabel}}</span></li>
+                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-color">Address: {{_addressLabel}}</span></li>
                     
                     {% if _epao.regions != 10 %}
                     <!-- <li class="govuk-!-font-size-16">Assesses in: {{_deliveryAreasLabel}} -->
@@ -99,11 +76,8 @@
             {% endif %}
         {% endfor %}
 
-        {% endif %}
-
     </div>
     
 </div>
-{% endif %}
 
 {% endblock %}

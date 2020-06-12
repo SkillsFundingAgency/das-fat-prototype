@@ -116,16 +116,19 @@
         {% endif %}
 
         <span class="govuk-caption-xl">Training provider</span>
-        <h1 class="govuk-heading-xl govuk-!-margin-bottom-6" >
+        <h1 class="govuk-heading-xl {% if myData.cmppdo != 'false' and myData.cmppde != 'false' %}govuk-!-margin-bottom-6{% endif %}" >
             {{_providerTitle | safe}}
         </h1>
 
+        {% if myData.cmppdo != "false" %}
         <!-- Ofsted -->
         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Ofsted rating</h2>
         <p class="govuk-body-l govuk-!-margin-bottom-4" >
             {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight-bold">{{_ratingOfstedTextToShow}}</span>
         </p>
+        {% endif %}
 
+        {% if myData.cmppde != "false" %}
         <!-- Employer reviews -->
         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Employer reviews</h2>
         <p class="govuk-body-l govuk-!-margin-bottom-4">
@@ -189,6 +192,7 @@
                 </ol>
             </div>
         </details>
+        {% endif %}
 
         <!-- Course panel -->
         {% if myData.standardsearchapplied %}
@@ -196,10 +200,13 @@
             <span class="govuk-caption-l">Apprenticeship training course</span>
             <h2 class="govuk-heading-l govuk-!-margin-bottom-3">{{_standardTitle | safe}}</h2>
             <p class="govuk-body govuk-!-margin-bottom-5"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{_selectedStandard.larsCode}}">Overview of {{_standardTitle|safe}}</a></p>
-            <!-- <p class="govuk-body govuk-!-margin-bottom-1">Achievement rate: <span class="govuk-!-font-weight-bol">68%</span> / National average: 64%</p> -->
 
+
+            {% if myData.cmppda != "false" %}
+            <!-- <p class="govuk-body govuk-!-margin-bottom-1">Achievement rate: <span class="govuk-!-font-weight-bol">68%</span> / National average: 64%</p> -->
             <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-font-weight-bold">68% achievement rate</p>
             <p class="govuk-body "><span style="color: #626a6e" class="govuk-!-font-size">3% higher than national average</span></p>
+            {% endif %}
 
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Location of apprenticeship</h2>
 
@@ -371,6 +378,7 @@
             </div>
         </dl>
 
+        {% if myData.cmppdoc != "false" %}
         <!-- All courses -->
         <h2 class="govuk-heading-m govuk-!-margin-top">Courses offered by this provider ({{myData.displaycount}})</h2>
         <p class="govuk-body ">Select a course to view locations, training options and contact details.</p>
@@ -404,6 +412,7 @@
                 {% endfor %}
             </tbody>
           </table>
+          {% endif %}
 
     </div>
     <div class="govuk-grid-column-one-third">

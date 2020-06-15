@@ -1007,7 +1007,7 @@ module.exports = function (router,_myData) {
         }
 
         //Selected standard
-        setSelectedStandard(req,req.session.myData.standard)
+        setSelectedStandard(req,req.query.standard)
 
         //Location reset/setup
         if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){

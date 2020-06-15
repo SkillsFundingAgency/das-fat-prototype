@@ -115,17 +115,31 @@ for (var _epaoLarsCode in _epaosOnStandards) {
 _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 
 // for pulling out counts of statuses on all stds in IFATE api
+// _myData.testStandardsData = []
 // require("request").get("https://www.instituteforapprenticeships.org/api/apprenticeshipstandards", (error, response, body) => {
 //     var _apiData = JSON.parse(body),
 //         _statusTypes = {},
-//         _versionTypes = {}
-//     console.log(_apiData.length + " standards in API (https://www.instituteforapprenticeships.org/api/apprenticeshipstandards)")
+//         _versionTypes = {},
+//         _testStandardsData = []
+//     // console.log(_apiData.length + " standards in API (https://www.instituteforapprenticeships.org/api/apprenticeshipstandards)")
 //     _apiData.forEach(function(_standard, index) {
 //         _statusTypes[_standard.status] = (_statusTypes[_standard.status] || 0) + 1
 //         _versionTypes["version " + _standard.version] = (_versionTypes["version " + _standard.version] || 0) + 1
+//         var _title = _standard.title + " (level " + _standard.level + ")",
+//             _standardData = {}
+        
+//         _standardData.larsCode = _standard.larsCode
+//         _standardData.title = _title
+//         _standardData.overview = _standard.overviewOfRole
+
+//         if(_standard.status == "Approved for delivery"){
+//             _testStandardsData.push(_standardData)
+//         }
+//         // console.log(_title)
 //     });
-//     console.log(_versionTypes)
-//     console.log(_statusTypes)
+//     console.log("START")
+//     console.log(JSON.stringify(_testStandardsData))
+//     console.log("END")
 // });
 // var distinctStatuses = [...new Set(_apiData.map(function(data){return data.statuses}))];
 

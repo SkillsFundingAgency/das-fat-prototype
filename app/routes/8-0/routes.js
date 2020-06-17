@@ -186,7 +186,7 @@ module.exports = function (router,_myData) {
             req.session.myData.needToMatchCount++
             req.session.myData.needToMatchCountExcludingLocation++
             req.session.myData.nationalapplied = true
-            req.session.myData.searchfilters.push({"value": "All England", "type": "national", "typeText": "Delivery area"})
+            req.session.myData.searchfilters.push({"value": "Offers training across England", "type": "national", "typeText": "All England"})
         }
     }
 

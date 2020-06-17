@@ -1037,8 +1037,6 @@ module.exports = function (router,_myData) {
             //Count of other providers
             req.session.myData.providersOnStandardCount = 0
             _providers.forEach(function(_provider, index) {
-                
-                req.session.myData.hasAMatchcount = 0
 
                 // Reset each provider
                 var _deliversStandard = false,
@@ -1046,7 +1044,7 @@ module.exports = function (router,_myData) {
 
                 //STANDARD
                 if(_provider.courses.includes(req.session.myData.selectedStandard.larsCode)){
-                    _provider.deliversStandard = true
+                    _deliversStandard = true
                     _hasAMatchcount++
                 }
 

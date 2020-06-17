@@ -224,7 +224,7 @@
 
                     {% if myData.providersOnStandardCount > 0 %}
                     <p class="govuk-body">There are {{myData.providersOnStandardCount}} training providers for {{_standardTitle | safe}} in the apprenticeship location.</p>
-                    <p class="govuk-body govuk-!-margin-top-4 govuk-!-margin-bottom-"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">View other training providers</a></p>
+                    <p class="govuk-body"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">View other training providers</a></p>
                     {% else %}
                     <p class="govuk-body">There are 0 training providers for {{_standardTitle | safe}} in the apprenticeship location.</p>
                     {% endif %}
@@ -332,7 +332,7 @@
             {% if myData.locationapplied and _selectedMatchesLocation %}
                 {% if myData.providersOnStandardCount > 1 %}
                 <p class="govuk-body">{{_providerTitle | safe}} is 1 of {{myData.providersOnStandardCount}} training providers for {{_standardTitle | safe}} in the apprenticeship location.</p>
-                <p class="govuk-body govuk-!-margin-top-4 govuk-!-margin-bottom-0"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">View other training providers</a></p>
+                <p class="govuk-body"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">View other training providers</a></p>
                 {% else %}
                 <p class="govuk-body">{{_providerTitle | safe}} is the only training provider for {{_standardTitle | safe}} in the apprenticeship location.</p>
                 {% endif %}

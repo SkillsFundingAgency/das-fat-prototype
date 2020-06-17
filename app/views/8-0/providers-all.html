@@ -147,6 +147,23 @@
                             <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" class="govuk-input">
                         </div>
 
+                        <!-- National -->
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Delivery area
+                                </legend>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input" id="national-1" name="national" type="checkbox" value="national">
+                                        <label class="govuk-label govuk-checkboxes__label" for="national-1">
+                                            All England
+                                        </label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+
                         <!-- Course -->
                         <div class="govuk-form-group" >
                             <label for="search-training" class="govuk-label" >
@@ -234,25 +251,6 @@
                                 </div>
                             </fieldset>
                         </div>
-
-                        <!-- National -->
-                        {% if myData.standardsearchapplied %}
-                        <div class="govuk-form-group">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Delivery area
-                                </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="national-1" name="national" type="checkbox" value="national">
-                                        <label class="govuk-label govuk-checkboxes__label" for="national-1">
-                                            All England
-                                        </label>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                        {% endif %}
 
                         <!-- Search box -->
                         <!-- <div class="govuk-form-group" >

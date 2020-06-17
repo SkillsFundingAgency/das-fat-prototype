@@ -329,7 +329,7 @@ module.exports = function (router,_myData) {
 
         // Default setup
         req.session.myData.employeraccount = "false"
-        req.session.myData.epaoinfat = "true"
+        req.session.myData.epaoinfat = "false"
         req.session.myData.service = "fat"
         // req.session.myData.phase = "latest"
 
@@ -731,14 +731,14 @@ module.exports = function (router,_myData) {
 
         function continueRendering(){
 
+            // National filter setup
+            nationalFilterSetup(req)
+
             // Ofsted ratings filter setup
             ofstedFilterSetup(req)
 
             // Employer reviews filter setup
             employerReviewsFilterSetup(req)
-
-            // National filter setup
-            nationalFilterSetup(req)
 
             // Keyword search reset/setup
             searchFilterSetup(req,"Training provider name")
@@ -779,6 +779,16 @@ module.exports = function (router,_myData) {
                     }
                 }
 
+                // NATIONAL
+                if(req.session.myData.nationalapplied) {
+                    _provider.search = false
+                    _provider.searchExcludingLocation = false
+                    if(_provider.national){
+                        req.session.myData.hasAMatchcount++
+                        req.session.myData.hasAMatchcountExcludingLocation++
+                    }
+                }
+
                 // OFSTED RATING
                 if(req.session.myData.ofstedratingsapplied) {
                     _provider.search = false
@@ -801,16 +811,6 @@ module.exports = function (router,_myData) {
                             req.session.myData.hasAMatchcountExcludingLocation++
                         }
                     });
-                }
-
-                // NATIONAL
-                if(req.session.myData.nationalapplied) {
-                    _provider.search = false
-                    _provider.searchExcludingLocation = false
-                    if(_provider.national){
-                        req.session.myData.hasAMatchcount++
-                        req.session.myData.hasAMatchcountExcludingLocation++
-                    }
                 }
 
                 //SEARCH TERM
@@ -903,8 +903,6 @@ module.exports = function (router,_myData) {
 
             // Keyword search reset/setup
             searchFilterSetup(req,"Training provider name")
-
-
 
             // FILTER providers
             // CHECK FOR MATCHES

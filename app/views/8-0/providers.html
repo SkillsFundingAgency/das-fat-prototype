@@ -195,6 +195,25 @@
 
                         {% endif %}
 
+                        {% if myData.cmppfd != "false" %}
+                        <!-- National -->
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Delivery area
+                                </legend>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.nationalapplied %}checked{% endif %} class="govuk-checkboxes__input" id="national-1" name="national" type="checkbox" value="national">
+                                        <label class="govuk-label govuk-checkboxes__label" for="national-1">
+                                            All England
+                                        </label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        {% endif %}
+
                         {% if myData.cmppfo != "false" %}
                         <!-- Ofsted rating -->
                         {% set _ofstedOptions = [{"id":1,"label":"Outstanding"},{"id":2,"label":"Good"},{"id":3,"label":"Requires improvement"},{"id":4,"label":"Inadequate"},{"id":0,"label":"Not yet rated"}] %}
@@ -246,25 +265,6 @@
                                             </label>
                                         </div>
                                     {% endfor %}
-                                </div>
-                            </fieldset>
-                        </div>
-                        {% endif %}
-
-                        {% if myData.cmppfd != "false" %}
-                        <!-- National -->
-                        <div class="govuk-form-group">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Delivery area
-                                </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input {% if myData.nationalapplied %}checked{% endif %} class="govuk-checkboxes__input" id="national-1" name="national" type="checkbox" value="national">
-                                        <label class="govuk-label govuk-checkboxes__label" for="national-1">
-                                            All England
-                                        </label>
-                                    </div>
                                 </div>
                             </fieldset>
                         </div>

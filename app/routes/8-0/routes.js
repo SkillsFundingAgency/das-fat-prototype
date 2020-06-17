@@ -985,10 +985,12 @@ module.exports = function (router,_myData) {
     // Provider
     router.get('/' + version + '/provider', function (req, res) {
 
-        var _standards = req.session.myData.standards.list
+        var _standards = req.session.myData.standards.list,
+            _providers = req.session.myData["providers-new"].list
 
-        for (var i = 0; i < req.session.myData["providers-new"].list.length; i++) {
-            var _thisProvider = req.session.myData["providers-new"].list[i]
+        // Selected provider        
+        for (var i = 0; i < _providers.length; i++) {
+            var _thisProvider = _providers[i]
             if(req.session.myData.provider == _thisProvider.id){
                 req.session.myData.selectedProvider = _thisProvider
             }
@@ -1031,6 +1033,39 @@ module.exports = function (router,_myData) {
         }
         
         function continueRendering(){
+
+            //Count of other providers
+            req.session.myData.providersOnStandardCount = 0
+            _providers.forEach(function(_provider, index) {
+                
+                req.session.myData.hasAMatchcount = 0
+
+                // Reset each provider
+                var _deliversStandard = false,
+                    _hasAMatchcount = 0
+
+                //STANDARD
+                if(_provider.courses.includes(req.session.myData.selectedStandard.larsCode)){
+                    _provider.deliversStandard = true
+                    _hasAMatchcount++
+                }
+
+                //LOCATION
+                var _providerBlacklisted = false
+                if(req.session.myData.standard == 34){
+                    _providerBlacklisted = true
+                }
+                _provider.search = false
+                if(_deliversStandard && (_provider.national || _provider.locationmatch) && !_providerBlacklisted){
+                    _hasAMatchcount++
+                }
+
+                //MATCHES ALL IT NEEDS TO?
+                if(_hasAMatchcount == 2){
+                    req.session.myData.providersOnStandardCount++
+                }
+            });
+
             res.render(version + '/provider', {
                 myData:req.session.myData
             });

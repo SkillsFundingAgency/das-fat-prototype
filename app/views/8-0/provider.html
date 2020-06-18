@@ -83,6 +83,7 @@
 <style>
     #search-location {
         height: 40px;
+        /* background: white; */
         border-right: 0;
     }
     .autocomplete__hint {
@@ -208,7 +209,7 @@
             <p class="govuk-body "><span style="color: #626a6e" class="govuk-!-font-size">3% higher than national average</span></p>
             {% endif %}
 
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Location of apprenticeship</h2>
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
 
             {% if myData.locationapplied %}
                 <p class="govuk-body govuk-!-margin-bottom-"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
@@ -225,10 +226,10 @@
                     <p class="govuk-body govuk-!-margin-bottom-0"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-button govuk-link--no-visited-state">View other training providers</a></p>
                     {% else %}
                     <p class="govuk-body">There are 0 training providers for {{_standardTitle | safe}} in the apprenticeship location.</p>
-                    <div class="govuk-inset-text">
+                    <!-- <div class="govuk-inset-text">
                         <p>There are x training providers that do not currently deliver to your apprenticeship location.</p>
                         <p class="govuk-body"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">View nearest training providers</a></p>
-                    </div>
+                    </div> -->
                     {% endif %}
                 {% endif %}
 
@@ -236,7 +237,7 @@
                 <!-- nearest location and training options -->
                 {% if _selectedMatchesLocation == true %}
                 <div class="govuk-!-margin-bottom-6">
-                    <h2 class="govuk-heading-s govuk-!-margin-bottom-3">{{_providerTitle | safe}}’s available training options</h2>
+                    <h2 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-top-6">{{_providerTitle | safe}}’s training options</h2>
                     
                     <ul class="govuk-list fat-training-options govuk-!-margin-bottom-4" >
                         
@@ -255,7 +256,7 @@
                         {% endif %}
 
                         <li class="{% if _inWorkplace %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
-                            In&nbsp;your&nbsp;workplace
+                            At&nbsp;apprentice’s&nbsp;workplace
                         </li>
 
                         <li class="{% if _dayRelease %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
@@ -299,7 +300,7 @@
 
             {% else %}
                 <!-- Enter location form -->
-                <p class="govuk-body">Check {{_providerTitle | safe}}’s available training options.</p>
+                <p class="govuk-body">Check {{_providerTitle | safe}}’s training options for the apprenticeshhip location.</p>
                 <form action="provider" method="GET" class="govuk-!-width-three-quarters" >
                     <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
                         <label for="search-location" class="govuk-label" >
@@ -312,6 +313,13 @@
                             </div>
                         </div>
                     </div>
+                    <!-- <div class="govuk-form-group" >
+                        <label for="search-location" class="govuk-label" >
+                            <span class="govuk-!-font-weight-bol">Enter location</span>
+                        </label>
+                        <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input ">
+                    </div>
+                    <button type="submit" class="govuk-button" id="search-location-submit">View training options</button> -->
                     <input type="hidden" value="{{_selectedStandard.larsCode}}" name="standard" >
                     <input type="hidden" value="{{_selectedProvider.id}}" name="provider" >
                 </form>
@@ -412,11 +420,11 @@
 
         {% if myData.cmppdoc != "false" %}
         <!-- All courses -->
-        <h2 class="govuk-heading-m govuk-!-margin-top-7">All courses offered by this provider ({{myData.displaycount}})</h2>
-        <details class="govuk-details govuk-!-margin-top-" data-module="govuk-details">
+        <!-- <h2 class="govuk-heading-m govuk-!-margin-top-7">All courses offered by this provider ({{myData.displaycount}})</h2> -->
+        <details class="govuk-details govuk-!-margin-top-7" data-module="govuk-details">
             <summary class="govuk-details__summary">
             <span class="govuk-details__summary-text govuk-!-font-size">
-                View all courses offered by this provider
+                View all {{myData.displaycount}} courses offered by this provider
             </span>
             </summary> 
             <div class="govuk-details__text">

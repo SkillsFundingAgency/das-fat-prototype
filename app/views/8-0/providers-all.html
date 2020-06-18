@@ -174,7 +174,7 @@
 
                         <!-- Training options -->
                         {% if myData.standardsearchapplied and myData.locationapplied %}
-                        {% set _trainingOptions = [{"id":1,"label":"Day release"},{"id":2,"label":"Block release"},{"id":3,"label":"In your workplace"}] %}
+                        {% set _trainingOptions = [{"id":3,"label":"At apprentice’s workplace"},{"id":1,"label":"Day release"},{"id":2,"label":"Block release"}] %}
                         <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
@@ -290,12 +290,12 @@
         <!-- Sort -->
         {% if myData.locationapplied == true and myData.displaycount > 1 %}
         <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
-            {% if myData.sortby == "name" %}
-            <a class="govuk-link govuk-link--no-visited-state" href="providers-all?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}&sort=distance">Distance (nearest first)</a>, 
-            <span class="govuk-!-font-weight-bold">Name</span>
+            {% if myData.sortby == "distance" %}
+            <a class="govuk-link govuk-link--no-visited-state" href="providers-all?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}&sort=name">Name</a>, 
+            <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>
             {% else %}
-            <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>, 
-            <a class="govuk-link govuk-link--no-visited-state" href="providers-all?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}&sort=name">Name</a>
+            <span class="govuk-!-font-weight-bold">Name</span>, 
+            <a class="govuk-link govuk-link--no-visited-state" href="providers-all?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}&sort=distance">Distance (nearest first)</a>
             {% endif %}
         </p>
         {% elif myData.displaycount > 1 %}
@@ -384,54 +384,39 @@
                 <ul class="govuk-list">
 
                     {% if myData.locationapplied %}
-                    <li class="{% if myData.standardsearchapplied == false %}govuk-!-margin-bottom-3{% endif %}"><span>{{_provider.distance}}</span> mile{% if _provider.distance != 1 %}s{% endif %} away</li>
+                    <!-- <li class="{% if myData.standardsearchapplied == false %}govuk-!-margin-bottom-3{% endif %}"><span>{{_provider.distance}}</span> mile{% if _provider.distance != 1 %}s{% endif %} away</li> -->
                     {% endif %}
+
                     {% if myData.locationapplied and myData.standardsearchapplied %}
                     <li>
+                        {% set _dayRelease = _provider.distance > 11 %}
+                        {% set _blockRelease = _provider.distance > 20 %}
+                        {% set _inWorkplace = _provider.distance < 11 %}
+
+                        {% set _dayDistance = _provider.distance %}
+                        {% set _blockDistance = _provider.distance %}
+
+                        {% if _provider.distance < 4 or (_provider.distance > 6 and _provider.distance < 9) %}
+                            {% set _dayRelease = true %}
+                            {% set _blockRelease = true %}
+                            {% set _dayDistance = _provider.distance + 2.8 %}
+                            {% set _blockDistance = _dayDistance + 5.3 %}
+                        {% endif %}
                         <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
-                            <!-- <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li> -->
-                            <li {% if _provider.distance < 8 %}class="fat-cross-2"{% else %}class="fat-tick-2"{% endif %} >day&nbsp;release</li>
-                            <li class="middot" >&#183;</li>
-                            <li {% if _provider.distance > 20 %}class="fat-tick-2"{% else %}class="fat-cross-2"{% endif %} >block&nbsp;release</li>
-                            <li class="middot" >&#183;</li>
-                            <li {% if _provider.distance < 8 %}class="fat-tick-2"{% else %}class="fat-cross-2"{% endif %} >
-                                in&nbsp;your&nbsp;workplace
+
+                            <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
+                                At&nbsp;apprentice’s&nbsp;workplace
+                            </li>
+
+                            <li class="{% if _dayRelease %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
+                                Day&nbsp;release {% if _dayRelease %}({{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away){% endif %}
+                            </li>
+
+                            <li class="{% if _blockRelease %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-margin-bottom-2" style="display: block;">
+                                Block&nbsp;release {% if _blockRelease %}({{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away){% endif %}
                             </li>
                         </ul>
                     </li>
-
-                    <!-- Other locations -->
-                    {% set _otherLocations = false %}
-                    {% if _provider.distance < 4 or (_provider.distance > 6 and _provider.distance < 9) %}
-                        {% set _otherLocations = true %}
-                    {% endif %}
-                    
-                    {% if _otherLocations %}
-                    <li class="govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-2"><span style="display: block" class="govuk-!-margin-bottom-0 govuk-!-font-weight-bold">Other locations:</span></li>
-                    {% set _distance1 = _provider.distance + 2.8 %}
-                    {% set _distance2 = _distance1 + 5.3 %}
-                    <!-- <li class="govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-2">
-                        {{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away (closest)
-                    </li> -->
-                    <li>
-                        <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
-                            <li class="fat-tick-2" >day&nbsp;release</li>
-                            <li class="middot" >&#183;</li>
-                            <li class="fat-cross-2" >block&nbsp;release</li>
-                            <li class="middot" >&#183;</li>
-                            <li class="fat-cross-2" >in&nbsp;your&nbsp;workplace</li>
-                        </ul>
-                    </li>
-                    <li class="govuk-!-margin-bottom-3">
-                        <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
-                            <li class="fat-tick-2" >day&nbsp;release</li>
-                            <li class="middot" >&#183;</li>
-                            <li class="fat-tick-2" >block&nbsp;release</li>
-                            <li class="middot" >&#183;</li>
-                            <li class="fat-cross-2" >in&nbsp;your&nbsp;workplace</li>
-                        </ul>
-                    </li>
-                        {% endif %}
                     {% endif %}
 
                     {% if myData.standardsearchapplied %}

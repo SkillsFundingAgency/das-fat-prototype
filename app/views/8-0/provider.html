@@ -211,82 +211,95 @@
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Location of apprenticeship</h2>
 
             {% if myData.locationapplied %}
-                <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
-                <p class="govuk-body fat-availability {% if _selectedMatchesLocation %}fat-tick-2{% else %}fat-cross-2{% endif %}" >
-                    {% if _selectedMatchesLocation %}
-                    Available
-                    {% else %}
-                    Not available
-                    {% endif %}
+                <p class="govuk-body govuk-!-margin-bottom-"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
+                {% if _selectedMatchesLocation != true %}
+                <p class="govuk-body fat-availability fat-cross-2" >
+                    Not available at the apprenticeship location
                 </p>
+                {% endif %}
 
                 {% if myData.locationapplied and _selectedMatchesLocation != true %}
 
                     {% if myData.providersOnStandardCount > 0 %}
                     <p class="govuk-body">There are {{myData.providersOnStandardCount}} training providers for {{_standardTitle | safe}} in the apprenticeship location.</p>
-                    <p class="govuk-body"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">View other training providers</a></p>
+                    <p class="govuk-body govuk-!-margin-bottom-0"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-button govuk-link--no-visited-state">View other training providers</a></p>
                     {% else %}
                     <p class="govuk-body">There are 0 training providers for {{_standardTitle | safe}} in the apprenticeship location.</p>
+                    <div class="govuk-inset-text">
+                        <p>There are x training providers that do not currently deliver to your apprenticeship location.</p>
+                        <p class="govuk-body"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">View nearest training providers</a></p>
+                    </div>
                     {% endif %}
                 {% endif %}
 
 
-                <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{_providerTitle | safe}}’s nearest location</h2>
-                <p class="govuk-body govuk-!-margin-bottom-1">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
-                <p class="govuk-body govuk-!-margin-bottom-2">{{_selectedProvider.distance}} mile{% if _selectedProvider.distance != 1 %}s{% endif %} away</p>
-                <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1" >
-                    <!-- <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li> -->
-                    <li {% if _selectedProvider.distance < 11 %}class="fat-cross-2"{% else %}class="fat-tick-2"{% endif %} >day&nbsp;release</li>
-                    <li class="middot" >&#183;</li>
-                    <li {% if _selectedProvider.distance > 20 %}class="fat-tick-2"{% else %}class="fat-cross-2"{% endif %} >block&nbsp;release</li>
-                    <li class="middot" >&#183;</li>
-                    <li {% if _selectedProvider.distance < 11 %}class="fat-tick-2"{% else %}class="fat-cross-2"{% endif %} >
-                        in&nbsp;your&nbsp;workplace
-                    </li>
-                </ul>
+                <!-- nearest location and training options -->
+                {% if _selectedMatchesLocation == true %}
+                <div class="govuk-!-margin-bottom-6">
+                    <h2 class="govuk-heading-s govuk-!-margin-bottom-3">{{_providerTitle | safe}}’s available training options</h2>
+                    
+                    <ul class="govuk-list fat-training-options govuk-!-margin-bottom-4" >
+                        
+                        {% set _dayRelease = _selectedProvider.distance > 11 %}
+                        {% set _blockRelease = _selectedProvider.distance > 20 %}
+                        {% set _inWorkplace = _selectedProvider.distance < 11 %}
 
-                <!-- Other locations -->
-                {% set _otherLocations = false %}
-                {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 6 and _selectedProvider.distance < 9) %}
-                    {% set _otherLocations = true %}
-                {% endif %}
-                {% if _otherLocations %}
-                <ul class="govuk-list">
-                    <li class="govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-2"><span style="display: block" class="govuk-!-margin-bottom-0 govuk-!-font-weight-bold">Other locations:</span></li>
-                    {% set _distance1 = _selectedProvider.distance + 2.8 %}
-                    {% set _distance2 = _distance1 + 5.3 %}
-                    <!-- <li class="govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-2">
-                        {{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away (closest)
-                    </li> -->
-                    <li class="govuk-!-margin-bottom-3">
-                        <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
-                            <!-- <li style="display: inline; margin-right: 10px"><span class="govuk-!-font-size-16">Training options:</span></li> -->
-                            <li class="fat-tick-2" >day&nbsp;release</li>
-                            <li class="middot" >&#183;</li>
-                            <li class="fat-cross-2" >block&nbsp;release</li>
-                            <li class="middot" >&#183;</li>
-                            <li class="fat-cross-2" >in&nbsp;your&nbsp;workplace</li>
-                        </ul>
-                    </li>
-                    <!-- <li class="govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-2">
-                        {{ _distance2 | round(2) }} mile{% if _distance2 != 1 %}s{% endif %} away (closest)
-                    </li> -->
-                    <li class="govuk-!-margin-bottom-3">
-                        <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
-                            <!-- <li style="display: inline-block; min-width: 110px"><span class="govuk-!-font-size-16">{{ _distance1 | round(2) }} mile{% if _distance1 != 1 %}s{% endif %} away</span></li> -->
-                            <li class="fat-tick-2" >day&nbsp;release</li>
-                            <li class="middot" >&#183;</li>
-                            <li class="fat-tick-2" >block&nbsp;release</li>
-                            <li class="middot" >&#183;</li>
-                            <li class="fat-cross-2" >in&nbsp;your&nbsp;workplace</li>
-                        </ul>
-                    </li>
-                </ul>
+                        {% set _dayDistance = _selectedProvider.distance %}
+                        {% set _blockDistance = _selectedProvider.distance %}
+
+                        {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 6 and _selectedProvider.distance < 9) %}
+                            {% set _dayRelease = true %}
+                            {% set _blockRelease = true %}
+                            {% set _dayDistance = _selectedProvider.distance + 2.8 %}
+                            {% set _blockDistance = _dayDistance + 5.3 %}
+                        {% endif %}
+
+                        <li class="{% if _inWorkplace %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
+                            In&nbsp;your&nbsp;workplace
+                        </li>
+
+                        <li class="{% if _dayRelease %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
+                            Day&nbsp;release {% if _dayRelease %}({{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away){% endif %}
+                        </li>
+
+                        <li class="{% if _blockRelease %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
+                            Block&nbsp;release {% if _blockRelease %}({{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away){% endif %}
+                        </li>
+
+                    </ul>
+
+                    <!-- Addresses -->
+                    {% if _dayRelease and _blockRelease %}
+
+                        {% if _dayDistance == _blockDistance %}
+                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day and block release address</p>
+                            <p class="govuk-body">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
+                        {% else %}
+                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day release address</p>
+                            <p class="govuk-body">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
+                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Block release address</p>
+                            <p class="govuk-body govuk-!-margin-bottom-1">1 High Street, Birmingham, West Midlands, B1 3BP</p>
+                        {% endif %}
+
+                    {% else %}
+
+                        {% if _dayRelease %}
+                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day release address</p>
+                            <p class="govuk-body">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
+                        {% endif %}
+                        {% if _blockRelease %}
+                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day release address</p>
+                            <p class="govuk-body">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
+                        {% endif %}
+                    
+                    {% endif %}
+
+                </div>
                 {% endif %}
 
             {% else %}
                 <!-- Enter location form -->
-                <p class="govuk-body">Check {{_providerTitle | safe}}’s nearest location and training options.</p>
+                <p class="govuk-body">Check {{_providerTitle | safe}}’s available training options.</p>
                 <form action="provider" method="GET" class="govuk-!-width-three-quarters" >
                     <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
                         <label for="search-location" class="govuk-label" >
@@ -303,31 +316,34 @@
                     <input type="hidden" value="{{_selectedProvider.id}}" name="provider" >
                 </form>
             {% endif %}
+        </div>
 
             <!-- Course specific enquiries -->
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Contact this provider about this course</h2>
-            <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Email</dt>
-                    <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a></dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Telephone</dt>
-                    <dd class="govuk-summary-list__value">078&nbsp;7856&nbsp;9856</dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Website</dt>
-                    <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></dd>
-                </div>
-                <!-- <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Message</dt>
-                    <dd class="govuk-summary-list__value">
-                        <button class="govuk-button" data-module="govuk-button">
-                            Send message
-                        </button>
-                    </dd>
-                </div> -->
-            </dl>
+            <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Contact this provider about this course</h2>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Email</dt>
+                        <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a></dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Telephone</dt>
+                        <dd class="govuk-summary-list__value">078&nbsp;7856&nbsp;9856</dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Website</dt>
+                        <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></dd>
+                    </div>
+                    <!-- <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Message</dt>
+                        <dd class="govuk-summary-list__value">
+                            <button class="govuk-button" data-module="govuk-button">
+                                Send message
+                            </button>
+                        </dd>
+                    </div> -->
+                </dl>
+            </div>
 
             {% if myData.locationapplied and _selectedMatchesLocation %}
                 {% if myData.providersOnStandardCount > 1 %}
@@ -338,14 +354,14 @@
                 {% endif %}
             {% endif %}
             
-        </div>
+        
         {% elif myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Location of apprenticeship</h2>
             <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
             {% if _matchesLocation %}
-            <p class="govuk-body fat-availability fat-tick-2" >Available</p>
-            <p class="govuk-body">This provider offers {{myData.displaycount}} courses for the apprenticeship location.</p>
+            <p class="govuk-body fat-availability fat-tick-2" >This provider offers training for {{myData.displaycount}} courses in the apprenticeship location</p>
+            <!-- <p class="govuk-body">This provider offers {{myData.displaycount}} courses for the apprenticeship location.</p> -->
             <!-- <p class="govuk-body">Select a course.</p> -->
             {% else %}
             <p class="govuk-body fat-availability fat-cross-2" >Not available</p>
@@ -375,7 +391,7 @@
         </div>
         {% endif %}
         
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">General contact details</h2>
+        <!-- <h2 class="govuk-heading-m govuk-!-margin-bottom-2">General contact details</h2>
         
         <dl class="govuk-summary-list govuk-!-margin-bottom-7">
             <div class="govuk-summary-list__row">
@@ -390,43 +406,51 @@
                 <dt class="govuk-summary-list__key">Website</dt>
                 <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></dd>
             </div>
-        </dl>
+        </dl> -->
 
         {% if myData.cmppdoc != "false" %}
         <!-- All courses -->
-        <h2 class="govuk-heading-m govuk-!-margin-top">Courses offered by this provider ({{myData.displaycount}})</h2>
-        <p class="govuk-body ">Select a course to view locations, training options and contact details.</p>
-        
-        <table class="govuk-table">
-            <tbody class="govuk-table__body">
-                {% for _standard in myData.standards.list %}
-                    {% set _match = true %}
-                    {% if _standard.larsCode == 34 or _matchesLocation == false %}
-                        {% set _match = false %}
-                    {% endif %}
-                    {% if _standard.matchesProvider %}
-                        <tr class="govuk-table__row">
-                            <td class="govuk-table__cell">
-                                <a href="provider?standard={{_standard.larsCode}}&provider={{_selectedProvider.id}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a>
-                            </td>
-                            {% if myData.locationapplied %}
-                            <td class="govuk-table__cell">
-                                <p class="govuk-body govuk-!-margin-bottom-0 fat-availability {% if _match %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-font-size-16" >
-                                    {% if _match %}
-                                        Available
-                                    {% else %}
-                                        Not available
-                                    {% endif %}
-                                </p>
-                            </td>
+        <h2 class="govuk-heading-m govuk-!-margin-top-7">All courses offered by this provider ({{myData.displaycount}})</h2>
+        <details class="govuk-details govuk-!-margin-top-" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text govuk-!-font-size">
+                View all courses offered by this provider
+            </span>
+            </summary> 
+            <div class="govuk-details__text">
+                <p class="govuk-body ">Select a course to view locations, training options and contact details.</p>
+                <table class="govuk-table">
+                    <tbody class="govuk-table__body">
+                        {% for _standard in myData.standards.list %}
+                            {% set _match = true %}
+                            {% if _standard.larsCode == 34 or _matchesLocation == false %}
+                                {% set _match = false %}
                             {% endif %}
-                            
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </tbody>
-          </table>
-          {% endif %}
+                            {% if _standard.matchesProvider %}
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table__cell">
+                                        <a href="provider?standard={{_standard.larsCode}}&provider={{_selectedProvider.id}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a>
+                                    </td>
+                                    {% if myData.locationapplied %}
+                                    <!-- <td class="govuk-table__cell">
+                                        <p class="govuk-body govuk-!-margin-bottom-0 fat-availability {% if _match %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-font-size-16" >
+                                            {% if _match %}
+                                                Available
+                                            {% else %}
+                                                Not available
+                                            {% endif %}
+                                        </p>
+                                    </td> -->
+                                    {% endif %}
+                                    
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </details>
+        {% endif %}
 
     </div>
     <div class="govuk-grid-column-one-third">

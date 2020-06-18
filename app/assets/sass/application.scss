@@ -85,6 +85,24 @@ li.fat-cross-2 {
     background-size: 12px 18px;
     // padding-left: 19px;
 }
+// -3 is v8 onwards
+li.fat-tick-3,
+li.fat-cross-3 {
+    display: block;
+}
+.fat-tick-3,
+.fat-cross-3 {
+    padding-left: 30px;
+}
+.fat-tick-3 {
+    background: url(/public/images/icon-green-tick-2.svg) 0 0 no-repeat;
+    background-size: 23px 22px;
+}
+.fat-cross-3 {
+    background: url(/public/images/icon-red-cross-2.svg) 0 0 no-repeat;
+    background-size: 18px 23px;
+}
+//mid dot
 .middot {
     display: inline; 
     margin: 0 5px;

@@ -215,7 +215,7 @@
                 <p class="govuk-body govuk-!-margin-bottom-"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
                 {% if _selectedMatchesLocation != true %}
                 <p class="govuk-body fat-availability fat-cross-2" >
-                    Not available at the apprenticeship location
+                    This training provider does not offer this course at the apprenticeship location
                 </p>
                 {% endif %}
 
@@ -372,8 +372,7 @@
             <!-- <p class="govuk-body">This provider offers {{myData.displaycount}} courses for the apprenticeship location.</p> -->
             <!-- <p class="govuk-body">Select a course.</p> -->
             {% else %}
-            <p class="govuk-body fat-availability fat-cross-2" >Not available</p>
-            <p class="govuk-body">This provider does not offer training for the apprenticeship location.</p>
+            <p class="govuk-body fat-availability fat-cross-2" >This provider does not offer training for the apprenticeship location</p>
             {% endif %}
         </div>
         {% else %}

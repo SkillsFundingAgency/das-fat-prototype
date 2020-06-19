@@ -718,7 +718,7 @@ module.exports = function (router,_myData) {
                     req.session.myData.needToMatchCount++
                     req.session.myData.locationapplied = true
                     req.session.myData.location = req.session.myData.locationTemp
-                    req.session.myData.searchfilters.push({"value": req.session.myData.location, "type": "location", "typeText": "Location of apprenticeship"})
+                    req.session.myData.searchfilters.push({"value": req.session.myData.location, "type": "location", "typeText": "Apprenticeship location"})
                 } else {
                     req.session.myData.locationapplied = false
                     req.session.myData.location = ""
@@ -879,7 +879,7 @@ module.exports = function (router,_myData) {
                     req.session.myData.needToMatchCount++
                     req.session.myData.locationapplied = true
                     req.session.myData.location = req.session.myData.locationTemp
-                    req.session.myData.searchfilters.push({"value": req.session.myData.location, "type": "location", "typeText": "Location of apprenticeship"})
+                    req.session.myData.searchfilters.push({"value": req.session.myData.location, "type": "location", "typeText": "Apprenticeship location"})
                 } else {
                     req.session.myData.locationapplied = false
                     req.session.myData.location = ""

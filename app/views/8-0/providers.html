@@ -160,7 +160,7 @@
                         <!-- Location -->
                         <div class="govuk-form-group" >
                             <label for="search-location" class="govuk-label" >
-                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Location of apprenticeship</span>
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship location</span>
                             </label>
                             <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" class="govuk-input">
                         </div>
@@ -296,12 +296,12 @@
         {% if myData.cmppfl != "false" %}
         {% if myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Location of apprenticeship</h2>
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Apprenticeship location</h2>
             <p class="govuk-body"><span style="margin-right: 10px">{{myData.location}}</span> <a href="providers?{{_sortQuery}}{{_searchQuery}}{{_standardQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}{{_nationalQuery}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
         </div>
         {% else %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2>
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
             <p class="govuk-body govuk-!-margin-bottom-2">Show only providers who offer this training for the apprenticeship location.</p>
             <p class="govuk-body"><a href="#search-location" class="focus-field-prompt govuk-link govuk-link--no-visited-state" >Enter&nbsp;location</a></p>
         </div>
@@ -345,7 +345,7 @@
         <!-- Location applied, no results -->
         {% if _displayClosestInstead and myData.displaycountExcludingLocation > 0 %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5 govuk-!-margin-top-9">
-            <p class="govuk-body">Nearest training providers that do not currently deliver to your apprenticeship location.</p>
+            <p class="govuk-body">Nearest training providers that do not currently offer {{_standardTitle|safe}} at the apprenticeship location.</p>
         </div>
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
 

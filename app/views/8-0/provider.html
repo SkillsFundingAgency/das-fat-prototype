@@ -365,7 +365,7 @@
         
         {% elif myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Location of apprenticeship</h2>
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Apprenticeship location</h2>
             <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
             {% if _matchesLocation %}
             <p class="govuk-body fat-availability fat-tick-2" >This provider offers training for {{myData.displaycount}} courses in the apprenticeship location</p>
@@ -378,7 +378,7 @@
         </div>
         {% else %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Location of apprenticeship</h2>
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
             <!-- Enter location form -->
             <p class="govuk-body">Check if {{_providerTitle | safe}} offers training for the apprenticeship location.</p>
             <form action="provider" method="GET" class="govuk-!-width-three-quarters" >

@@ -204,7 +204,6 @@
 
 
             {% if myData.cmppda != "false" %}
-            <!-- <p class="govuk-body govuk-!-margin-bottom-1">Achievement rate: <span class="govuk-!-font-weight-bol">68%</span> / National average: 64%</p> -->
             <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-font-weight-bold">68% achievement rate</p>
             <p class="govuk-body "><span style="color: #626a6e" class="govuk-!-font-size">3% higher than national average</span></p>
             {% endif %}
@@ -226,11 +225,8 @@
                     <p class="govuk-body govuk-!-margin-bottom-0"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-button govuk-link--no-visited-state">View other training providers</a></p>
                     {% else %}
                     <p class="govuk-body">There are 0 training providers for {{_standardTitle | safe}} in the apprenticeship location.</p>
-                    <!-- <div class="govuk-inset-text">
-                        <p>There are x training providers that do not currently deliver to your apprenticeship location.</p>
-                        <p class="govuk-body"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">View nearest training providers</a></p>
-                    </div> -->
                     {% endif %}
+
                 {% endif %}
 
 
@@ -289,7 +285,7 @@
                             <p class="govuk-body">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
                         {% endif %}
                         {% if _blockRelease %}
-                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day release address</p>
+                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Block release address</p>
                             <p class="govuk-body">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
                         {% endif %}
                     
@@ -313,13 +309,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="govuk-form-group" >
-                        <label for="search-location" class="govuk-label" >
-                            <span class="govuk-!-font-weight-bol">Enter location</span>
-                        </label>
-                        <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input ">
-                    </div>
-                    <button type="submit" class="govuk-button" id="search-location-submit">View training options</button> -->
                     <input type="hidden" value="{{_selectedStandard.larsCode}}" name="standard" >
                     <input type="hidden" value="{{_selectedProvider.id}}" name="provider" >
                 </form>
@@ -342,14 +331,6 @@
                         <dt class="govuk-summary-list__key">Website</dt>
                         <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></dd>
                     </div>
-                    <!-- <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Message</dt>
-                        <dd class="govuk-summary-list__value">
-                            <button class="govuk-button" data-module="govuk-button">
-                                Send message
-                            </button>
-                        </dd>
-                    </div> -->
                 </dl>
             </div>
 
@@ -369,8 +350,6 @@
             <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
             {% if _matchesLocation %}
             <p class="govuk-body fat-availability fat-tick-2" >This provider offers training for {{myData.displaycount}} courses in the apprenticeship location</p>
-            <!-- <p class="govuk-body">This provider offers {{myData.displaycount}} courses for the apprenticeship location.</p> -->
-            <!-- <p class="govuk-body">Select a course.</p> -->
             {% else %}
             <p class="govuk-body fat-availability fat-cross-2" >This provider does not offer training for the apprenticeship location</p>
             {% endif %}
@@ -419,7 +398,6 @@
 
         {% if myData.cmppdoc != "false" %}
         <!-- All courses -->
-        <!-- <h2 class="govuk-heading-m govuk-!-margin-top-7">All courses offered by this provider ({{myData.displaycount}})</h2> -->
         <details class="govuk-details govuk-!-margin-top-7" data-module="govuk-details">
             <summary class="govuk-details__summary">
             <span class="govuk-details__summary-text govuk-!-font-size">
@@ -440,18 +418,6 @@
                                     <td class="govuk-table__cell">
                                         <a href="provider?standard={{_standard.larsCode}}&provider={{_selectedProvider.id}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a>
                                     </td>
-                                    {% if myData.locationapplied %}
-                                    <!-- <td class="govuk-table__cell">
-                                        <p class="govuk-body govuk-!-margin-bottom-0 fat-availability {% if _match %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-font-size-16" >
-                                            {% if _match %}
-                                                Available
-                                            {% else %}
-                                                Not available
-                                            {% endif %}
-                                        </p>
-                                    </td> -->
-                                    {% endif %}
-                                    
                                 </tr>
                             {% endif %}
                         {% endfor %}

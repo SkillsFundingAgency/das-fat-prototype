@@ -423,6 +423,8 @@ module.exports = function (router,_myData) {
         req.session.myData.cmppde =  req.query.cmppde || req.session.myData.cmppde
         req.session.myData.cmppdoc =  req.query.cmppdoc || req.session.myData.cmppdoc
         req.session.myData.cmpstar =  req.query.cmpstar || req.session.myData.cmpstar
+
+        req.session.myData.maxrows =  req.query.maxrows || 999999
         
         //referrer page
         req.session.myData.referrerpage = getRefererPage(req.headers.referer)

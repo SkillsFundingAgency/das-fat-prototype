@@ -311,6 +311,7 @@
         {% if myData.displaycount > 0 %}
 
         <!-- Providers -->
+        {% set _renderedRows = 0 %}
         {% for _provider in _providers %}
 
             <!-- Employer Ratings -->
@@ -381,7 +382,8 @@
                 {% set _starsOfsted = "" %}
             {% endif %}
             
-            {% if _provider.search == true %}
+            {% if _provider.search == true and _renderedRows < myData.maxrows  %}
+            {% set _renderedRows = _renderedRows + 1 %}
             <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
                     <a href="provider?provider={{_provider.id}}{{_standardQuery}}" class="govuk-link govuk-link--no-visited-state">{{_provider.name}}</a>

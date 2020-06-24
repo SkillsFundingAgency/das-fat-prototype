@@ -376,6 +376,11 @@
                 {% set _ratingOfstedColor = "poor-employer" %}
             {% endif %}
 
+            {% if myData.cmpstar == "false" %}
+                {% set _stars = "" %}
+                {% set _starsOfsted = "" %}
+            {% endif %}
+            
             {% if _provider.search == true %}
             <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">

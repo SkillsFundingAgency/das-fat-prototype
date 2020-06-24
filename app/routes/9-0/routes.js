@@ -360,6 +360,7 @@ module.exports = function (router,_myData) {
         req.session.myData.cmppdo = "true"
         req.session.myData.cmppde = "true"
         req.session.myData.cmppdoc = "true"
+        req.session.myData.cmpstar = "true"
 
         // Default filters
         req.session.myData.location = ""
@@ -421,6 +422,7 @@ module.exports = function (router,_myData) {
         req.session.myData.cmppdo =  req.query.cmppdo || req.session.myData.cmppdo
         req.session.myData.cmppde =  req.query.cmppde || req.session.myData.cmppde
         req.session.myData.cmppdoc =  req.query.cmppdoc || req.session.myData.cmppdoc
+        req.session.myData.cmpstar =  req.query.cmpstar || req.session.myData.cmpstar
         
         //referrer page
         req.session.myData.referrerpage = getRefererPage(req.headers.referer)

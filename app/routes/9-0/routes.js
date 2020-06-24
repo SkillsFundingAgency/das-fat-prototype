@@ -361,6 +361,7 @@ module.exports = function (router,_myData) {
         req.session.myData.cmppde = "true"
         req.session.myData.cmppdoc = "true"
         req.session.myData.cmpstar = "true"
+        req.session.myData.cmppfc = "true"
 
         // Default filters
         req.session.myData.location = ""
@@ -423,6 +424,7 @@ module.exports = function (router,_myData) {
         req.session.myData.cmppde =  req.query.cmppde || req.session.myData.cmppde
         req.session.myData.cmppdoc =  req.query.cmppdoc || req.session.myData.cmppdoc
         req.session.myData.cmpstar =  req.query.cmpstar || req.session.myData.cmpstar
+        req.session.myData.cmppfc =  req.query.cmppfc || req.session.myData.cmppfc
 
         req.session.myData.maxrows =  req.query.maxrows || 999999
         

@@ -218,9 +218,13 @@
         {% if _displayCount > 0 %}
 
         <div data-list>
+            {% set _renderedRows = 0 %}
             {% for _standard in myData.standards.list %}
-                {% if _standard.search == true %}
+                {% if _standard.search == true  and _renderedRows < myData.maxrows  %}
+                
+                    {% set _renderedRows = _renderedRows + 1 %}
                     {% set _standardData = [{"searchOn": _standard.autoCompleteString,"within": true,"exact": true},{"searchOn": _standard.jobRoles,"within": true,"exact": true}] %}
+
                     {% set _overview = _standard.overviewOfRole|trim %}
                     {% if _overview.slice(-1) != "." %}
                         {% set _overview = _overview + "." %}

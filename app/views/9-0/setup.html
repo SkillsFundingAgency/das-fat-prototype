@@ -135,6 +135,15 @@
                                         </label>
                                     </div>
                                 </div>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmppfc != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmppfc" id="cmppfc" name="cmppfc" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmppfc">
+                                            Providers - filter - course (all providers list only)
+                                        </label>
+                                    </div>
+                                </div>
+                                
 
 
                                 <div class="govuk-checkboxes govuk-checkboxes--small">
@@ -362,7 +371,8 @@
                     "cmppde": $('input[name=cmppde]:checked').val() || "false",
                     "cmppda": $('input[name=cmppda]:checked').val() || "false",
                     "cmppdoc": $('input[name=cmppdoc]:checked').val() || "false",
-                    "cmpstar": $('input[name=cmpstar]:checked').val() || "false"
+                    "cmpstar": $('input[name=cmpstar]:checked').val() || "false",
+                    "cmppfc": $('input[name=cmppfc]:checked').val() || "false"
                 };
             for (var [component, visibility] of Object.entries(_components)) {
                 if(visibility == "false"){

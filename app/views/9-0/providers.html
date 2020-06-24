@@ -368,6 +368,7 @@
 
         <!-- Providers -->
         {% set _closestCount = 0 %}
+        {% set _renderedRows = 0 %}
         {% for _provider in _providers %}
 
             <!-- Employer Ratings -->
@@ -434,9 +435,15 @@
                 {% set _ratingOfstedColor = "poor-employer" %}
             {% endif %}
 
+            {% if myData.cmpstar == "false" %}
+                {% set _stars = "" %}
+                {% set _starsOfsted = "" %}
+            {% endif %}
 
-            {% if _provider.search == true or (_displayClosestInstead and _provider.searchExcludingLocation == true) %}
 
+            {% if (_provider.search == true or (_displayClosestInstead and _provider.searchExcludingLocation == true)) and _renderedRows < myData.maxrows  %}
+            
+                {% set _renderedRows = _renderedRows + 1 %}
                 {% set _closestCount = _closestCount + 1 %}
 
                 {% if (_closestCount < 6 and _provider.distance < 50 and _displayClosestInstead) or _displayClosestInstead != true %}

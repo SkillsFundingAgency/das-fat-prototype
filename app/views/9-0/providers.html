@@ -89,7 +89,7 @@
 			<p class="govuk-body">
 				{{myData.notifications.message}}
 			</p>
-		</div>         
+		</div>
         {% endif %}
         <!-- <p class="govuk-body">{{myData.favourites|dump|safe}}</p> -->
 
@@ -99,8 +99,12 @@
         </h1>
 
         <p class="govuk-body govuk-!-margin-bottom-8"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{myData.standard}}">Overview of {{_standardTitle|safe}}</a></p>
-
       
+    </div>
+    <div class="govuk-grid-column-one-third">
+        {% if myData.totalFavourites > 0 %}
+        <p class="govuk-body" style="float:right"><a class="govuk-link govuk-link--no-visited-state" href="shortlist">View shortlisted traing providers ({{myData.totalFavourites}})</a></p>
+        {% endif %}
     </div>
 </div>
 
@@ -464,6 +468,9 @@
 
                         <li class="govuk-!-margin-bottom-2 govuk-!-margin-top-2">
                             {% if _provider.inFavourites == true %}
+                            <strong class="govuk-tag">
+                                Shortlisted
+                            </strong>
                             <a href="{{_fullURL}}&favdel={{_provider.id}}" class="govuk-link govuk-link--no-visited-state">Remove from shortlist</a>
                             {% else %}
                             <a href="{{_fullURL}}&fav={{_provider.id}}" class="govuk-link govuk-link--no-visited-state">Add to shortlist</a>

@@ -325,7 +325,7 @@ module.exports = function (router,_myData) {
     }
 
     // Add or remove provider from favourites
-    function addRemoveFavourite(req){
+    function addRemoveFavourite(req,_removeAllLocations){
 
         var _favProviderQuery = req.query.fav,
             _removeFavProviderQuery = req.query.favdel
@@ -345,10 +345,12 @@ module.exports = function (router,_myData) {
                 _addMessage = _providerData.name + " added to shortlist."
 
             if(_favourite){
+                // console.log("fav exists")
 
                 var _provider = _favourite.providers.find(obj => obj.id == (_favProviderQuery || _removeFavProviderQuery))
 
                 if(_provider){
+                    // console.log("prov in fav exists")
                 
                     var _location = _provider.locations.find(obj => obj == req.session.myData.location)
                     
@@ -360,12 +362,21 @@ module.exports = function (router,_myData) {
                     }
 
                     // Removing location
-                    if(_location && _removeFavProviderQuery){
-                        var _locIndex = _provider.locations.indexOf(req.session.myData.location);
-                        if (_locIndex > -1) {
-                            _provider.locations.splice(_locIndex, 1)
+                    if( _removeFavProviderQuery){
+                        if(_removeAllLocations){
+                            // console.log("remove provider and all its locations")
+                            _favourite.providers = _favourite.providers.filter(function(el) { return el.id != _removeFavProviderQuery; }); 
                             req.session.myData.notifications = {"message": _removeMessage}
                             req.session.myData.showNotification = "true"
+                        } else if(_location){
+                            // console.log("loc in prov fav exists")
+                            // console.log("remove just the filtered location against the provider")
+                            var _locIndex = _provider.locations.indexOf(req.session.myData.location);
+                            if (_locIndex > -1) {
+                                _provider.locations.splice(_locIndex, 1)
+                                req.session.myData.notifications = {"message": _removeMessage}
+                                req.session.myData.showNotification = "true"
+                            }
                         }
                         //remove provider from favourite if you jsut removed the last location from it
                         if (_provider.locations.length == 0){
@@ -392,6 +403,15 @@ module.exports = function (router,_myData) {
             }
                 
         }
+
+        // total favs
+        req.session.myData.totalFavourites = 0
+        req.session.myData.favourites.forEach(function(_favourite, index) {
+            _favourite.providers.forEach(function(_favourite, index) {
+                req.session.myData.totalFavourites++
+            })
+        })
+
     }
 
     // Set true/false if provider is in favourites
@@ -401,8 +421,14 @@ module.exports = function (router,_myData) {
         if(_favourite){
             var _providerInFavs = _favourite.providers.find(obj => obj.id == _provider.id.toString())
             if(_providerInFavs){
-                var _location = _providerInFavs.locations.find(obj => obj == req.session.myData.location)
-                if(_location){
+                var _location = _providerInFavs.locations.find(obj => obj == req.session.myData.location),
+                    _blankLocation = _providerInFavs.locations.find(obj => obj == "")
+                //providers added against currently applied location
+                if(_location && req.session.myData.locationapplied){
+                    _provider.inFavourites = true
+                }
+                // providers added against no specific location
+                if(!req.session.myData.locationapplied && _blankLocation == "") {
                     _provider.inFavourites = true
                 }
             }
@@ -829,7 +855,7 @@ module.exports = function (router,_myData) {
             searchFilterSetup(req,"Training provider name")
 
             // Add and removing favourites
-            addRemoveFavourite(req)
+            addRemoveFavourite(req,false)
 
             _providers.forEach(function(_provider, index) {
                 
@@ -1655,6 +1681,19 @@ module.exports = function (router,_myData) {
         setSelectedStandard(req,req.session.myData.standard)
 
         res.render(version + '/epao-dropout', {
+            myData:req.session.myData
+        });
+    });
+
+
+
+    // Shortlist
+    router.get('/' + version + '/shortlist', function (req, res) {
+
+        setSelectedStandard(req,req.query.standard || "")
+        addRemoveFavourite(req,true)
+
+        res.render(version + '/shortlist', {
             myData:req.session.myData
         });
     });

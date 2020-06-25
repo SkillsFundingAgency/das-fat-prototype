@@ -4,6 +4,7 @@ const router = express.Router()
 // Base session data
 var _myData = {
     "maxrows": 999999,
+    "favourites": [],
     "includeValidation": "true",
     "standards": require(__dirname + '/data/standards.json'),
     "ssa": require(__dirname + '/data/ssa.json'),

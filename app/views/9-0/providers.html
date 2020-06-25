@@ -84,6 +84,15 @@
             {{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}
         </h1> -->
 
+        {% if myData.showNotification != "false" %} 
+        <div class="alert-blue alert-blue-no-heading govuk-!-margin-bottom-7">
+			<p class="govuk-body">
+				{{myData.notifications.message}}
+			</p>
+		</div>         
+        {% endif %}
+        <!-- <p class="govuk-body">{{myData.favourites|dump|safe}}</p> -->
+
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-4" >
             <span class="govuk-caption-xl">Training providers for</span>
             {{_standardTitle|safe}}
@@ -332,7 +341,6 @@
         </p>
         {% endif %}
 
-
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
        
         <!-- 
@@ -442,7 +450,7 @@
 
 
             {% if (_provider.search == true or (_displayClosestInstead and _provider.searchExcludingLocation == true)) and _renderedRows < myData.maxrows  %}
-            
+
                 {% set _renderedRows = _renderedRows + 1 %}
                 {% set _closestCount = _closestCount + 1 %}
 
@@ -454,9 +462,17 @@
                     </h2>
                     <ul class="govuk-list">
 
+                        <li class="govuk-!-margin-bottom-2 govuk-!-margin-top-2">
+                            {% if _provider.inFavourites == true %}
+                            <a href="{{_fullURL}}&favdel={{_provider.id}}" class="govuk-link govuk-link--no-visited-state">Remove from shortlist</a>
+                            {% else %}
+                            <a href="{{_fullURL}}&fav={{_provider.id}}" class="govuk-link govuk-link--no-visited-state">Add to shortlist</a>
+                            {% endif %}
+                        </li>
+
                         {% if myData.locationapplied %}
                         
-                        <li>
+                        <li class="">
                             {% set _dayRelease = _provider.distance > 11 %}
                             {% set _blockRelease = _provider.distance > 20 %}
                             {% set _inWorkplace = _provider.distance < 11 %}

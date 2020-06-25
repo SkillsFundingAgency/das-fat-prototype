@@ -324,6 +324,91 @@ module.exports = function (router,_myData) {
         }
     }
 
+    // Add or remove provider from favourites
+    function addRemoveFavourite(req){
+
+        var _favProviderQuery = req.query.fav,
+            _removeFavProviderQuery = req.query.favdel
+
+        if(_favProviderQuery || _removeFavProviderQuery){
+
+            var _providerData = req.session.myData["providers-new"].list.find(obj => obj.id.toString() == (_favProviderQuery || _removeFavProviderQuery)),
+                _newProv = {"id": _favProviderQuery,"locations": [req.session.myData.location]},
+                _favourite = req.session.myData.favourites.find(obj => obj.larsCode == req.session.myData.standard)
+            
+            // Message notifications
+            var _locationMessage = (req.session.myData.location != "") ? (" for " + req.session.myData.location) : (""),
+                _courseMessage = req.session.myData.selectedStandard.title + " (level " + req.session.myData.selectedStandard.level + ") ",
+                // _removeMessage = _providerData.name + " for " + _courseMessage + _locationMessage + " removed from favourites.",
+                // _addMessage = _providerData.name + " for " + _courseMessage + _locationMessage + " added to favourites."
+                _removeMessage = _providerData.name + " removed from favourites.",
+                _addMessage = _providerData.name + " added to favourites."
+
+            if(_favourite){
+
+                var _provider = _favourite.providers.find(obj => obj.id == (_favProviderQuery || _removeFavProviderQuery))
+
+                if(_provider){
+                
+                    var _location = _provider.locations.find(obj => obj == req.session.myData.location)
+                    
+                    // Adding location
+                    if(!_location && _favProviderQuery){
+                        _provider.locations.push(req.session.myData.location)
+                        req.session.myData.notifications = {"message": _addMessage}
+                        req.session.myData.showNotification = "true"
+                    }
+
+                    // Removing location
+                    if(_location && _removeFavProviderQuery){
+                        var _locIndex = _provider.locations.indexOf(req.session.myData.location);
+                        if (_locIndex > -1) {
+                            _provider.locations.splice(_locIndex, 1)
+                            req.session.myData.notifications = {"message": _removeMessage}
+                            req.session.myData.showNotification = "true"
+                        }
+                        //remove provider from favourite if you jsut removed the last location from it
+                        if (_provider.locations.length == 0){
+                            _favourite.providers = _favourite.providers.filter(function(el) { return el.id != _removeFavProviderQuery; }); 
+                        }
+                        //remove favourite from favourites if you just removed the last provider from it
+                        if (_favourite.providers.length == 0){
+                            req.session.myData.favourites = req.session.myData.favourites.filter(function(el) { return el.larsCode != req.session.myData.standard; }); 
+                        }
+                    }
+
+                // Adding provider to existing favourite
+                } else if (_favProviderQuery) {
+                    _favourite.providers.push(_newProv)
+                    req.session.myData.notifications = {"message": _addMessage}
+                    req.session.myData.showNotification = "true"
+                }
+            
+            // Adding whole new favourite
+            } else if(_favProviderQuery) {
+                req.session.myData.favourites.push({"larsCode": req.session.myData.standard,"providers": [_newProv]})
+                req.session.myData.notifications = {"message": _addMessage}
+                req.session.myData.showNotification = "true"
+            }
+                
+        }
+    }
+
+    // Set true/false if provider is in favourites
+    function setIfInFavourites(req,_provider){
+        _provider.inFavourites = false
+        var _favourite = req.session.myData.favourites.find(obj => obj.larsCode == req.session.myData.standard)
+        if(_favourite){
+            var _providerInFavs = _favourite.providers.find(obj => obj.id == _provider.id.toString())
+            if(_providerInFavs){
+                var _location = _providerInFavs.locations.find(obj => obj == req.session.myData.location)
+                if(_location){
+                    _provider.inFavourites = true
+                }
+            }
+        }
+    }
+
     function reset(req){
         req.session.myData = JSON.parse(JSON.stringify(_myData))
 
@@ -401,6 +486,10 @@ module.exports = function (router,_myData) {
         req.session.myData.validationErrors = {}
         req.session.myData.validationError = "false"
         req.session.myData.includeValidation =  req.query.includeValidation || req.session.myData.includeValidation
+
+        //Reset page notifications
+        req.session.myData.notifications = {}
+        req.session.myData.showNotification = "false"
 
         //defaults for setup
         req.session.myData.employeraccount =  req.query.ea || req.session.myData.employeraccount
@@ -686,28 +775,18 @@ module.exports = function (router,_myData) {
         //Sort
         sortSetup(req,"name","distance")
 
-        var _providers = req.session.myData["providers-new"].list,
-            _standards = req.session.myData.standards.list
+        var _providers = req.session.myData["providers-new"].list
+
+        setSelectedStandard(req,req.session.myData.standard)
 
         req.session.myData.searchfilters = []
-        req.session.myData.selectedStandard = {}
-        req.session.myData.displaycount = _providers.length
-        req.session.myData.displaycountExcludingLocation = _providers.length
-        req.session.myData.needToMatchCount = 0
-        req.session.myData.needToMatchCountExcludingLocation = 0
+        req.session.myData.displaycount = 0
+        req.session.myData.displaycountExcludingLocation = 0
+        req.session.myData.needToMatchCount = 1
+        req.session.myData.needToMatchCountExcludingLocation = 1
 
         // Standard filter reset/setup
         req.session.myData.standardfilterapplied = true
-        req.session.myData.displaycount = 0
-        req.session.myData.displaycountExcludingLocation = 0
-        req.session.myData.needToMatchCount++
-        req.session.myData.needToMatchCountExcludingLocation++
-        for (var i = 0; i < _standards.length; i++) {
-            if(req.session.myData.standard == _standards[i].larsCode){
-                req.session.myData.selectedStandard = _standards[i]
-                break
-            }
-        }
 
         //Location reset/setup
         if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
@@ -749,6 +828,9 @@ module.exports = function (router,_myData) {
             // Keyword search reset/setup
             searchFilterSetup(req,"Training provider name")
 
+            // Add and removing favourites
+            addRemoveFavourite(req)
+
             _providers.forEach(function(_provider, index) {
                 
                 var _deliversStandard = false
@@ -759,6 +841,8 @@ module.exports = function (router,_myData) {
                 // Reset each provider
                 _provider.search = true
                 _provider.searchExcludingLocation = true
+
+                setIfInFavourites(req,_provider)
 
                 //STANDARD
                 if(req.session.myData.standardfilterapplied) {

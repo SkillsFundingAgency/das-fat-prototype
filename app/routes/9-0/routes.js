@@ -339,10 +339,10 @@ module.exports = function (router,_myData) {
             // Message notifications
             var _locationMessage = (req.session.myData.location != "") ? (" for " + req.session.myData.location) : (""),
                 _courseMessage = req.session.myData.selectedStandard.title + " (level " + req.session.myData.selectedStandard.level + ") ",
-                // _removeMessage = _providerData.name + " for " + _courseMessage + _locationMessage + " removed from favourites.",
-                // _addMessage = _providerData.name + " for " + _courseMessage + _locationMessage + " added to favourites."
-                _removeMessage = _providerData.name + " removed from favourites.",
-                _addMessage = _providerData.name + " added to favourites."
+                // _removeMessage = _providerData.name + " for " + _courseMessage + _locationMessage + " removed from shortlist.",
+                // _addMessage = _providerData.name + " for " + _courseMessage + _locationMessage + " added to shortlist."
+                _removeMessage = _providerData.name + " removed from shortlist.",
+                _addMessage = _providerData.name + " added to shortlist."
 
             if(_favourite){
 

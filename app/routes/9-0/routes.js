@@ -1034,6 +1034,8 @@ module.exports = function (router,_myData) {
             // Standard filter reset/setup
             standardFilterSetup(req)
 
+            setSelectedStandard(req,req.session.myData.standard)
+
             // Ofsted ratings filter setup
             ofstedFilterSetup(req)
 
@@ -1043,6 +1045,9 @@ module.exports = function (router,_myData) {
             // Keyword search reset/setup
             searchFilterSetup(req,"Training provider name")
 
+            // Add and removing favourites
+            addRemoveFavourite(req,false)
+
             // FILTER providers
             // CHECK FOR MATCHES
             _providers.forEach(function(_provider, index) {
@@ -1051,6 +1056,8 @@ module.exports = function (router,_myData) {
 
                 // Reset each provider
                 _provider.search = true
+
+                setIfInFavourites(req,_provider)
     
                 //LOCATION
                 if(req.session.myData.locationapplied) {

@@ -211,3 +211,10 @@ li.fat-cross-3 {
     padding-top: 20px;
     padding-bottom: 0;
 }
+
+//Shortlist
+@media (min-width: 641px){
+    .shortlist-label {
+        text-align: right;
+    }
+}

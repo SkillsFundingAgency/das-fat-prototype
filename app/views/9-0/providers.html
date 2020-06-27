@@ -72,6 +72,11 @@
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% include "includes/breadcrumb.html" %}
+
+    {% if myData.totalFavourites > 0 %}
+    <p class="govuk-body" style="float:right;margin-top: -37px;"><a class="govuk-link govuk-link--no-visited-state" href="shortlist">View shortlisted traing providers ({{myData.totalFavourites}})</a></p>
+    {% endif %}
+
 {% endblock %}
 
 {% block content %}
@@ -101,11 +106,11 @@
         <p class="govuk-body govuk-!-margin-bottom-8"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{myData.standard}}">Overview of {{_standardTitle|safe}}</a></p>
       
     </div>
-    <div class="govuk-grid-column-one-third">
+    <!-- <div class="govuk-grid-column-one-third">
         {% if myData.totalFavourites > 0 %}
         <p class="govuk-body" style="float:right"><a class="govuk-link govuk-link--no-visited-state" href="shortlist">View shortlisted traing providers ({{myData.totalFavourites}})</a></p>
         {% endif %}
-    </div>
+    </div> -->
 </div>
 
 <div class="govuk-grid-row">
@@ -460,84 +465,89 @@
 
                 {% if (_closestCount < 6 and _provider.distance < 50 and _displayClosestInstead) or _displayClosestInstead != true %}
                 
-                <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
-                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                        <a href="provider?provider={{_provider.id}}{{_standardQuery}}" class="govuk-link govuk-link--no-visited-state">{{_provider.name}}</a>
-                    </h2>
-                    <ul class="govuk-list">
+                <div class="govuk-grid-row govuk-!-margin-left-0 govuk-!-margin-right-0 govuk-!-margin-top-3">
 
-                        <li class="govuk-!-margin-bottom-2 govuk-!-margin-top-2">
+                    <div class="govuk-grid-column-two-thirds govuk-!-padding-0" >
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+                            <a href="provider?provider={{_provider.id}}{{_standardQuery}}" class="govuk-link govuk-link--no-visited-state">{{_provider.name}}</a>
+                        </h2>
+                        <ul class="govuk-list">
+
+                            {% if myData.locationapplied %}
+                            
+                            <li class="govuk-!-margin-top-2">
+                                {% set _dayRelease = _provider.distance > 11 %}
+                                {% set _blockRelease = _provider.distance > 20 %}
+                                {% set _inWorkplace = _provider.distance < 11 %}
+
+                                {% set _dayDistance = _provider.distance %}
+                                {% set _blockDistance = _provider.distance %}
+
+                                {% if _provider.distance < 4 or (_provider.distance > 6 and _provider.distance < 9) %}
+                                    {% set _dayRelease = true %}
+                                    {% set _blockRelease = true %}
+                                    {% set _dayDistance = _provider.distance + 2.8 %}
+                                    {% set _blockDistance = _dayDistance + 5.3 %}
+                                {% endif %}
+                                <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
+
+                                    <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
+                                        At&nbsp;apprentice’s&nbsp;workplace
+                                    </li>
+
+                                    <li class="{% if _dayRelease %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
+                                        Day&nbsp;release {% if _dayRelease %}({{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away){% endif %}
+                                    </li>
+
+                                    <li class="{% if _blockRelease %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-margin-bottom-2" style="display: block;">
+                                        Block&nbsp;release {% if _blockRelease %}({{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away){% endif %}
+                                    </li>
+                                </ul>
+                            </li>
+
+                            {% endif %}
+
+                            {% if myData.cmppda != "false" %}
+                            <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                                <span class="govuk-!-font-size-16">68% achievement rate</span>
+                            </li>
+                            {% endif %}
+
+                            {% if myData.cmppdo != "false" %}
+                            <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                                {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight">{{_ratingOfstedTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(Ofsted rating)</span>
+                            </li>
+                            {% endif %}
+
+                            {% if myData.cmppde != "false" %}
+                            <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                                {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight">{{_ratingTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">({{_totalRatings}} employer reviews)</span>
+                            </li>
+                            {% endif %}
+
+                            <!-- National -->
+                            {% if _provider.national %}
+                            <!-- <li class="govuk-!-font-size-16" ><span class="govuk-secondary-colour" style="color:red">National</span></li> -->
+                            {% else %}
+                            {% endif %}
+
+                        </ul>
+                    </div>
+                    <div class="govuk-grid-column-one-third govuk-!-padding-0">
+                        <p class="govuk-body shortlist-label" >
                             {% if _provider.inFavourites == true %}
                             <strong class="govuk-tag">
                                 Shortlisted
-                            </strong>
-                            <a href="{{_fullURL}}&favdel={{_provider.id}}" class="govuk-link govuk-link--no-visited-state">Remove from shortlist</a>
+                            </strong><br>
+                            <a href="{{_fullURL}}&favdel={{_provider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2" style="display: inline-block">Remove from shortlist</a>
                             {% else %}
                             <a href="{{_fullURL}}&fav={{_provider.id}}" class="govuk-link govuk-link--no-visited-state">Add to shortlist</a>
                             {% endif %}
-                        </li>
-
-                        {% if myData.locationapplied %}
-                        
-                        <li class="">
-                            {% set _dayRelease = _provider.distance > 11 %}
-                            {% set _blockRelease = _provider.distance > 20 %}
-                            {% set _inWorkplace = _provider.distance < 11 %}
-
-                            {% set _dayDistance = _provider.distance %}
-                            {% set _blockDistance = _provider.distance %}
-
-                            {% if _provider.distance < 4 or (_provider.distance > 6 and _provider.distance < 9) %}
-                                {% set _dayRelease = true %}
-                                {% set _blockRelease = true %}
-                                {% set _dayDistance = _provider.distance + 2.8 %}
-                                {% set _blockDistance = _dayDistance + 5.3 %}
-                            {% endif %}
-                            <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
-
-                                <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                    At&nbsp;apprentice’s&nbsp;workplace
-                                </li>
-
-                                <li class="{% if _dayRelease %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                    Day&nbsp;release {% if _dayRelease %}({{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away){% endif %}
-                                </li>
-
-                                <li class="{% if _blockRelease %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-margin-bottom-2" style="display: block;">
-                                    Block&nbsp;release {% if _blockRelease %}({{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away){% endif %}
-                                </li>
-                            </ul>
-                        </li>
-
-                        {% endif %}
-
-                        {% if myData.cmppda != "false" %}
-                        <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                            <span class="govuk-!-font-size-16">68% achievement rate</span>
-                        </li>
-                        {% endif %}
-
-                        {% if myData.cmppdo != "false" %}
-                        <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                            {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight">{{_ratingOfstedTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(Ofsted rating)</span>
-                        </li>
-                        {% endif %}
-
-                        {% if myData.cmppde != "false" %}
-                        <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                            {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight">{{_ratingTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">({{_totalRatings}} employer reviews)</span>
-                        </li>
-                        {% endif %}
-
-                        <!-- National -->
-                        {% if _provider.national %}
-                        <!-- <li class="govuk-!-font-size-16" ><span class="govuk-secondary-colour" style="color:red">National</span></li> -->
-                        {% else %}
-                        {% endif %}
-
-                    </ul>
+                        </p>
+                    </div>
+                    <hr class="govuk-section-break govuk-section-break--visible" style="clear:both">
                 </div>
-                <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+               
                 {% endif %}
 
             {% endif %}

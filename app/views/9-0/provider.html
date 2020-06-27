@@ -74,9 +74,24 @@
     {% set _selectedMatchesLocation = false %}
 {% endif %}
 
+<!-- Query strings -->
+{% set _standardQuery = "" %}
+{% set _locationQuery = "" %}
+{% set _providerQuery = "&provider=" + _selectedProvider.id %}
+{% if myData.standardsearchapplied %}
+    {% set _standardQuery = "&standard=" + _selectedStandard.larsCode %}
+{% endif %}
+{% if myData.locationapplied %}
+    {% set _locationQuery = "&location=" + myData.location %}
+{% endif %}
+{% set _fullURL = "provider?" + _standardQuery + _locationQuery + _providerQuery %}
+
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% include "includes/breadcrumb.html" %}
+    {% if myData.totalFavourites > 0 %}
+    <p class="govuk-body" style="float:right;margin-top: -37px;"><a class="govuk-link govuk-link--no-visited-state" href="shortlist">View shortlisted traing providers ({{myData.totalFavourites}})</a></p>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -115,11 +130,19 @@
 			</p>
 		</div> -->
         {% endif %}
+        {% if myData.showNotification != "false" %} 
+        <div class="alert-blue alert-blue-no-heading govuk-!-margin-bottom-7">
+			<p class="govuk-body">
+				{{myData.notifications.message}}
+			</p>
+		</div>
+        {% endif %}
 
         <span class="govuk-caption-xl">Training provider</span>
         <h1 class="govuk-heading-xl {% if myData.cmppdo != 'false' and myData.cmppde != 'false' %}govuk-!-margin-bottom-6{% endif %}" >
             {{_providerTitle | safe}}
         </h1>
+        <!-- <p class="govuk-body">{{myData.favourites|dump|safe}}</p> -->
 
         {% if myData.cmppdo != "false" %}
         <!-- Ofsted -->
@@ -198,9 +221,10 @@
         <!-- Course panel -->
         {% if myData.standardsearchapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            
             <span class="govuk-caption-l">Apprenticeship training course</span>
             <h2 class="govuk-heading-l govuk-!-margin-bottom-3">{{_standardTitle | safe}}</h2>
-            <p class="govuk-body govuk-!-margin-bottom-5"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{_selectedStandard.larsCode}}">Overview of {{_standardTitle|safe}}</a></p>
+            <p class="govuk-body govuk-!-margin-bottom-5"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{_selectedStandard.larsCode}}">View course details</a></p>
 
 
             {% if myData.cmppda != "false" %}
@@ -324,7 +348,7 @@
                         <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a></dd>
                     </div>
                     <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Telephone</dt>
+                        <dt class="govuk-summary-list__key">Phone number</dt>
                         <dd class="govuk-summary-list__value">078&nbsp;7856&nbsp;9856</dd>
                     </div>
                     <div class="govuk-summary-list__row">
@@ -334,6 +358,17 @@
                 </dl>
             </div>
 
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <p class="govuk-body" >
+                {% if _selectedProvider.inFavourites == true %}
+                <strong class="govuk-tag">
+                    Shortlisted
+                </strong><br>
+                <a href="{{_fullURL}}&favdel={{_selectedProvider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2" style="display: inline-block">Remove from shortlist</a>
+                {% else %}
+                <a href="{{_fullURL}}&fav={{_selectedProvider.id}}" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">Add to shortlist</a>
+                {% endif %}
+            </p>
             {% if myData.locationapplied and _selectedMatchesLocation %}
                 {% if myData.providersOnStandardCount > 1 %}
                 <p class="govuk-body">{{_providerTitle | safe}} is 1 of {{myData.providersOnStandardCount}} training providers for {{_standardTitle | safe}} in the apprenticeship location.</p>
@@ -342,6 +377,9 @@
                 <p class="govuk-body">{{_providerTitle | safe}} is the only training provider for {{_standardTitle | safe}} in the apprenticeship location.</p>
                 {% endif %}
             {% endif %}
+        </div>
+
+            
             
         
         {% elif myData.locationapplied %}
@@ -371,7 +409,7 @@
                         </div>
                     </div>
                 </div>
-                <input type="hidden" value="{{_selectedStandard.larsCode}}" name="standard" >
+                <!-- <input type="hidden" value="{{_selectedStandard.larsCode}}" name="standard" > -->
                 <input type="hidden" value="{{_selectedProvider.id}}" name="provider" >
             </form>
         </div>
@@ -386,7 +424,7 @@
                 <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a></dd>
             </div>
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Telephone</dt>
+                <dt class="govuk-summary-list__key">Phone number</dt>
                 <dd class="govuk-summary-list__value">078&nbsp;7856&nbsp;9856</dd>
             </div>
             <div class="govuk-summary-list__row">

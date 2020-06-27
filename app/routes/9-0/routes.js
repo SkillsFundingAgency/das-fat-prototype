@@ -311,7 +311,6 @@ module.exports = function (router,_myData) {
     // Set the selected standard
     function setSelectedStandard(req, _standardParameter){
         req.session.myData.standardsearchapplied = false
-        req.session.myData.selectedStandard = {}
         if(_standardParameter){
             for (var i = 0; i < req.session.myData.standards.list.length; i++) {
                 var _thisStandard = req.session.myData.standards.list[i]
@@ -319,6 +318,21 @@ module.exports = function (router,_myData) {
                     req.session.myData.standardsearchapplied = true
                     req.session.myData.selectedStandard = _thisStandard
                     req.session.myData.standard = _thisStandard.larsCode
+                }
+            }
+        }
+    }
+
+    // Set the selected provider
+    function setSelectedProvider(req, _providerParameter){
+        for (var i = 0; i < req.session.myData["providers-new"].list.length; i++) {
+            if(_providerParameter){
+                for (var i = 0; i < req.session.myData["providers-new"].list.length; i++) {
+                    var _thisProvider = req.session.myData["providers-new"].list[i]
+                    if(_thisProvider.id.toString() == _providerParameter.toString() || _thisProvider.autoCompleteString.toUpperCase() == _providerParameter.toString().toUpperCase()){
+                        req.session.myData.selectedProvider = _thisProvider
+                        req.session.myData.provider = _thisProvider.id
+                    }
                 }
             }
         }
@@ -351,15 +365,30 @@ module.exports = function (router,_myData) {
 
                 if(_provider){
                     // console.log("prov in fav exists")
-                
-                    var _location = _provider.locations.find(obj => obj == req.session.myData.location)
-                    
+
+                    var _location = _provider.locations.find(obj => obj == req.session.myData.location),
+                        _blankLocation = _provider.locations.find(obj => obj == ""),
+                        _locationValue = (req.session.myData.locationapplied) ? req.session.myData.location : "",
+                        _locationExists = (_location && req.session.myData.locationapplied) || (!req.session.myData.locationapplied && _blankLocation == "")
+
+
                     // Adding location
-                    if(!_location && _favProviderQuery){
-                        _provider.locations.push(req.session.myData.location)
+
+                    // PROVIDER IS IN FAVS ALREADY
+                    // if(_locationExists){
+                    // }
+
+                    // PROVIDER IS NOT IN FAVS ALREADY
+                    if(!_locationExists){
+                        _provider.locations.push(_locationValue)
                         req.session.myData.notifications = {"message": _addMessage}
                         req.session.myData.showNotification = "true"
                     }
+                    // if(!_location && _favProviderQuery){
+                    //     _provider.locations.push(_locationValue)
+                    //     req.session.myData.notifications = {"message": _addMessage}
+                    //     req.session.myData.showNotification = "true"
+                    // }
 
                     // Removing location
                     if( _removeFavProviderQuery){
@@ -368,10 +397,10 @@ module.exports = function (router,_myData) {
                             _favourite.providers = _favourite.providers.filter(function(el) { return el.id != _removeFavProviderQuery; }); 
                             req.session.myData.notifications = {"message": _removeMessage}
                             req.session.myData.showNotification = "true"
-                        } else if(_location){
+                        } else if(_locationExists){
                             // console.log("loc in prov fav exists")
                             // console.log("remove just the filtered location against the provider")
-                            var _locIndex = _provider.locations.indexOf(req.session.myData.location);
+                            var _locIndex = _provider.locations.indexOf(_locationValue)
                             if (_locIndex > -1) {
                                 _provider.locations.splice(_locIndex, 1)
                                 req.session.myData.notifications = {"message": _removeMessage}
@@ -424,11 +453,7 @@ module.exports = function (router,_myData) {
                 var _location = _providerInFavs.locations.find(obj => obj == req.session.myData.location),
                     _blankLocation = _providerInFavs.locations.find(obj => obj == "")
                 //providers added against currently applied location
-                if(_location && req.session.myData.locationapplied){
-                    _provider.inFavourites = true
-                }
-                // providers added against no specific location
-                if(!req.session.myData.locationapplied && _blankLocation == "") {
+                if((_location && req.session.myData.locationapplied) || (!req.session.myData.locationapplied && _blankLocation == "")){
                     _provider.inFavourites = true
                 }
             }
@@ -562,6 +587,8 @@ module.exports = function (router,_myData) {
         req.session.myData.provider = req.query.provider || req.session.myData.provider
         req.session.myData.epao = req.query.epao || req.session.myData.epao
 
+        setSelectedProvider(req,req.session.myData.provider)
+        setSelectedStandard(req,req.session.myData.standard)
 
         //
         // Fixes for checkbox values in query string - turns them into arrays
@@ -697,13 +724,9 @@ module.exports = function (router,_myData) {
     // Standard
     router.get('/' + version + '/standard', function (req, res) {
 
-        req.session.myData.selectedStandard = {}
-        for (var i = 0; i < req.session.myData.standards.list.length; i++) {
-            var _thisStandard = req.session.myData.standards.list[i]
-            if(_thisStandard.larsCode == req.session.myData.standard || _thisStandard.autoCompleteString.toUpperCase() == req.session.myData.standard.toUpperCase()){
-                req.session.myData.selectedStandard = _thisStandard
-            }
-        }
+        //Selected standard
+        setSelectedStandard(req,req.query.standard)
+
         req.session.myData.needToMatchCount = 1
         req.session.myData.countproviders = 0
         req.session.myData.countepaos = 0
@@ -1105,12 +1128,8 @@ module.exports = function (router,_myData) {
             _providers = req.session.myData["providers-new"].list
 
         // Selected provider        
-        for (var i = 0; i < _providers.length; i++) {
-            var _thisProvider = _providers[i]
-            if(req.session.myData.provider == _thisProvider.id){
-                req.session.myData.selectedProvider = _thisProvider
-            }
-        }
+        setSelectedProvider(req,req.session.myData.provider)
+
         // Provider - standards list
         req.session.myData.displaycount = 0
         for (var i = 0; i < _standards.length; i++) {
@@ -1149,6 +1168,12 @@ module.exports = function (router,_myData) {
         }
         
         function continueRendering(){
+
+            // Add and removing favourites
+            addRemoveFavourite(req,false)
+
+            //Set if in favourites
+            setIfInFavourites(req,req.session.myData.selectedProvider)
 
             //Count of other providers
             req.session.myData.providersOnStandardCount = 0
@@ -1696,6 +1721,49 @@ module.exports = function (router,_myData) {
         res.render(version + '/shortlist', {
             myData:req.session.myData
         });
+    });
+
+    // Shortlist - remove confirm
+    router.get('/' + version + '/shortlist-remove', function (req, res) {
+
+        // Selected Standard
+        setSelectedStandard(req,req.query.standard)
+        
+        // Selected provider 
+        setSelectedProvider(req,req.query.favdel)
+
+        res.render(version + '/shortlist-remove', {
+            myData: req.session.myData
+        });
+    });
+    router.post('/' + version + '/shortlist-remove', function (req, res) {
+        req.session.myData.removeshortlistAnswerTemp = req.body.removeshortlistAnswer
+        if(req.session.myData.includeValidation == "false"){
+            req.session.myData.removeshortlistAnswerTemp = req.session.myData.removeshortlistAnswerTemp || "yes"
+        }
+        if(!req.session.myData.removeshortlistAnswerTemp){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.removeshortlistAnswer = {
+                "anchor": "removeshortlist-1",
+                "message": "[choose one]"
+            }
+        }
+
+        if(req.session.myData.validationError == "true") {
+            res.render(version + '/shortlist-remove', {
+                myData: req.session.myData
+            });
+        } else {
+            req.session.myData.removeshortlistAnswer = req.session.myData.removeshortlistAnswerTemp
+            req.session.myData.removeshortlistAnswerTemp = ''
+
+            if(req.session.myData.removeshortlistAnswer == "yes"){
+                res.redirect(301, '/' + version + '/shortlist?favdel=' + req.session.myData.selectedProvider.id + '&standard=' + req.session.myData.selectedStandard.larsCode);
+            } else {
+                res.redirect(301, '/' + version + '/shortlist');
+            }
+            
+        }
     });
 
 }

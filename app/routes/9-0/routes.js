@@ -1031,10 +1031,10 @@ module.exports = function (router,_myData) {
 
         function continueRendering(){
 
+            // setSelectedStandard(req,req.session.myData.standard)
+            
             // Standard filter reset/setup
             standardFilterSetup(req)
-
-            setSelectedStandard(req,req.session.myData.standard)
 
             // Ofsted ratings filter setup
             ofstedFilterSetup(req)

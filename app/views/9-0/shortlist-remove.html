@@ -17,7 +17,7 @@
         <a href="shortlist" class="govuk-back-link">Back</a>
     </div>
     {% if myData.totalFavourites > 0 %}
-    <p class="govuk-body" style="float:right;margin-top: -37px;"><a class="govuk-link govuk-link--no-visited-state" href="shortlist">View shortlisted traing providers ({{myData.totalFavourites}})</a></p>
+    <p class="govuk-body" style="float:right;margin-top: -37px;"><a class="govuk-link govuk-link--no-visited-state" href="shortlist">View shortlisted training providers ({{myData.totalFavourites}})</a></p>
     {% endif %}
 {% endblock %}
 
@@ -47,10 +47,11 @@
             {% endif %}
 
             <h1 class="govuk-heading-xl">
-                [Sure?]
+                Remove training provider from shortlist?
             </h1>
 
-            <p class="govuk-body">[Provider: {{myData.selectedProvider.name}}]<br>[Standard: {{_standardTitle|safe}}]</p>
+            <p class="govuk-body"><span class="govuk-!-font-weight-bold">Training provider:</span><br>{{myData.selectedProvider.name}}</p>
+            <p class="govuk-body"><span class="govuk-!-font-weight-bold">Apprenticeship training course:</span><br>{{_standardTitle|safe}}</p>
             <!-- <p class="govuk-body">[Provider: {{myData.selectedProvider.id}}]<br>[Standard: {{myData.selectedStandard.larsCode}}]</p> -->
             <!-- <p class="govuk-body govuk-!-margin-bottom-6"> <span class="govuk-!-font-weight-bold">Apprenticeship training course:</span><br> {{_standardTitle|safe}}</p> -->
 
@@ -74,13 +75,13 @@
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" id="remove-1" name="removeshortlistAnswer" type="radio" value="yes">
                             <label class="govuk-label govuk-radios__label" for="remove-1">
-                                [Yes]
+                                Yes, remove from shortlist
                             </label>
                         </div>
                         <div class="govuk-radios__item">
                             <input class="govuk-radios__input" id="remove-2" name="removeshortlistAnswer" type="radio" value="no">
                             <label class="govuk-label govuk-radios__label" for="remove-2">
-                                [No]
+                                No, keep on shortlist
                             </label>
                         </div>
                     </div>
@@ -88,7 +89,7 @@
             </div>
             
             <button type="submit" class="govuk-button">
-                [go]
+                Confirm
             </button>
 
         </form>

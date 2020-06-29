@@ -28,7 +28,7 @@
             Shortlisted training providers
         </h1>
 
-        <p class="govuk-body">[{{myData.totalFavourites}} providers are shortlisted]</p>
+        <!-- <p class="govuk-body">[{{myData.totalFavourites}} providers are shortlisted]</p> -->
 
     </div>
     <div class="govuk-grid-column-one-third">
@@ -49,6 +49,7 @@
   
         <!-- Providers -->
         {% for _favourite in myData.favourites %}
+        <div class="fat-panel fat-panel-bordered govuk-!-margin-bottom-5 ">
 
             <!-- Standard -->
             {% set _selectedStandard = {} %}
@@ -59,10 +60,13 @@
             {% endfor %}
             {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
-            <span class="govuk-caption-l govuk-!-margin-top-8" >Apprenticeship training course</span>
+            <span class="govuk-caption-l govuk-!-margin-top-1" >Apprenticeship training course</span>
             <h2 class="govuk-heading-l govuk-!-margin-bottom-4">{{_standardTitle|safe}}</h2>
 
+
+            <h2 class="govuk-heading-m">{{_favourite.providers.length}} shortlisted training provider{% if _favourite.providers.length != 1 %}s{% endif %}</h2>
             <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+
             {% for _providerFav in _favourite.providers %}
 
                 <!-- Provider -->
@@ -162,7 +166,7 @@
                                 
                                 {% if _locationfav != "" %}
                                 <li class="govuk-!-font-size- govuk-!-margin-top-2">
-                                    <span class="govuk-!-font-weight-bol">{{_locationfav}} training options</span>
+                                    <span class="govuk-!-font-weight-bold">{{_locationfav}} training options</span>
                                     <!-- Training options for {{_locationfav}} -->
                                     {% set _dayRelease = _selectedProvider.distance > 11 %}
                                     {% set _blockRelease = _selectedProvider.distance > 20 %}
@@ -232,11 +236,13 @@
                             <a href="shortlist-remove?favdel={{_selectedProvider.id}}&standard={{_selectedStandard.larsCode}}" class="govuk-link govuk-link--no-visited-state">Remove from shortlist</a>
                         </p>
                     </div>
+                    {% if loop.last != true %}
                     <hr class="govuk-section-break govuk-section-break--visible" style="clear:both">
+                    {% endif %}
                 </div>
 
                 {% endfor %}
-                
+            </div>
             {% endfor %}
 
         {% endif %}

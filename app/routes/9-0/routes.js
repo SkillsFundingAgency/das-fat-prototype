@@ -1752,7 +1752,7 @@ module.exports = function (router,_myData) {
             req.session.myData.validationError = "true"
             req.session.myData.validationErrors.removeshortlistAnswer = {
                 "anchor": "removeshortlist-1",
-                "message": "[choose one]"
+                "message": "Select whether to remove the training provider from your shortlist or not"
             }
         }
 

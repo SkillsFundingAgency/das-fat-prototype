@@ -166,7 +166,7 @@
                                 
                                 {% if _locationfav != "" %}
                                 <li class="govuk-!-font-size- govuk-!-margin-top-2">
-                                    <span class="govuk-!-font-weight-bold">{{_locationfav}} training options</span>
+                                    <span class="govuk-!-font-weight-bold">Training options for {{_locationfav}}</span>
                                     <!-- Training options for {{_locationfav}} -->
                                     {% set _dayRelease = _selectedProvider.distance > 11 %}
                                     {% set _blockRelease = _selectedProvider.distance > 20 %}

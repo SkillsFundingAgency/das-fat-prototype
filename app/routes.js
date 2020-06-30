@@ -119,6 +119,7 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 
 // for pulling out counts of statuses on all stds in IFATE api
 // _myData.testStandardsData = []
+// console.log("test")
 // require("request").get("https://www.instituteforapprenticeships.org/api/apprenticeshipstandards", (error, response, body) => {
 //     var _apiData = JSON.parse(body),
 //         _statusTypes = {},
@@ -138,13 +139,16 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         if(_standard.status == "Approved for delivery"){
 //             _testStandardsData.push(_standardData)
 //         }
+//         if(_standard.coreAndOptions && _standard.skills.length > 0){
+//             console.log(_title + " has " + _standard.skills.length + " skills.")
+//         }
 //         // console.log(_title)
 //     });
-//     console.log("START")
-//     console.log(JSON.stringify(_testStandardsData))
-//     console.log("END")
+//     // console.log("START")
+//     // console.log(JSON.stringify(_testStandardsData))
+//     // console.log("END")
 // });
-// var distinctStatuses = [...new Set(_apiData.map(function(data){return data.statuses}))];
+// // var distinctStatuses = [...new Set(_apiData.map(function(data){return data.statuses}))];
 
 // Set ssa + route counts
 // Regulated

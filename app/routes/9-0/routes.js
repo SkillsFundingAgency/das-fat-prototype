@@ -367,10 +367,9 @@ module.exports = function (router,_myData) {
                     // console.log("prov in fav exists")
 
                     var _location = _provider.locations.find(obj => obj == req.session.myData.location),
-                        _blankLocation = _provider.locations.find(obj => obj == ""),
                         _locationValue = (req.session.myData.locationapplied) ? req.session.myData.location : "",
-                        _locationExists = (_location && req.session.myData.locationapplied) || (!req.session.myData.locationapplied && _blankLocation == "")
-
+                        _locationExists = (_location && req.session.myData.locationapplied) || (!req.session.myData.locationapplied),
+                        _removeAllLocations = (!req.session.myData.locationapplied) || _removeAllLocations
 
                     // Adding location
 
@@ -384,11 +383,6 @@ module.exports = function (router,_myData) {
                         req.session.myData.notifications = {"message": _addMessage}
                         req.session.myData.showNotification = "true"
                     }
-                    // if(!_location && _favProviderQuery){
-                    //     _provider.locations.push(_locationValue)
-                    //     req.session.myData.notifications = {"message": _addMessage}
-                    //     req.session.myData.showNotification = "true"
-                    // }
 
                     // Removing location
                     if( _removeFavProviderQuery){
@@ -453,7 +447,7 @@ module.exports = function (router,_myData) {
                 var _location = _providerInFavs.locations.find(obj => obj == req.session.myData.location),
                     _blankLocation = _providerInFavs.locations.find(obj => obj == "")
                 //providers added against currently applied location
-                if((_location && req.session.myData.locationapplied) || (!req.session.myData.locationapplied && _blankLocation == "")){
+                if((_location && req.session.myData.locationapplied) || (!req.session.myData.locationapplied)){
                     _provider.inFavourites = true
                 }
             }

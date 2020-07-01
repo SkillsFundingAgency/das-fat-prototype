@@ -41,9 +41,9 @@
 
         <!-- No results for filters -->
         {% if myData.totalFavourites == 0 %}
-        <p class="govuk-body govuk-!-margin-top-4">[no favourites content]</p>
-
-        {% else %}
+        <p class="govuk-body">You have 0 training providers shortlisted.</p>
+        <p class="govuk-body"><a class="govuk-button" href="training">[cta]</a></p>
+        {% else %}  
 
         
   
@@ -246,10 +246,10 @@
             {% endfor %}
 
         {% endif %}
-        <div style="margin-top:300px">
+        <!-- <div style="margin-top:300px">
             <a href="providers?location=&standard=272" >test link to providers so you can add some</a><br>
             <a href="providers?location=&standard=240">test link to providers on a different standard so you can add some</a>
-        </div>
+        </div> -->
     </div>
     
 </div>

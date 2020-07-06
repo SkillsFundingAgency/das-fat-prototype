@@ -314,7 +314,7 @@
         {% if myData.cmppfl != "false" %}
         {% if myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Apprenticeship location</h2>
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
             <p class="govuk-body"><span style="margin-right: 10px">{{myData.location}}</span> <a href="providers?{{_sortQuery}}{{_searchQuery}}{{_standardQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}{{_nationalQuery}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
         </div>
         {% else %}
@@ -336,12 +336,12 @@
         <!-- Sort -->
         {% if myData.locationapplied == true and myData.displaycount > 1 %}
         <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
-            {% if myData.sortby == "distance" %}
-            <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}{{_nationalQuery}}&sort=name">Name</a>, 
-            <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>
+            {% if myData.sortby == "name" %}
+            <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}{{_nationalQuery}}&sort=distance">Distance (nearest first)</a>,
+            <span class="govuk-!-font-weight-bold">Name</span>
             {% else %}
-            <span class="govuk-!-font-weight-bold">Name</span>, 
-            <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}{{_nationalQuery}}&sort=distance">Distance (nearest first)</a>
+            <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>,
+            <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}{{_nationalQuery}}&sort=name">Name</a>
             {% endif %}
         </p>
         {% elif myData.displaycount > 1 %}
@@ -482,6 +482,7 @@
 
                                 {% set _dayDistance = _provider.distance %}
                                 {% set _blockDistance = _provider.distance %}
+                                {% set _inWorkplaceDistance = _provider.distance %}
 
                                 {% if _provider.distance < 4 or (_provider.distance > 6 and _provider.distance < 9) %}
                                     {% set _dayRelease = true %}
@@ -492,7 +493,7 @@
                                 <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
 
                                     <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                        At&nbsp;apprentice’s&nbsp;workplace
+                                        At&nbsp;apprentice’s&nbsp;workplace{% if _inWorkplace %} ({{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away){% endif %}
                                     </li>
 
                                     <li class="{% if _dayRelease %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">

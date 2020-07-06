@@ -174,6 +174,7 @@
 
                                     {% set _dayDistance = _selectedProvider.distance %}
                                     {% set _blockDistance = _selectedProvider.distance %}
+                                    {% set _inWorkplaceDistance = _selectedProvider.distance %}
 
                                     {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 6 and _selectedProvider.distance < 9) %}
                                         {% set _dayRelease = true %}
@@ -184,7 +185,7 @@
                                     <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
 
                                         <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                            At&nbsp;apprentice’s&nbsp;workplace
+                                            At&nbsp;apprentice’s&nbsp;workplace{% if _inWorkplace %} ({{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away){% endif %}
                                         </li>
 
                                         <li class="{% if _dayRelease %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">

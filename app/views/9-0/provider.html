@@ -267,6 +267,7 @@
 
                         {% set _dayDistance = _selectedProvider.distance %}
                         {% set _blockDistance = _selectedProvider.distance %}
+                        {% set _inWorkplaceDistance = _selectedProvider.distance %}
 
                         {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 6 and _selectedProvider.distance < 9) %}
                             {% set _dayRelease = true %}
@@ -276,7 +277,7 @@
                         {% endif %}
 
                         <li class="{% if _inWorkplace %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
-                            At&nbsp;apprentice’s&nbsp;workplace
+                            At&nbsp;apprentice’s&nbsp;workplace{% if _inWorkplace %} ({{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away){% endif %}
                         </li>
 
                         <li class="{% if _dayRelease %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
@@ -290,29 +291,33 @@
                     </ul>
 
                     <!-- Addresses -->
-                    {% if _dayRelease and _blockRelease %}
 
-                        {% if _dayDistance == _blockDistance %}
-                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day and block release address</p>
-                            <p class="govuk-body">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
-                        {% else %}
-                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day release address</p>
-                            <p class="govuk-body">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
-                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Block release address</p>
-                            <p class="govuk-body govuk-!-margin-bottom-1">1 High Street, Birmingham, West Midlands, B1 3BP</p>
-                        {% endif %}
+                    {% set _address1 = "12 King Edwards Rd, Birmingham, B1 2AA" %}
+                    {% set _address2 = "1 High Street, Birmingham, West Midlands, B1 3BP" %}
+                    {% set _address3 = "Old School, Pennington Court, Warwickshire, CV21 2BB" %}
 
-                    {% else %}
+                    <!-- At location (used by day and block too if same distance) -->
+                    {% if _inWorkplace %}
+                        <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Training provider address</p>
+                        <p class="govuk-body">{{_address1}}</p>
+                    {% endif %}
 
-                        {% if _dayRelease %}
-                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day release address</p>
-                            <p class="govuk-body">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
-                        {% endif %}
-                        {% if _blockRelease %}
-                            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Block release address</p>
-                            <p class="govuk-body">Old School, Pennington Court, Warwickshire, CV21 2BB</p>
-                        {% endif %}
-                    
+                    <!-- Day release AND different to at location and block -->
+                    {% if (_dayDistance != _inWorkplaceDistance or (_inWorkplace == false and _dayDistance == _inWorkplaceDistance)) and (_dayDistance != _blockDistance or (_blockRelease == false and _dayDistance == _blockDistance)) and _dayRelease %}
+                        <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day release address</p>
+                        <p class="govuk-body">{{_address2}}</p>
+                    {% endif %}
+
+                    <!-- Block release AND different to at location and day -->
+                    {% if (_blockDistance != _inWorkplaceDistance or (_inWorkplace == false and _blockDistance == _inWorkplaceDistance)) and (_dayDistance != _blockDistance or (_dayRelease == false and _dayDistance == _blockDistance)) and _blockRelease %}
+                        <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Block release address</p>
+                        <p class="govuk-body">{{_address3}}</p>
+                    {% endif %}
+
+                    <!-- Day and Block release same AND different to at location -->
+                    {% if (_dayDistance != _inWorkplaceDistance or (_inWorkplace == false and _dayDistance == _inWorkplaceDistance)) and (_blockDistance != _inWorkplaceDistance or (_inWorkplace == false and _blockDistance == _inWorkplaceDistance)) and _dayRelease and _blockRelease and (_dayDistance == _blockDistance) %}
+                        <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day and block release address</p>
+                        <p class="govuk-body">{{_address2}}</p>
                     {% endif %}
 
                 </div>

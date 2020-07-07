@@ -314,12 +314,12 @@
         <!-- Sort -->
         {% if myData.locationapplied == true and myData.displaycount > 1 %}
         <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
-            {% if myData.sortby == "distance" %}
-            <a class="govuk-link govuk-link--no-visited-state" href="providers-all?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}&sort=name">Name</a>, 
-            <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>
+            {% if myData.sortby == "name" %}
+            <a class="govuk-link govuk-link--no-visited-state" href="providers-all?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}&sort=distance">Distance (nearest first)</a>, 
+            <span class="govuk-!-font-weight-bold">Name</span>
             {% else %}
-            <span class="govuk-!-font-weight-bold">Name</span>, 
-            <a class="govuk-link govuk-link--no-visited-state" href="providers-all?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}&sort=distance">Distance (nearest first)</a>
+            <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>,
+            <a class="govuk-link govuk-link--no-visited-state" href="providers-all?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}&sort=name">Name</a>
             {% endif %}
         </p>
         {% elif myData.displaycount > 1 %}

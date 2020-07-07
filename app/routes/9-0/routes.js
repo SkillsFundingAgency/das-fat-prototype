@@ -1106,10 +1106,10 @@ module.exports = function (router,_myData) {
             });
     
             if(req.session.myData.locationapplied){
-                if(req.session.myData.sortby == "distance"){
-                    sortProviders(req, "distance")
-                } else {
+                if(req.session.myData.sortby == "name"){
                     sortProviders(req, "name")
+                } else {
+                    sortProviders(req, "distance")
                 }
             } else {
                 sortProviders(req, "name")

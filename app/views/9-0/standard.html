@@ -8,13 +8,7 @@
     {% set _defaultLocationSearchvalue = myData.location %}
 {% endif %}
 
-{% set _selectedStandard = {} %}
-{% for _standard in myData.standards.list %}
-    {% if myData.standard == _standard.larsCode %}
-        {% set _selectedStandard = _standard %}
-    {% endif %}
-{% endfor %}
-
+{% set _selectedStandard = myData.selectedStandard %}
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
 {% set _standardLevel = {} %}

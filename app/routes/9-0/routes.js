@@ -721,6 +721,19 @@ module.exports = function (router,_myData) {
         //Selected standard
         setSelectedStandard(req,req.query.standard)
 
+        //order job titles A-Z and capitalise
+        req.session.myData.selectedStandard.typicalJobTitles.forEach(function(_jobTitle, index) {
+            req.session.myData.selectedStandard.typicalJobTitles[index] = _jobTitle.charAt(0).toUpperCase() + _jobTitle.slice(1)
+        });
+        req.session.myData.selectedStandard.typicalJobTitles.sort(function(a,b){
+            if (a.toUpperCase() < b.toUpperCase()){
+                return -1
+            } else if(a.toUpperCase() > b.toUpperCase()){
+                return 1
+            }
+            return 0;
+        });
+
         req.session.myData.needToMatchCount = 1
         req.session.myData.countproviders = 0
         req.session.myData.countepaos = 0

@@ -250,7 +250,7 @@ module.exports = function (router,_myData) {
                     })
                 }
             });
-            req.session.myData.searchfilters.push({"value": levelfiltersValues, "type": "levelfilters", "typeText": "Level","typeof":"array"})
+            req.session.myData.searchfilters.push({"value": levelfiltersValues, "type": "levelfilters", "typeText": "Qualification level","typeof":"array"})
         }
     }
 

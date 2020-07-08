@@ -155,7 +155,7 @@
                         <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Level
+                                    Qualification level
                                 </legend>
                                 <div class="govuk-checkboxes govuk-checkboxes--small">
                                     {% for _level in _levels %}
@@ -168,7 +168,7 @@
                                         <div class="govuk-checkboxes__item">
                                             <input {{_checked}} class="govuk-checkboxes__input" id="level-{{_level.value}}" name="levelfilters" type="checkbox" value="{{_level.value}}">
                                             <label class="govuk-label govuk-checkboxes__label" for="level-{{_level.value}}">
-                                                Level {{_level.value}} - {{_level.equiv2}}
+                                                Level {{_level.value}} - {{_level.equiv3}}
                                             </label>
                                         </div>
                                     {% endfor %}

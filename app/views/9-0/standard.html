@@ -69,8 +69,11 @@
         <!-- Summary -->
         <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Level</dt>
-                <dd class="govuk-summary-list__value">{{_standardLevel.value}}</dd>
+                <dt class="govuk-summary-list__key">Qualification level</dt>
+                <dd class="govuk-summary-list__value">
+                    {{_standardLevel.value}} <br><span class="govuk-!-font-size-16 govuk-secondary-colour">Equivalent to {{_standardLevel.equiv3}}.</span>
+                    <!-- <br><a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-16" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank">What levels mean (opens in new tab or window)</a> -->
+                </dd>
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Typical duration</dt>

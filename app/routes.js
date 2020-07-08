@@ -22,32 +22,38 @@ var _myData = {
         {
             "value": "2",
             "equiv": "GCSE grades 9 to 4",
-            "equiv2": "GCSE grades 9 to 4"
+            "equiv2": "GCSE grades 9 to 4",
+            "equiv3": "GCSE"
         }, 
         {
             "value": "3",
             "equiv": "A level",
-            "equiv2": "A level"
+            "equiv2": "A level",
+            "equiv3": "A level"
         }, 
         {
             "value": "4",
             "equiv": "HNC",
-            "equiv2": "HNC"
+            "equiv2": "HNC",
+            "equiv3": "higher national certificate (HNC)"
         }, 
         {
             "value": "5",
             "equiv": "HND",
-            "equiv2": "foundation degree"
+            "equiv2": "foundation degree",
+            "equiv3": "higher national diploma (HND)"
         }, 
         {
             "value": "6",
             "equiv": "degree",
-            "equiv2": "degree"
+            "equiv2": "degree",
+            "equiv3": "degree"
         }, 
         {
             "value": "7",
             "equiv": "master’s degree",
-            "equiv2": "master’s degree"
+            "equiv2": "master’s degree",
+            "equiv3": "master’s degree"
         }
     ],
     "regions": [

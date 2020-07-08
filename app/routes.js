@@ -340,6 +340,9 @@ var _goodProviders = 0,
     _veryPoorProviders = 0
 _myData.providerNewAutocompleteList = []
 _myData["providers-new"].list.forEach(function(_provider, index) {
+    //Set empty trading names if doesnt have any
+    _provider.tradingNames = _provider.tradingNames || []
+    //Set autocomplete string
     var _autoCompleteString = _provider.name
     _provider.autoCompleteString = _autoCompleteString
     _myData.providerNewAutocompleteList.push(_autoCompleteString);

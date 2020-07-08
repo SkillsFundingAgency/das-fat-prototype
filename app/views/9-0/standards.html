@@ -478,6 +478,48 @@
                   </table>
                   </div>
                 </details>
+
+                <details class="govuk-details" data-module="govuk-details" >
+                  <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                      Providers with trading names
+                    </summary>
+                    <div class="govuk-details__text">
+                      <h2 class="govuk-heading-l" >Providers with trading names</h2>
+      
+      
+                      <table class="govuk-table govuk-!-font-size-14">
+                        <thead class="govuk-table__head" >
+                          <tr class="govuk-table__row">
+                            <th scope="col" class="govuk-table__header">Provider</th>
+                            <th scope="col" class="govuk-table__header">Trading names</th>
+                          </tr>
+                        </thead>
+                        <tbody class="govuk-table__body">
+                          {% for _provider in myData["providers-new"].list %}
+
+                            {% if _provider.tradingNames.length > 0 %}
+
+                              <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">
+                                  {{_provider.name}}
+                                </td>
+                                <td class="govuk-table__cell">
+                                  <ul class="govuk-list govuk-list--bullet govuk-!-font-size-14">
+                                    {% for _tradingName in _provider.tradingNames %}
+                                    <li>{{_tradingName}}</li>
+                                    {% endfor %}
+                                  </ul>
+                                </td>
+                              </tr>
+  
+  
+                            {% endif %}
+                          {% endfor %}
+                      </tbody>
+                    </table>
+                    </div>
+                  </details>
           
     <!-- <p class="govuk-body" >{{myData.standards.list|dump|safe}}</p> -->
 

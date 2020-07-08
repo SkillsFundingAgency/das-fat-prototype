@@ -157,6 +157,12 @@
                         </h2>
                         <ul class="govuk-list">
 
+                            {% if _selectedProvider.tradingNames.length > 0 %}
+                            <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
+                                <span class="govuk-secondary-colour">Trading names:</span> {{_selectedProvider.tradingNames | join(", ")}}
+                            </li>
+                            {% endif %}
+
                             {% if _providerFav.locations.length > 1 or (_providerFav.locations.length == 1 and _providerFav.locations[0] != "") %}
                             <!-- <li>
                                 <span class="govuk-!-font-weight-bold class="govuk-!-font-size-16">Training options</span>

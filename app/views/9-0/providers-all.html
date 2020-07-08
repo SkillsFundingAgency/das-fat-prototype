@@ -416,6 +416,12 @@
                     </h2>
                     <ul class="govuk-list">
 
+                        {% if _provider.tradingNames.length > 0 %}
+                        <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
+                            <span class="govuk-secondary-colour">Trading names:</span> {{_provider.tradingNames | join(", ")}}
+                        </li>
+                        {% endif %}
+
                         {% if myData.locationapplied %}
                         <!-- <li class="{% if myData.standardsearchapplied == false %}govuk-!-margin-bottom-3{% endif %}"><span>{{_provider.distance}}</span> mile{% if _provider.distance != 1 %}s{% endif %} away</li> -->
                         {% endif %}

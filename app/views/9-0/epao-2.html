@@ -10,6 +10,10 @@
 
 {% set _epaoCount = myData.epaoCount or _selectedStandard.epaos.number %}
 
+{% block pageTitle %} 
+{{_selectedEPAO.name}} 
+{% endblock %}
+
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     <a href="{{myData.returnURLepao2}}" class="govuk-back-link">Back</a>

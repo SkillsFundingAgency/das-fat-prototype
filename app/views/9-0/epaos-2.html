@@ -3,6 +3,11 @@
 {% set serviceName = "Find an apprenticeship assessment organisation" %}
 {% set serviceUrl = "home-epao" %}
 
+
+{% block pageTitle %} 
+{{myData.displaycount}} assessment organisations
+{% endblock %}
+
 {% set _selectedStandard = myData.selectedStandard %}
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 {% set _epaos = myData.epaos.list %}

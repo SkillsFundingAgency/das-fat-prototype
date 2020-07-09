@@ -1,5 +1,10 @@
 {% extends myData.layout %}
+
 {% set serviceName = "Find apprenticeship training" %}
+
+{% block pageTitle %}
+Available training providers
+{% endblock %}
 
 {% set _selectedStandard = {} %}
 {% for _standard in myData.standards.list %}

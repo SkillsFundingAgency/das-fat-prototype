@@ -239,8 +239,10 @@ Training provider details
 
 
             {% if myData.cmppda != "false" %}
+            {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 10 and _selectedProvider.distance < 15) or _selectedProvider.distance > 40 %}
             <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-font-weight-bold">68% achievement rate</p>
             <p class="govuk-body "><span style="color: #626a6e" class="govuk-!-font-size">3% higher than national average</span></p>
+            {% endif %}
             {% endif %}
 
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>

@@ -211,9 +211,11 @@ Shortlist
                             {% endfor %}
 
                             {% if myData.cmppda != "false" %}
+                            {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 10 and _selectedProvider.distance < 15) or _selectedProvider.distance > 40 %}
                             <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
                                 <span class="govuk-!-font-size-16">68% achievement rate</span>
                             </li>
+                            {% endif %}
                             {% endif %}
 
                             {% if myData.cmppdo != "false" %}

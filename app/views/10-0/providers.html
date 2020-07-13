@@ -520,9 +520,11 @@ Available training providers
                             {% endif %}
 
                             {% if myData.cmppda != "false" %}
+                            {% if _provider.distance < 4 or (_provider.distance > 10 and _provider.distance < 15) or _provider.distance > 40 %}
                             <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
                                 <span class="govuk-!-font-size-16">68% achievement rate</span>
                             </li>
+                            {% endif %}
                             {% endif %}
 
                             {% if myData.cmppdo != "false" %}

@@ -1,6 +1,10 @@
 {% extends myData.layout %}
 {% set serviceName = "Find apprenticeship training" %}
 
+{% block pageTitle %}
+Shortlist
+{% endblock %}
+
 {% set _providers = myData["providers-new"].list %}
 
 {% block beforeContent %}

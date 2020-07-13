@@ -783,7 +783,7 @@ module.exports = function (router,_myData) {
                 //LOCATION
                 if(req.session.myData.locationapplied) {
                     var _providerBlacklisted = false
-                    if(req.session.myData.standard == 34){
+                    if(req.session.myData.standard == 34 || req.session.myData.standard == 174){
                         _providerBlacklisted = true
                     }
                     if(_deliversStandard && (_provider.national || _provider.locationmatch) && !_providerBlacklisted){
@@ -916,7 +916,7 @@ module.exports = function (router,_myData) {
                 //LOCATION
                 if(req.session.myData.locationapplied) {
                     var _providerBlacklisted = false
-                    if(req.session.myData.standard == 34){
+                    if(req.session.myData.standard == 34 || req.session.myData.standard == 174){
                         _providerBlacklisted = true
                     }
                     _provider.search = false
@@ -1205,7 +1205,7 @@ module.exports = function (router,_myData) {
 
                 //LOCATION
                 var _providerBlacklisted = false
-                if(req.session.myData.standard == 34){
+                if(req.session.myData.standard == 34 || req.session.myData.standard == 174){
                     _providerBlacklisted = true
                 }
                 _provider.search = false

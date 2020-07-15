@@ -1,0 +1,40 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training" %}
+
+{% block pageTitle %}
+Apprenticeship training course overview
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/breadcrumb.html" %}
+    {% if myData.totalFavourites > 0 %}
+    <p class="govuk-body" style="float:right;margin-top: -37px;"><a class="govuk-link govuk-link--no-visited-state" href="shortlist">View shortlisted training providers ({{myData.totalFavourites}})</a></p>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <span class="govuk-caption-xl">Apprenticeship training course</span>
+        <h1 class="govuk-heading-xl" >
+            Academic professional (level&nbsp;7)
+        </h1>
+
+        <p class="govuk-body-l">This apprenticeship training course is no longer available for new starts.</p>
+        
+        <p class="govuk-body"><a class="govuk-button" href="training">View apprenticeship training courses</a></p>
+
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+        &nbsp;
+    </div>
+
+</div>
+
+{% endblock %}

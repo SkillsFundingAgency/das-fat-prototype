@@ -825,6 +825,15 @@ module.exports = function (router,_myData) {
 
     });
 
+    // Standard - closed
+    router.get('/' + version + '/standard-closed', function (req, res) {
+
+        res.render(version + '/standard-closed', {
+            myData:req.session.myData
+        });
+
+    });
+
     // Providers
     router.get('/' + version + '/providers', function (req, res) {
 

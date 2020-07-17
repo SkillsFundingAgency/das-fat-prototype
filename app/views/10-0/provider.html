@@ -167,7 +167,7 @@ Training provider details
         <!-- Employer reviews -->
         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Employer reviews</h2>
         <p class="govuk-body-l govuk-!-margin-bottom-4">
-            {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight-bold">{{_ratingTextToShow}}</span><span class="govuk-body govuk-!-font-size" style="color: #626a6e; margin-left: 10px;">({{_totalRatings}} reviews)</span>
+            {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight-bold">{{_ratingTextToShow}}</span><span class="govuk-body govuk-!-font-size" style="margin-left: 10px;">({{_totalRatings}} reviews)</span>
         </p>
         <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
@@ -240,8 +240,8 @@ Training provider details
 
             {% if myData.cmppda != "false" %}
             {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 10 and _selectedProvider.distance < 15) or _selectedProvider.distance > 40 %}
-            <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-font-weight-bold">68% achievement rate</p>
-            <p class="govuk-body "><span style="color: #626a6e" class="govuk-!-font-size">3% higher than national average</span></p>
+            <p class="govuk-body govuk-!-margin-bottom-1"><span class=" govuk-!-font-weight-bold">68% average pass rate</span> <span>(out of 50 apprentices)</span></p>
+            <p class="govuk-body "><span>65% national average pass rate</span></p>
             {% endif %}
             {% endif %}
 

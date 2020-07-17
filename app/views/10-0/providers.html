@@ -484,27 +484,33 @@ Available training providers
                             </li>
                             {% endif %}
 
+                            {% set _dayRelease = _provider.distance > 11 %}
+                            {% set _blockRelease = _provider.distance > 20 %}
+                            {% set _inWorkplace = _provider.distance < 11 %}
+
+                            {% set _dayDistance = _provider.distance %}
+                            {% set _blockDistance = _provider.distance %}
+                            {% set _inWorkplaceDistance = _provider.distance %}
+
+                            {% if _provider.distance < 4 or (_provider.distance > 6 and _provider.distance < 9) %}
+                                {% set _dayRelease = true %}
+                                {% set _blockRelease = true %}
+                                {% set _dayDistance = _provider.distance + 2.8 %}
+                                {% set _blockDistance = _dayDistance + 5.3 %}
+                            {% endif %}
+
+                            <!-- <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
+                                Head office {{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away.
+                            </li> -->
+
                             {% if myData.locationapplied %}
                             
                             <li class="govuk-!-margin-top-2">
-                                {% set _dayRelease = _provider.distance > 11 %}
-                                {% set _blockRelease = _provider.distance > 20 %}
-                                {% set _inWorkplace = _provider.distance < 11 %}
-
-                                {% set _dayDistance = _provider.distance %}
-                                {% set _blockDistance = _provider.distance %}
-                                {% set _inWorkplaceDistance = _provider.distance %}
-
-                                {% if _provider.distance < 4 or (_provider.distance > 6 and _provider.distance < 9) %}
-                                    {% set _dayRelease = true %}
-                                    {% set _blockRelease = true %}
-                                    {% set _dayDistance = _provider.distance + 2.8 %}
-                                    {% set _blockDistance = _dayDistance + 5.3 %}
-                                {% endif %}
+                                
                                 <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
 
                                     <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                        At&nbsp;apprentice’s&nbsp;workplace{% if _inWorkplace %} ({{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away){% endif %}
+                                        At&nbsp;apprentice’s&nbsp;workplace {% if _inWorkplace %}({{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away){% endif %}
                                     </li>
 
                                     <li class="{% if _dayRelease %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
@@ -522,7 +528,7 @@ Available training providers
                             {% if myData.cmppda != "false" %}
                             {% if _provider.distance < 4 or (_provider.distance > 10 and _provider.distance < 15) or _provider.distance > 40 %}
                             <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                                <span class="govuk-!-font-size-16">68% achievement rate</span>
+                                <span class="govuk-!-font-size-16">68% average pass rate</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(out of 50 apprentices)</span>
                             </li>
                             {% endif %}
                             {% endif %}

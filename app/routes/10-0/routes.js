@@ -1235,6 +1235,15 @@ module.exports = function (router,_myData) {
 
     });
 
+    // Provider - unavailable
+    router.get('/' + version + '/provider-unavailable', function (req, res) {
+
+        res.render(version + '/provider-unavailable', {
+            myData:req.session.myData
+        });
+
+    });
+
     // EPAOs
     router.get('/' + version + '/epaos', function (req, res) {
 

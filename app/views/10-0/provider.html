@@ -240,8 +240,18 @@ Training provider details
 
             {% if myData.cmppda != "false" %}
             {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 10 and _selectedProvider.distance < 15) or _selectedProvider.distance > 40 %}
-            <p class="govuk-body govuk-!-margin-bottom-1"><span class=" govuk-!-font-weight-bold">68% average pass rate</span> <span>(out of 50 apprentices)</span></p>
+            <p class="govuk-body govuk-!-margin-bottom-1"><span class=" govuk-!-font-weight-bold">68% pass rate</span> <span>(out of 50 apprentices)</span></p>
             <p class="govuk-body "><span>65% national average pass rate</span></p>
+            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text govuk-!-font-size">
+                    Explain pass rate
+                </span>
+                </summary> 
+                <div class="govuk-details__text">
+                    Percentage of apprentices who successfully passed a similar apprenticeship with this training provider in the last academic year.
+                </div>
+            </details>
             {% endif %}
             {% endif %}
 

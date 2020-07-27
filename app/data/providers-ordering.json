@@ -1,0 +1,154 @@
+{
+  "list":[
+    {
+      "id": 1,
+      "name": "A",
+      "averageEmpRatingText": "Excellent",
+      "ofsted": 1,
+      "passRate": "90%",
+      "distance": 2,
+      "totalPoints": 24,
+      "distancePoints": 7
+    },
+    {
+      "id": 2,
+      "name": "B",
+      "averageEmpRatingText": "Poor",
+      "ofsted": 1,
+      "passRate": "90%",
+      "distance": 2,
+      "totalPoints": 18,
+      "distancePoints": 7      
+    },
+    {
+      "id": 3,
+      "name": "C",
+      "averageEmpRatingText": "Excellent",
+      "ofsted": 1,
+      "passRate": "50%",
+      "distance": 2,
+      "totalPoints": 15,
+      "distancePoints": 7
+    },
+    {
+      "id": 4,
+      "name": "D",
+      "averageEmpRatingText": "Excellent",
+      "ofsted": 1,
+      "passRate": "50%",
+      "distance": 2,
+      "totalPoints": 15,
+      "distancePoints": 7
+    },
+    {
+      "id": 5,
+      "name": "E",
+      "averageEmpRatingText": "Excellent",
+      "ofsted": 4,
+      "passRate": "90%",
+      "distance": 2,
+      "totalPoints": 15,
+      "distancePoints": 7
+    },
+    {
+      "id": 6,
+      "name": "F",
+      "averageEmpRatingText": "Very poor",
+      "ofsted": 1,
+      "passRate": "90%",
+      "distance": 2,
+      "totalPoints": 15,
+      "distancePoints": 7
+    },
+    {
+      "id": 7,
+      "name": "G",
+      "averageEmpRatingText": "Poor",
+      "ofsted": 3,
+      "passRate": "90%",
+      "distance": 2,
+      "totalPoints": 12,
+      "distancePoints": 7
+    },
+    {
+      "id": 8,
+      "name": "H",
+      "averageEmpRatingText": "Excellent",
+      "ofsted": 3,
+      "passRate": "50%",
+      "distance": 2,
+      "totalPoints": 9,
+      "distancePoints": 7
+    },
+    {
+      "id": 9,
+      "name": "I",
+      "averageEmpRatingText": "Poor",
+      "ofsted": 1,
+      "passRate": "50%",
+      "distance": 2,
+      "totalPoints": 9,
+      "distancePoints": 7
+    },
+    {
+      "id": 10,
+      "name": "J",
+      "averageEmpRatingText": "Good",
+      "ofsted": 2,
+      "passRate": "60%",
+      "distance": 2,
+      "totalPoints": 10,
+      "distancePoints": 7
+    },
+    {
+      "id": 11,
+      "name": "K",
+      "averageEmpRatingText": "Good",
+      "ofsted": 2,
+      "passRate": "60%",
+      "distance": 2,
+      "totalPoints": 10,
+      "distancePoints": 7
+    },
+    {
+      "id": 12,
+      "name": "L",
+      "averageEmpRatingText": "Good",
+      "ofsted": 2,
+      "passRate": "60%",
+      "distance": 2,
+      "totalPoints": 10,
+      "distancePoints": 7
+    },
+    {
+      "id": 13,
+      "name": "M",
+      "averageEmpRatingText": "Good",
+      "ofsted": 2,
+      "passRate": "60%",
+      "distance": 2,
+      "totalPoints": 10,
+      "distancePoints": 7
+    },
+    {
+      "id": 14,
+      "name": "N",
+      "averageEmpRatingText": "Good",
+      "ofsted": 2,
+      "passRate": "60%",
+      "distance": 2,
+      "totalPoints": 10,
+      "distancePoints": 7
+    },
+    {
+      "id": 15,
+      "name": "O",
+      "averageEmpRatingText": "Good",
+      "ofsted": 2,
+      "passRate": "75%",
+      "distance": 2,
+      "totalPoints": 11.5,
+      "distancePoints": 7
+    }
+   ]
+  }

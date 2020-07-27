@@ -70,7 +70,8 @@ var _myData = {
     ],
     "providers": require(__dirname + '/data/providers.json'),
     "providers-new": require(__dirname + '/data/providers-new.json'),
-    "epaos": require(__dirname + '/data/epaos.json')
+    "epaos": require(__dirname + '/data/epaos.json'),
+    "providers-ordering": require(__dirname + '/data/providers-ordering.json')
 }
 
 // DO NOT UNCOMMENT AND PUSH LIVE

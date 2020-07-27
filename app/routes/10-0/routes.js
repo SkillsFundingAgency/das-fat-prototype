@@ -1008,6 +1008,50 @@ module.exports = function (router,_myData) {
     });
 
     // Providers
+    router.get('/' + version + '/providers-ordering', function (req, res) {
+
+        //Sort
+        req.session.myData.sortapplied = false
+        if(req.query.sort == "quality" || req.query.sort == "qualityDistance"){
+            req.session.myData.sortapplied = true
+            req.session.myData.sortby = req.query.sort
+        }
+
+        var _providers = req.session.myData["providers-ordering"].list
+
+        setSelectedStandard(req,req.session.myData.standard)
+        
+        req.session.myData.displaycount = 0
+
+        _providers.forEach(function(_provider, index) {
+            _provider.search = true
+            req.session.myData.displaycount++
+        });
+
+        // Sort
+        req.session.myData["providers-ordering"].list.sort(function(a,b){
+            return b.totalPoints - a.totalPoints
+        });
+
+        // else {
+        //     req.session.myData["providers-ordering"].sort(function(a,b){
+        //         var returnValue = 0;
+        //         if (a.name.toUpperCase() < b.name.toUpperCase()){
+        //             returnValue = -1
+        //         } else if(a.name.toUpperCase() > b.name.toUpperCase()){
+        //             returnValue = 1
+        //         }
+        //         return returnValue
+        //     });
+        // }
+
+        res.render(version + '/providers-ordering', {
+            myData:req.session.myData
+        });
+
+    });
+
+    // Providers
     router.get('/' + version + '/providers-all', function (req, res) {
 
         //Sort

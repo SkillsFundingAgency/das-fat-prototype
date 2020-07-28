@@ -226,7 +226,7 @@ Shortlist
 
                             {% if myData.cmppde != "false" %}
                             {% set _zeroEmployerReviews = false %}
-                            {% if _provider.distance > 5 and _provider.distance < 10 %}
+                            {% if _selectedProvider.distance > 5 and _selectedProvider.distance < 10 %}
                                 {% set _zeroEmployerReviews = true %}
                             {% endif %}
                             <li class="govuk-!-font-size-16 govuk-!-margin-top-2">

@@ -195,7 +195,7 @@ Training provider details
                                 <span class="bar {% if _selectedProvider.empRatingsPercentages['excellent'] == 0 %}bar-zero{% endif %}" style="width: {{_selectedProvider.empRatingsPercentages['excellent']}}%"></span>
                             </span>
                         </span>
-                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatingsPercentages["excellent"]}}%</span>
+                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatings['excellent']}} review{% if _selectedProvider.empRatings['excellent'] != 1 %}s{% endif %}</span>
                     </li>
                     <li class="level-2">
                         <span class="label">Good</span>
@@ -204,7 +204,7 @@ Training provider details
                                 <span class="bar {% if _selectedProvider.empRatingsPercentages['good'] == 0 %}bar-zero{% endif %}" style="width: {{_selectedProvider.empRatingsPercentages['good']}}%"></span>
                             </span>
                         </span>
-                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatingsPercentages["good"]}}%</span>
+                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatings['good']}} review{% if _selectedProvider.empRatings['good'] != 1 %}s{% endif %}</span>
                     </li>
                     <li class="level-3">
                         <span class="label">Poor</span>
@@ -213,7 +213,7 @@ Training provider details
                                 <span class="bar {% if _selectedProvider.empRatingsPercentages['poor'] == 0 %}bar-zero{% endif %}" style="width: {{_selectedProvider.empRatingsPercentages['poor']}}%"></span>
                             </span>
                         </span>
-                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatingsPercentages["poor"]}}%</span>
+                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatings['poor']}} review{% if _selectedProvider.empRatings['poor'] != 1 %}s{% endif %}</span>
                     </li>
                     <li class="level-4">
                         <span class="label">Very poor</span>
@@ -222,7 +222,7 @@ Training provider details
                                 <span class="bar {% if _selectedProvider.empRatingsPercentages['very poor'] == 0 %}bar-zero{% endif %}" style="width: {{_selectedProvider.empRatingsPercentages['very poor']}}%"></span>
                             </span>
                         </span>
-                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatingsPercentages["very poor"]}}%</span>
+                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatings['very poor']}} review{% if _selectedProvider.empRatings['very poor'] != 1 %}s{% endif %}</span>
                     </li>
                 </ul>
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Strengths</h2>

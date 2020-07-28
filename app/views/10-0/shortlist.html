@@ -225,8 +225,16 @@ Shortlist
                             {% endif %}
 
                             {% if myData.cmppde != "false" %}
+                            {% set _zeroEmployerReviews = false %}
+                            {% if _provider.distance > 5 and _provider.distance < 10 %}
+                                {% set _zeroEmployerReviews = true %}
+                            {% endif %}
                             <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                                {% if _zeroEmployerReviews %}
+                                <span style="color: #626a6e" class="govuk-!-font-size-16">Not yet reviewed (employer reviews)</span>
+                                {% else %}
                                 {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight">{{_ratingTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">({{_totalRatings}} employer reviews)</span>
+                                {% endif %}
                             </li>
                             {% endif %}
 

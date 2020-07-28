@@ -167,7 +167,7 @@ module.exports = function (router,_myData) {
             req.session.myData.employerreviewsapplied = true
             var employerreviewsValues = []
             req.session.myData.employerreviews.forEach(function(_rating, index) {
-                var _IDtoLabel = {1:"Excellent",2:"Good",3:"Poor",4:"Very poor"}
+                var _IDtoLabel = {1:"Excellent",2:"Good",3:"Poor",4:"Very poor",0:"Not yet reviewed"}
                 employerreviewsValues.push({
                     "label":_IDtoLabel[_rating],
                     "id":_rating
@@ -961,9 +961,15 @@ module.exports = function (router,_myData) {
                     _provider.search = false
                     _provider.searchExcludingLocation = false
                     req.session.myData.employerreviews.forEach(function(_rating, index) {
-                        if(_provider.averageEmpRatingID == _rating){
+                        if ((_provider.distance > 5 && _provider.distance < 10) && _rating == 0) {
+                            // zero reviews
                             req.session.myData.hasAMatchcount++
                             req.session.myData.hasAMatchcountExcludingLocation++
+                        } else {
+                            if(_provider.averageEmpRatingID == _rating){
+                                req.session.myData.hasAMatchcount++
+                                req.session.myData.hasAMatchcountExcludingLocation++
+                            }
                         }
                     });
                 }
@@ -1143,8 +1149,13 @@ module.exports = function (router,_myData) {
                 if(req.session.myData.employerreviewsapplied) {
                     _provider.search = false
                     req.session.myData.employerreviews.forEach(function(_rating, index) {
-                        if(_provider.averageEmpRatingID == _rating){
+                        if ((_provider.distance > 5 && _provider.distance < 10) && _rating == 0) {
+                            // zero reviews
                             req.session.myData.hasAMatchcount++
+                        } else {
+                            if(_provider.averageEmpRatingID == _rating){
+                                req.session.myData.hasAMatchcount++
+                            }
                         }
                     });
                 }

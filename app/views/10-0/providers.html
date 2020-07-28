@@ -267,7 +267,7 @@ Available training providers
 
                         {% if myData.cmppfe != "false" %}
                         <!-- Employer reviews -->
-                        {% set _empOptions = [{"id":1,"label":"Excellent"},{"id":2,"label":"Good"},{"id":3,"label":"Poor"},{"id":4,"label":"Very poor"}] %}
+                        {% set _empOptions = [{"id":1,"label":"Excellent"},{"id":2,"label":"Good"},{"id":3,"label":"Poor"},{"id":4,"label":"Very poor"},{"id":0,"label":"Not yet reviewed"}] %}
                         <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
@@ -540,8 +540,16 @@ Available training providers
                             {% endif %}
 
                             {% if myData.cmppde != "false" %}
+                            {% set _zeroEmployerReviews = false %}
+                            {% if _provider.distance > 5 and _provider.distance < 10 %}
+                                {% set _zeroEmployerReviews = true %}
+                            {% endif %}
                             <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                                {% if _zeroEmployerReviews %}
+                                <span style="color: #626a6e" class="govuk-!-font-size-16">Not yet reviewed (employer reviews)</span>
+                                {% else %}
                                 {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight">{{_ratingTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">({{_totalRatings}} employer reviews)</span>
+                                {% endif %}
                             </li>
                             {% endif %}
 

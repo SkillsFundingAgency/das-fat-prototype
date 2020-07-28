@@ -166,6 +166,17 @@ Training provider details
         {% if myData.cmppde != "false" %}
         <!-- Employer reviews -->
         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Employer reviews</h2>
+
+        {% set _zeroEmployerReviews = false %}
+        {% if _selectedProvider.distance > 5 and _selectedProvider.distance < 10 %}
+        {% set _zeroEmployerReviews = true %}
+        {% endif %}
+
+        {% if _zeroEmployerReviews %}
+        <p class="govuk-body govuk-!-margin-bottom-6">
+        <span>Not yet reviewed</span>
+        </p>
+        {% else %}
         <p class="govuk-body-l govuk-!-margin-bottom-4">
             {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight-bold">{{_ratingTextToShow}}</span><span class="govuk-body govuk-!-font-size" style="margin-left: 10px;">({{_totalRatings}} reviews)</span>
         </p>
@@ -227,6 +238,7 @@ Training provider details
                 </ol>
             </div>
         </details>
+        {% endif %}
         {% endif %}
 
         <!-- Course panel -->

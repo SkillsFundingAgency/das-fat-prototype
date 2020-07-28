@@ -431,15 +431,28 @@ Available training providers
                         </ul>
                     </div>
                     <div class="govuk-grid-column-one-third govuk-!-padding-0">
-                        <p class="govuk-body shortlist-label" >
+                        <p class="govuk-body shortlist-label shortlist-label-non-js" >
                             {% if _provider.inFavourites == true %}
-                            <strong class="govuk-tag">
+                            <strong class="govuk-tag remove-shortlist-tag">
                                 Shortlisted
                             </strong><br>
-                            <a href="#" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2" style="display: inline-block">Remove from shortlist</a>
+                            <a href="{{_fullURL}}&favdel={{_provider.id}}" data-href="{{_fullURL}}&favdel={{_provider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2 remove-shortlist" style="display: inline-block">Remove from shortlist</a>
                             {% else %}
-                            <a href="#" class="govuk-link govuk-link--no-visited-state">Add to shortlist</a>
+                            <a href="{{_fullURL}}&fav={{_provider.id}}" data-href="{{_fullURL}}&fav={{_provider.id}}" class="govuk-link govuk-link--no-visited-state add-shortlist">Add to shortlist</a>
                             {% endif %}
+                        </p>
+                        <!-- for JS -->
+                        <p class="govuk-body shortlist-label shortlist-label-js" style="display:none" >
+
+                            <span class="remove-elements" style="display: none">
+                                <strong class="govuk-tag">
+                                    Shortlisted
+                                </strong><br>
+                                <a href="{{_fullURL}}&favdel={{_provider.id}}" data-href="{{_fullURL}}&favdel={{_provider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2 remove-shortlist">Remove from shortlist</a>
+                            </span>
+
+                            <a href="{{_fullURL}}&fav={{_provider.id}}" data-href="{{_fullURL}}&fav={{_provider.id}}" class="govuk-link govuk-link--no-visited-state add-shortlist">Add to shortlist</a>
+
                         </p>
                     </div>
                     <hr class="govuk-section-break govuk-section-break--visible" style="clear:both">
@@ -454,4 +467,31 @@ Available training providers
     
 </div>
 
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+// Shortlist
+    // add-shortlist
+    var _shortlistLabelJS = $(".shortlist-label-js"),
+        _addButtons = $(".shortlist-label-js .add-shortlist"),
+        _removeButtons = $(".shortlist-label-js .remove-shortlist")
+        
+
+    $(".shortlist-label-non-js").hide()
+    _shortlistLabelJS.show()
+
+    _addButtons.on( "click", function() {
+        event.preventDefault();
+        var _this = $(this)
+        _this.hide()
+        _this.parent().find(".remove-elements").show()        
+    });
+    _removeButtons.on( "click", function() {
+        event.preventDefault();
+        var _this = $(this)
+        _this.parent().parent().find(".add-shortlist").show()        
+        _this.parent().parent().find(".remove-elements").hide()
+    });
+</script>
 {% endblock %}

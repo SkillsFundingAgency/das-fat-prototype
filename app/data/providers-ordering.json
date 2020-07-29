@@ -1,7 +1,7 @@
 {
   "list":[
       {
-        "name": "Training provider H",
+        "name": "Training provider C",
         "averageEmpRatingText": "Excellent",
         "ofsted": 1,
         "passRate": "90%",
@@ -11,7 +11,7 @@
         "variant": "EXCELLENT"
       },
       {
-        "name": "Training provider G",
+        "name": "Training provider F",
         "averageEmpRatingText": "Poor",
         "ofsted": 1,
         "passRate": "90%",
@@ -26,12 +26,12 @@
         "ofsted": 1,
         "passRate": "50%",
         "distance": 2,
-        "totalPoints": 16,
+        "totalPoints": 17,
         "distancePoints": 7,
         "variant": "Excellent/Excellent/Poor"
       },
       {
-        "name": "Training provider B",
+        "name": "Training provider I",
         "averageEmpRatingText": "Excellent",
         "ofsted": 4,
         "passRate": "90%",
@@ -41,37 +41,27 @@
         "variant": "Excellent/Poor/Excellent"
       },
       {
-        "name": "Training provider K",
+        "name": "Training provider G",
+        "averageEmpRatingText": "Poor",
+        "ofsted": 1,
+        "passRate": "50%",
+        "distance": 2,
+        "totalPoints": 11,
+        "distancePoints": 7,
+        "variant": "Poor/Excellent/Poor"
+      },
+      {
+        "name": "Training provider A",
         "averageEmpRatingText": "Good",
         "ofsted": 2,
         "passRate": "75%",
         "distance": 2,
-        "totalPoints": 11.5,
+        "totalPoints": 10,
         "distancePoints": 7,
         "variant": "GOOD"
       },
       {
         "name": "Training provider E",
-        "averageEmpRatingText": "Poor",
-        "ofsted": 1,
-        "passRate": "50%",
-        "distance": 2,
-        "totalPoints": 10,
-        "distancePoints": 7,
-        "variant": "Poor/Excellent/Poor"
-      },
-      {
-        "name": "Training provider F",
-        "averageEmpRatingText": "Poor",
-        "ofsted": 2,
-        "passRate": "75%",
-        "distance": 2,
-        "totalPoints": 9,
-        "distancePoints": 7,
-        "variant": "Poor/Good/Good"
-      },
-      {
-        "name": "Training provider A",
         "averageEmpRatingText": "Poor",
         "ofsted": 4,
         "passRate": "90%",
@@ -81,42 +71,22 @@
         "variant": "Poor/Poor/Excellent"
       },
       {
-        "name": "Training provider C",
-        "averageEmpRatingText": "Good",
-        "ofsted": 2,
-        "passRate": "50%",
-        "distance": 2,
-        "totalPoints": 8,
-        "distancePoints": 7,
-        "variant": "Good/Good/Poor"
-      },
-      {
-        "name": "Training provider L",
-        "averageEmpRatingText": "Good",
-        "ofsted": 4,
-        "passRate": "75%",
-        "distance": 2,
-        "totalPoints": 7,
-        "distancePoints": 7,
-        "variant": "Good/Poor/Good"
-      },
-      {
-        "name": "Training provider J",
+        "name": "Training provider B",
         "averageEmpRatingText": "Excellent",
         "ofsted": 4,
         "passRate": "50%",
         "distance": 2,
-        "totalPoints": 7,
+        "totalPoints": 8,
         "distancePoints": 7,
         "variant": "Excellent/Poor/Poor"
       },
       {
-        "name": "Training provider I",
+        "name": "Training provider H",
         "averageEmpRatingText": "Poor",
         "ofsted": 4,
         "passRate": "50%",
         "distance": 2,
-        "totalPoints": 1,
+        "totalPoints": 2,
         "distancePoints": 7,
         "variant": "BAD"
       }

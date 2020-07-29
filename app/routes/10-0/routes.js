@@ -1016,26 +1016,46 @@ module.exports = function (router,_myData) {
     // Providers
     router.get('/' + version + '/providers-ordering', function (req, res) {
 
-        // Sort
-        req.session.myData["providers-ordering"].list.sort(function(a,b){
-            return b.totalPoints - a.totalPoints
-            // var returnValue = 0;
-            // if(a.totalPoints > b.totalPoints){
-            //     returnValue = -1
-            // } else if(b.totalPoints > a.totalPoints){
-            //     returnValue = 1
-            // } else {
-            //     if (a.name.toUpperCase() < b.name.toUpperCase()){
-            //         returnValue = -1
-            //     } else if(a.name.toUpperCase() > b.name.toUpperCase()){
-            //         returnValue = 1
-            //     }
-            // }
-            // return returnValue
-        });
-        
         var _providers = req.session.myData["providers-ordering"].list
 
+        if(req.query.sort == "shuffle"){
+            function shuffle(array) {
+                var currentIndex = array.length, temporaryValue, randomIndex;
+                
+                // While there remain elements to shuffle...
+                while (0 !== currentIndex) {
+                
+                    // Pick a remaining element...
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex -= 1;
+                
+                    // And swap it with the current element.
+                    temporaryValue = array[currentIndex];
+                    array[currentIndex] = array[randomIndex];
+                    array[randomIndex] = temporaryValue;
+                }
+                
+                return array;
+            }
+            shuffle(_providers);
+        } else {
+            // Sort on name
+            _providers.sort(function(a,b){
+                var returnValue = 0;
+                if (a.name.toUpperCase() < b.name.toUpperCase()){
+                    returnValue = -1
+                } else if(a.name.toUpperCase() > b.name.toUpperCase()){
+                    returnValue = 1
+                }
+                return returnValue
+            });
+            // Then sort on points
+            _providers.sort(function(a,b){
+                return b.totalPoints - a.totalPoints
+            });
+            
+        }
+        
         setSelectedStandard(req,req.session.myData.standard)
         
         req.session.myData.displaycount = 0

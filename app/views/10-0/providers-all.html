@@ -507,15 +507,27 @@ Training providers
                 </div>
                 <div class="govuk-grid-column-one-third govuk-!-padding-0">
                     {% if myData.standardsearchapplied %}
-                    <p class="govuk-body shortlist-label" >
+                    <p class="govuk-body shortlist-label shortlist-label-non-js" >
                         {% if _provider.inFavourites == true %}
-                        <strong class="govuk-tag">
+                        <strong class="govuk-tag remove-shortlist-tag">
                             Shortlisted
                         </strong><br>
-                        <a href="{{_fullURL}}&favdel={{_provider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2" style="display: inline-block">Remove from shortlist</a>
+                        <a href="{{_fullURL}}&favdel={{_provider.id}}" data-href="{{_fullURL}}&favdel={{_provider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2 remove-shortlist" style="display: inline-block">Remove from shortlist</a>
                         {% else %}
-                        <a href="{{_fullURL}}&fav={{_provider.id}}" class="govuk-link govuk-link--no-visited-state">Add to shortlist</a>
+                        <a href="{{_fullURL}}&fav={{_provider.id}}" data-href="{{_fullURL}}&fav={{_provider.id}}" class="govuk-link govuk-link--no-visited-state add-shortlist">Add to shortlist</a>
                         {% endif %}
+                    </p>
+                    <p class="govuk-body shortlist-label shortlist-label-js" style="display:none" >
+
+                        <span class="remove-elements" style="display: none">
+                            <strong class="govuk-tag">
+                                Shortlisted
+                            </strong><br>
+                            <a href="{{_fullURL}}&favdel={{_provider.id}}" data-href="{{_fullURL}}&favdel={{_provider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2 remove-shortlist">Remove from shortlist</a>
+                        </span>
+
+                        <a href="{{_fullURL}}&fav={{_provider.id}}" data-href="{{_fullURL}}&fav={{_provider.id}}" class="govuk-link govuk-link--no-visited-state add-shortlist">Add to shortlist</a>
+
                     </p>
                     {% endif %}
                 </div>

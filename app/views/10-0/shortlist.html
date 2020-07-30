@@ -49,8 +49,6 @@ Shortlist
         <p class="govuk-body"><a class="govuk-button" href="training">View apprenticeship training courses</a></p>
         {% else %}  
 
-        
-  
         <!-- Providers -->
         {% for _favourite in myData.favourites %}
         <div class="{% if myData.favourites.length > 1 %}fat-panel fat-panel-bordered{% endif %} govuk-!-margin-bottom-5 ">
@@ -241,13 +239,13 @@ Shortlist
                             <!-- <ul class="govuk-list govuk-inset-text"> -->
                             <div class="fat-panel fat-panel-blocked govuk-!-margin-top-4">
                                 <ul class="govuk-list govuk-!-margin-top-0">
-                                    <li class="govuk-!-font-size-16 govuk-!-margin-top- ">
+                                    <li class="govuk-!-font-size govuk-!-margin-top- ">
                                         Email: <a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a>
                                     </li>
-                                    <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                                    <li class="govuk-!-font-size govuk-!-margin-top-2">
                                         Phone number: 078&nbsp;7856&nbsp;9856
                                     </li>
-                                    <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                                    <li class="govuk-!-font-size govuk-!-margin-top-2">
                                         Website: <a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a>
                                     </li>
                                 </ul>

@@ -457,6 +457,14 @@ module.exports = function (router,_myData) {
     function reset(req){
         req.session.myData = JSON.parse(JSON.stringify(_myData))
 
+        req.session.myData.favourites = [{"larsCode":196,"providers":[{"id":"1806","locations":[""]},{"id":"610","locations":[""]},{"id":"681","locations":[""]},{"id":"1468","locations":["Coventry, West Midlands"]}]}]
+
+        req.session.myData.clearLocalStorageReset = true
+        req.session.myData.clearLocalStorageNext = true
+
+        // fake favs 
+        // [{"larsCode":34,"providers":[{"id":"1350","locations":[""]}]}]
+
         // Default setup
         req.session.myData.employeraccount = "false"
         req.session.myData.epaoinfat = "false"
@@ -524,6 +532,16 @@ module.exports = function (router,_myData) {
         if(!req.session.myData || req.query.r) {
             reset(req)
         }
+
+        //1st load reset could be true
+        if(req.session.myData.clearLocalStorageNext){
+            req.session.myData.clearLocalStorageNext = false;
+        } else {
+            //2nd load onwards reset is false
+            req.session.myData.clearLocalStorageReset = false;
+        }
+        req.session.myData.clearLocalStorage = req.session.myData.clearLocalStorageReset;
+
         //version
         req.session.myData.version = version
 

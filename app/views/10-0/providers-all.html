@@ -70,7 +70,7 @@ Training providers
     {% include "includes/alpha-banner.html" %}
     {% include "includes/breadcrumb.html" %}
     {% if myData.totalFavourites > 0 %}
-    <p class="govuk-body" style="float:right;margin-top: -37px;"><a class="govuk-link govuk-link--no-visited-state" href="shortlist">View shortlisted training providers ({{myData.totalFavourites}})</a></p>
+    <p class="govuk-body" style="float:right;margin-top: -37px;"><a class="govuk-link govuk-link--no-visited-state" href="shortlist">View shortlisted training providers (<span class="shortlist-total">{{myData.totalFavourites}}</span>)</a></p>
     {% endif %}
 {% endblock %}
 
@@ -539,6 +539,7 @@ Training providers
 
 {% block pageScripts %}
 <script>
+    shortlisting({{myData.clearLocalStorage}})
 
     filterVisibilityToggle({{_filtersApplied | dump | safe }})
 

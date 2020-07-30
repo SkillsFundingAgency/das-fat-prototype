@@ -44,12 +44,14 @@ Shortlist
     
 
         <!-- No results for filters -->
-        {% if myData.totalFavourites == 0 %}
-        <p class="govuk-body">You have 0 training providers shortlisted.</p>
-        <p class="govuk-body"><a class="govuk-button" href="training">View apprenticeship training courses</a></p>
-        {% else %}  
+        <div class="favsEmpty">
+            <p class="govuk-body">You have 0 training providers shortlisted.</p>
+            <p class="govuk-body"><a class="govuk-button" href="training">View apprenticeship training courses</a></p>
+        </div>
+
 
         <!-- Providers -->
+        <div class="favsList">
         {% for _favourite in myData.favourites %}
         <div class="{% if myData.favourites.length > 1 %}fat-panel fat-panel-bordered{% endif %} govuk-!-margin-bottom-5 ">
 
@@ -265,10 +267,10 @@ Shortlist
                 </div>
 
                 {% endfor %}
-            </div>
-            {% endfor %}
+        </div>
+        {% endfor %}
+        </div>
 
-        {% endif %}
         <!-- <div style="margin-top:300px">
             <a href="providers?location=&standard=272" >test link to providers so you can add some</a><br>
             <a href="providers?location=&standard=240">test link to providers on a different standard so you can add some</a>
@@ -277,4 +279,12 @@ Shortlist
     
 </div>
 
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+
+    shortlisting({{myData.clearLocalStorage}})
+
+</script>
 {% endblock %}

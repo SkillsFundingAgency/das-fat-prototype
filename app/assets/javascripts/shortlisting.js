@@ -13,6 +13,15 @@ function shortlisting(_clear){
         _total = Number(localStorage.getItem('shortlistTotal'))
     }
 
+    //for shortlist page
+    if (_total == 0){
+        $(".favsList").hide()
+        $(".favsEmpty").show()
+    } else {
+        $(".favsList").show()
+        $(".favsEmpty").hide()
+    }
+
     _shortlistTotalLabel.text(_total)
 
     $(".shortlist-label-non-js").hide()

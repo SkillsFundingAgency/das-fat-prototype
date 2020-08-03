@@ -373,7 +373,7 @@ Available training providers
 
                             {% if _provider.displayDistances %}
                             <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
-                                Head office {{_provider.distance | round(2)}} mile{% if _provider.distance != 1 %}s{% endif %} away.
+                                Head office {{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away.
                             </li>
                             {% endif %}
 

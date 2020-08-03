@@ -27,6 +27,16 @@ function shortlisting(_clear){
     $(".shortlist-label-non-js").hide()
     _shortlistLabelJS.show()
 
+    // For provider page
+    $(".add-shortlist-button").on( "click", function() {
+        _total = _total + 1
+        localStorage.setItem("shortlistTotal", JSON.stringify(_total));
+    });
+    $(".remove-shortlist-button").on( "click", function() {
+        _total = _total - 1
+        localStorage.setItem("shortlistTotal", JSON.stringify(_total));
+    });
+
     _addButtons.on( "click", function() {
 
         _total = _total + 1

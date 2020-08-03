@@ -404,9 +404,9 @@ Training provider details
                 <strong class="govuk-tag">
                     Shortlisted
                 </strong><br>
-                <a href="{{_fullURL}}&favdel={{_selectedProvider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2" style="display: inline-block">Remove from shortlist</a>
+                <a href="{{_fullURL}}&favdel={{_selectedProvider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2 remove-shortlist-button" style="display: inline-block">Remove from shortlist</a>
                 {% else %}
-                <a href="{{_fullURL}}&fav={{_selectedProvider.id}}" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">Add to shortlist</a>
+                <a href="{{_fullURL}}&fav={{_selectedProvider.id}}" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0 add-shortlist-button">Add to shortlist</a>
                 {% endif %}
             </p>
             {% if myData.locationapplied and _selectedMatchesLocation %}

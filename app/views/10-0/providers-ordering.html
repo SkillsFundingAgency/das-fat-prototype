@@ -20,11 +20,6 @@ Available training providers
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% include "includes/breadcrumb.html" %}
-
-    {% if myData.totalFavourites > 0 %}
-    <p class="govuk-body" style="float:right;margin-top: -37px;"><a class="govuk-link govuk-link--no-visited-state" href="#">View shortlisted training providers ({{myData.totalFavourites}})</a></p>
-    {% endif %}
-
 {% endblock %}
 
 {% block content %}
@@ -368,33 +363,28 @@ Available training providers
                         </h2>
                         <ul class="govuk-list">
 
-                            {% set _dayRelease = _provider.distance > 11 %}
-                            {% set _blockRelease = _provider.distance > 20 %}
-                            {% set _inWorkplace = _provider.distance < 11 %}
+                            {% set _dayRelease = true %}
+                            {% set _blockRelease = true %}
+                            {% set _inWorkplace = true %}
 
                             {% set _dayDistance = _provider.distance %}
                             {% set _blockDistance = _provider.distance %}
                             {% set _inWorkplaceDistance = _provider.distance %}
 
-                            {% if _provider.distance < 4 or (_provider.distance > 6 and _provider.distance < 9) %}
-                                {% set _dayRelease = true %}
-                                {% set _blockRelease = true %}
-                                {% set _dayDistance = _provider.distance + 2.8 %}
-                                {% set _blockDistance = _dayDistance + 5.3 %}
+                            {% if _provider.displayDistances %}
+                            <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
+                                Head office {{_provider.distance | round(2)}} mile{% if _provider.distance != 1 %}s{% endif %} away.
+                            </li>
                             {% endif %}
 
-                            <!-- <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
-                                Head office {{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away.
-                            </li> -->
-
-                            {% if myData.locationapplied %}
+                            {% if _provider.displayDistances %}
                             
                             <li class="govuk-!-margin-top-2">
                                 
                                 <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
 
                                     <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                        At&nbsp;apprentice’s&nbsp;workplace {% if _inWorkplace %}({{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away){% endif %}
+                                        At&nbsp;apprentice’s&nbsp;workplace
                                     </li>
 
                                     <li class="{% if _dayRelease %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
@@ -409,25 +399,17 @@ Available training providers
 
                             {% endif %}
 
-                            {% if myData.cmppda != "false" %}
-                            {% if _provider.distance < 4 or (_provider.distance > 10 and _provider.distance < 15) or _provider.distance > 40 %}
                             <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
                                 <span class="govuk-!-font-size-16">{{_provider.passRate}} pass rate</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(out of 50 apprentices)</span>
                             </li>
-                            {% endif %}
-                            {% endif %}
 
-                            {% if myData.cmppdo != "false" %}
                             <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
                                 {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight">{{_ratingOfstedTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(Ofsted rating)</span>
                             </li>
-                            {% endif %}
 
-                            {% if myData.cmppde != "false" %}
                             <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
                                 {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight">{{_ratingTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(30 employer reviews)</span>
                             </li>
-                            {% endif %}
 
                         </ul>
                     </div>

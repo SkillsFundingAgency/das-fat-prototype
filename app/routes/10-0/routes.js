@@ -1079,6 +1079,11 @@ module.exports = function (router,_myData) {
         req.session.myData.displaycount = 0
 
         _providers.forEach(function(_provider, index) {
+            if(req.query.distances == "show"){
+                _provider.displayDistances = true
+            } else {
+                _provider.displayDistances = false
+            }
             _provider.search = true
             req.session.myData.displaycount++
         });

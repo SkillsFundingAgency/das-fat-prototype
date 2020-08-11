@@ -27,7 +27,7 @@
             {{myData.displaycount}} assessment organisation{% if myData.displaycount != 1 %}s{% endif %}
         </h1>
 
-        <p class="govuk-body govuk-!-margin-bottom-6"><span class="govuk-!-font-weight-bold">Showing assessment organisations for </span><br> {{_standardTitle|safe}} that assess {% if myData.epaolocationAnswerApplied %}in {{myData.selectedRegion.label}}{% else %}throughout England{% endif %}</p>
+        <p class="govuk-body govuk-!-margin-bottom-6"><span class="govuk-!-font-weight-bold">Showing assessment organisations for </span><br> {{_standardTitle|safe}}</p>
 
     </div>
 </div>
@@ -68,8 +68,9 @@
                     <a href="epao-2?epao={{_epao.id}}{{_standardQuery}}&returnURLepao2=epaos-2" class="govuk-link govuk-link--no-visited-state">{{_epao.name}}</a>
                 </h2>
                 <ul class="govuk-list">
+                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Locations covered: </span> {{_deliveryAreasLabel}}</li>
                     
-                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-color">Address: {{_addressLabel}}</span></li>
+                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Address:</span> {{_addressLabel}}</li>
                     
                     {% if _epao.regions != 10 %}
                     <!-- <li class="govuk-!-font-size-16">Assesses in: {{_deliveryAreasLabel}} -->

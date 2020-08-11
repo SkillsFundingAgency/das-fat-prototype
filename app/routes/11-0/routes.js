@@ -1736,10 +1736,11 @@ module.exports = function (router,_myData) {
                             }
                         }
                     });
-                    if(_hasANonNational){
-                        //1 or more Non National EPAOs
-                        res.redirect(301, '/' + version + '/epao-location?s=epao&standard=' + req.session.myData.epaocourseAnswer);
-                    } else if (req.session.myData.epaoCount == 1)  {
+                    // if(_hasANonNational){
+                    //     //1 or more Non National EPAOs
+                    //     res.redirect(301, '/' + version + '/epao-location?s=epao&standard=' + req.session.myData.epaocourseAnswer);
+                    // } else 
+                    if (req.session.myData.epaoCount == 1)  {
                         //Single National EPAO
                         req.session.myData.returnURLepao2 = "epao-course"
                         var _epao = req.session.myData.epaos.list.find(obj => obj.name === req.session.myData.selectedStandard.epaos.list[0])

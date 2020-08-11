@@ -1713,34 +1713,42 @@ module.exports = function (router,_myData) {
 
             setSelectedStandard(req,req.session.myData.standard)
 
-            if(req.session.myData.selectedStandard.epaos.number == 0){
-                //0 EPAOs
-                req.session.myData.returnURLepaodropout = "epao-course"
-                req.session.myData.dropout = "epaocourse"
-                res.redirect(301, '/' + version + '/epao-dropout?s=epao&standard=' + req.session.myData.standard);
+            req.session.myData.epaoCount = req.session.myData.selectedStandard.epaos.number
+
+
+
+            if(req.session.myData.selectedStandard.integratedDegree == "integrated degree" || req.session.myData.selectedStandard.title.toUpperCase().indexOf("(INTEGRATED") != -1) {
+                //integrated course
+                res.redirect(301, '/' + version + '/epao-integrated?s=epao&standard=' + req.session.myData.standard);
             } else {
-                var _hasANonNational = false
-                req.session.myData.epaos.list.forEach(function(_epao, index) {
-                    if(_epao.regions != 10){
-                        var _nonNational = req.session.myData.selectedStandard.epaos.list.find(obj => obj === _epao.name)
-                        if(_nonNational){
-                            _hasANonNational = true
-                        }
-                    }
-                });
-                req.session.myData.epaoCount = req.session.myData.selectedStandard.epaos.number
-                if(_hasANonNational){
-                    //1 or more Non National EPAOs
-                    res.redirect(301, '/' + version + '/epao-location?s=epao&standard=' + req.session.myData.epaocourseAnswer);
-                } else if (req.session.myData.selectedStandard.epaos.number == 1)  {
-                    //Single National EPAO
-                    req.session.myData.returnURLepao2 = "epao-course"
-                    var _epao = req.session.myData.epaos.list.find(obj => obj.name === req.session.myData.selectedStandard.epaos.list[0])
-                    res.redirect(301, '/' + version + '/epao-2?s=epao&epao=' + _epao.id + '&standard=' + req.session.myData.standard);
+                if(req.session.myData.epaoCount == 0){
+                    //0 EPAOs
+                    req.session.myData.returnURLepaodropout = "epao-course"
+                    req.session.myData.dropout = "epaocourse"
+                    res.redirect(301, '/' + version + '/epao-dropout?s=epao&standard=' + req.session.myData.standard);
                 } else {
-                    //More than 1 National EPAOs
-                    req.session.myData.returnURLepaos2 = "epao-course"
-                    res.redirect(301, '/' + version + '/epaos-2?s=epao&standard=' + req.session.myData.standard);
+                    var _hasANonNational = false
+                    req.session.myData.epaos.list.forEach(function(_epao, index) {
+                        if(_epao.regions != 10){
+                            var _nonNational = req.session.myData.selectedStandard.epaos.list.find(obj => obj === _epao.name)
+                            if(_nonNational){
+                                _hasANonNational = true
+                            }
+                        }
+                    });
+                    if(_hasANonNational){
+                        //1 or more Non National EPAOs
+                        res.redirect(301, '/' + version + '/epao-location?s=epao&standard=' + req.session.myData.epaocourseAnswer);
+                    } else if (req.session.myData.epaoCount == 1)  {
+                        //Single National EPAO
+                        req.session.myData.returnURLepao2 = "epao-course"
+                        var _epao = req.session.myData.epaos.list.find(obj => obj.name === req.session.myData.selectedStandard.epaos.list[0])
+                        res.redirect(301, '/' + version + '/epao-2?s=epao&epao=' + _epao.id + '&standard=' + req.session.myData.standard);
+                    } else {
+                        //More than 1 National EPAOs
+                        req.session.myData.returnURLepaos2 = "epao-course"
+                        res.redirect(301, '/' + version + '/epaos-2?s=epao&standard=' + req.session.myData.standard);
+                    }
                 }
             }
         }
@@ -1834,6 +1842,15 @@ module.exports = function (router,_myData) {
         });
     });
 
+    // EPAO integrated
+    router.get('/' + version + '/epao-integrated', function (req, res) {
+
+        setSelectedStandard(req,req.session.myData.standard)
+
+        res.render(version + '/epao-integrated', {
+            myData:req.session.myData
+        });
+    });
 
 
     // Shortlist

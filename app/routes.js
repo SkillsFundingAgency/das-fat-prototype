@@ -141,11 +141,21 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //     var _apiData = JSON.parse(body),
 //         _statusTypes = {},
 //         _versionTypes = {},
+//         _integratedDegreeTypes = {},
+//         _integratedDegreeTypesApproved = {},
+//         _integratedInTitleTypes = {},
+//         _approvedForDelivery = 0,
+//         _integratedInTitle = 0,
+//         _integratedOnlyInTitle = 0,
+//         _integratedDegreeInTitle = 0,
+//         _integratedInTitleNotFlagged = 0,
+//         _integratedNotInTitleFlagged = 0,
 //         _testStandardsData = []
-//     // console.log(_apiData.length + " standards in API (https://www.instituteforapprenticeships.org/api/apprenticeshipstandards)")
+//     console.log(_apiData.length + " standards in API (https://www.instituteforapprenticeships.org/api/apprenticeshipstandards)")
 //     _apiData.forEach(function(_standard, index) {
 //         _statusTypes[_standard.status] = (_statusTypes[_standard.status] || 0) + 1
 //         _versionTypes["version " + _standard.version] = (_versionTypes["version " + _standard.version] || 0) + 1
+//         _integratedDegreeTypes[_standard.integratedDegree] = (_integratedDegreeTypes[_standard.integratedDegree] || 0) + 1
 //         var _title = _standard.title + " (level " + _standard.level + ")",
 //             _standardData = {}
         
@@ -154,6 +164,8 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         _standardData.overview = _standard.overviewOfRole
 
 //         if(_standard.status == "Approved for delivery"){
+//             _approvedForDelivery++
+//             _integratedDegreeTypesApproved[_standard.integratedDegree] = (_integratedDegreeTypesApproved[_standard.integratedDegree] || 0) + 1
 //             _testStandardsData.push(_standardData)
 //         }
 //         if(_standard.coreAndOptions && _standard.skills.length > 0){
@@ -199,8 +211,59 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         // console.log("checked")
 //         // console.log(_title)
 
+//         if((_standard.title.toUpperCase().indexOf("(INTEGRATED") != -1) && _standard.status == "Approved for delivery"){
+//             _integratedInTitle++
+//             _integratedInTitleTypes[_standard.integratedDegree] = (_integratedInTitleTypes[_standard.integratedDegree] || 0) + 1
+//         }
+
+//         if((_standard.title.toUpperCase().indexOf("(INTEGRATED)") != -1) && _standard.status == "Approved for delivery"){
+//             _integratedOnlyInTitle++
+//         }
+
+//         if((_standard.title.toUpperCase().indexOf("(INTEGRATED DEGREE)") != -1) && _standard.status == "Approved for delivery"){
+//             _integratedDegreeInTitle++
+//         }
+
+
+//         // Integrated in title but not flagged
+//         if((_standard.title.toUpperCase().indexOf("(INTEGRATED") != -1 && _standard.integratedDegree != "integrated degree") && _standard.status == "Approved for delivery"){
+//             // console.log(_standard.title)
+//             // console.log("   -----   integratedDegree = " + _standard.integratedDegree)
+//             // console.log(_standard.larsCode)
+//             _integratedInTitleNotFlagged++
+//         }
+
+//         // Flagged but not in title
+//         if((_standard.title.toUpperCase().indexOf("(INTEGRATED") == -1 && _standard.integratedDegree == "integrated degree") && _standard.status == "Approved for delivery"){
+//             // console.log(_standard.title)
+//             // console.log("   -----   integratedDegree = " + _standard.integratedDegree)
+//             // console.log(_standard.larsCode)
+//             _integratedNotInTitleFlagged++
+//         }
+
         
 //     });
+
+//     // Date 
+//     var today = new Date();
+//     var dd = String(today.getDate()).padStart(2, '0');
+//     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+//     var yyyy = today.getFullYear();
+//     today = dd + '/' + mm + '/' + yyyy;
+    
+//     console.log("-----------------")
+//     console.log(_approvedForDelivery + " 'Approved for delivery' standards on " + today)
+//     console.log(_integratedDegreeTypesApproved)
+//     console.log("-----------------")
+
+//     console.log(_integratedInTitle + " with '(integrated' in title (case insensitive) and 'Approved for delivery'")
+//     console.log(_integratedInTitleTypes)
+//     console.log("-----------------")
+//     console.log(_integratedOnlyInTitle + " with '(integrated)' in title (case insensitive) and 'Approved for delivery'")
+//     console.log(_integratedDegreeInTitle + " with '(integrated degree)' in title (case insensitive) and 'Approved for delivery'")
+
+//     // console.log(_integratedInTitleNotFlagged + " with (integrated in title but NOT flagged")
+//     // console.log(_integratedNotInTitleFlagged + " without (integrated in title but IS flagged")
 //     // console.log("START")
 //     // console.log(JSON.stringify(_testStandardsData))
 //     // console.log("END")

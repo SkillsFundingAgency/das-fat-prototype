@@ -31,19 +31,23 @@
                 <legend class="govuk-fieldset__legend">Service</legend>
                 <div class="govuk-radios">
                     <div class="govuk-radios__item">
-                        <input {% if myData.service != 'epao' %}checked{% endif %} class="govuk-radios__input" data-option="service-1" id="service-1" name="service" type="radio" value="fat">
+                        <input {% if myData.service == 'fat' %}checked{% endif %} class="govuk-radios__input" data-option="service-1" id="service-1" name="service" type="radio" value="fat">
                         <label class="govuk-label govuk-radios__label" for="service-1">FAT (Find apprenticeship training)</label>
                     </div>
                     <div class="govuk-radios__item">
                         <input {% if myData.service == 'epao' %}checked{% endif %} class="govuk-radios__input" data-option="service-2" id="service-2" name="service" type="radio" value="epao">
                         <label class="govuk-label govuk-radios__label" for="service-2">FEPAO (Find an end-point assessment organisation)</label>
                     </div>
+                    <div class="govuk-radios__item">
+                        <input {% if myData.service == 'pf' %}checked{% endif %} class="govuk-radios__input" data-option="service-3" id="service-3" name="service" type="radio" value="pf">
+                        <label class="govuk-label govuk-radios__label" for="service-3">Provide feedback</label>
+                    </div>
                 </div>
             </fieldset>
         </div>
 
         <!-- EPAO in FAT -->
-        <div class="govuk-form-group">
+        <!-- <div class="govuk-form-group">
             <label class="govuk-label" >
               EPAO in FAT
             </label>
@@ -51,10 +55,10 @@
               <option {% if myData.epaoinfat != 'false' %}selected{% endif %} value="true">Yes</option>
               <option {% if myData.epaoinfat == 'false' %}selected{% endif %} value="false">No</option>
             </select>
-          </div>
+          </div> -->
 
         <!-- Employer account -->
-        <div class="govuk-form-group">
+        <div class="govuk-form-group employeraccount">
           <label class="govuk-label" >
             Employer account
           </label>
@@ -371,11 +375,19 @@
                 _urlReset = "r=t",
                 _urlPage = "home?",
                 _urlService = "&s=" + $('input[name=service]:checked').val(),
-                _urlEmpAccount = "&ea=" + _options.filter("#employeraccount").val(),
-                _urlEpaoInFAT = "&epaofat=" + _options.filter("#epaoinfat").val();
+                _urlEmpAccount = "&ea=" + _options.filter("#employeraccount").val();
+                // _urlEpaoInFAT = "&epaofat=" + _options.filter("#epaoinfat").val();
+            // EPAO
             if(_urlService == "&s=epao"){
-                // _urlPage = "epaos-all?"
                 _urlPage = "home-epao?"
+            }
+            // Provide feedback
+            if(_urlService == "&s=pf"){
+                _urlPage = "provide-feedback-1?"
+                _urlEmpAccount = "&ea=true"
+                $('.employeraccount').hide()
+            } else {
+                $('.employeraccount').show()
             }
 
             // Components queries
@@ -401,7 +413,7 @@
             }
            
             //Queries combined
-            var _urlPageQueries = _urlPage + _urlReset + _urlEmpAccount + _urlEpaoInFAT + _urlService + _urlComponents;
+            var _urlPageQueries = _urlPage + _urlReset + _urlEmpAccount + _urlService + _urlComponents;
 
             //URL text
             var _startURLText = _urlBase + _urlPageQueries,

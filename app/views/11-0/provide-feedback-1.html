@@ -1,0 +1,129 @@
+{% extends myData.layout %}
+{% set serviceName = "Feedback" %}
+{% set serviceUrl = "provide-feedback-1" %}
+
+{% set _inError = myData.validationError %}
+
+{% block pageTitle %} 
+{% if _inError == "true" %}Error: {% endif %}
+Where is the apprenticeship?
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <!-- <a href="epao-course" class="govuk-back-link">Back</a> -->
+    {% if myData.employeraccount == "true" %}
+        <div class="govuk-!-margin-top-5"></div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        
+
+        <form method="POST" class="form">
+
+            {% if _inError == "true" %}
+            <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+                <h2 class="govuk-error-summary__title" id="error-summary-title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        {% for name, item in myData.validationErrors %}
+                        <li>
+                            <a href="#{{item.anchor}}">{{item.message}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <h1 class="govuk-heading-xl">
+                [Provider's] strengths
+            </h1>
+
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
+                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                    <h2 class="govuk-fieldset__heading">
+                      What is [provider] doing very well?
+                    </h2>
+                  </legend>
+                  <div id="waste-hint" class="govuk-hint">
+                    It's optional. You can choose up to 3.
+                  </div>
+
+                  {% set _factors = [
+                        {
+                            "name": "Communication with employers"
+                        },
+                        {
+                            "name": "Adapting to my needs"
+                        },
+                        {
+                            "name": "Initial assessment of apprentices"
+                        },
+                        {
+                            "name": "Getting new apprentices started"
+                        },
+                        {
+                            "name": "Working with small numbers of apprentices"
+                        },
+                        {
+                            "name": "Providing the right training at the right time"
+                        },
+                        {
+                            "name": "Training facilities"
+                        },
+                        {
+                            "name": "Reporting on progress of apprentices"
+                        },
+                        {
+                            "name": "Improving apprentice skills"
+                        } 
+                    ] %}
+
+                  <div class="govuk-checkboxes">
+                    {% for _factor in _factors %}
+                    {% set _itemID = "factor-" + loop.index %}
+                    <div class="govuk-checkboxes__item">
+                      <input class="govuk-checkboxes__input" id="{{_itemID}}" name="strengths" type="checkbox" value="{{_itemID}}" {% if _itemID in myData.strengthsAnswer %}checked{% endif %}>
+                      <label class="govuk-label govuk-checkboxes__label" for="{{_itemID}}">
+                        {{_factor.name}}
+                      </label>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </fieldset>
+              </div>
+            
+            <button type="submit" class="govuk-button">
+                Continue
+            </button>
+
+            <p class="govuk-body">
+                <a href="provide-feedback-2" class="govuk-link govuk-link--no-visited-state">Skip this question</a>
+            </p>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+
+    var _checkboxes = $('input[type=checkbox]')
+
+    _checkboxes.change(function(){
+        _checkboxes.filter(':not(:checked)').attr('disabled', (_checkboxes.filter(':checked').length == 3))
+    }).trigger("change");
+
+</script>
+{% endblock pageScripts %}

@@ -525,6 +525,9 @@ module.exports = function (router,_myData) {
         req.session.myData.epaolocationAnswer = 1
         req.session.myData.epaolocationAnswerApplied = false
 
+        req.session.myData.weaknessesAnswer = []
+        req.session.myData.strengthsAnswer = []
+
     }
 
     // Every GET and POST
@@ -1906,6 +1909,40 @@ module.exports = function (router,_myData) {
             }
             
         }
+    });
+
+
+    // Provide feedback 1
+    router.get('/' + version + '/provide-feedback-1', function (req, res) {
+        res.render(version + '/provide-feedback-1', {
+            myData:req.session.myData
+        });
+    });
+    router.post('/' + version + '/provide-feedback-1', function (req, res) {
+        req.session.myData.strengthsAnswer = req.body.strengths
+        res.redirect(301, '/' + version + '/provide-feedback-2');
+    });
+
+    // Provide feedback 2
+    router.get('/' + version + '/provide-feedback-2', function (req, res) {
+        res.render(version + '/provide-feedback-2', {
+            myData:req.session.myData
+        });
+    });
+    router.post('/' + version + '/provide-feedback-2', function (req, res) {
+        req.session.myData.weaknessesAnswer = req.body.weaknesses
+        res.redirect(301, '/' + version + '/provide-feedback-3');
+    });
+
+    // Provide feedback 3
+    router.get('/' + version + '/provide-feedback-3', function (req, res) {
+        res.render(version + '/provide-feedback-3', {
+            myData:req.session.myData
+        });
+    });
+    router.post('/' + version + '/provide-feedback-3', function (req, res) {
+        req.session.myData.overallRatingAnswer = req.body.overallRating
+        res.redirect(301, '/' + version + '/provide-feedback-3');
     });
 
 }

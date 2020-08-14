@@ -71,7 +71,45 @@ var _myData = {
     "providers": require(__dirname + '/data/providers.json'),
     "providers-new": require(__dirname + '/data/providers-new.json'),
     "epaos": require(__dirname + '/data/epaos.json'),
-    "providers-ordering": require(__dirname + '/data/providers-ordering.json')
+    "providers-ordering": require(__dirname + '/data/providers-ordering.json'),
+    "provideFeedbackFactors": [
+        {
+            "id": "_factor-1",
+            "name": "Communication with employers"
+        },
+        {
+            "id": "_factor-2",
+            "name": "Adapting to my needs"
+        },
+        {
+            "id": "_factor-3",
+            "name": "Initial assessment of apprentices"
+        },
+        {
+            "id": "_factor-4",
+            "name": "Getting new apprentices started"
+        },
+        {
+            "id": "_factor-5",
+            "name": "Working with small numbers of apprentices"
+        },
+        {
+            "id": "_factor-6",
+            "name": "Providing the right training at the right time"
+        },
+        {
+            "id": "_factor-7",
+            "name": "Training facilities"
+        },
+        {
+            "id": "_factor-8",
+            "name": "Reporting on progress of apprentices"
+        },
+        {
+            "id": "_factor-9",
+            "name": "Improving apprentice skills"
+        } 
+    ]
 }
 
 // DO NOT UNCOMMENT AND PUSH LIVE

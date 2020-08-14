@@ -43,7 +43,7 @@ Overall rating
                 Overall rating
             </h1>
 
-            <div class="govuk-form-group">
+            <div class="govuk-form-group {% if myData.validationErrors.overallRatingAnswer %}govuk-form-group--error{% endif %}">
                 <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
                   <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                     <h2 class="govuk-fieldset__heading">
@@ -69,11 +69,18 @@ Overall rating
                         }
                     ] %}
 
+                {% if myData.validationErrors.overallRatingAnswer %}
+                <span id="overallRatingAnswer-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span>
+                    {{myData.validationErrors.overallRatingAnswer.message}}
+                </span>
+                {% endif %}
+
                   <div class="govuk-radios">
                     {% for _rating in _ratings %}
                     {% set _itemID = "rating-" + loop.index %}
                     <div class="govuk-radios__item">
-                      <input class="govuk-radios__input" id="{{_itemID}}" name="overallRating" type="radio" value="{{_itemID}}" {% if _itemID == myData.overallRatingAnswer %}checked{% endif %}>
+                      <input class="govuk-radios__input" id="{{_itemID}}" name="overallRating" type="radio" value="{{_rating.name}}" {% if _rating.name == myData.overallRatingAnswer %}checked{% endif %}>
                       <label class="govuk-label govuk-radios__label" for="{{_itemID}}">
                         {{_rating.name}}
                       </label>

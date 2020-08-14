@@ -54,39 +54,11 @@ How could TRAINING UK LTD improve?
                     It's optional. You can choose up to 3.
                   </div>
 
-                  {% set _factors = [
-                        {
-                            "name": "Communication with employers"
-                        },
-                        {
-                            "name": "Adapting to my needs"
-                        },
-                        {
-                            "name": "Initial assessment of apprentices"
-                        },
-                        {
-                            "name": "Getting new apprentices started"
-                        },
-                        {
-                            "name": "Working with small numbers of apprentices"
-                        },
-                        {
-                            "name": "Providing the right training at the right time"
-                        },
-                        {
-                            "name": "Training facilities"
-                        },
-                        {
-                            "name": "Reporting on progress of apprentices"
-                        },
-                        {
-                            "name": "Improving apprentice skills"
-                        } 
-                    ] %}
+                  {% set _factors = myData.provideFeedbackFactors %}
 
                   <div class="govuk-checkboxes">
                     {% for _factor in _factors %}
-                    {% set _itemID = "factor-" + loop.index %}
+                    {% set _itemID = _factor.id %}
                     {% if _itemID not in myData.strengthsAnswer %}
                     <div class="govuk-checkboxes__item">
                       <input class="govuk-checkboxes__input" id="{{_itemID}}" name="weaknesses" type="checkbox" value="{{_itemID}}" {% if _itemID in myData.weaknessesAnswer %}checked{% endif %}>

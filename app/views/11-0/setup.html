@@ -326,6 +326,26 @@
                     <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epaos-all?&r=t&s=epao">/epaos-all</a></td>
                 </tr>
 
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">Provide feedback</h2></th>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Approvals end</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-approvals?&r=t&s=pf&ea=true">/provide-feedback-approvals</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Strengths</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-1?&r=t&s=pf&ea=true">/provide-feedback-1</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Weaknesses</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-2?&r=t&s=pf&ea=true">/provide-feedback-2</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Overall rating</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-3?&r=t&s=pf&ea=true">/provide-feedback-3</a></td>
+                </tr>
+
 
 
                 <tr class="govuk-table__row">
@@ -383,7 +403,7 @@
             }
             // Provide feedback
             if(_urlService == "&s=pf"){
-                _urlPage = "provide-feedback-1?"
+                _urlPage = "provide-feedback-approvals?"
                 _urlEmpAccount = "&ea=true"
                 $('.employeraccount').hide()
             } else {

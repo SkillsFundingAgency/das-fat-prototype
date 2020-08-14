@@ -1912,6 +1912,14 @@ module.exports = function (router,_myData) {
     });
 
 
+
+    // Provide feedback - approvals
+    router.get('/' + version + '/provide-feedback-approvals', function (req, res) {
+        res.render(version + '/provide-feedback-approvals', {
+            myData:req.session.myData
+        });
+    });
+
     // Provide feedback 1
     router.get('/' + version + '/provide-feedback-1', function (req, res) {
         res.render(version + '/provide-feedback-1', {
@@ -1944,5 +1952,7 @@ module.exports = function (router,_myData) {
         req.session.myData.overallRatingAnswer = req.body.overallRating
         res.redirect(301, '/' + version + '/provide-feedback-3');
     });
+
+    
 
 }

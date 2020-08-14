@@ -1,12 +1,12 @@
 {% extends myData.layout %}
-{% set serviceName = "Feedback" %}
-{% set serviceUrl = "provide-feedback-1" %}
+{% set serviceName = "Manage apprenticeships" %}
+{% set serviceUrl = "provide-feedback-approvals" %}
 
 {% set _inError = myData.validationError %}
 
 {% block pageTitle %} 
 {% if _inError == "true" %}Error: {% endif %}
-How could [provider] improve?
+How could TRAINING UK LTD improve?
 {% endblock %}
 
 {% block beforeContent %}
@@ -40,14 +40,14 @@ How could [provider] improve?
             {% endif %}
 
             <h1 class="govuk-heading-xl">
-                How could [provider] improve?
+                How could TRAINING UK LTD improve?
             </h1>
 
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
                   <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                     <h2 class="govuk-fieldset__heading">
-                      Does [provider] need to improve any of these?
+                      Does TRAINING UK LTD need to improve any of these?
                     </h2>
                   </legend>
                   <div id="waste-hint" class="govuk-hint">

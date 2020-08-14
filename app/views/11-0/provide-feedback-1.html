@@ -1,20 +1,17 @@
 {% extends myData.layout %}
-{% set serviceName = "Feedback" %}
-{% set serviceUrl = "provide-feedback-1" %}
+{% set serviceName = "Manage apprenticeships" %}
+{% set serviceUrl = "provide-feedback-approvals" %}
 
 {% set _inError = myData.validationError %}
 
 {% block pageTitle %} 
 {% if _inError == "true" %}Error: {% endif %}
-[Provider's] strengths
+TRAINING UK LTD's strengths
 {% endblock %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
-    <!-- <a href="epao-course" class="govuk-back-link">Back</a> -->
-    {% if myData.employeraccount == "true" %}
-        <div class="govuk-!-margin-top-5"></div>
-    {% endif %}
+    <a href="provide-feedback-approvals" class="govuk-back-link">Back</a>
 {% endblock %}
 
 {% block content %}
@@ -43,14 +40,14 @@
             {% endif %}
 
             <h1 class="govuk-heading-xl">
-                [Provider's] strengths
+                TRAINING UK LTD's strengths
             </h1>
 
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
                   <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                     <h2 class="govuk-fieldset__heading">
-                      What is [provider] doing very well?
+                      What is TRAINING UK LTD doing very well?
                     </h2>
                   </legend>
                   <div id="waste-hint" class="govuk-hint">

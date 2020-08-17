@@ -360,36 +360,8 @@ Available training providers
         <!-- 
             Providers list OR No results
         -->
-
-        {% set _displayClosestInstead = myData.locationapplied and myData.displaycount == 0 %}
-        {% set _useDetailsComponent = false %}
         
-        <!-- Location applied, no results -->
-        {% if _displayClosestInstead and myData.displaycountExcludingLocation > 0 %}
-        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5 govuk-!-margin-top-9">
-            <p class="govuk-body">Nearest training providers that do not currently offer {{_standardTitle|safe}} at the apprenticeship location.</p>
-        </div>
-        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
-
-
-
-            {% if _useDetailsComponent %}
-            <details class="govuk-details" data-module="govuk-details">
-                <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                    Training providers
-                </span>
-                </summary>
-                <div class="govuk-details__text">
-                
-            
-            {% endif %}
-           
-        {% endif %}
-
-
         <!-- Providers -->
-        {% set _closestCount = 0 %}
         {% set _renderedRows = 0 %}
         {% for _provider in _providers %}
 
@@ -463,12 +435,9 @@ Available training providers
             {% endif %}
 
 
-            {% if (_provider.search == true or (_displayClosestInstead and _provider.searchExcludingLocation == true)) and _renderedRows < myData.maxrows  %}
+            {% if _provider.search == true and _renderedRows < myData.maxrows  %}
 
                 {% set _renderedRows = _renderedRows + 1 %}
-                {% set _closestCount = _closestCount + 1 %}
-
-                {% if (_closestCount < 6 and _provider.distance < 50 and _displayClosestInstead) or _displayClosestInstead != true %}
                 
                 <div class="govuk-grid-row govuk-!-margin-left-0 govuk-!-margin-right-0 govuk-!-margin-top-3">
 
@@ -587,17 +556,10 @@ Available training providers
                     </div>
                     <hr class="govuk-section-break govuk-section-break--visible" style="clear:both">
                 </div>
-               
-                {% endif %}
 
             {% endif %}
 
         {% endfor %}
-
-        {% if _displayClosestInstead and _useDetailsComponent and myData.displaycountExcludingLocation > 0 %}
-            </div>
-        </details>
-        {% endif %}
 
     </div>
     

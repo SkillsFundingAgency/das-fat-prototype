@@ -1919,6 +1919,12 @@ module.exports = function (router,_myData) {
             myData:req.session.myData
         });
     });
+    // Provide feedback - approvals - a
+    router.get('/' + version + '/provide-feedback-approvals-a', function (req, res) {
+        res.render(version + '/provide-feedback-approvals-a', {
+            myData:req.session.myData
+        });
+    });
 
     // Provide feedback 1
     router.get('/' + version + '/provide-feedback-1', function (req, res) {
@@ -1930,6 +1936,16 @@ module.exports = function (router,_myData) {
         req.session.myData.strengthsAnswer = req.body.strengths
         res.redirect(301, '/' + version + '/provide-feedback-2');
     });
+    // Provide feedback 1a
+    router.get('/' + version + '/provide-feedback-1a', function (req, res) {
+        res.render(version + '/provide-feedback-1a', {
+            myData:req.session.myData
+        });
+    });
+    router.post('/' + version + '/provide-feedback-1a', function (req, res) {
+        req.session.myData.strengthsAnswer = req.body.strengths
+        res.redirect(301, '/' + version + '/provide-feedback-2a');
+    });
 
     // Provide feedback 2
     router.get('/' + version + '/provide-feedback-2', function (req, res) {
@@ -1940,6 +1956,17 @@ module.exports = function (router,_myData) {
     router.post('/' + version + '/provide-feedback-2', function (req, res) {
         req.session.myData.weaknessesAnswer = req.body.weaknesses
         res.redirect(301, '/' + version + '/provide-feedback-3');
+    });
+
+    // Provide feedback 2a
+    router.get('/' + version + '/provide-feedback-2a', function (req, res) {
+        res.render(version + '/provide-feedback-2a', {
+            myData:req.session.myData
+        });
+    });
+    router.post('/' + version + '/provide-feedback-2a', function (req, res) {
+        req.session.myData.weaknessesAnswer = req.body.weaknesses
+        res.redirect(301, '/' + version + '/provide-feedback-3a');
     });
 
     // Provide feedback 3
@@ -1973,6 +2000,37 @@ module.exports = function (router,_myData) {
         }
     });
 
+    // Provide feedback 3a
+    router.get('/' + version + '/provide-feedback-3a', function (req, res) {
+        res.render(version + '/provide-feedback-3a', {
+            myData:req.session.myData
+        });
+    });
+    router.post('/' + version + '/provide-feedback-3a', function (req, res) {
+        req.session.myData.overallRatingAnswerTemp = req.body.overallRatingAnswerTemp = req.body.overallRating
+
+        if(req.session.myData.includeValidation == "false"){
+            req.session.myData.overallRatingAnswerTemp = req.session.myData.overallRatingAnswerTemp || "Excellent"
+        }
+        if(!req.session.myData.overallRatingAnswerTemp){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.overallRatingAnswer = {
+                "anchor": "rating-1",
+                "message": "Please rate TRAINING UK LTD"
+            }
+        }
+
+        if(req.session.myData.validationError == "true") {
+            res.render(version + '/provide-feedback-3a', {
+                myData:req.session.myData
+            });
+        } else {
+            req.session.myData.overallRatingAnswer = req.session.myData.overallRatingAnswerTemp
+            req.session.myData.overallRatingAnswerTemp = ""
+            res.redirect(301, '/' + version + '/provide-feedback-4a');
+        }
+    });
+
     // Provide feedback 4
     router.get('/' + version + '/provide-feedback-4', function (req, res) {
         res.render(version + '/provide-feedback-4', {
@@ -1980,9 +2038,23 @@ module.exports = function (router,_myData) {
         });
     });
 
+    // Provide feedback 4a
+    router.get('/' + version + '/provide-feedback-4a', function (req, res) {
+        res.render(version + '/provide-feedback-4a', {
+            myData:req.session.myData
+        });
+    });
+
     // Provide feedback 5
     router.get('/' + version + '/provide-feedback-5', function (req, res) {
         res.render(version + '/provide-feedback-5', {
+            myData:req.session.myData
+        });
+    });
+
+    // Provide feedback 5a
+    router.get('/' + version + '/provide-feedback-5a', function (req, res) {
+        res.render(version + '/provide-feedback-5a', {
             myData:req.session.myData
         });
     });

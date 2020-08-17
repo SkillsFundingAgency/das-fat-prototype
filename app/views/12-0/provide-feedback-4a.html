@@ -10,7 +10,7 @@ Check answers
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
-    <a href="provide-feedback-3" class="govuk-back-link">Back</a>
+    <a href="provide-feedback-3a" class="govuk-back-link">Back</a>
 {% endblock %}
 
 {% block content %}
@@ -33,7 +33,7 @@ Check answers
                     You didn't select any
                   {% else %}
                     {% for _factor in myData.strengthsAnswer %}
-                      {% for _factor2 in myData.provideFeedbackFactors %}
+                      {% for _factor2 in myData.provideFeedbackFactors2 %}
                         {% if _factor == _factor2.id %}
                           {{_factor2.name}}<br><br>
                         {% endif %}
@@ -42,7 +42,7 @@ Check answers
                   {% endif %}
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                  <a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-1">
+                  <a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-1a">
                     Change<span class="govuk-visually-hidden"> name</span>
                   </a>
                 </dd>
@@ -56,7 +56,7 @@ Check answers
                     You didn't select any
                   {% else %}
                     {% for _factor in myData.weaknessesAnswer %}
-                      {% for _factor2 in myData.provideFeedbackFactors %}
+                      {% for _factor2 in myData.provideFeedbackFactors2 %}
                         {% if _factor == _factor2.id %}
                           {{_factor2.name}}<br><br>
                         {% endif %}
@@ -65,7 +65,7 @@ Check answers
                   {% endif %}
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                  <a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-2">
+                  <a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-2a">
                     Change<span class="govuk-visually-hidden"> name</span>
                   </a>
                 </dd>
@@ -78,7 +78,7 @@ Check answers
                   {{myData.overallRatingAnswer}}
                 </dd>
                 <dd class="govuk-summary-list__actions">
-                  <a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-3">
+                  <a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-3a">
                     Change<span class="govuk-visually-hidden"> name</span>
                   </a>
                 </dd>
@@ -88,7 +88,7 @@ Check answers
             <p class="govuk-body">Your answers will be published anonymously on the <span class="govuk-!-font-weight-bold">Find apprenticeship training service</span> in the near future.</p>
             
             <p class="govuk-body">
-              <a class="govuk-button" href="provide-feedback-5">
+              <a class="govuk-button" href="provide-feedback-5a">
                   Submit answers
               </a>
             </p>

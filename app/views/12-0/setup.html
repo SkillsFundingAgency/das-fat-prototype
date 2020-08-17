@@ -46,6 +46,22 @@
             </fieldset>
         </div>
 
+        <div class="govuk-form-group pfType" >
+            <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend">Provide feedback version</legend>
+                <div class="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input {% if myData.pfType != 'old' %}checked{% endif %} class="govuk-radios__input" data-option="pfType-2" id="pfType-2" name="pfType" type="radio" value="new">
+                        <label class="govuk-label govuk-radios__label" for="pfType-2">New provide feedback</label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input {% if myData.pfType == 'old' %}checked{% endif %} class="govuk-radios__input" data-option="pfType-1" id="pfType-1" name="pfType" type="radio" value="old">
+                        <label class="govuk-label govuk-radios__label" for="pfType-1">Old provide feedback</label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
         <!-- EPAO in FAT -->
         <!-- <div class="govuk-form-group">
             <label class="govuk-label" >
@@ -411,10 +427,15 @@
             }
             // Provide feedback
             if(_urlService == "&s=pf"){
-                _urlPage = "provide-feedback-approvals?"
+                $('.pfType').show()
+                _urlPage = "provide-feedback-approvals-a?"
+                if($('input[name=pfType]:checked').val() == "old"){
+                    _urlPage = "provide-feedback-approvals?"
+                }
                 _urlEmpAccount = "&ea=true"
                 $('.employeraccount').hide()
             } else {
+                $('.pfType').hide()
                 $('.employeraccount').show()
             }
 

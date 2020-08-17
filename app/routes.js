@@ -109,6 +109,36 @@ var _myData = {
             "id": "_factor-9",
             "name": "Improving apprentice skills"
         } 
+    ],
+    "provideFeedbackFactors2": [
+        {
+            "id": "_factor-1",
+            "name": "Assistance with apprentice recruitment"
+        },
+        {
+            "id": "_factor-2",
+            "name": "Planning the apprentice’s curriculum around any prior learning"
+        },
+        {
+            "id": "_factor-3",
+            "name": "Explaining of the job training requirements"
+        },
+        {
+            "id": "_factor-4",
+            "name": "Reviewing the job role, ensuring its suitability for the apprenticeship being delivered"
+        },
+        {
+            "id": "_factor-5",
+            "name": "Confirming apprentice details quickly within the Apprenticeship service"
+        },
+        {
+            "id": "_factor-6",
+            "name": "Discussing and agreeing a total price"
+        },
+        {
+            "id": "_factor-7",
+            "name": "Providing details of a clear and accessible complaints procedure"
+        }
     ]
 }
 

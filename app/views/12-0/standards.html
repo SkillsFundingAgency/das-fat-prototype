@@ -520,6 +520,44 @@
                     </table>
                     </div>
                   </details>
+
+                  <details class="govuk-details" data-module="govuk-details" >
+                    <summary class="govuk-details__summary">
+                      <span class="govuk-details__summary-text">
+                        Integrated courses
+                      </summary>
+                      <div class="govuk-details__text">
+                        <h2 class="govuk-heading-l" >Integrated courses</h2>
+        
+        
+                        <table class="govuk-table govuk-!-font-size-14">
+                          <thead class="govuk-table__head" >
+                            <tr class="govuk-table__row">
+                              <th scope="col" class="govuk-table__header">Lars code</th>
+                              <th scope="col" class="govuk-table__header">Title</th>
+                            </tr>
+                          </thead>
+                          <tbody class="govuk-table__body">
+                            {% for _standard in myData.standards.list %}
+  
+                              {% if _standard.integrated %}
+  
+                                <tr class="govuk-table__row">
+                                  <td class="govuk-table__cell">
+                                    {{_standard.larsCode}}
+                                  </td>
+                                  <td class="govuk-table__cell">
+                                    {{_standard.title}}
+                                  </td>
+                                </tr>
+    
+    
+                              {% endif %}
+                            {% endfor %}
+                        </tbody>
+                      </table>
+                      </div>
+                    </details>
           
     <!-- <p class="govuk-body" >{{myData.standards.list|dump|safe}}</p> -->
 

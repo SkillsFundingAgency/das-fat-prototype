@@ -327,6 +327,13 @@ _myData.standards.list.forEach(function(_standard, index) {
     //     console.log(_standard.larsCode + " - " + _standard.coreSkillsCount + " - " + _standard.title + " (level " + _standard.level + ")")
     // }
 
+    //Set integrated
+    if(_standard.integratedDegree == "integrated degree" || _standard.title.toUpperCase().indexOf("(INTEGRATED") != -1){
+        _standard.integrated = true
+    } else {
+        _standard.integrated = false
+    }
+
     //Set regulated data
     var _EPAOOnly = true
     

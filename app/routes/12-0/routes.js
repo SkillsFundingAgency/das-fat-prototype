@@ -1720,7 +1720,7 @@ module.exports = function (router,_myData) {
 
 
 
-            if(req.session.myData.selectedStandard.integratedDegree == "integrated degree" || req.session.myData.selectedStandard.title.toUpperCase().indexOf("(INTEGRATED") != -1) {
+            if(req.session.myData.selectedStandard.integrated) {
                 //integrated course
                 res.redirect(301, '/' + version + '/epao-integrated?s=epao&standard=' + req.session.myData.standard);
             } else {

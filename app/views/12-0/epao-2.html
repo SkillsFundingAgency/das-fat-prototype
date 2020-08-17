@@ -1,0 +1,106 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find an apprenticeship assessment organisation" %}
+{% set serviceUrl = "home-epao" %}
+
+{% set _selectedEPAO = myData.selectedEPAO %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% set _epaoCount = myData.epaoCount or _selectedStandard.epaos.number %}
+
+<!-- Delivery areas label -->
+{% set _deliveryAreasLabel = "" %}
+{% for _epaoRegion in _selectedEPAO.regions %}
+    {% set _loopLast = loop.last %}
+    {% set _moreThanOne = _selectedEPAO.regions.length > 1 %}
+    {% for _region in myData.regions %}
+        {% if _epaoRegion == _region.id %}
+            {% set _deliveryAreasLabel = _deliveryAreasLabel + _region.label %}
+            {% if _moreThanOne and _loopLast == false %}
+                {% set _deliveryAreasLabel = _deliveryAreasLabel + ", " %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+
+{% block pageTitle %} 
+{{_selectedEPAO.name}} 
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="{{myData.returnURLepao2}}" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl" >
+            {{_selectedEPAO.name}} 
+        </h1>
+
+        <p class="govuk-body "><span class="govuk-!-font-weight-bold">Assessment organisation for </span><br> {{_standardTitle|safe}}</p>
+
+        <dl class="govuk-summary-list">
+            {% if _selectedEPAO.contactname %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Contact name</dt>
+                <dd class="govuk-summary-list__value">{{_selectedEPAO.contactname}}</dd>
+            </div>
+            {% endif %}
+            {% if _selectedEPAO.website %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Website</dt>
+                <dd class="govuk-summary-list__value"><a target="_blank" class="govuk-link govuk-link--no-visited-state" href="#">{{_selectedEPAO.website}}</a></dd>
+            </div>
+            {% endif %}
+            {% if _selectedEPAO.email %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Email</dt>
+                <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">{{_selectedEPAO.email}}</a></dd>
+            </div>
+            {% endif %}
+            {% if _selectedEPAO.phone %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Phone number</dt>
+                <dd class="govuk-summary-list__value">{{_selectedEPAO.phone}}</dd>
+            </div>
+            {% endif %}
+            
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Address</dt>
+                <dd class="govuk-summary-list__value">
+                    {% if _selectedEPAO.address1 %}{{_selectedEPAO.address1}}{% endif %}
+                    {% if _selectedEPAO.address2 %}<br>{{_selectedEPAO.address2}}{% endif %}
+                    {% if _selectedEPAO.address3 %}<br>{{_selectedEPAO.address3}}{% endif %}
+                    {% if _selectedEPAO.address4 %}<br>{{_selectedEPAO.address4}}{% endif %}
+                    {% if _selectedEPAO.postcode %}<br>{{_selectedEPAO.postcode}}{% endif %}
+                </dd>
+            </div>
+
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Locations covered</dt>
+                <dd class="govuk-summary-list__value">
+                    {{_deliveryAreasLabel}}
+                </dd>
+            </div>
+        </dl>
+
+        {% if _epaoCount == 1 %}
+        <p class="govuk-body ">{{_selectedEPAO.name}} is the only assessment organisation for {{_standardTitle|safe}}.</p>
+        {% else %}
+        <p class="govuk-body ">{{_selectedEPAO.name}} is 1 of {{myData.epaoCount}} assessment organisations for {{_standardTitle|safe}}.</p>
+        <p class="govuk-body govuk-!-margin-bottom-6"><a href="{{myData.returnURLepao2}}" class="govuk-link govuk-link--no-visited-state"> View the other assessment organisations</a></p>
+        {% endif %}
+        
+    </div>
+    <div class="govuk-grid-column-one-third">
+       &nbsp;
+    </div>
+</div>
+
+{% endblock %}

@@ -6,7 +6,7 @@
 
 {% block pageTitle %} 
 {% if _inError == "true" %}Error: {% endif %}
-TRAINING UK LTD's strengths
+[rate each of these]
 {% endblock %}
 
 {% block beforeContent %}
@@ -19,7 +19,6 @@ TRAINING UK LTD's strengths
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         
-
         <form method="POST" class="form">
 
             {% if _inError == "true" %}
@@ -30,9 +29,11 @@ TRAINING UK LTD's strengths
                 <div class="govuk-error-summary__body">
                     <ul class="govuk-list govuk-error-summary__list">
                         {% for name, item in myData.validationErrors %}
+                        {% if loop.index == 1 %} 
                         <li>
                             <a href="#{{item.anchor}}">{{item.message}}</a>
                         </li>
+                        {% endif %}
                         {% endfor %}
                     </ul>
                 </div>
@@ -43,7 +44,8 @@ TRAINING UK LTD's strengths
                 [rate each of these]
             </h1>
 
-            
+            <!-- stacked -->
+            {% set _type = "table" %}
 
             {% set _factors = myData.provideFeedbackFactors2 %}
             {% set _ratings = [
@@ -52,12 +54,72 @@ TRAINING UK LTD's strengths
               "Poor"
             ] %}
 
+            {% if _type == "table" %}
+            {% set _ratings = [
+              "Poor",
+              "Adequate",
+              "Good"
+            ] %}
+            
+            <div class="govuk-form-group {% if _inError == "true" %}govuk-form-group--error{% endif %}">
+              {% if _inError == "true" %}
+                {% for name, item in myData.validationErrors %}
+                  {% if loop.index == 1 %} 
+                    <span id="{{_itemID}}-error" class="govuk-error-message">
+                      <span class="govuk-visually-hidden">Error:</span> {{item.message}}
+                    </span>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            <table class="govuk-table ">
+              
+              <!-- <caption class="govuk-table__caption">Dates and amounts</caption> -->
+              <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th scope="col" class="govuk-table__header"></th>
+                  {% for _rating in _ratings %}
+                  <th scope="col" class="govuk-table__header">{{_rating}}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody class="govuk-table__body">
 
+                {% for _factor in _factors %}
+                {% set _itemID = _factor.id %}
+                <tr class="govuk-table__row">
+                  <th scope="row" class="govuk-table__header ">{{_factor.name}}</th>
+                    <!-- <div class="govuk-form-group {% if myData.validationErrors[_itemID] %}govuk-form-group--error{% endif %}"> -->
+                      <!-- <fieldset class="govuk-fieldset">
+                        <div class="govuk-radios govuk-radios--inline"> -->
+                          {% for _rating in _ratings %}
+                          {% set __itemID_rating = _itemID + "-" + loop.index %}
+                          <td class="govuk-table__cell" >
+                            <div class="govuk-radios__item">
+                              <input class="govuk-radios__input" id="{{__itemID_rating}}" name="{{_itemID}}" type="radio" value="{{_rating}}" {% if (_inError == 'true' and myData.factorsAnswersTemp[_itemID] == _rating) or (_inError == 'false' and myData.factorsAnswers[_itemID] == _rating) %}checked{% endif %} >
+                              <label class="govuk-label govuk-radios__label" for="{{__itemID_rating}}">
+                                <span class="govuk-visually-hidden">{{_rating}}</span>
+                              </label>
+                            </div>
+                          </td>
+                          {% endfor %}
+                        <!-- </div>
+                      </fieldset> -->
+                    <!-- </div> -->
+                  <!-- </td> -->
+                </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+            {% endif %}
+
+            {% if _type == "stacked" %}
             {% for _factor in _factors %}
             {% set _itemID = _factor.id %}
-            <div class="govuk-form-group {% if myData.validationErrors[_itemID] %}govuk-form-group--error{% endif %}">
+            <div style="display: none;" class="govuk-form-group {% if myData.validationErrors[_itemID] %}govuk-form-group--error{% endif %}">
               <fieldset class="govuk-fieldset">
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                   <h1 class="govuk-fieldset__heading">
                     {{_factor.name}}
                   </h1>
@@ -69,7 +131,6 @@ TRAINING UK LTD's strengths
                 </span>
                 {% endif %}
                 <div class="govuk-radios">
-                
                 {% for _rating in _ratings %}
                 {% set __itemID_rating = _itemID + _rating %}
                 <div class="govuk-radios__item">
@@ -83,6 +144,7 @@ TRAINING UK LTD's strengths
               </fieldset>
             </div>
             {% endfor %}
+            {% endif %}
             
             <button type="submit" class="govuk-button">
                 Continue

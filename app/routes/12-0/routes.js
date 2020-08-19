@@ -1988,9 +1988,10 @@ module.exports = function (router,_myData) {
             if(!_answer){
                 req.session.myData.validationError = "true"
                 req.session.myData.validationErrors[_factor.id] = {
-                    "anchor": _factor.id + "Excellent",
-                    "message": "error for " + _factor.id
+                    "anchor": _factor.id + "-1",
+                    "message": "error to answer all"
                 }
+                // "message": "error for " + _factor.id
             }
             req.session.myData.factorsAnswersTemp[_factor.id] = _answer
             

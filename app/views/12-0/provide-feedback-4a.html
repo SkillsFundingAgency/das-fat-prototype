@@ -10,7 +10,7 @@ Check answers
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
-    <a href="provide-feedback-3a" class="govuk-back-link">Back</a>
+    <a href="provide-feedback-2a" class="govuk-back-link">Back</a>
 {% endblock %}
 
 {% block content %}
@@ -23,13 +23,26 @@ Check answers
                 Check your answers
             </h1>
 
-            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+            <dl class="govuk-summary-list">
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                  TRAINING UK LTD's strengths
+                  Overall rating
                 </dt>
                 <dd class="govuk-summary-list__value">
-                  {% if myData.strengthsAnswer == "_unchecked" %}
+                  {{myData.overallRatingAnswer}}
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                  <a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-approvals-a">
+                    Change<span class="govuk-visually-hidden"> name</span>
+                  </a>
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                  What did TRAINING UK LTD do well?
+                </dt>
+                <dd class="govuk-summary-list__value">
+                  {% if myData.strengthsAnswer == "_unchecked" or myData.strengthsAnswer == "" %}
                     You didn't select any
                   {% else %}
                     {% for _factor in myData.strengthsAnswer %}
@@ -49,7 +62,7 @@ Check answers
               </div>
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
-                  Areas to improve
+                  What does TRAINING UK LTD need to improve?
                 </dt>
                 <dd class="govuk-summary-list__value">
                   {% if myData.weaknessesAnswer == "_unchecked" %}
@@ -70,19 +83,7 @@ Check answers
                   </a>
                 </dd>
               </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Overall rating
-                </dt>
-                <dd class="govuk-summary-list__value">
-                  {{myData.overallRatingAnswer}}
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                  <a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-3a">
-                    Change<span class="govuk-visually-hidden"> name</span>
-                  </a>
-                </dd>
-              </div>
+              
             </dl>
             
             <p class="govuk-body">Your answers will be published anonymously on the <span class="govuk-!-font-weight-bold">Find apprenticeship training service</span> in the near future.</p>

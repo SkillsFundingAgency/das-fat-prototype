@@ -1925,6 +1925,30 @@ module.exports = function (router,_myData) {
             myData:req.session.myData
         });
     });
+    router.post('/' + version + '/provide-feedback-approvals-a', function (req, res) {
+        req.session.myData.overallRatingAnswerTemp = req.body.overallRatingAnswerTemp = req.body.overallRating
+
+        if(req.session.myData.includeValidation == "false"){
+            req.session.myData.overallRatingAnswerTemp = req.session.myData.overallRatingAnswerTemp || "Excellent"
+        }
+        if(!req.session.myData.overallRatingAnswerTemp){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.overallRatingAnswer = {
+                "anchor": "rating-1",
+                "message": "Give TRAINING UK LTD a rating"
+            }
+        }
+
+        if(req.session.myData.validationError == "true") {
+            res.render(version + '/provide-feedback-approvals-a', {
+                myData:req.session.myData
+            });
+        } else {
+            req.session.myData.overallRatingAnswer = req.session.myData.overallRatingAnswerTemp
+            req.session.myData.overallRatingAnswerTemp = ""
+            res.redirect(301, '/' + version + '/provide-feedback-1a');
+        }
+    });
 
     // Provide feedback 1
     router.get('/' + version + '/provide-feedback-1', function (req, res) {
@@ -1966,7 +1990,7 @@ module.exports = function (router,_myData) {
     });
     router.post('/' + version + '/provide-feedback-2a', function (req, res) {
         req.session.myData.weaknessesAnswer = req.body.weaknesses
-        res.redirect(301, '/' + version + '/provide-feedback-3a');
+        res.redirect(301, '/' + version + '/provide-feedback-4a');
     });
 
     // Provide feedback 3

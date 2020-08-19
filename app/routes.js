@@ -121,7 +121,7 @@ var _myData = {
         },
         {
             "id": "_factor-3",
-            "name": "Explaining of the job training requirements"
+            "name": "Explaining off the job training requirements"
         },
         {
             "id": "_factor-4",

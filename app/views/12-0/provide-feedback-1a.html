@@ -11,7 +11,7 @@ TRAINING UK LTD's strengths
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
-    <a href="provide-feedback-approvals" class="govuk-back-link">Back</a>
+    <a href="provide-feedback-approvals-a" class="govuk-back-link">Back</a>
 {% endblock %}
 
 {% block content %}
@@ -39,19 +39,19 @@ TRAINING UK LTD's strengths
             </div>
             {% endif %}
 
-            <h1 class="govuk-heading-xl">
+            <!-- <h1 class="govuk-heading-xl">
                 TRAINING UK LTD's strengths
-            </h1>
+            </h1> -->
 
             <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
-                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                    <h2 class="govuk-fieldset__heading">
+                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                    <h1 class="govuk-fieldset__heading">
                       What did TRAINING UK LTD do well during the onboarding and approval process?
-                    </h2>
+                    </h1>
                   </legend>
                   <div id="waste-hint" class="govuk-hint">
-                    It's optional. You can choose up to 3.
+                    It’s optional. You can choose up to 3.
                   </div>
 
                   {% set _factors = myData.provideFeedbackFactors2 %}
@@ -59,12 +59,14 @@ TRAINING UK LTD's strengths
                   <div class="govuk-checkboxes">
                     {% for _factor in _factors %}
                     {% set _itemID = _factor.id %}
+                    {% if _itemID not in myData.weaknessesAnswer %}
                     <div class="govuk-checkboxes__item">
                       <input class="govuk-checkboxes__input" id="{{_itemID}}" name="strengths" type="checkbox" value="{{_itemID}}" {% if _itemID in myData.strengthsAnswer %}checked{% endif %}>
                       <label class="govuk-label govuk-checkboxes__label" for="{{_itemID}}">
                         {{_factor.name}}
                       </label>
                     </div>
+                    {% endif %}
                     {% endfor %}
                   </div>
                 </fieldset>

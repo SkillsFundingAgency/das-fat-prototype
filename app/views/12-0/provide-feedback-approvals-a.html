@@ -1,6 +1,6 @@
 {% extends myData.layout %}
 {% set serviceName = "Manage apprenticeships" %}
-{% set serviceUrl = "provide-feedback-approvals" %}
+{% set serviceUrl = "provide-feedback-approvals-a" %}
 
 {% set _inError = myData.validationError %}
 
@@ -76,9 +76,6 @@ Apprentice details approved
 
                   {% set _ratings = [
                         {
-                            "name": "Excellent"
-                        },
-                        {
                             "name": "Good"
                         },
                         {
@@ -86,9 +83,6 @@ Apprentice details approved
                         },
                         {
                             "name": "Poor"
-                        },
-                        {
-                            "name": "Very poor"
                         }
                     ] %}
 

@@ -527,6 +527,7 @@ module.exports = function (router,_myData) {
 
         req.session.myData.weaknessesAnswer = []
         req.session.myData.strengthsAnswer = []
+        req.session.myData.factorsAnswers = {}
 
     }
 
@@ -1946,7 +1947,7 @@ module.exports = function (router,_myData) {
         } else {
             req.session.myData.overallRatingAnswer = req.session.myData.overallRatingAnswerTemp
             req.session.myData.overallRatingAnswerTemp = ""
-            res.redirect(301, '/' + version + '/provide-feedback-1a');
+            res.redirect(301, '/' + version + '/provide-feedback-1b');
         }
     });
 
@@ -1969,6 +1970,46 @@ module.exports = function (router,_myData) {
     router.post('/' + version + '/provide-feedback-1a', function (req, res) {
         req.session.myData.strengthsAnswer = req.body.strengths
         res.redirect(301, '/' + version + '/provide-feedback-2a');
+    });
+
+    // Provide feedback 1b
+    router.get('/' + version + '/provide-feedback-1b', function (req, res) {
+        res.render(version + '/provide-feedback-1b', {
+            myData:req.session.myData
+        });
+    });
+    router.post('/' + version + '/provide-feedback-1b', function (req, res) {
+
+        // req.session.myData.factor1Answer = req.body["_factor-1"]
+        req.session.myData.factorsAnswersTemp = {}
+        req.session.myData.provideFeedbackFactors2.forEach(function(_factor, index) {
+            var _answer = req.body[_factor.id]
+
+            if(!_answer){
+                req.session.myData.validationError = "true"
+                req.session.myData.validationErrors[_factor.id] = {
+                    "anchor": _factor.id + "Excellent",
+                    "message": "error for " + _factor.id
+                }
+            }
+            req.session.myData.factorsAnswersTemp[_factor.id] = _answer
+            
+            if(req.session.myData.includeValidation == "false"){
+                req.session.myData.factorsAnswersTemp[_factor.id] = _answer || "Excellent"
+            }
+
+        });
+
+        if(req.session.myData.validationError == "true") {
+            res.render(version + '/provide-feedback-1b', {
+                myData:req.session.myData
+            });
+        } else {
+            req.session.myData.factorsAnswers = req.session.myData.factorsAnswersTemp
+            req.session.myData.factorsAnswersTemp = {}
+            res.redirect(301, '/' + version + '/provide-feedback-5a');
+        }
+
     });
 
     // Provide feedback 2

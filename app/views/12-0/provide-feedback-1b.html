@@ -41,24 +41,27 @@
             {% endif %}
 
             <h1 class="govuk-heading-xl">
-                [rate each of these]
+              How would you rate TRAINING UK LTD in these areas of onboarding and approval?
             </h1>
 
-            <!-- stacked -->
-            {% set _type = "table" %}
+            <!-- stacked , table -->
+            {% set _type = "stacked" %}
 
             {% set _factors = myData.provideFeedbackFactors2 %}
             {% set _ratings = [
+              "Excellent",
               "Good",
-              "Adequate",
-              "Poor"
+              "Poor",
+              "Very poor",
+              "N/A"
             ] %}
 
             {% if _type == "table" %}
             {% set _ratings = [
               "Poor",
               "Adequate",
-              "Good"
+              "Good",
+              "N/A"
             ] %}
             
             <div class="govuk-form-group {% if _inError == "true" %}govuk-form-group--error{% endif %}">
@@ -117,7 +120,7 @@
             {% if _type == "stacked" %}
             {% for _factor in _factors %}
             {% set _itemID = _factor.id %}
-            <div style="display: none;" class="govuk-form-group {% if myData.validationErrors[_itemID] %}govuk-form-group--error{% endif %}">
+            <div class="govuk-form-group {% if myData.validationErrors[_itemID] %}govuk-form-group--error{% endif %}">
               <fieldset class="govuk-fieldset">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                   <h1 class="govuk-fieldset__heading">
@@ -132,7 +135,7 @@
                 {% endif %}
                 <div class="govuk-radios">
                 {% for _rating in _ratings %}
-                {% set __itemID_rating = _itemID + _rating %}
+                {% set __itemID_rating = _itemID + "-" + loop.index %}
                 <div class="govuk-radios__item">
                   <input class="govuk-radios__input" id="{{__itemID_rating}}" name="{{_itemID}}" type="radio" value="{{_rating}}" {% if (_inError and myData.factorsAnswersTemp[_itemID] == _rating) or (_inError == 'false' and myData.factorsAnswers[_itemID] == _rating) %}checked{% endif %} >
                   <label class="govuk-label govuk-radios__label" for="{{__itemID_rating}}">

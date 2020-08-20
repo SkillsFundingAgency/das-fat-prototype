@@ -1989,7 +1989,7 @@ module.exports = function (router,_myData) {
                 req.session.myData.validationError = "true"
                 req.session.myData.validationErrors[_factor.id] = {
                     "anchor": _factor.id + "-1",
-                    "message": "error to answer all"
+                    "message": "Give TRAINING UK LTD a rating"
                 }
                 // "message": "error for " + _factor.id
             }

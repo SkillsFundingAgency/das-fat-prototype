@@ -1,0 +1,77 @@
+{% extends myData.layout %}
+{% set serviceName = "Manage apprenticeships" %}
+{% set serviceUrl = "provide-feedback-approvals-a" %}
+
+{% block pageTitle %} 
+Feedback complete
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% if myData.employeraccount == "true" %}
+        <div class="govuk-!-margin-top-5"></div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                Feedback complete
+            </h1>
+        </div>
+
+        <p class="govuk-body">Thanks for your feedback. It’ll help TRAINING UK LTD to continuously improve its apprenticeship training.</p>
+
+        <p class="govuk-body">You rated TRAINING UK LTD during the onboarding and approval process as:</p>
+
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key" style="width:50%">
+                Overall rating
+              </dt>
+              <dd class="govuk-summary-list__value" style="width:30%">
+                {{myData.overallRatingAnswer}}
+              </dd>
+              <dd class="govuk-summary-list__actions">
+                <a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-approvals-a">
+                  Change<span class="govuk-visually-hidden"> name</span>
+                </a>
+              </dd>
+            </div>
+            {% for _factor in myData.provideFeedbackFactors2 %}
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key" {% if loop.last != true %}style="width:50%; border:0"{% else %}style="width:50%;"{% endif %}>
+                    {{_factor.name}}
+              </dt>
+              <dd class="govuk-summary-list__value" {% if loop.last != true %}style="width:30%; border:0"{% else %}style="width:30%;"{% endif %}>
+
+                {% for name, _answer in myData.factorsAnswers %}
+                    {% if name == _factor.id %}
+                        {{_answer}}
+                    {% endif %}
+                {% endfor %}
+
+              </dd>
+              <dd class="govuk-summary-list__actions" {% if loop.last != true %}style="border:0"{% endif %}>
+                {% if loop.first %}
+                <a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-1b">
+                  Change<span class="govuk-visually-hidden"> name</span>
+                </a>
+                {% endif %}
+              </dd>
+            </div>
+            {% endfor %}
+            
+          </dl>
+
+        <a href="#" class="govuk-button">Go to homepage</a>
+
+
+    </div>
+</div>
+
+{% endblock %}

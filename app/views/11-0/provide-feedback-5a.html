@@ -57,11 +57,9 @@ Feedback complete
 
               </dd>
               <dd class="govuk-summary-list__actions" {% if loop.last != true %}style="border:0"{% endif %}>
-                {% if loop.first %}
-                <a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-1b">
+                <a class="govuk-link govuk-link--no-visited-state {% if loop.first != true %}factor-answer-change{% endif %}" href="provide-feedback-1b">
                   Change<span class="govuk-visually-hidden"> name</span>
                 </a>
-                {% endif %}
               </dd>
             </div>
             {% endfor %}

@@ -218,3 +218,10 @@ li.fat-cross-3 {
         text-align: right;
     }
 }
+
+//Provide feedback
+@media (min-width: 641px){
+    .factor-answer-change {
+        display:none;
+    }
+}

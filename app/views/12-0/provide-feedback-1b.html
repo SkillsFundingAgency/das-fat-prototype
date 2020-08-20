@@ -6,7 +6,7 @@
 
 {% block pageTitle %} 
 {% if _inError == "true" %}Error: {% endif %}
-[rate each of these]
+How would you rate TRAINING UK LTD in these areas of onboarding and approval?
 {% endblock %}
 
 {% block beforeContent %}
@@ -58,9 +58,10 @@
 
             {% if _type == "table" %}
             {% set _ratings = [
+              "Very poor",
               "Poor",
-              "Adequate",
               "Good",
+              "Excellent",
               "N/A"
             ] %}
             

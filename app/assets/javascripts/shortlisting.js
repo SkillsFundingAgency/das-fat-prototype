@@ -28,20 +28,33 @@ function shortlisting(_clear){
     _shortlistLabelJS.show()
 
     // For provider page
-    $(".add-shortlist-button").on( "click", function() {
-        _total = _total + 1
-        localStorage.setItem("shortlistTotal", JSON.stringify(_total));
-    });
-    $(".remove-shortlist-button").on( "click", function() {
-        _total = _total - 1
-        localStorage.setItem("shortlistTotal", JSON.stringify(_total));
-    });
+    // $(".add-shortlist-button").on( "click", function() {
+    //     _total = _total + 1
+    //     localStorage.setItem("shortlistTotal", JSON.stringify(_total));
+    // });
+    // $(".remove-shortlist-button").on( "click", function() {
+    //     _total = _total - 1
+    //     localStorage.setItem("shortlistTotal", JSON.stringify(_total));
+    // });
+
+    function animateTotal(_shortlistTotalLabel,_total){
+        
+        _shortlistTotalLabel.animate({backgroundColor: '#ffdd00'}, 'fast', function() {
+            _shortlistTotalLabel.animate({backgroundColor: '#1d70b8'}, 'fast');
+            _shortlistTotalLabel.text(_total)
+        });
+        // _shortlistTotalLabel.animate({opacity: '0.5'}, 'fast', function() {
+        //     _shortlistTotalLabel.animate({opacity: '1'}, 'fast');
+        //     _shortlistTotalLabel.text(_total)
+        // });
+    }
 
     _addButtons.on( "click", function() {
 
         _total = _total + 1
         localStorage.setItem("shortlistTotal", JSON.stringify(_total));
-        _shortlistTotalLabel.text(_total)
+        
+        animateTotal(_shortlistTotalLabel,_total)
 
         event.preventDefault();
         var _this = $(this)
@@ -52,7 +65,8 @@ function shortlisting(_clear){
 
         _total = _total - 1
         localStorage.setItem("shortlistTotal", JSON.stringify(_total));
-        _shortlistTotalLabel.text(_total)
+
+        animateTotal(_shortlistTotalLabel,_total)
 
         event.preventDefault();
         var _this = $(this)

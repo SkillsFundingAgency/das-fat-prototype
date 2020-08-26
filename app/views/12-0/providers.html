@@ -77,11 +77,7 @@ Available training providers
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% include "includes/breadcrumb.html" %}
-
-
-    <p class="govuk-body" style="float:right;margin-top: -37px;"><a class="govuk-link govuk-link--no-visited-state" href="shortlist">View shortlisted training providers (<span class="shortlist-total">{{myData.totalFavourites}}</span>)</a></p>
-
-
+    {% include "includes/shortlist.html" %}
 {% endblock %}
 
 {% block content %}
@@ -468,18 +464,18 @@ Available training providers
                                 {% set _blockDistance = _dayDistance + 5.3 %}
                             {% endif %}
 
-                            <!-- <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
-                                Head office {{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away.
-                            </li> -->
-
                             {% if myData.locationapplied %}
+
+                            <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
+                                Head office {{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away
+                            </li>
                             
                             <li class="govuk-!-margin-top-2">
                                 
                                 <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
 
                                     <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                        At&nbsp;apprentice’s&nbsp;workplace {% if _inWorkplace %}({{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away){% endif %}
+                                        At&nbsp;apprentice’s&nbsp;workplace 
                                     </li>
 
                                     <li class="{% if _dayRelease %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
@@ -569,8 +565,10 @@ Available training providers
 
 
 {% block pageScripts %}
+
 <script>
 
+    shortlistingSticky()
     shortlisting({{myData.clearLocalStorage}})
 
     filterVisibilityToggle({{_filtersApplied | dump | safe }})

@@ -46,9 +46,7 @@ Apprenticeship training courses
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% include "includes/breadcrumb.html" %}
-
-    <p class="govuk-body" style="float:right;margin-top: -37px;"><a class="govuk-link govuk-link--no-visited-state" href="shortlist">View shortlisted training providers (<span class="shortlist-total">{{myData.totalFavourites}}</span>)</a></p>
-
+    {% include "includes/shortlist.html" %}
 {% endblock %}
 
 {% block content %}
@@ -267,6 +265,7 @@ Apprenticeship training courses
 {% block pageScripts %}
 <script>
 
+    shortlistingSticky()
     shortlisting({{myData.clearLocalStorage}})
 
     filterVisibilityToggle({{_filterOrSearchApplied | dump | safe }})

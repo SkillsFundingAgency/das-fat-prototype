@@ -212,11 +212,69 @@ li.fat-cross-3 {
     padding-bottom: 0;
 }
 
+//Back to top
+.app-back-to-top__icon {
+    display: inline-block;
+    width: .6em;
+    height: .8em;
+    margin-top: -4px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
 //Shortlist
 @media (min-width: 641px){
     .shortlist-label {
         text-align: right;
     }
+}
+.view-shortlist {
+    float:right;
+    margin-top: -32px;
+}
+@media (min-width: 641px){
+    .view-shortlist {
+        margin-top: -37px;
+    }
+}
+.view-shortlist-fixed {
+    position: fixed;
+    top: 0px;
+    /* left: 15px; */
+    margin-left: -30px;
+    padding: 0 30px;
+    z-index: 100;
+    display: block;
+    background: white;
+    border: 1px solid #b1b4b6;
+    border-top: 0;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+.view-shortlist-fixed-label {
+    margin: 0;
+    float: right;
+    padding: 12px 0px;
+}
+.shortlist-count {
+    border-radius: 50%;
+    width: 21px;
+    height: 20px;
+    margin-left: 3px;
+    padding-top: 2px;
+    padding-left: 1px;
+    font-size: 14px;
+    display: inline-block;
+    background: #1d70b8;
+    color: white;
+    text-align: center;
+}
+.back-to-top-fixed-label {
+    margin: 0;
+    float: left;
+    padding: 12px 0px;
+}
+.view-shortlist--hidden {
+    display: none;
 }
 
 //Provide feedback

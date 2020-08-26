@@ -94,9 +94,7 @@ Training provider details
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% include "includes/breadcrumb.html" %}
-
-    <p class="govuk-body" style="float:right;margin-top: -37px;"><a class="govuk-link govuk-link--no-visited-state" href="shortlist">View shortlisted training providers (<span class="shortlist-total">{{myData.totalFavourites}}</span>)</a></p>
-
+    {% include "includes/shortlist.html" %}
 {% endblock %}
 
 {% block content %}
@@ -294,25 +292,29 @@ Training provider details
                 <div class="govuk-!-margin-bottom-6">
                     <h2 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-top-6">{{_providerTitle | safe}}’s training options</h2>
                     
+                    {% set _dayRelease = _selectedProvider.distance > 11 %}
+                    {% set _blockRelease = _selectedProvider.distance > 20 %}
+                    {% set _inWorkplace = _selectedProvider.distance < 11 %}
+
+                    {% set _dayDistance = _selectedProvider.distance %}
+                    {% set _blockDistance = _selectedProvider.distance %}
+                    {% set _inWorkplaceDistance = _selectedProvider.distance %}
+
+                    {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 6 and _selectedProvider.distance < 9) %}
+                        {% set _dayRelease = true %}
+                        {% set _blockRelease = true %}
+                        {% set _dayDistance = _selectedProvider.distance + 2.8 %}
+                        {% set _blockDistance = _dayDistance + 5.3 %}
+                    {% endif %}
+
+                    <p class="govuk-body">
+                        Head office {{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away
+                    </p>
+
                     <ul class="govuk-list fat-training-options govuk-!-margin-bottom-4" >
-                        
-                        {% set _dayRelease = _selectedProvider.distance > 11 %}
-                        {% set _blockRelease = _selectedProvider.distance > 20 %}
-                        {% set _inWorkplace = _selectedProvider.distance < 11 %}
-
-                        {% set _dayDistance = _selectedProvider.distance %}
-                        {% set _blockDistance = _selectedProvider.distance %}
-                        {% set _inWorkplaceDistance = _selectedProvider.distance %}
-
-                        {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 6 and _selectedProvider.distance < 9) %}
-                            {% set _dayRelease = true %}
-                            {% set _blockRelease = true %}
-                            {% set _dayDistance = _selectedProvider.distance + 2.8 %}
-                            {% set _blockDistance = _dayDistance + 5.3 %}
-                        {% endif %}
 
                         <li class="{% if _inWorkplace %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
-                            At&nbsp;apprentice’s&nbsp;workplace{% if _inWorkplace %} ({{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away){% endif %}
+                            At&nbsp;apprentice’s&nbsp;workplace
                         </li>
 
                         <li class="{% if _dayRelease %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
@@ -399,15 +401,25 @@ Training provider details
             </div>
 
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            <p class="govuk-body" >
+            <p class="govuk-body shortlist-label-non-js " >
                 {% if _selectedProvider.inFavourites == true %}
                 <strong class="govuk-tag">
                     Shortlisted
                 </strong><br>
-                <a href="{{_fullURL}}&favdel={{_selectedProvider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2 remove-shortlist-button" style="display: inline-block">Remove from shortlist</a>
+                <a href="{{_fullURL}}&favdel={{_selectedProvider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2 remove-shortlist-button " style="display: inline-block">Remove from shortlist</a>
                 {% else %}
-                <a href="{{_fullURL}}&fav={{_selectedProvider.id}}" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0 add-shortlist-button">Add to shortlist</a>
+                <a href="{{_fullURL}}&fav={{_selectedProvider.id}}" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0 add-shortlist-button ">Add to shortlist</a>
                 {% endif %}
+            </p>
+            <p class="govuk-body shortlist-label-js " style="display:none" >
+                <span class="remove-elements" style="display: none">
+                    <strong class="govuk-tag govuk-!-margin-bottom-3">
+                        Shortlisted
+                    </strong><br>
+                    <a href="{{_fullURL}}&favdel={{_provider.id}}" data-href="{{_fullURL}}&favdel={{_selectedProvider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2 remove-shortlist">Remove from shortlist</a>
+                </span>
+
+                <a href="{{_fullURL}}&fav={{_provider.id}}" data-href="{{_fullURL}}&fav={{_selectedProvider.id}}" class="govuk-button add-shortlist-button add-shortlist govuk-!-margin-bottom-0">Add to shortlist</a>
             </p>
             {% if myData.locationapplied and _selectedMatchesLocation %}
                 {% if myData.providersOnStandardCount > 1 %}
@@ -516,6 +528,7 @@ Training provider details
 {% block pageScripts %}
 <script>
 
+    shortlistingSticky()
     shortlisting({{myData.clearLocalStorage}})
     
     // Locations 

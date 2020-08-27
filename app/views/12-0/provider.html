@@ -290,7 +290,7 @@ Training provider details
                 <!-- nearest location and training options -->
                 {% if _selectedMatchesLocation == true %}
                 <div class="govuk-!-margin-bottom-6">
-                    <h2 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-top-6">{{_providerTitle | safe}}’s training options</h2>
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-3 govuk-!-margin-top-6">{{_providerTitle | safe}}’s training options</h2>
                     
                     {% set _dayRelease = _selectedProvider.distance > 11 %}
                     {% set _blockRelease = _selectedProvider.distance > 20 %}
@@ -307,9 +307,15 @@ Training provider details
                         {% set _blockDistance = _dayDistance + 5.3 %}
                     {% endif %}
 
-                    <p class="govuk-body">
+                    {% set _address1 = "12 King Edwards Rd, Birmingham, B1 2AA" %}
+                    {% set _address2 = "1 High Street, Birmingham, West Midlands, B1 3BP" %}
+                    {% set _address3 = "Old School, Pennington Court, Warwickshire, CV21 2BB" %}
+
+                    <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-font-weight-bold">
                         Head office {{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away
                     </p>
+                    <!-- <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Head office address</p> -->
+                    <p class="govuk-body">{{_address1}}</p>
 
                     <ul class="govuk-list fat-training-options govuk-!-margin-bottom-4" >
 
@@ -329,15 +335,7 @@ Training provider details
 
                     <!-- Addresses -->
 
-                    {% set _address1 = "12 King Edwards Rd, Birmingham, B1 2AA" %}
-                    {% set _address2 = "1 High Street, Birmingham, West Midlands, B1 3BP" %}
-                    {% set _address3 = "Old School, Pennington Court, Warwickshire, CV21 2BB" %}
-
                     <!-- At location (used by day and block too if same distance) -->
-                    {% if _inWorkplace %}
-                        <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Training provider address</p>
-                        <p class="govuk-body">{{_address1}}</p>
-                    {% endif %}
 
                     <!-- Day release AND different to at location and block -->
                     {% if (_dayDistance != _inWorkplaceDistance or (_inWorkplace == false and _dayDistance == _inWorkplaceDistance)) and (_dayDistance != _blockDistance or (_blockRelease == false and _dayDistance == _blockDistance)) and _dayRelease %}

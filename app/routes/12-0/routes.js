@@ -190,6 +190,27 @@ module.exports = function (router,_myData) {
         }
     }
 
+    // Training options filtering - setup
+    function trainingOptionsFilterSetup(req){
+        req.session.myData.trainingoptionsapplied = false
+        if(req.session.myData.trainingoptions.length > 0){
+            req.session.myData.displaycount = 0
+            req.session.myData.displaycountExcludingLocation = 0
+            req.session.myData.needToMatchCount++
+            req.session.myData.needToMatchCountExcludingLocation++
+            req.session.myData.trainingoptionsapplied = true
+            var trainingoptionsValues = []
+            req.session.myData.trainingoptions.forEach(function(_trainingOption, index) {
+                var _IDtoLabel = {3:"At apprentice’s workplace",4:"National coverage",1:"Day release",2:"Block release"}
+                trainingoptionsValues.push({
+                    "label":_IDtoLabel[_trainingOption],
+                    "id":_trainingOption
+                })
+            });
+            req.session.myData.searchfilters.push({"value": trainingoptionsValues, "type": "trainingoptions", "typeText": "Training options","typeof":"array"})
+        }
+    }
+
     // EPAO region filtering - setup
     function regionFilterSetup(req){
         req.session.myData.regionfiltersapplied = false
@@ -506,6 +527,7 @@ module.exports = function (router,_myData) {
         req.session.myData.standard = "1"
         req.session.myData.provider = "1"
         req.session.myData.epao = "1"
+        req.session.myData.trainingoptions = []
         req.session.myData.employerreviews = []
         req.session.myData.ofstedratings = []
         req.session.myData.regionfilters = []
@@ -610,6 +632,7 @@ module.exports = function (router,_myData) {
         // Fixes for checkbox values in query string - turns them into arrays
         //
         var _checkboxQueries = [
+            "trainingoptions",
             "employerreviews",
             "ofstedratings",
             "regionfilters",
@@ -904,7 +927,10 @@ module.exports = function (router,_myData) {
         function continueRendering(){
 
             // National filter setup
-            nationalFilterSetup(req)
+            // nationalFilterSetup(req)
+
+            // Training options filter setup
+            trainingOptionsFilterSetup(req)
 
             // Ofsted ratings filter setup
             ofstedFilterSetup(req)
@@ -956,11 +982,48 @@ module.exports = function (router,_myData) {
                     }
                 }
 
-                // NATIONAL
-                if(req.session.myData.nationalapplied) {
+                // // NATIONAL
+                // if(req.session.myData.nationalapplied) {
+                //     _provider.search = false
+                //     _provider.searchExcludingLocation = false
+                //     if(_provider.national){
+                //         req.session.myData.hasAMatchcount++
+                //         req.session.myData.hasAMatchcountExcludingLocation++
+                //     }
+                // }
+
+                // TRAINING OPTIONS
+                if(req.session.myData.trainingoptionsapplied) {
                     _provider.search = false
                     _provider.searchExcludingLocation = false
-                    if(_provider.national){
+                    var _optionsNeedToMatch = req.session.myData.trainingoptions.length,
+                        _matchedOptions = 0
+                    req.session.myData.trainingoptions.forEach(function(_trainingOption, index) {
+
+                        //national
+                        if(_trainingOption == 4){
+                            if(_provider.national){
+                                _matchedOptions++
+                            }
+                        //at apprentice workplace
+                        } else if(_trainingOption == 3){ 
+                            if(_provider.distance < 11 || _provider.national){
+                                _matchedOptions++
+                            }
+                        //block
+                        } else if(_trainingOption == 2){ 
+                            if(_provider.distance > 20 || _provider.distance < 4 || (_provider.distance > 6 && _provider.distance < 9)){
+                                _matchedOptions++
+                            }
+                        //day
+                        } else if(_trainingOption == 1){ 
+                            if(_provider.distance > 11 || _provider.distance < 4 || (_provider.distance > 6 && _provider.distance < 9)){
+                                _matchedOptions++
+                            }
+                        }
+
+                    });
+                    if(_matchedOptions == _optionsNeedToMatch){
                         req.session.myData.hasAMatchcount++
                         req.session.myData.hasAMatchcountExcludingLocation++
                     }

@@ -9,7 +9,6 @@ function shortlistingSticky(_clear){
     }).trigger("scroll");
 
     $(window).on('resize', function() {
-        console.log("window width changing")
         $('.view-shortlist-fixed').width($('.view-shortlist-fixed').parent().width() + 0)
     }).trigger("resize");
 

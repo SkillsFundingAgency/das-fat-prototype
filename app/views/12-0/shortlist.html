@@ -174,11 +174,11 @@ Shortlist
                             {% endif %}
                             {% for _locationfav in _providerFav.locations %}
                                 
-                                {% if _locationfav != "" %}
+                                
 
                                 {% set _dayRelease = _selectedProvider.distance > 11 %}
                                 {% set _blockRelease = _selectedProvider.distance > 20 %}
-                                {% set _inWorkplace = _selectedProvider.distance < 11 %}
+                                {% set _inWorkplace = _selectedProvider.distance < 11 or _provider.national %}
 
                                 {% set _dayDistance = _selectedProvider.distance %}
                                 {% set _blockDistance = _selectedProvider.distance %}
@@ -191,30 +191,35 @@ Shortlist
                                     {% set _blockDistance = _dayDistance + 5.3 %}
                                 {% endif %}
 
+                                {% if _locationfav != "" %}
                                 <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
                                     Head office {{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away
                                 </li>
+                                {% endif %}
 
                                 <li class="govuk-!-font-size- govuk-!-margin-top-2">
+                                    
+                                    {% if _locationfav != "" %}
                                     <span class="govuk-!-font-weight-bold">Training options for {{_locationfav}}</span>
                                     <!-- Training options for {{_locationfav}} -->
+                                    {% endif %}
                                     
                                     <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
 
                                         <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                            At&nbsp;apprentice’s&nbsp;workplace
+                                            At&nbsp;apprentice’s&nbsp;workplace {% if _inWorkplace and _provider.national %}(national){% endif %}
                                         </li>
 
                                         <li class="{% if _dayRelease %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                            Day&nbsp;release {% if _dayRelease %}({{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away){% endif %}
+                                            Day&nbsp;release {% if _dayRelease and _locationfav != "" %}({{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away){% endif %}
                                         </li>
 
                                         <li class="{% if _blockRelease %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-margin-bottom-2" style="display: block;">
-                                            Block&nbsp;release {% if _blockRelease %}({{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away){% endif %}
+                                            Block&nbsp;release {% if _blockRelease and _locationfav != "" %}({{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away){% endif %}
                                         </li>
                                     </ul>
                                 </li>
-                                {% endif %}
+
                             {% endfor %}
 
                             {% if myData.cmppda != "false" %}

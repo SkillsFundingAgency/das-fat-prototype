@@ -148,9 +148,6 @@ Available training providers
                         {% if _filter.type == "location" %}
                             {% set _url = "providers?" + _sortQuery + _searchQuery + _standardQuery + "&location" + _empReviewsQuery + _ofstedRatingsQuery + _trainingOptionsQuery %}
                         {% endif %}
-                        {% if _filter.type == "national" %}
-                            {% set _url = "providers?" + _sortQuery + _locationQuery + _standardQuery + _empReviewsQuery + _ofstedRatingsQuery %}
-                        {% endif %}
 
                         <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText}}</h3>
                         <ul class="fat-filter-tags">
@@ -186,13 +183,18 @@ Available training providers
                         {% endif %}
                         
                         <!-- Training options -->
-
-                        {% set _trainingOptions = [
-                            {"id":3,"label":"At apprentice’s workplace"},
-                            {"id":4,"label":"National coverage"},
-                            {"id":1,"label":"Day release"},
-                            {"id":2,"label":"Block release"}
-                            ] %}
+                        {% if myData.cmppfd != "false" %}
+                            {% set _trainingOptions = [
+                                {"id":3,"label":"At apprentice’s workplace"},
+                                {"id":4,"label":"National coverage"},
+                                {"id":1,"label":"Day release"},
+                                {"id":2,"label":"Block release"}] %}
+                        {% else %}
+                            {% set _trainingOptions = [
+                                {"id":3,"label":"At apprentice’s workplace"},
+                                {"id":1,"label":"Day release"},
+                                {"id":2,"label":"Block release"}] %}
+                        {% endif %}
                         <div class="govuk-form-group">
                             <fieldset class="govuk-fieldset">
                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">

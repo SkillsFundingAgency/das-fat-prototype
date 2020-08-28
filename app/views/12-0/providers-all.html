@@ -161,53 +161,6 @@ Training providers
                             </label>
                             <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" class="govuk-input">
                         </div>
-
-                        <!-- Training options -->
-                        {% if myData.standardsearchapplied and myData.locationapplied %}
-                        {% set _trainingOptions = [{"id":3,"label":"At apprentice’s workplace"},{"id":1,"label":"Day release"},{"id":2,"label":"Block release"}] %}
-                        <div class="govuk-form-group">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Training options
-                                </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    {% for _trainingOption in _trainingOptions %}
-                                    {% set _checked = "" %}
-                                    {% for _item in myData.trainingOptions %}
-                                        {% if _item == _trainingOption.id %}
-                                            {% set _checked = "checked" %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    <div class="govuk-checkboxes__item">
-                                        <input {{_checked}} class="govuk-checkboxes__input" id="training-{{_trainingOption.id}}" name="trainingOptions" type="checkbox" value="{{_trainingOption.id}}">
-                                        <label class="govuk-label govuk-checkboxes__label" for="training-{{_trainingOption.id}}">
-                                            {{_trainingOption.label}}
-                                        </label>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </fieldset>
-                        </div>
-                        {% endif %}
-                        {% endif %}
-
-                        {% if myData.cmppfd != "false" %}
-                        <!-- National -->
-                        <div class="govuk-form-group">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    All England
-                                </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    <div class="govuk-checkboxes__item">
-                                        <input class="govuk-checkboxes__input" id="national-1" name="national" type="checkbox" value="national">
-                                        <label class="govuk-label govuk-checkboxes__label" for="national-1">
-                                            Offers training across England
-                                        </label>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
                         {% endif %}
 
                         {% if myData.cmppfc != "false" %}
@@ -218,6 +171,60 @@ Training providers
                             </label>
                             <input type="search" value="{% if myData.standardsearchapplied == true %}{{myData.standardSearchTerm}}{% endif %}" id="search-training" name="standard" class="govuk-input">
                         </div>
+                        {% endif %}
+
+                        <!-- Training options -->
+                        {% if myData.standardsearchapplied %}
+                            {% if myData.cmppfd != "false" %}
+                                {% set _trainingOptions = [
+                                    {"id":3,"label":"At apprentice’s workplace"},
+                                    {"id":4,"label":"National coverage"},
+                                    {"id":1,"label":"Day release"},
+                                    {"id":2,"label":"Block release"}] %}
+                            {% else %}
+                                {% set _trainingOptions = [
+                                    {"id":3,"label":"At apprentice’s workplace"},
+                                    {"id":1,"label":"Day release"},
+                                    {"id":2,"label":"Block release"}] %}
+                            {% endif %}
+                            <div class="govuk-form-group">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                        Training options
+                                    </legend>
+                                    <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                                        {% for _trainingOption in _trainingOptions %}
+                                            {% set _checked = "" %}
+                                            {% for _item in myData.trainingoptions %}
+                                                {% if _item == _trainingOption.id %}
+                                                    {% set _checked = "checked" %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {% if _trainingOption.id == 4 %}
+                                            <div class="govuk-checkboxes__conditional" >
+                                                <div class="govuk-form-group">
+                                                    <div class="govuk-checkboxes__item">
+                                                        <input class="govuk-checkboxes__input" {{_checked}} id="training-{{_trainingOption.id}}" name="trainingoptions" type="checkbox" value="{{_trainingOption.id}}">
+                                                        <label class="govuk-label govuk-checkboxes__label" for="training-{{_trainingOption.id}}">
+                                                            {{_trainingOption.label}}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% else %}
+                                            <div class="govuk-checkboxes__item">
+                                                <input {{_checked}} class="govuk-checkboxes__input" id="training-{{_trainingOption.id}}" name="trainingoptions" type="checkbox" value="{{_trainingOption.id}}" >
+                                                <label class="govuk-label govuk-checkboxes__label" for="training-{{_trainingOption.id}}">
+                                                    {{_trainingOption.label}}
+                                                </label>
+                                            </div>
+                                            {% endif %}
+
+                                        {% endfor %}
+                                    </div>
+                                </fieldset>
+                            </div>
                         {% endif %}
 
                         {% if myData.cmppfo != "false" %}
@@ -433,7 +440,7 @@ Training providers
                         <li>
                             {% set _dayRelease = _provider.distance > 11 %}
                             {% set _blockRelease = _provider.distance > 20 %}
-                            {% set _inWorkplace = _provider.distance < 11 %}
+                            {% set _inWorkplace = _provider.distance < 11 or _provider.national %}
 
                             {% set _dayDistance = _provider.distance %}
                             {% set _blockDistance = _provider.distance %}
@@ -448,15 +455,15 @@ Training providers
                             <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
 
                                 <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                    At&nbsp;apprentice’s&nbsp;workplace{% if _inWorkplace %} ({{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away){% endif %}
+                                    At&nbsp;apprentice’s&nbsp;workplace {% if _inWorkplace and _provider.national %}(national){% endif %}
                                 </li>
 
                                 <li class="{% if _dayRelease %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                    Day&nbsp;release {% if _dayRelease %}({{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away){% endif %}
+                                    Day&nbsp;release {% if _dayRelease and myData.locationapplied %}({{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away){% endif %}
                                 </li>
 
                                 <li class="{% if _blockRelease %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-margin-bottom-2" style="display: block;">
-                                    Block&nbsp;release {% if _blockRelease %}({{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away){% endif %}
+                                    Block&nbsp;release {% if _blockRelease and myData.locationapplied %}({{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away){% endif %}
                                 </li>
                             </ul>
                         </li>

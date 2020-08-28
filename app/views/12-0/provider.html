@@ -292,7 +292,7 @@ Training provider details
                 
                 {% set _dayRelease = _selectedProvider.distance > 11 %}
                 {% set _blockRelease = _selectedProvider.distance > 20 %}
-                {% set _inWorkplace = _selectedProvider.distance < 11 %}
+                {% set _inWorkplace = _selectedProvider.distance < 11 or _provider.national %}
 
                 {% set _dayDistance = _selectedProvider.distance %}
                 {% set _blockDistance = _selectedProvider.distance %}

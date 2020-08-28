@@ -305,21 +305,7 @@ Training providers
     </div>
     <div class="govuk-grid-column-two-thirds">
 
-        {% if myData.cmppfl != "false" %}
-        {% if myData.locationapplied %}
-        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Apprenticeship location</h2>
-            <!-- <p class="govuk-body govuk-!-margin-bottom-2">Showing only providers who offer training for the apprenticeship location.</p> -->
-            <p class="govuk-body"><span style="margin-right: 10px">{{myData.location}}</span> <a href="providers-all?{{_sortQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
-        </div>
-        {% else %}
-        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
-            <p class="govuk-body govuk-!-margin-bottom-2">Show only providers who offer training for the apprenticeship location.</p>
-            <p class="govuk-body"><a href="#search-location" class="focus-field-prompt govuk-link govuk-link--no-visited-state" >Enter&nbsp;location</a></p>
-        </div>
-        {% endif %}
-        {% endif %}
+        
 
         <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
 
@@ -339,6 +325,23 @@ Training providers
             <span class="govuk-!-font-weight-bold">Name</span>
         </p>
         {% endif %}
+
+        {% if myData.cmppfl != "false" %}
+        {% if myData.locationapplied %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Apprenticeship location</h2>
+            <!-- <p class="govuk-body govuk-!-margin-bottom-2">Showing only providers who offer training for the apprenticeship location.</p> -->
+            <p class="govuk-body"><span style="margin-right: 10px">{{myData.location}}</span> <a href="providers-all?{{_sortQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
+        </div>
+        {% else %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
+            <p class="govuk-body govuk-!-margin-bottom-2">Show only providers who offer training for the apprenticeship location.</p>
+            <p class="govuk-body"><a href="#search-location" class="focus-field-prompt govuk-link govuk-link--no-visited-state" >Enter&nbsp;location</a></p>
+        </div>
+        {% endif %}
+        {% endif %}
+
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
        
         <!-- 

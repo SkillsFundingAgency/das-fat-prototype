@@ -287,6 +287,7 @@ Training provider details
             {% endif %}
 
             <!-- nearest location and training options -->
+            {% if (myData.locationapplied and _selectedMatchesLocation) or myData.locationapplied != true %}
             <div class="govuk-!-margin-bottom-6">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-3 govuk-!-margin-top-6">{{_providerTitle | safe}}’s training options</h2>
                 
@@ -354,6 +355,7 @@ Training provider details
                 {% endif %}
 
             </div>
+            {% endif %}
 
             {% if myData.locationapplied != true %}
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>

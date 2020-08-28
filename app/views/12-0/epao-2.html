@@ -13,16 +13,20 @@
 <!-- Delivery areas label -->
 {% set _deliveryAreasLabel = "" %}
 {% for _epaoRegion in _selectedEPAO.regions %}
-    {% set _loopLast = loop.last %}
-    {% set _moreThanOne = _selectedEPAO.regions.length > 1 %}
-    {% for _region in myData.regions %}
-        {% if _epaoRegion == _region.id %}
-            {% set _deliveryAreasLabel = _deliveryAreasLabel + _region.label %}
-            {% if _moreThanOne and _loopLast == false %}
-                {% set _deliveryAreasLabel = _deliveryAreasLabel + ", " %}
+    {% if _epaoRegion == 10 %}
+        {% set _deliveryAreasLabel = "National coverage" %}
+    {% else %}
+        {% set _loopLast = loop.last %}
+        {% set _moreThanOne = _selectedEPAO.regions.length > 1 %}
+        {% for _region in myData.regions %}
+            {% if _epaoRegion == _region.id %}
+                {% set _deliveryAreasLabel = _deliveryAreasLabel + _region.label %}
+                {% if _moreThanOne and _loopLast == false %}
+                    {% set _deliveryAreasLabel = _deliveryAreasLabel + ", " %}
+                {% endif %}
             {% endif %}
-        {% endif %}
-    {% endfor %}
+        {% endfor %}
+    {% endif %}
 {% endfor %}
 
 {% block pageTitle %} 

@@ -1,0 +1,93 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find an apprenticeship assessment organisation" %}
+{% set serviceUrl = "home-epao" %}
+
+
+{% block pageTitle %} 
+{{myData.displaycount}} assessment organisations
+{% endblock %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+{% set _epaos = myData.epaos.list %}
+{% set _standardQuery = "&standard=" + myData.standard %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="{{myData.returnURLepaos2}}" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl" >
+            {{myData.displaycount}} assessment organisation{% if myData.displaycount != 1 %}s{% endif %}
+        </h1>
+
+        <p class="govuk-body govuk-!-margin-bottom-6"><span class="govuk-!-font-weight-bold">Showing assessment organisations for </span><br> {{_standardTitle|safe}}</p>
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+
+        <!-- epaos -->
+        {% for _epao in _epaos %}
+            {% if _epao.search == true %}
+
+            <!-- Delivery areas label -->
+            {% set _deliveryAreasLabel = "" %}
+            {% for _epaoRegion in _epao.regions %}
+                {% if _epaoRegion == 10 %}
+                    {% set _deliveryAreasLabel = "National coverage" %}
+                {% else %}
+                    {% set _loopLast = loop.last %}
+                    {% set _moreThanOne = _epao.regions.length > 1 %}
+                    {% for _region in myData.regions %}
+                        {% if _epaoRegion == _region.id %}
+                            {% set _deliveryAreasLabel = _deliveryAreasLabel + _region.label %}
+                            {% if _moreThanOne and _loopLast == false %}
+                                {% set _deliveryAreasLabel = _deliveryAreasLabel + ", " %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+
+            <!-- address label -->
+            {% set _addressLabel = "" %}
+           
+            {% if _epao.address4 %}{% set _addressLabel = _addressLabel + _epao.address4|trim + ', ' %}{% endif %}
+            {% if _epao.address5 %}{% set _addressLabel = _addressLabel + _epao.address5|trim + ', ' %}{% endif %}
+            {% if _epao.postcode %}{% set _addressLabel = _addressLabel + _epao.postcode|trim %}{% endif %}
+
+            <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+                    <a href="epao-2?epao={{_epao.id}}{{_standardQuery}}&returnURLepao2=epaos-2" class="govuk-link govuk-link--no-visited-state">{{_epao.name}}</a>
+                </h2>
+                <ul class="govuk-list">
+                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Locations covered: </span> {{_deliveryAreasLabel}}</li>
+                    
+                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Address:</span> {{_addressLabel}}</li>
+                    
+                    {% if _epao.regions != 10 %}
+                    <!-- <li class="govuk-!-font-size-16">Assesses in: {{_deliveryAreasLabel}} -->
+                    {% endif %}
+
+                </ul>
+            </div>
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+            {% endif %}
+        {% endfor %}
+
+    </div>
+    
+</div>
+
+{% endblock %}

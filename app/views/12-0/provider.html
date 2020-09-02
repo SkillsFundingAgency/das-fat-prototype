@@ -293,7 +293,7 @@ Training provider details
                 
                 {% set _dayRelease = _selectedProvider.distance > 11 %}
                 {% set _blockRelease = _selectedProvider.distance > 20 %}
-                {% set _inWorkplace = _selectedProvider.distance < 11 or _provider.national %}
+                {% set _inWorkplace = _selectedProvider.distance < 11 or _selectedProvider.national %}
 
                 {% set _dayDistance = _selectedProvider.distance %}
                 {% set _blockDistance = _selectedProvider.distance %}
@@ -313,13 +313,12 @@ Training provider details
                 <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-font-weight-bold">
                     Head office {% if myData.locationapplied %}{{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away{% endif %}
                 </p>
-                <!-- <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Head office address</p> -->
                 <p class="govuk-body">{{_address1}}</p>
 
                 <ul class="govuk-list fat-training-options govuk-!-margin-bottom-4" >
 
                     <li class="{% if _inWorkplace %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
-                        At&nbsp;apprentice’s&nbsp;workplace {% if _inWorkplace and _provider.national %}(national){% endif %}
+                        At&nbsp;apprentice’s&nbsp;workplace {% if _inWorkplace and _selectedProvider.national %}(national){% endif %}
                     </li>
 
                     <li class="{% if _dayRelease %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
@@ -337,19 +336,19 @@ Training provider details
                 <!-- At location (used by day and block too if same distance) -->
 
                 <!-- Day release AND different to at location and block -->
-                {% if (_dayDistance != _inWorkplaceDistance or (_inWorkplace == false and _dayDistance == _inWorkplaceDistance)) and (_dayDistance != _blockDistance or (_blockRelease == false and _dayDistance == _blockDistance)) and _dayRelease and myData.locationapplied %}
+                {% if (_dayDistance != _blockDistance or (_blockRelease == false and _dayDistance == _blockDistance)) and _dayRelease and myData.locationapplied %}
                     <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day release address</p>
                     <p class="govuk-body">{{_address2}}</p>
                 {% endif %}
 
                 <!-- Block release AND different to at location and day -->
-                {% if (_blockDistance != _inWorkplaceDistance or (_inWorkplace == false and _blockDistance == _inWorkplaceDistance)) and (_dayDistance != _blockDistance or (_dayRelease == false and _dayDistance == _blockDistance)) and _blockRelease and myData.locationapplied %}
+                {% if (_dayDistance != _blockDistance or (_dayRelease == false and _dayDistance == _blockDistance)) and _blockRelease and myData.locationapplied %}
                     <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Block release address</p>
                     <p class="govuk-body">{{_address3}}</p>
                 {% endif %}
 
                 <!-- Day and Block release same AND different to at location -->
-                {% if (_dayDistance != _inWorkplaceDistance or (_inWorkplace == false and _dayDistance == _inWorkplaceDistance)) and (_blockDistance != _inWorkplaceDistance or (_inWorkplace == false and _blockDistance == _inWorkplaceDistance)) and _dayRelease and _blockRelease and (_dayDistance == _blockDistance) and myData.locationapplied %}
+                {% if _dayRelease and _blockRelease and _dayDistance == _blockDistance and myData.locationapplied %}
                     <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day and block release address</p>
                     <p class="govuk-body">{{_address2}}</p>
                 {% endif %}
@@ -414,10 +413,10 @@ Training provider details
                     <strong class="govuk-tag govuk-!-margin-bottom-3">
                         Shortlisted
                     </strong><br>
-                    <a href="{{_fullURL}}&favdel={{_provider.id}}" data-href="{{_fullURL}}&favdel={{_selectedProvider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2 remove-shortlist">Remove from shortlist</a>
+                    <a href="{{_fullURL}}&favdel={{_selectedProvider.id}}" data-href="{{_fullURL}}&favdel={{_selectedProvider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2 remove-shortlist">Remove from shortlist</a>
                 </span>
 
-                <a href="{{_fullURL}}&fav={{_provider.id}}" data-href="{{_fullURL}}&fav={{_selectedProvider.id}}" class="govuk-button add-shortlist-button add-shortlist govuk-!-margin-bottom-0">Add to shortlist</a>
+                <a href="{{_fullURL}}&fav={{_selectedProvider.id}}" data-href="{{_fullURL}}&fav={{_selectedProvider.id}}" class="govuk-button add-shortlist-button add-shortlist govuk-!-margin-bottom-0">Add to shortlist</a>
             </p>
             {% if myData.locationapplied and _selectedMatchesLocation %}
                 {% if myData.providersOnStandardCount > 1 %}

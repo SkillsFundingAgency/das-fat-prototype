@@ -72,6 +72,7 @@ var _myData = {
     "providers-new": require(__dirname + '/data/providers-new.json'),
     "epaos": require(__dirname + '/data/epaos.json'),
     "providers-ordering": require(__dirname + '/data/providers-ordering.json'),
+    "providers-ordering-2": require(__dirname + '/data/providers-ordering-2.json'),
     "provideFeedbackFactors": [
         {
             "id": "_factor-1",

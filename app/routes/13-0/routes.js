@@ -1098,7 +1098,7 @@ module.exports = function (router,_myData) {
 
     });
 
-    // Providers
+    // Providers - ordering
     router.get('/' + version + '/providers-ordering', function (req, res) {
 
         var _providers = req.session.myData["providers-ordering"].list
@@ -1156,6 +1156,69 @@ module.exports = function (router,_myData) {
         });
 
         res.render(version + '/providers-ordering', {
+            myData:req.session.myData
+        });
+
+    });
+
+    // Providers - ordering - 2
+    router.get('/' + version + '/providers-ordering-2', function (req, res) {
+
+        var _providers = req.session.myData["providers-ordering-2"].list
+
+        if(req.query.sort == "shuffle"){
+            function shuffle(array) {
+                var currentIndex = array.length, temporaryValue, randomIndex;
+                
+                // While there remain elements to shuffle...
+                while (0 !== currentIndex) {
+                
+                    // Pick a remaining element...
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex -= 1;
+                
+                    // And swap it with the current element.
+                    temporaryValue = array[currentIndex];
+                    array[currentIndex] = array[randomIndex];
+                    array[randomIndex] = temporaryValue;
+                }
+                
+                return array;
+            }
+            shuffle(_providers);
+        } else {
+            // Sort on name
+            _providers.sort(function(a,b){
+                var returnValue = 0;
+                if (a.name.toUpperCase() < b.name.toUpperCase()){
+                    returnValue = -1
+                } else if(a.name.toUpperCase() > b.name.toUpperCase()){
+                    returnValue = 1
+                }
+                return returnValue
+            });
+            // Then sort on points
+            _providers.sort(function(a,b){
+                return b.totalPoints - a.totalPoints
+            });
+            
+        }
+        
+        setSelectedStandard(req,req.session.myData.standard)
+        
+        req.session.myData.displaycount = 0
+
+        _providers.forEach(function(_provider, index) {
+            if(req.query.distances == "show"){
+                _provider.displayDistances = true
+            } else {
+                _provider.displayDistances = false
+            }
+            _provider.search = true
+            req.session.myData.displaycount++
+        });
+
+        res.render(version + '/providers-ordering-2', {
             myData:req.session.myData
         });
 
@@ -2071,7 +2134,7 @@ module.exports = function (router,_myData) {
         } else {
             req.session.myData.factorsAnswers = req.session.myData.factorsAnswersTemp
             req.session.myData.factorsAnswersTemp = {}
-            res.redirect(301, '/' + version + '/provide-feedback-5a');
+            res.redirect(301, '/' + version + '/provide-feedback-4a');
         }
 
     });

@@ -63,56 +63,9 @@ Apprentice details approved
         <p class="govuk-body">You’ve approved these apprentice details. <a href="#" class="govuk-link govuk-link--no-visited-state">Manage your apprentices</a> to view or update details.</p>
 
         <form method="POST" class="form">
-
-            
-
-            <div class="govuk-form-group {% if myData.validationErrors.overallRatingAnswer %}govuk-form-group--error{% endif %}">
-                <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
-                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                    <h2 class="govuk-fieldset__heading">
-                      How would you rate TRAINING UK LTD’s onboarding and approval process?
-                    </h2>
-                  </legend>
-
-                  {% set _ratings = [
-                        {
-                            "name": "Excellent"
-                        },
-                        {
-                            "name": "Good"
-                        },
-                        
-                        {
-                            "name": "Poor"
-                        },
-                        {
-                            "name": "Very poor"
-                        }
-                    ] %}
-
-                {% if myData.validationErrors.overallRatingAnswer %}
-                <span id="overallRatingAnswer-error" class="govuk-error-message">
-                    <span class="govuk-visually-hidden">Error:</span>
-                    {{myData.validationErrors.overallRatingAnswer.message}}
-                </span>
-                {% endif %}
-
-                  <div class="govuk-radios">
-                    {% for _rating in _ratings %}
-                    {% set _itemID = "rating-" + loop.index %}
-                    <div class="govuk-radios__item">
-                      <input class="govuk-radios__input" id="{{_itemID}}" name="overallRating" type="radio" value="{{_rating.name}}" {% if _rating.name == myData.overallRatingAnswer %}checked{% endif %}>
-                      <label class="govuk-label govuk-radios__label" for="{{_itemID}}">
-                        {{_rating.name}}
-                      </label>
-                    </div>
-                    {% endfor %}
-                  </div>
-                </fieldset>
-              </div>
             
             <button type="submit" class="govuk-button">
-                Give feedback
+                Give feedback on TRAINING UK LTD
             </button>
 
         </form>

@@ -2109,7 +2109,7 @@ module.exports = function (router,_myData) {
 
         // req.session.myData.factor1Answer = req.body["_factor-1"]
         req.session.myData.factorsAnswersTemp = {}
-        req.session.myData.provideFeedbackFactors2.forEach(function(_factor, index) {
+        req.session.myData.provideFeedbackFactors3.forEach(function(_factor, index) {
             var _answer = req.body[_factor.id]
 
             if(!_answer){

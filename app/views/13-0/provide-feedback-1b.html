@@ -44,10 +44,9 @@ How would you rate TRAINING UK LTD in these areas of onboarding and approval?
               How would you rate TRAINING UK LTD in these areas of onboarding and approval?
             </h1>
 
-            <!-- stacked , table -->
-            {% set _type = "stacked" %}
+            <p class="govuk-body govuk-!-margin-bottom-6">We publish your feedback anonymously.</p>
 
-            {% set _factors = myData.provideFeedbackFactors2 %}
+            {% set _factors = myData.provideFeedbackFactors3 %}
             {% set _ratings = [
               "Excellent",
               "Good",
@@ -56,69 +55,6 @@ How would you rate TRAINING UK LTD in these areas of onboarding and approval?
               "N/A"
             ] %}
 
-            {% if _type == "table" %}
-            {% set _ratings = [
-              "Very poor",
-              "Poor",
-              "Good",
-              "Excellent",
-              "N/A"
-            ] %}
-            
-            <div class="govuk-form-group {% if _inError == "true" %}govuk-form-group--error{% endif %}">
-              {% if _inError == "true" %}
-                {% for name, item in myData.validationErrors %}
-                  {% if loop.index == 1 %} 
-                    <span id="{{_itemID}}-error" class="govuk-error-message">
-                      <span class="govuk-visually-hidden">Error:</span> {{item.message}}
-                    </span>
-                  {% endif %}
-                {% endfor %}
-              {% endif %}
-            <table class="govuk-table ">
-              
-              <!-- <caption class="govuk-table__caption">Dates and amounts</caption> -->
-              <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                  <th scope="col" class="govuk-table__header"></th>
-                  {% for _rating in _ratings %}
-                  <th scope="col" class="govuk-table__header">{{_rating}}</th>
-                  {% endfor %}
-                </tr>
-              </thead>
-              <tbody class="govuk-table__body">
-
-                {% for _factor in _factors %}
-                {% set _itemID = _factor.id %}
-                <tr class="govuk-table__row">
-                  <th scope="row" class="govuk-table__header ">{{_factor.name}}</th>
-                    <!-- <div class="govuk-form-group {% if myData.validationErrors[_itemID] %}govuk-form-group--error{% endif %}"> -->
-                      <!-- <fieldset class="govuk-fieldset">
-                        <div class="govuk-radios govuk-radios--inline"> -->
-                          {% for _rating in _ratings %}
-                          {% set __itemID_rating = _itemID + "-" + loop.index %}
-                          <td class="govuk-table__cell" >
-                            <div class="govuk-radios__item">
-                              <input class="govuk-radios__input" id="{{__itemID_rating}}" name="{{_itemID}}" type="radio" value="{{_rating}}" {% if (_inError == 'true' and myData.factorsAnswersTemp[_itemID] == _rating) or (_inError == 'false' and myData.factorsAnswers[_itemID] == _rating) %}checked{% endif %} >
-                              <label class="govuk-label govuk-radios__label" for="{{__itemID_rating}}">
-                                <span class="govuk-visually-hidden">{{_rating}}</span>
-                              </label>
-                            </div>
-                          </td>
-                          {% endfor %}
-                        <!-- </div>
-                      </fieldset> -->
-                    <!-- </div> -->
-                  <!-- </td> -->
-                </tr>
-                {% endfor %}
-
-              </tbody>
-            </table>
-          </div>
-            {% endif %}
-
-            {% if _type == "stacked" %}
             {% for _factor in _factors %}
             {% set _itemID = _factor.id %}
             <div class="govuk-form-group {% if myData.validationErrors[_itemID] %}govuk-form-group--error{% endif %}">
@@ -148,15 +84,10 @@ How would you rate TRAINING UK LTD in these areas of onboarding and approval?
               </fieldset>
             </div>
             {% endfor %}
-            {% endif %}
             
             <button type="submit" class="govuk-button">
                 Continue
             </button>
-
-            <!-- <p class="govuk-body">
-                <a href="provide-feedback-2" class="govuk-link govuk-link--no-visited-state">Skip this question</a>
-            </p> -->
 
         </form>
 
@@ -164,15 +95,3 @@ How would you rate TRAINING UK LTD in these areas of onboarding and approval?
 </div>
 
 {% endblock %}
-
-{% block pageScripts %}
-<script>
-
-    var _checkboxes = $('input[type=checkbox]')
-
-    _checkboxes.change(function(){
-        _checkboxes.filter(':not(:checked)').attr('disabled', (_checkboxes.filter(':checked').length == 3))
-    }).trigger("change");
-
-</script>
-{% endblock pageScripts %}

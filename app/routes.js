@@ -228,6 +228,14 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 // // for pulling out counts of statuses on all stds in IFATE api
 // _myData.testStandardsData = []
 // console.log("test")
+
+// // Date 
+// var today = new Date();
+// var dd = String(today.getDate()).padStart(2, '0');
+// var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+// var yyyy = today.getFullYear();
+// today = dd + '/' + mm + '/' + yyyy;
+
 // require("request").get("https://www.instituteforapprenticeships.org/api/apprenticeshipstandards", (error, response, body) => {
 //     var _apiData = JSON.parse(body),
 //         _statusTypes = {},
@@ -241,8 +249,11 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         _integratedDegreeInTitle = 0,
 //         _integratedInTitleNotFlagged = 0,
 //         _integratedNotInTitleFlagged = 0,
+//         hasFullStop = 0,
+//         doesntHaveFullStop = 0,
+//         endsInSpace = 0,
 //         _testStandardsData = []
-//     console.log(_apiData.length + " standards in API (https://www.instituteforapprenticeships.org/api/apprenticeshipstandards)")
+//     console.log(_apiData.length + " standards in API (https://www.instituteforapprenticeships.org/api/apprenticeshipstandards) - checked on " + today)
 //     _apiData.forEach(function(_standard, index) {
 //         _statusTypes[_standard.status] = (_statusTypes[_standard.status] || 0) + 1
 //         _versionTypes["version " + _standard.version] = (_versionTypes["version " + _standard.version] || 0) + 1
@@ -253,6 +264,18 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         _standardData.larsCode = _standard.larsCode
 //         _standardData.title = _title
 //         _standardData.overview = _standard.overviewOfRole
+
+//         if(_standardData.overview.trim().slice(-1) == "."){
+//             console.log("larsCode: " + _standardData.larsCode + " - " + _standardData.title)
+//             hasFullStop++
+//         } else {
+//             doesntHaveFullStop++
+//         }
+
+//         if(_standardData.overview.slice(-1) == " "){
+//             // console.log("ends in a space = larsCode: " + _standardData.larsCode + " - " + _standardData.title)
+//             endsInSpace++
+//         }
 
 //         if(_standard.status == "Approved for delivery"){
 //             _approvedForDelivery++
@@ -295,9 +318,9 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         // Hide method from for-in loops
 //         Object.defineProperty(Array.prototype, "equals", {enumerable: false});
 //         if(!_standard.typicalJobTitles.equals(_standard.jobRoles)){
-//             console.log(_title + " - DONT MATCH")
-//             console.log(_standard.typicalJobTitles)
-//             console.log(_standard.jobRoles)
+//             // console.log(_title + " - DONT MATCH")
+//             // console.log(_standard.typicalJobTitles)
+//             // console.log(_standard.jobRoles)
 //         }
 //         // console.log("checked")
 //         // console.log(_title)
@@ -335,23 +358,22 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
         
 //     });
 
-//     // Date 
-//     var today = new Date();
-//     var dd = String(today.getDate()).padStart(2, '0');
-//     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-//     var yyyy = today.getFullYear();
-//     today = dd + '/' + mm + '/' + yyyy;
-    
-//     console.log("-----------------")
-//     console.log(_approvedForDelivery + " 'Approved for delivery' standards on " + today)
-//     console.log(_integratedDegreeTypesApproved)
-//     console.log("-----------------")
+//     console.log("hasFullStop = " + hasFullStop)
+//     console.log("doesntHaveFullStop = " + doesntHaveFullStop)
+//     console.log("endsInSpace = " + endsInSpace);
 
-//     console.log(_integratedInTitle + " with '(integrated' in title (case insensitive) and 'Approved for delivery'")
-//     console.log(_integratedInTitleTypes)
-//     console.log("-----------------")
-//     console.log(_integratedOnlyInTitle + " with '(integrated)' in title (case insensitive) and 'Approved for delivery'")
-//     console.log(_integratedDegreeInTitle + " with '(integrated degree)' in title (case insensitive) and 'Approved for delivery'")
+    
+    
+//     // console.log("-----------------")
+//     // console.log(_approvedForDelivery + " 'Approved for delivery' standards on " + today)
+//     // console.log(_integratedDegreeTypesApproved)
+//     // console.log("-----------------")
+
+//     // console.log(_integratedInTitle + " with '(integrated' in title (case insensitive) and 'Approved for delivery'")
+//     // console.log(_integratedInTitleTypes)
+//     // console.log("-----------------")
+//     // console.log(_integratedOnlyInTitle + " with '(integrated)' in title (case insensitive) and 'Approved for delivery'")
+//     // console.log(_integratedDegreeInTitle + " with '(integrated degree)' in title (case insensitive) and 'Approved for delivery'")
 
 //     // console.log(_integratedInTitleNotFlagged + " with (integrated in title but NOT flagged")
 //     // console.log(_integratedNotInTitleFlagged + " without (integrated in title but IS flagged")

@@ -1590,41 +1590,71 @@ module.exports = function (router,_myData) {
             req.session.myData.needToMatchCount++
         }
 
-        req.session.myData.epaos.list.forEach(function(_epao, index) {
-
-            req.session.myData.hasAMatchcount = 0
-
-            // Reset each epao
-            _epao.search = false
-
-            //STANDARD
-            req.session.myData.selectedStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
-                if(_epaoOnStandard.toUpperCase() == _epao.name.toUpperCase()){
-                    req.session.myData.hasAMatchcount++
+        //Location reset/setup
+        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
+            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
+                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
+                if(cityMatch(req) || _postCodeMatch) {
+                    req.session.myData.locationapplied = true
+                    req.session.myData.location = req.session.myData.locationTemp
+                } else {
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
                 }
+                continueRendering()
+            });
+        } else {
+            continueRendering()
+        }
+        
+        function continueRendering(){
+
+            req.session.myData.epaos.list.forEach(function(_epao, index) {
+
+                req.session.myData.hasAMatchcount = 0
+
+                // Reset each epao
+                _epao.search = false
+
+                //STANDARD
+                req.session.myData.selectedStandard.epaos.list.forEach(function(_epaoOnStandard, index) {
+                    if(_epaoOnStandard.toUpperCase() == _epao.name.toUpperCase()){
+                        req.session.myData.hasAMatchcount++
+                    }
+                });
+
+                //REGION
+                if(req.session.myData.epaolocationAnswerApplied) {
+                    _epao.search = false
+                    if(_epao.regions.includes(req.session.myData.epaolocationAnswer.toString()) || _epao.regions.includes("10")){
+                        req.session.myData.hasAMatchcount++
+                    }
+                }
+
+                //MATCHES ALL IT NEEDS TO?
+                if(req.session.myData.needToMatchCount > 0 && req.session.myData.needToMatchCount == req.session.myData.hasAMatchcount){
+                    _epao.search = true
+                    req.session.myData.displaycount++
+                }
+
             });
 
-            //REGION
-            if(req.session.myData.epaolocationAnswerApplied) {
-                _epao.search = false
-                if(_epao.regions.includes(req.session.myData.epaolocationAnswer.toString()) || _epao.regions.includes("10")){
-                    req.session.myData.hasAMatchcount++
-                }
+            if(req.session.myData.locationapplied){
+                sortEPAOs(req, "distance")
+            } else {
+                sortEPAOs(req, "name")
             }
-
-            //MATCHES ALL IT NEEDS TO?
-            if(req.session.myData.needToMatchCount > 0 && req.session.myData.needToMatchCount == req.session.myData.hasAMatchcount){
-                _epao.search = true
-                req.session.myData.displaycount++
-            }
-
-        });
-
-        sortEPAOs(req, "name")
-
-        res.render(version + '/epaos-2', {
-            myData:req.session.myData
-        });
+            
+            res.render(version + '/epaos-2', {
+                myData:req.session.myData
+            });
+        }
 
     });
 

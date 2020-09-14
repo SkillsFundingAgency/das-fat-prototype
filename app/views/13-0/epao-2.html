@@ -1,6 +1,6 @@
 {% extends myData.layout %}
 
-{% set serviceName = "Find an apprenticeship assessment organisation" %}
+{% set serviceName = "Find an end-point assessment organisation" %}
 {% set serviceUrl = "home-epao" %}
 
 {% set _selectedEPAO = myData.selectedEPAO %}
@@ -47,7 +47,7 @@
             {{_selectedEPAO.name}} 
         </h1>
 
-        <p class="govuk-body "><span class="govuk-!-font-weight-bold">Assessment organisation for </span><br> {{_standardTitle|safe}}</p>
+        <p class="govuk-body "><span class="govuk-!-font-weight-bold">End-point assessment organisation for </span><br> {{_standardTitle|safe}}</p>
 
         <dl class="govuk-summary-list">
             {% if _selectedEPAO.contactname %}
@@ -95,10 +95,10 @@
         </dl>
 
         {% if _epaoCount == 1 %}
-        <p class="govuk-body ">{{_selectedEPAO.name}} is the only assessment organisation for {{_standardTitle|safe}}.</p>
+        <p class="govuk-body ">{{_selectedEPAO.name}} is the only end-point assessment organisation for {{_standardTitle|safe}}.</p>
         {% else %}
-        <p class="govuk-body ">{{_selectedEPAO.name}} is 1 of {{myData.epaoCount}} assessment organisations for {{_standardTitle|safe}}.</p>
-        <p class="govuk-body govuk-!-margin-bottom-6"><a href="{{myData.returnURLepao2}}" class="govuk-link govuk-link--no-visited-state"> View the other assessment organisations</a></p>
+        <p class="govuk-body ">{{_selectedEPAO.name}} is 1 of {{myData.epaoCount}} end-point assessment organisations for {{_standardTitle|safe}}.</p>
+        <p class="govuk-body govuk-!-margin-bottom-6"><a href="{{myData.returnURLepao2}}" class="govuk-link govuk-link--no-visited-state"> View the other end-point assessment organisations</a></p>
         {% endif %}
         
     </div>

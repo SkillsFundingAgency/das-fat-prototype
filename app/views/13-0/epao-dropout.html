@@ -1,12 +1,12 @@
 {% extends myData.layout %}
-{% set serviceName = "Find an apprenticeship assessment organisation" %}
+{% set serviceName = "Find an end-point assessment organisation" %}
 {% set serviceUrl = "home-epao" %}
 
 {% set _selectedStandard = myData.selectedStandard %}
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
 {% block pageTitle %} 
-0 assessment organisations
+0 end-point assessment organisations
 {% endblock %}
 
 {% block beforeContent %}
@@ -20,7 +20,7 @@
     <div class="govuk-grid-column-two-thirds">
 
         <h1 class="govuk-heading-xl" >
-            0 assessment organisations
+            0 end-point assessment organisations
         </h1>
 
         <p class="govuk-body govuk-!-margin-bottom-6"> <span class="govuk-!-font-weight-bold">Apprenticeship training course:</span><br> {{_standardTitle|safe}}</p>

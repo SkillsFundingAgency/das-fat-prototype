@@ -53,23 +53,38 @@ module.exports = function (router,_myData) {
             });
         }
     }
-    //Sort epaos
+    //Sort EPAOs
     function sortEPAOs(req, _sortBy){
-        if(_sortBy == "distance"){
-            req.session.myData.epaos.list.sort(function(a,b){
-                return a.distance - b.distance
-            });
-        } else {
-            req.session.myData.epaos.list.sort(function(a,b){
-                var returnValue = 0;
+        req.session.myData.epaos.list.sort(function(a,b){
+
+            var returnValue = 0;
+
+            // DISTANCE
+            if(_sortBy == "distance"){
+                if (a.distance == b.distance){
+                    // NAME 
+                    sortByName()
+                } else if (a.distance < b.distance){
+                    returnValue = -1
+                } else if(a.distance > b.distance){
+                    returnValue = 1
+                }
+            } else {
+                // NAME
+                sortByName()
+            }
+
+            function sortByName(){
                 if (a.name.toUpperCase() < b.name.toUpperCase()){
                     returnValue = -1
                 } else if(a.name.toUpperCase() > b.name.toUpperCase()){
                     returnValue = 1
                 }
-                return returnValue
-            });
-        }
+            }
+
+            return returnValue
+
+        });
     }
 
     // For back links

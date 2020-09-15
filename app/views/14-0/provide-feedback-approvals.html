@@ -1,0 +1,49 @@
+{% extends myData.layout %}
+{% set serviceName = "Manage apprenticeships" %}
+{% set serviceUrl = "provide-feedback-approvals" %}
+
+{% block pageTitle %} 
+Apprentice details approved
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="#" class="govuk-back-link">Back to Apprentices</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                Apprentice details approved
+            </h1>
+        </div>
+
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Reference</dt>
+                <dd class="govuk-summary-list__value">ABC123</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Training provider</dt>
+                <dd class="govuk-summary-list__value">TRAINING UK LTD</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Approved by</dt>
+                <dd class="govuk-summary-list__value">Business Name Ltd</dd>
+            </div>
+        </dl>
+
+        <h2 class="govuk-heading-m">What's next?</h2>
+
+        <p class="govuk-body">You've approved these apprentice details. <a href="#" class="govuk-link govuk-link--no-visited-state">Manage your apprentices</a> to view or update details.</p>
+
+        <p class="govuk-body"><a href="provide-feedback-1" class="govuk-button ">Give feedback on TRAINING UK LTD</a></p>
+
+    </div>
+</div>
+
+{% endblock %}

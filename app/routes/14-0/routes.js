@@ -476,10 +476,10 @@ module.exports = function (router,_myData) {
         _provider.inFavourites = false
         var _favouriteStd = req.session.myData.favourites2.find(obj => obj.larsCode == req.session.myData.standard)
         if(_favouriteStd){
-            var _providerInFavs = _favouriteStd.providers.find(obj => obj.id == _provider.id.toString())
-            if(_providerInFavs){
-                var _location = _providerInFavs.locations.find(obj => obj == req.session.myData.location)
-                if((_location && req.session.myData.locationapplied) || (!req.session.myData.locationapplied)){
+            var _locationInFavs = _favouriteStd.locations.find(obj => obj.id == req.session.myData.location.toString())
+            if(_locationInFavs){
+                var _provider = _locationInFavs.providers.find(obj => obj == _provider.larsCode)
+                if(_provider){
                     _provider.inFavourites = true
                 }
             }
@@ -985,7 +985,7 @@ module.exports = function (router,_myData) {
             searchFilterSetup(req,"Training provider name")
 
             // Add and removing favourites
-            addRemoveFavourite(req,false)
+            // addRemoveFavourite(req,false)
 
             _providers.forEach(function(_provider, index) {
                 

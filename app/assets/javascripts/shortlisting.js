@@ -1,4 +1,4 @@
-function shortlisting(_clear){
+function shortlisting(_clear, _populateShortlist){
 
     // Shortlist
     // add-shortlist
@@ -11,6 +11,11 @@ function shortlisting(_clear){
     if (_clear) {
         localStorage.setItem("shortlistTotal", 0)
         _total = Number(localStorage.getItem('shortlistTotal'))
+    }
+
+    if(_populateShortlist){
+        _total = _total + 1
+        localStorage.setItem("shortlistTotal", JSON.stringify(_total));
     }
 
     //for shortlist page

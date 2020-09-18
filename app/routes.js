@@ -4,6 +4,7 @@ const router = express.Router()
 // Base session data
 var _myData = {
     "maxrows": 999999,
+    "populateShortlist": false,
     "favourites": [],
     "favourites2": [],
     "totalFavourites": 0,

@@ -646,6 +646,8 @@ module.exports = function (router,_myData) {
         req.session.myData.cmppfc =  req.query.cmppfc || req.session.myData.cmppfc
 
         req.session.myData.maxrows =  req.query.maxrows || 999999
+
+        req.session.myData.populateShortlist =  req.query.populateShortlist || false
         
         //referrer page
         req.session.myData.referrerpage = getRefererPage(req.headers.referer)

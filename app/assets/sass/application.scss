@@ -317,7 +317,7 @@ table.responsive-shortlist {
          }
      }
 }
-@media (min-width: 641px){
+@media (min-width: 830px){
     table.responsive-shortlist {
         thead {
             display: table-header-group;
@@ -378,9 +378,6 @@ table.responsive-shortlist {
         }
     }
 
-}
-@media (min-width: 641px){
-
     .break-line-desktop::before {
         content: "\A";
         white-space: pre;
@@ -388,6 +385,7 @@ table.responsive-shortlist {
     .visually-hidden-desktop {
         display: none;
     }
+
 }
 
 

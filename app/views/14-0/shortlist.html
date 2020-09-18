@@ -41,254 +41,264 @@ Shortlist
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-    
-
         <!-- No results for filters -->
         <div class="favsEmpty">
             <p class="govuk-body">You have 0 training providers shortlisted.</p>
             <p class="govuk-body"><a class="govuk-button" href="training">View apprenticeship training courses</a></p>
         </div>
 
-
-        <!-- Providers -->
-        <div class="favsList">
-        {% for _favourite in myData.favourites %}
-        <div class="{% if myData.favourites.length > 1 %}fat-panel fat-panel-bordered{% endif %} govuk-!-margin-bottom-5 ">
-
-            <!-- Standard -->
-            {% set _selectedStandard = {} %}
-            {% for _standard in myData.standards.list %}
-                {% if _favourite.larsCode == _standard.larsCode %}
-                    {% set _selectedStandard = _standard %}
-                {% endif %}
-            {% endfor %}
-            {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
-
-            <span class="govuk-caption-l govuk-!-margin-top-1" >Apprenticeship training course</span>
-            <h2 class="govuk-heading-l govuk-!-margin-bottom-4">{{_standardTitle|safe}}</h2>
+    </div>
+</div>
 
 
-            <h2 class="govuk-heading-m">{{_favourite.providers.length}} shortlisted training provider{% if _favourite.providers.length != 1 %}s{% endif %}</h2>
-            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+<!-- Providers -->
+<div class="favsList">
 
-            {% for _providerFav in _favourite.providers %}
+{% for _favourite in myData.favourites2 %}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <!-- Standard -->
+        {% set _selectedStandard = {} %}
+        {% for _standard in myData.standards.list %}
+            {% if _favourite.larsCode == _standard.larsCode %}
+                {% set _selectedStandard = _standard %}
+            {% endif %}
+        {% endfor %}
+        {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+        <span class="govuk-caption-l govuk-!-margin-top-1" >Apprenticeship training course</span>
+        <h2 class="govuk-heading-l govuk-!-margin-bottom-4">{{_standardTitle|safe}}</h2>
+    </div>
+</div>
 
-                <!-- Provider -->
-                {% set _selectedProvider = {} %}
-                {% for _provider in myData["providers-new"].list %}
-                    {% if _providerFav.id == _provider.id %}
-                        {% set _selectedProvider = _provider %}
+    {% for _location in _favourite.locations %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-m">{{_location.providers.length}} shortlisted training provider{% if _location.providers.length != 1 %}s{% endif %} in {{_location.id}}</h2>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <table class="govuk-table responsive">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header app-custom-class"></th>
+                    <th scope="col" class="govuk-table__header app-custom-class">Training options</th>
+                    {% if myData.cmppde != "false" %}
+                    <th scope="col" class="govuk-table__header app-custom-class">Employer reviews</th>
                     {% endif %}
-                {% endfor %}
-                {% set _providerTitle = _selectedProvider.name %}
-                {% set _providerTitleForContact = _providerTitle|lower|replace(" ", "")|replace(".", "")|replace("(", "")|replace(")", "")|replace("/", "")|truncate(15, true, "") %}       
+                    {% if myData.cmppdo != "false" %}
+                    <th scope="col" class="govuk-table__header app-custom-class">Ofsted rating</th>
+                    {% endif %}
+                    {% if myData.cmppda != "false" %}
+                    <th scope="col" class="govuk-table__header app-custom-class">Pass rate</th>
+                    {% endif %}
+                    <!-- <th scope="col" class="govuk-table__header app-custom-class"></th> -->
+                </tr>
+                </thead>
+        
+                <tbody class="govuk-table__body">
 
-                <!-- Employer Ratings -->
-                {% set _rating = _selectedProvider.averageEmpRatingPlus1 | string %}
-                {% if _rating | length == 1 %}
-                    {% set _rating = _rating + ".0" %}
-                {% endif %}
-                {% set _ratingText = _selectedProvider.averageEmpRatingText %}
+                {% for _provider in _location.providers %}
 
-                <!-- Total employer ratings -->
-                {% set _totalRatings = _selectedProvider.totalEmpRatings %}
-                {% if _totalRatings > 49 %}
-                    {% set _totalRatings = "50+" %}
-                {% endif %}
+                    <!-- Provider -->
+                    {% set _selectedProvider = {} %}
+                    {% for _provider2 in myData["providers-new"].list %}
+                        {% if _provider == _provider2.id %}
+                            {% set _selectedProvider = _provider2 %}
+                        {% endif %}
+                    {% endfor %}
+                    {% set _providerTitle = _selectedProvider.name %}
+                    {% set _providerTitleForContact = _providerTitle|lower|replace(" ", "")|replace(".", "")|replace("(", "")|replace(")", "")|replace("/", "")|truncate(15, true, "") %}       
 
-                {% if _ratingText == "Excellent" %}
-                    {% set _stars = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' />" %}
-                    {% set _ratingTextToShow = "Excellent" %}
-                    {% set _ratingColor = "excellent-employer" %}
-                    {% set _ratingTag = "govuk-tag--green" %}
-                    {% set _ratingSVG = "icon-star-green" %}
-                {% elif _ratingText == "Good" %}
-                    {% set _stars = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green-empty.svg' class='star-svg' />" %}
-                    {% set _ratingTextToShow = "Good" %}
-                    {% set _ratingColor = "good-employer" %}
-                    {% set _ratingTag = "govuk-tag--green" %}
-                    {% set _ratingSVG = "icon-star-green" %}
-                {% elif _ratingText == "Poor" %}
-                    {% set _stars = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
-                    {% set _ratingTextToShow = "Poor" %}
-                    {% set _ratingColor = "poor-employer" %}
-                    {% set _ratingTag = "govuk-tag--yellow" %}
-                    {% set _ratingSVG = "icon-star-grey" %}
-                {% elif _ratingText == "Very poor" %}
-                    {% set _stars = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
-                    {% set _ratingTextToShow = "Very poor" %}
-                    {% set _ratingColor = "very-poor-employer" %}
-                    {% set _ratingTag = "govuk-tag--red" %}
-                    {% set _ratingSVG = "icon-star-grey" %}
-                {% endif %}
+                    <!-- Employer Ratings -->
+                    {% set _rating = _selectedProvider.averageEmpRatingPlus1 | string %}
+                    {% if _rating | length == 1 %}
+                        {% set _rating = _rating + ".0" %}
+                    {% endif %}
+                    {% set _ratingText = _selectedProvider.averageEmpRatingText %}
+
+                    <!-- Total employer ratings -->
+                    {% set _totalRatings = _selectedProvider.totalEmpRatings %}
+                    {% if _totalRatings > 49 %}
+                        {% set _totalRatings = "50+" %}
+                    {% endif %}
+
+                    {% if _ratingText == "Excellent" %}
+                        {% set _stars = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' />" %}
+                        {% set _ratingTextToShow = "Excellent" %}
+                        {% set _ratingColor = "excellent-employer" %}
+                        {% set _ratingTag = "govuk-tag--green" %}
+                        {% set _ratingSVG = "icon-star-green" %}
+                    {% elif _ratingText == "Good" %}
+                        {% set _stars = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green-empty.svg' class='star-svg' />" %}
+                        {% set _ratingTextToShow = "Good" %}
+                        {% set _ratingColor = "good-employer" %}
+                        {% set _ratingTag = "govuk-tag--green" %}
+                        {% set _ratingSVG = "icon-star-green" %}
+                    {% elif _ratingText == "Poor" %}
+                        {% set _stars = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
+                        {% set _ratingTextToShow = "Poor" %}
+                        {% set _ratingColor = "poor-employer" %}
+                        {% set _ratingTag = "govuk-tag--yellow" %}
+                        {% set _ratingSVG = "icon-star-grey" %}
+                    {% elif _ratingText == "Very poor" %}
+                        {% set _stars = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
+                        {% set _ratingTextToShow = "Very poor" %}
+                        {% set _ratingColor = "very-poor-employer" %}
+                        {% set _ratingTag = "govuk-tag--red" %}
+                        {% set _ratingSVG = "icon-star-grey" %}
+                    {% endif %}
 
 
-                <!-- Ofsted -->
-                {% if _selectedProvider.ofsted == 1 %}
-                    {% set _starsOfsted = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' />" %}
-                    {% set _ratingOfstedTextToShow = "Outstanding" %}
-                    {% set _ratingOfstedColor = "excellent-employer" %}
-                {% elif _selectedProvider.ofsted == 2 %}
-                    {% set _starsOfsted = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green-empty.svg' class='star-svg' />" %}
-                    {% set _ratingOfstedTextToShow = "Good" %}
-                    {% set _ratingOfstedColor = "good-employer" %}
-                {% elif _selectedProvider.ofsted == 3 %}
-                    {% set _starsOfsted = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
-                    {% set _ratingOfstedTextToShow = "Requires improvement" %}
-                    {% set _ratingOfstedColor = "poor-employer" %}
-                {% elif _selectedProvider.ofsted == 4 %}
-                    {% set _starsOfsted = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
-                    {% set _ratingOfstedTextToShow = "Inadequate" %}
-                    {% set _ratingOfstedColor = "very-poor-employer" %}
-                {% elif _selectedProvider.ofsted == 0 %}
-                    <!-- not rated -->
-                    {% set _starsOfsted = "" %}
-                    {% set _ratingOfstedTextToShow = "Not yet rated" %}
-                    {% set _ratingOfstedColor = "poor-employer" %}
-                {% endif %}
+                    <!-- Ofsted -->
+                    {% if _selectedProvider.ofsted == 1 %}
+                        {% set _starsOfsted = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' />" %}
+                        {% set _ratingOfstedTextToShow = "Outstanding" %}
+                        {% set _ratingOfstedColor = "excellent-employer" %}
+                    {% elif _selectedProvider.ofsted == 2 %}
+                        {% set _starsOfsted = "<img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green.svg' class='star-svg' /><img src='/public/images/icon-star-green-empty.svg' class='star-svg' />" %}
+                        {% set _ratingOfstedTextToShow = "Good" %}
+                        {% set _ratingOfstedColor = "good-employer" %}
+                    {% elif _selectedProvider.ofsted == 3 %}
+                        {% set _starsOfsted = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
+                        {% set _ratingOfstedTextToShow = "Requires improvement" %}
+                        {% set _ratingOfstedColor = "poor-employer" %}
+                    {% elif _selectedProvider.ofsted == 4 %}
+                        {% set _starsOfsted = "<img src='/public/images/icon-star-grey.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg' />" %}
+                        {% set _ratingOfstedTextToShow = "Inadequate" %}
+                        {% set _ratingOfstedColor = "very-poor-employer" %}
+                    {% elif _selectedProvider.ofsted == 0 %}
+                        <!-- not rated -->
+                        {% set _starsOfsted = "" %}
+                        {% set _ratingOfstedTextToShow = "Not yet rated" %}
+                        {% set _ratingOfstedColor = "poor-employer" %}
+                    {% endif %}
 
-                {% if myData.cmpstar == "false" %}
-                    {% set _stars = "" %}
-                    {% set _starsOfsted = "" %}
-                {% endif %}
-                
-                <div class="govuk-grid-row govuk-!-margin-left-0 govuk-!-margin-right-0 govuk-!-margin-top-3">
+                    {% if myData.cmpstar == "false" %}
+                        {% set _stars = "" %}
+                        {% set _starsOfsted = "" %}
+                    {% endif %}
 
-                    <div class="govuk-grid-column-two-thirds govuk-!-padding-0" >
-                        
-                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                            <a href="provider?provider={{_selectedProvider.id}}&standard={{_selectedStandard.larsCode}}" class="govuk-link govuk-link--no-visited-state">{{_providerTitle}}</a>
-                        </h2>
-                        <ul class="govuk-list">
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">
 
+                            <!-- Name -->
+                            <p class="govuk-body govuk-!-font-size-24 govuk-!-font-weight-bold">
+                                <a href="provider?provider={{_selectedProvider.id}}&standard={{_selectedStandard.larsCode}}" class="govuk-link govuk-link--no-visited-state">{{_providerTitle}}</a>
+                            </p>
+
+                            <!-- Trading names -->
                             {% if _selectedProvider.tradingNames.length > 0 %}
-                            <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
+                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-2 ">
                                 <span class="govuk-secondary-colour">Also trades as:</span> {{_selectedProvider.tradingNames | join(", ")}}
-                            </li>
+                            </p>
                             {% endif %}
+            
+                            <!-- Contact details -->
+                            <!-- <div class="fat-panel fat-panel-small fat-panel-blocked govuk-!-margin-top-4"> -->
+                                <ul class="govuk-list govuk-!-margin-bottom-0 govuk-!-font-size-16">
+                                    <li style="word-break: break-all;" class="govuk-!-margin-bottom-2"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a></li>
+                                    <li style="word-break: break-all;">078 7856 9856</li>
+                                    <li style="word-break: break-all;"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></li>
+                                </ul>
+                            <!-- </div> -->
 
-                            {% if _providerFav.locations.length > 1 or (_providerFav.locations.length == 1 and _providerFav.locations[0] != "") %}
-                            <!-- <li>
-                                <span class="govuk-!-font-weight-bold class="govuk-!-font-size-16">Training options</span>
-                            </li> -->
+                            <!-- <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-4" >
+                                <a href="shortlist-remove?favdel={{_selectedProvider.id}}&standard={{_selectedStandard.larsCode}}" class="govuk-link govuk-link--no-visited-state">Remove<span class="govuk-visually-hidden"> from shortlist</span></a>
+                            </p> -->
+
+                        </th>
+                        <td class="govuk-table__cell" data-label="Training options">  
+                            
+                            {% set _dayRelease = _selectedProvider.distance > 11 %}
+                            {% set _blockRelease = _selectedProvider.distance > 20 %}
+                            {% set _inWorkplace = _selectedProvider.distance < 11 or _provider.national %}
+
+                            {% set _dayDistance = _selectedProvider.distance %}
+                            {% set _blockDistance = _selectedProvider.distance %}
+                            {% set _inWorkplaceDistance = _selectedProvider.distance %}
+
+                            {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 6 and _selectedProvider.distance < 9) %}
+                                {% set _dayRelease = true %}
+                                {% set _blockRelease = true %}
+                                {% set _dayDistance = _selectedProvider.distance + 2.8 %}
+                                {% set _blockDistance = _dayDistance + 5.3 %}
                             {% endif %}
-                            {% for _locationfav in _providerFav.locations %}
-                                
-                                
+                          
+                            <ul class="govuk-list fat-training-options govuk-!-font-size-16" >
 
-                                {% set _dayRelease = _selectedProvider.distance > 11 %}
-                                {% set _blockRelease = _selectedProvider.distance > 20 %}
-                                {% set _inWorkplace = _selectedProvider.distance < 11 or _provider.national %}
-
-                                {% set _dayDistance = _selectedProvider.distance %}
-                                {% set _blockDistance = _selectedProvider.distance %}
-                                {% set _inWorkplaceDistance = _selectedProvider.distance %}
-
-                                {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 6 and _selectedProvider.distance < 9) %}
-                                    {% set _dayRelease = true %}
-                                    {% set _blockRelease = true %}
-                                    {% set _dayDistance = _selectedProvider.distance + 2.8 %}
-                                    {% set _blockDistance = _dayDistance + 5.3 %}
-                                {% endif %}
-
-                                {% if _locationfav != "" %}
-                                <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
-                                    Head office {{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away
-                                </li>
-                                {% endif %}
-
-                                <li class="govuk-!-font-size- govuk-!-margin-top-2">
-                                    
-                                    {% if _locationfav != "" %}
-                                    <span class="govuk-!-font-weight-bold">Training options for {{_locationfav}}</span>
-                                    <!-- Training options for {{_locationfav}} -->
-                                    {% endif %}
-                                    
-                                    <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
-
-                                        <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                            At&nbsp;apprentice’s&nbsp;workplace {% if _inWorkplace and _provider.national %}(national){% endif %}
-                                        </li>
-
-                                        <li class="{% if _dayRelease %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                            Day&nbsp;release {% if _dayRelease and _locationfav != "" %}({{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away){% endif %}
-                                        </li>
-
-                                        <li class="{% if _blockRelease %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-margin-bottom-2" style="display: block;">
-                                            Block&nbsp;release {% if _blockRelease and _locationfav != "" %}({{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away){% endif %}
-                                        </li>
-                                    </ul>
+                                <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
+                                    At apprentice’s workplace {% if _inWorkplace and _provider.national %}(national){% endif %}
                                 </li>
 
-                            {% endfor %}
+                                <li class="{% if _dayRelease %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
+                                    Day release {% if _dayRelease and _locationfav != "" %}({{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away){% endif %}
+                                </li>
 
-                            {% if myData.cmppda != "false" %}
-                            {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 10 and _selectedProvider.distance < 15) or _selectedProvider.distance > 40 %}
-                            <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                                <span class="govuk-!-font-size-16">68% pass rate</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(out of 50 apprentices)</span>
-                            </li>
-                            {% endif %}
-                            {% endif %}
+                                <li class="{% if _blockRelease %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-margin-bottom-2" style="display: block;">
+                                    Block release {% if _blockRelease and _locationfav != "" %}({{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away){% endif %}
+                                </li>
+                            </ul>                 
+                            
+                        </td>
 
-                            {% if myData.cmppdo != "false" %}
-                            <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                                {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight">{{_ratingOfstedTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(Ofsted rating)</span>
-                            </li>
-                            {% endif %}
-
-                            {% if myData.cmppde != "false" %}
+                        <!-- Employer reviews -->
+                        {% if myData.cmppde != "false" %}
+                        <td class="govuk-table__cell" data-label="Employer reviews">
+                            
                             {% set _zeroEmployerReviews = false %}
                             {% if _selectedProvider.distance > 5 and _selectedProvider.distance < 10 %}
                                 {% set _zeroEmployerReviews = true %}
                             {% endif %}
-                            <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                            <p class="govuk-body govuk-!-font-size-16">
                                 {% if _zeroEmployerReviews %}
-                                <span style="color: #626a6e" class="govuk-!-font-size-16">Not yet reviewed (employer reviews)</span>
+                                <span style="color: #626a6e" class="govuk-!-font-size-16">Not yet reviewed</span>
                                 {% else %}
-                                {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight">{{_ratingTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">({{_totalRatings}} employer reviews)</span>
+                                {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight">{{_ratingTextToShow}}</span> <br><span style="color: #626a6e" class="govuk-!-font-size-16">({{_totalRatings}} reviews)</span>
                                 {% endif %}
-                            </li>
-                            {% endif %}
+                            </p>
 
-                            <!-- <ul class="govuk-list govuk-inset-text"> -->
-                            <div class="fat-panel fat-panel-blocked govuk-!-margin-top-4">
-                                <ul class="govuk-list govuk-!-margin-top-0">
-                                    <li class="govuk-!-font-size govuk-!-margin-top- ">
-                                        Email: <a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a>
-                                    </li>
-                                    <li class="govuk-!-font-size govuk-!-margin-top-2">
-                                        Telephone: 078&nbsp;7856&nbsp;9856
-                                    </li>
-                                    <li class="govuk-!-font-size govuk-!-margin-top-2">
-                                        Website: <a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!-- </ul> -->
+                        </td>
+                        {% endif %}
 
-                        </ul>
-                    </div>
-                    <div class="govuk-grid-column-one-third govuk-!-padding-0">
-                        <p class="govuk-body shortlist-label" >
-                            <a href="shortlist-remove?favdel={{_selectedProvider.id}}&standard={{_selectedStandard.larsCode}}" class="govuk-link govuk-link--no-visited-state">Remove from shortlist</a>
-                        </p>
-                    </div>
-                    {% if loop.last != true %}
-                    <hr class="govuk-section-break govuk-section-break--visible" style="clear:both">
-                    {% endif %}
-                </div>
+                        <!-- Ofsted -->
+                        {% if myData.cmppdo != "false" %}
+                        <td class="govuk-table__cell" data-label="Ofsted rating">
+                            <p class="govuk-body govuk-!-font-size-16">
+                                {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight">{{_ratingOfstedTextToShow}}</span>
+                            </p>
+                        </td>
+                        {% endif %}
+
+                        <!-- Pass rate -->
+                        {% if myData.cmppda != "false" %}
+                        <td class="govuk-table__cell" data-label="Pass rate">
+                           
+                            <p class="govuk-body govuk-!-font-size-16">
+                                {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 10 and _selectedProvider.distance < 15) or _selectedProvider.distance > 40 %}
+                                68% <br><span style="color: #626a6e" class="govuk-!-font-size-16">(out of 50 apprentices)</span>
+                                {% else %}
+                                <!-- - -->
+                                {% endif %}
+                            </p>
+                            
+                        </td>
+                        {% endif %}
+
+                    </tr>
 
                 {% endfor %}
-        </div>
-        {% endfor %}
-        </div>
 
-        <!-- <div style="margin-top:300px">
-            <a href="providers?location=&standard=272" >test link to providers so you can add some</a><br>
-            <a href="providers?location=&standard=240">test link to providers on a different standard so you can add some</a>
-        </div> -->
+                </tbody>
+
+            </table>
+        </div>
     </div>
-    
+
+    {% endfor %}
+
+{% endfor %}
 </div>
 
 {% endblock %}

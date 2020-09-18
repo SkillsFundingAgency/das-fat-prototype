@@ -5,6 +5,7 @@ const router = express.Router()
 var _myData = {
     "maxrows": 999999,
     "favourites": [],
+    "favourites2": [],
     "totalFavourites": 0,
     "includeValidation": "true",
     "standards": require(__dirname + '/data/standards.json'),

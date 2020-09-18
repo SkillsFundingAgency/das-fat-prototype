@@ -227,7 +227,7 @@ Shortlist
                                 {% set _blockDistance = _dayDistance + 5.3 %}
                             {% endif %}
                           
-                            <ul class="govuk-list fat-training-options govuk-!-font-size-16" >
+                            <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-bottom-2" >
 
                                 <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
                                     At apprentice’s workplace {% if _inWorkplace and _provider.national %}(national){% endif %}
@@ -252,7 +252,7 @@ Shortlist
                             {% if _selectedProvider.distance > 5 and _selectedProvider.distance < 10 %}
                                 {% set _zeroEmployerReviews = true %}
                             {% endif %}
-                            <p class="govuk-body govuk-!-font-size-16">
+                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-2">
                                 {% if _zeroEmployerReviews %}
                                 <span style="color: #626a6e" class="govuk-!-font-size-16">Not yet reviewed</span>
                                 {% else %}
@@ -266,7 +266,7 @@ Shortlist
                         <!-- Ofsted -->
                         {% if myData.cmppdo != "false" %}
                         <td class="govuk-table__cell" >
-                            <p class="govuk-body govuk-!-font-size-16">
+                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-2">
                                 {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} {% if _starsOfsted != "" %}break-line-desktop{% endif %}">{{_ratingOfstedTextToShow}}</span> <span class="visually-hidden-desktop" style="color: #626a6e" >(Ofsted rating)</span>
                             </p>
                         </td>
@@ -275,15 +275,13 @@ Shortlist
                         <!-- Pass rate -->
                         {% if myData.cmppda != "false" %}
                         <td class="govuk-table__cell" >
-                           
-                            <p class="govuk-body govuk-!-font-size-16">
+                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-2">
                                 {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 10 and _selectedProvider.distance < 15) or _selectedProvider.distance > 40 %}
                                 68% <span style="color: #626a6e" class="govuk-!-font-size-16 break-line-desktop">(out of 50 apprentices)</span>
                                 {% else %}
                                 <!-- - -->
                                 {% endif %}
                             </p>
-                            
                         </td>
                         {% endif %}
 

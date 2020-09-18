@@ -79,7 +79,7 @@ Shortlist
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <table class="govuk-table responsive">
+            <table class="govuk-table responsive-shortlist">
                 <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
                     <th scope="col" class="govuk-table__header app-custom-class"></th>
@@ -93,7 +93,7 @@ Shortlist
                     {% if myData.cmppda != "false" %}
                     <th scope="col" class="govuk-table__header app-custom-class">Pass rate</th>
                     {% endif %}
-                    <!-- <th scope="col" class="govuk-table__header app-custom-class"></th> -->
+                    <th scope="col" class="govuk-table__header app-custom-class"></th>
                 </tr>
                 </thead>
         
@@ -184,7 +184,7 @@ Shortlist
                         <th scope="row" class="govuk-table__header">
 
                             <!-- Name -->
-                            <p class="govuk-body govuk-!-font-size-24 govuk-!-font-weight-bold">
+                            <p class="govuk-body govuk-!-font-size-24 govuk-!-font-weight-bold govuk-!-margin-bottom-2">
                                 <a href="provider?provider={{_selectedProvider.id}}&standard={{_selectedStandard.larsCode}}" class="govuk-link govuk-link--no-visited-state">{{_providerTitle}}</a>
                             </p>
 
@@ -196,20 +196,21 @@ Shortlist
                             {% endif %}
             
                             <!-- Contact details -->
-                            <!-- <div class="fat-panel fat-panel-small fat-panel-blocked govuk-!-margin-top-4"> -->
-                                <ul class="govuk-list govuk-!-margin-bottom-0 govuk-!-font-size-16">
+                             <div class="fat-panel fat-panel-small fat-panel-blocked govuk-!-margin-bottom-2">
+                            <!--<div class="govuk-inset-text"> -->
+                                <ul class="govuk-list govuk-!-margin-bottom- govuk-!-font-size-16">
                                     <li style="word-break: break-all;" class="govuk-!-margin-bottom-2"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a></li>
                                     <li style="word-break: break-all;">078 7856 9856</li>
                                     <li style="word-break: break-all;"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></li>
                                 </ul>
-                            <!-- </div> -->
+                            </div>
 
-                            <!-- <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-4" >
-                                <a href="shortlist-remove?favdel={{_selectedProvider.id}}&standard={{_selectedStandard.larsCode}}" class="govuk-link govuk-link--no-visited-state">Remove<span class="govuk-visually-hidden"> from shortlist</span></a>
+                            <!-- <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-2 govuk-!-margin-bottom-2" >
+                                <a href="shortlist-remove?favdel={{_selectedProvider.id}}&standard={{_selectedStandard.larsCode}}" class="govuk-link govuk-link--no-visited-state">Remove<span class="govuk-visually-hidde"> from shortlist</span></a>
                             </p> -->
 
                         </th>
-                        <td class="govuk-table__cell" data-label="Training options">  
+                        <td class="govuk-table__cell" >  
                             
                             {% set _dayRelease = _selectedProvider.distance > 11 %}
                             {% set _blockRelease = _selectedProvider.distance > 20 %}
@@ -245,7 +246,7 @@ Shortlist
 
                         <!-- Employer reviews -->
                         {% if myData.cmppde != "false" %}
-                        <td class="govuk-table__cell" data-label="Employer reviews">
+                        <td class="govuk-table__cell" >
                             
                             {% set _zeroEmployerReviews = false %}
                             {% if _selectedProvider.distance > 5 and _selectedProvider.distance < 10 %}
@@ -255,7 +256,7 @@ Shortlist
                                 {% if _zeroEmployerReviews %}
                                 <span style="color: #626a6e" class="govuk-!-font-size-16">Not yet reviewed</span>
                                 {% else %}
-                                {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight">{{_ratingTextToShow}}</span> <br><span style="color: #626a6e" class="govuk-!-font-size-16">({{_totalRatings}} reviews)</span>
+                                {{_stars|safe}} <span class="{{_ratingColor}} break-line-desktop">{{_ratingTextToShow}}</span><span style="color: #626a6e" class="govuk-!-font-size-16 break-line-desktop"> ({{_totalRatings}} <span class="visually-hidden-desktop">employer </span>reviews)</span>
                                 {% endif %}
                             </p>
 
@@ -264,20 +265,20 @@ Shortlist
 
                         <!-- Ofsted -->
                         {% if myData.cmppdo != "false" %}
-                        <td class="govuk-table__cell" data-label="Ofsted rating">
+                        <td class="govuk-table__cell" >
                             <p class="govuk-body govuk-!-font-size-16">
-                                {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight">{{_ratingOfstedTextToShow}}</span>
+                                {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} {% if _starsOfsted != "" %}break-line-desktop{% endif %}">{{_ratingOfstedTextToShow}}</span> <span class="visually-hidden-desktop" style="color: #626a6e" >(Ofsted rating)</span>
                             </p>
                         </td>
                         {% endif %}
 
                         <!-- Pass rate -->
                         {% if myData.cmppda != "false" %}
-                        <td class="govuk-table__cell" data-label="Pass rate">
+                        <td class="govuk-table__cell" >
                            
                             <p class="govuk-body govuk-!-font-size-16">
                                 {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 10 and _selectedProvider.distance < 15) or _selectedProvider.distance > 40 %}
-                                68% <br><span style="color: #626a6e" class="govuk-!-font-size-16">(out of 50 apprentices)</span>
+                                68% <span style="color: #626a6e" class="govuk-!-font-size-16 break-line-desktop">(out of 50 apprentices)</span>
                                 {% else %}
                                 <!-- - -->
                                 {% endif %}
@@ -285,6 +286,12 @@ Shortlist
                             
                         </td>
                         {% endif %}
+
+                        <td class="govuk-table__cell">
+                            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-top-0 govuk-!-margin-bottom-2" >
+                                <a href="shortlist-remove?favdel={{_selectedProvider.id}}&standard={{_selectedStandard.larsCode}}" class="govuk-link govuk-link--no-visited-state">Remove<span class="visually-hidden-desktop"> from shortlist</span></a>
+                            </p>
+                        </td>
 
                     </tr>
 

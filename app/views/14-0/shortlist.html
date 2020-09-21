@@ -220,11 +220,20 @@ Shortlist
                             {% set _blockDistance = _selectedProvider.distance %}
                             {% set _inWorkplaceDistance = _selectedProvider.distance %}
 
+                            {% set _release = _dayRelease or _blockRelease %}
+                            {% if _dayRelease %}
+                                {% set _closestReleaseDistance = _dayDistance %}
+                            {% elif _blockRelease %}
+                                {% set _closestReleaseDistance = _blockDistance %}
+                            {% endif %}
+
                             {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 6 and _selectedProvider.distance < 9) %}
                                 {% set _dayRelease = true %}
                                 {% set _blockRelease = true %}
                                 {% set _dayDistance = _selectedProvider.distance + 2.8 %}
                                 {% set _blockDistance = _dayDistance + 5.3 %}
+                                {% set _release = true %}
+                                {% set _closestReleaseDistance = _dayDistance %}
                             {% endif %}
                           
                             <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-bottom-2" >
@@ -234,14 +243,18 @@ Shortlist
                                 </li>
 
                                 <li class="{% if _dayRelease %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                    Day&nbsp;release {% if _dayRelease and _locationfav != "" %}({{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away){% endif %}
+                                    Day&nbsp;release{% if _dayRelease and _locationfav != "" %}: {{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away{% endif %}
                                 </li>
 
                                 <li class="{% if _blockRelease %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-margin-bottom-2" style="display: block;">
-                                    Block&nbsp;release {% if _blockRelease and _locationfav != "" %}({{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away){% endif %}
+                                    Block&nbsp;release{% if _blockRelease and _locationfav != "" %}: {{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away{% endif %}
                                 </li>
-                            </ul>                 
-                            
+                            </ul>   
+                            {% if _release and _locationfav != "" %}
+                            <!-- <p class="govuk-body govuk-!-font-size-16">
+                                {{_closestReleaseDistance | round(2)}} mile{% if _closestReleaseDistance != 1 %}s{% endif %} away
+                            </p>  -->
+                            {% endif %}             
                         </td>
 
                         <!-- Employer reviews -->
@@ -277,7 +290,7 @@ Shortlist
                         <td class="govuk-table__cell" >
                             <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-2">
                                 {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 10 and _selectedProvider.distance < 15) or _selectedProvider.distance > 40 %}
-                                68% <span style="color: #626a6e" class="govuk-!-font-size-16 break-line-desktop">(out of 50 apprentices)</span>
+                                68% <span class="visually-hidden-desktop">pass rate </span><span style="color: #626a6e" class="govuk-!-font-size-16 break-line-desktop">(out of 50 apprentices)</span>
                                 {% else %}
                                 <!-- - -->
                                 {% endif %}

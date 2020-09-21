@@ -322,11 +322,11 @@ Training provider details
                     </li>
 
                     <li class="{% if _dayRelease %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
-                        Day&nbsp;release {% if _dayRelease and myData.locationapplied %}({{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away){% endif %}
+                        Day&nbsp;release{% if _dayRelease and myData.locationapplied %}: {{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away{% endif %}
                     </li>
 
                     <li class="{% if _blockRelease %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
-                        Block&nbsp;release {% if _blockRelease and myData.locationapplied %}({{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away){% endif %}
+                        Block&nbsp;release{% if _blockRelease and myData.locationapplied %}: {{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away{% endif %}
                     </li>
 
                 </ul>

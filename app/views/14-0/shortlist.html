@@ -230,15 +230,15 @@ Shortlist
                             <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-bottom-2" >
 
                                 <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                    At apprentice’s workplace {% if _inWorkplace and _provider.national %}(national){% endif %}
+                                    At&nbsp;apprentice’s workplace {% if _inWorkplace and _provider.national %}(national){% endif %}
                                 </li>
 
                                 <li class="{% if _dayRelease %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
-                                    Day release {% if _dayRelease and _locationfav != "" %}({{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away){% endif %}
+                                    Day&nbsp;release {% if _dayRelease and _locationfav != "" %}({{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away){% endif %}
                                 </li>
 
                                 <li class="{% if _blockRelease %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-margin-bottom-2" style="display: block;">
-                                    Block release {% if _blockRelease and _locationfav != "" %}({{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away){% endif %}
+                                    Block&nbsp;release {% if _blockRelease and _locationfav != "" %}({{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away){% endif %}
                                 </li>
                             </ul>                 
                             

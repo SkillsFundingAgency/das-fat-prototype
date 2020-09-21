@@ -518,6 +518,14 @@ module.exports = function (router,_myData) {
                         "providers": ["1234","610","681","1468"]
                     }
                 ]
+            },{
+                "larsCode":278,
+                "locations":[
+                    {
+                        "id": "Coventry, West Midlands",
+                        "providers": ["1675","1239"]
+                    }
+                ]
             }
         ]
 

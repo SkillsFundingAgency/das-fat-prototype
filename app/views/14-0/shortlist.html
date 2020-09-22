@@ -81,20 +81,20 @@ Shortlist
         <div class="govuk-grid-column-full">
             <table class="govuk-table responsive-shortlist">
                 <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header app-custom-class"></th>
-                    <th scope="col" class="govuk-table__header app-custom-class">Training options</th>
-                    {% if myData.cmppde != "false" %}
-                    <th scope="col" class="govuk-table__header app-custom-class">Employer reviews</th>
-                    {% endif %}
-                    {% if myData.cmppdo != "false" %}
-                    <th scope="col" class="govuk-table__header app-custom-class">Ofsted rating</th>
-                    {% endif %}
-                    {% if myData.cmppda != "false" %}
-                    <th scope="col" class="govuk-table__header app-custom-class">Pass rate</th>
-                    {% endif %}
-                    <th scope="col" class="govuk-table__header app-custom-class"></th>
-                </tr>
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header app-custom-class"></th>
+                        <th scope="col" class="govuk-table__header app-custom-class">Training options</th>
+                        {% if myData.cmppde != "false" %}
+                        <th scope="col" class="govuk-table__header app-custom-class">Employer reviews</th>
+                        {% endif %}
+                        {% if myData.cmppdo != "false" %}
+                        <th scope="col" class="govuk-table__header app-custom-class">Ofsted rating</th>
+                        {% endif %}
+                        {% if myData.cmppda != "false" %}
+                        <th scope="col" class="govuk-table__header app-custom-class">Pass rate</th>
+                        {% endif %}
+                        <th scope="col" class="govuk-table__header app-custom-class"></th>
+                    </tr>
                 </thead>
         
                 <tbody class="govuk-table__body">
@@ -311,6 +311,18 @@ Shortlist
                 </tbody>
 
             </table>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <p class="govuk-body govuk-!-margin-bottom-6"><a href="providers?location={{_location.id}}&standard={{_selectedStandard.larsCode}}" class="govuk-link govuk-link--no-visited-state">Add more to shortlist</a></p>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-8">
         </div>
     </div>
 

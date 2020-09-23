@@ -515,7 +515,7 @@ module.exports = function (router,_myData) {
                 "locations":[
                     {
                         "id": "Coventry, West Midlands",
-                        "providers": ["1234","610","681","1468"]
+                        "providers": ["1234","713","681","1468"]
                     }
                 ]
             },{

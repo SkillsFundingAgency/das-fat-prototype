@@ -93,8 +93,29 @@ Training provider details
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
-    {% include "includes/back-link.html" %}
-    {% include "includes/shortlist.html" %}
+
+    <div class="govuk-grid-row">
+		<div class="govuk-grid-column-three-quarters">
+			<div class="govuk-breadcrumbs ">
+				<ol class="govuk-breadcrumbs__list">
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" href="home">Home</a>
+                    </li>
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" href="training">Apprenticeship training courses</a>
+                    </li>
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" href="standard?standard={{_selectedStandard.larsCode}}">{{_standardTitle|safe}}</a>
+                    </li>
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" href="providers?standard={{_selectedStandard.larsCode}}">Training providers</a>
+                    </li>
+                </ol>
+			</div>
+        </div>
+        {% include "includes/shortlist-2.html" %}
+	</div>
+    
 {% endblock %}
 
 {% block content %}
@@ -525,7 +546,7 @@ Training provider details
 {% block pageScripts %}
 <script>
 
-    shortlistingSticky()
+    shortlistingSticky(30)
     shortlisting({{myData.clearLocalStorage}},{{myData.populateShortlist}})
     
     // Locations 

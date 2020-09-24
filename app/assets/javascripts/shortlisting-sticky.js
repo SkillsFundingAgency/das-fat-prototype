@@ -1,4 +1,6 @@
-function shortlistingSticky(_clear){
+function shortlistingSticky(_offset){
+    
+    var offset = _offset || 0
 
     $(window).bind('scroll', function() {
         if($(window).scrollTop() >= $('.view-shortlist').offset().top + $('.view-shortlist').outerHeight()) {
@@ -9,7 +11,7 @@ function shortlistingSticky(_clear){
     }).trigger("scroll");
 
     $(window).on('resize', function() {
-        $('.view-shortlist-fixed').width($('.view-shortlist-fixed').parent().width() + 0)
+        $('.view-shortlist-fixed').width($('.view-shortlist-fixed').parent().width() - offset)
     }).trigger("resize");
 
 }

@@ -241,10 +241,19 @@ li.fat-cross-3 {
         margin-top: -37px;
     }
 }
+.view-shortlist-2 {
+    float:none;
+    margin-top: 20px;
+}
+@media (min-width: 641px){
+    .view-shortlist-2 {
+        text-align: right;
+        margin-top: 10px;
+    }
+}
 .view-shortlist-fixed {
     position: fixed;
     top: 0px;
-    /* left: 15px; */
     margin-left: -30px;
     padding: 0 30px;
     z-index: 100;
@@ -253,6 +262,9 @@ li.fat-cross-3 {
     border: 1px solid #b1b4b6;
     border-top: 0;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+.view-shortlist-fixed-2 {
+    margin-left: -15px;
 }
 .view-shortlist-fixed-label {
     margin: 0;

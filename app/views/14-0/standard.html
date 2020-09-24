@@ -31,8 +31,23 @@ Apprenticeship training course overview
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
-    {% include "includes/back-link.html" %}
-    {% include "includes/shortlist.html" %}
+
+    <div class="govuk-grid-row">
+		<div class="govuk-grid-column-three-quarters">
+			<div class="govuk-breadcrumbs ">
+				<ol class="govuk-breadcrumbs__list">
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" href="home">Home</a>
+                    </li>
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" href="training">Apprenticeship training courses</a>
+                    </li>
+                </ol>
+			</div>
+        </div>
+        {% include "includes/shortlist-2.html" %}
+    </div>
+
 {% endblock %}
 
 {% block content %}
@@ -228,7 +243,7 @@ Apprenticeship training course overview
 {% block pageScripts %}
 <script>
 
-    shortlistingSticky()
+    shortlistingSticky(30)
     shortlisting({{myData.clearLocalStorage}},{{myData.populateShortlist}})
 
     // Locations 

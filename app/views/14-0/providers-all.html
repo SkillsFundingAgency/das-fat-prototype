@@ -566,7 +566,7 @@ Training providers
 {% block pageScripts %}
 <script>
 
-    shortlistingSticky()
+    shortlistingSticky(30)
     shortlisting({{myData.clearLocalStorage}},{{myData.populateShortlist}})
 
     filterVisibilityToggle({{_filtersApplied | dump | safe }})

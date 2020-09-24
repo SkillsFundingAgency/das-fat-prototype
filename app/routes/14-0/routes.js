@@ -517,8 +517,13 @@ module.exports = function (router,_myData) {
                         "id": "Coventry, West Midlands",
                         "providers": ["1234","713","681","1468"]
                     }
+                    ,{
+                        "id": "Birmingham, West Midlands",
+                        "providers": ["681","1468"]
+                    }
                 ]
-            },{
+            }
+            ,{
                 "larsCode":278,
                 "locations":[
                     {
@@ -656,6 +661,7 @@ module.exports = function (router,_myData) {
         req.session.myData.maxrows =  req.query.maxrows || 999999
 
         req.session.myData.populateShortlist =  req.query.populateShortlist || false
+        req.session.myData.countShortlist =  req.query.countShortlist || 2
         
         //referrer page
         req.session.myData.referrerpage = getRefererPage(req.headers.referer)

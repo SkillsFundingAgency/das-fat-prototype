@@ -390,70 +390,74 @@ module.exports = function (router,_myData) {
             // Message notifications
             var _removeMessage = _providerData.name + " removed from shortlist.",
                 _addMessage = _providerData.name + " added to shortlist."
+            if( _removeFavProviderQuery){
+                req.session.myData.notifications = {"message": _removeMessage}
+                req.session.myData.showNotification = "true"
+            } else {
+                if(_favouriteStd){
 
-            if(_favouriteStd){
+                    var _locationValue = (req.session.myData.locationapplied) ? req.session.myData.location : "",
+                        _location = _favouriteStd.locations.find(obj => obj.id == _locationValue)
+                    // var _provider = _favouriteStd.providers.find(obj => obj.id == (_favProviderQuery || _removeFavProviderQuery))
 
-                var _locationValue = (req.session.myData.locationapplied) ? req.session.myData.location : "",
-                    _location = _favouriteStd.locations.find(obj => obj.id == _locationValue)
-                // var _provider = _favouriteStd.providers.find(obj => obj.id == (_favProviderQuery || _removeFavProviderQuery))
+                    if(_location){
+                    // if(_provider){
 
-                if(_location){
-                // if(_provider){
+                        var _provider = _favouriteStd.locations.find(obj => obj.id == (_favProviderQuery || _removeFavProviderQuery))
 
-                    var _provider = _favouriteStd.locations.find(obj => obj.id == (_favProviderQuery || _removeFavProviderQuery))
+                        // var _location = _provider.locations.find(obj => obj == req.session.myData.location),
+                        //     _locationValue = (req.session.myData.locationapplied) ? req.session.myData.location : "",
+                        //     _locationExists = (_location && req.session.myData.locationapplied) || (!req.session.myData.locationapplied),
+                        //     _removeAllLocations = (!req.session.myData.locationapplied) || _removeAllLocations
 
-                    // var _location = _provider.locations.find(obj => obj == req.session.myData.location),
-                    //     _locationValue = (req.session.myData.locationapplied) ? req.session.myData.location : "",
-                    //     _locationExists = (_location && req.session.myData.locationapplied) || (!req.session.myData.locationapplied),
-                    //     _removeAllLocations = (!req.session.myData.locationapplied) || _removeAllLocations
+                        // Adding location
 
-                    // Adding location
+                        // PROVIDER IS NOT IN LOCATION ALREADY
+                        if(!_provider){
+                            _location.providers.push(_favProviderQuery)
+                            req.session.myData.notifications = {"message": _addMessage}
+                            req.session.myData.showNotification = "true"
+                        }
 
-                    // PROVIDER IS NOT IN LOCATION ALREADY
-                    if(!_provider){
-                        _location.providers.push(_favProviderQuery)
+                        // Removing location
+                        // if( _removeFavProviderQuery){
+                        //     if(_removeAllLocations){
+                        //         _favouriteStd.providers = _favouriteStd.providers.filter(function(el) { return el.id != _removeFavProviderQuery; }); 
+                        //         req.session.myData.notifications = {"message": _removeMessage}
+                        //         req.session.myData.showNotification = "true"
+                        //     } else if(_locationExists){
+                        //         var _locIndex = _provider.locations.indexOf(_locationValue)
+                        //         if (_locIndex > -1) {
+                        //             _provider.locations.splice(_locIndex, 1)
+                        //             req.session.myData.notifications = {"message": _removeMessage}
+                        //             req.session.myData.showNotification = "true"
+                        //         }
+                        //     }
+                        //     //remove provider from favourite if you jsut removed the last location from it
+                        //     if (_provider.locations.length == 0){
+                        //         _favouriteStd.providers = _favouriteStd.providers.filter(function(el) { return el.id != _removeFavProviderQuery; }); 
+                        //     }
+                        //     //remove favourite from favourites if you just removed the last provider from it
+                        //     if (_favouriteStd.providers.length == 0){
+                        //         req.session.myData.favourites2 = req.session.myData.favourites2.filter(function(el) { return el.larsCode != req.session.myData.standard; }); 
+                        //     }
+                        // }
+
+                    // Adding provider to existing favourite
+                    } else if (_favProviderQuery) {
+                        // _favouriteStd.providers.push(_newProv)
+                        _favouriteStd.locations.push(_newLoc)
                         req.session.myData.notifications = {"message": _addMessage}
                         req.session.myData.showNotification = "true"
                     }
-
-                    // Removing location
-                    if( _removeFavProviderQuery){
-                        if(_removeAllLocations){
-                            _favouriteStd.providers = _favouriteStd.providers.filter(function(el) { return el.id != _removeFavProviderQuery; }); 
-                            req.session.myData.notifications = {"message": _removeMessage}
-                            req.session.myData.showNotification = "true"
-                        } else if(_locationExists){
-                            var _locIndex = _provider.locations.indexOf(_locationValue)
-                            if (_locIndex > -1) {
-                                _provider.locations.splice(_locIndex, 1)
-                                req.session.myData.notifications = {"message": _removeMessage}
-                                req.session.myData.showNotification = "true"
-                            }
-                        }
-                        //remove provider from favourite if you jsut removed the last location from it
-                        if (_provider.locations.length == 0){
-                            _favouriteStd.providers = _favouriteStd.providers.filter(function(el) { return el.id != _removeFavProviderQuery; }); 
-                        }
-                        //remove favourite from favourites if you just removed the last provider from it
-                        if (_favouriteStd.providers.length == 0){
-                            req.session.myData.favourites2 = req.session.myData.favourites2.filter(function(el) { return el.larsCode != req.session.myData.standard; }); 
-                        }
-                    }
-
-                // Adding provider to existing favourite
-                } else if (_favProviderQuery) {
-                    // _favouriteStd.providers.push(_newProv)
-                    _favouriteStd.locations.push(_newLoc)
+                
+                // Adding whole new favourite
+                } else if(_favProviderQuery) {
+                    req.session.myData.favourites2.push({"larsCode": req.session.myData.standard,"locations": [_newLoc]})
+                    // req.session.myData.favourites2.push({"larsCode": req.session.myData.standard,"providers": [_newProv]})
                     req.session.myData.notifications = {"message": _addMessage}
                     req.session.myData.showNotification = "true"
                 }
-            
-            // Adding whole new favourite
-            } else if(_favProviderQuery) {
-                req.session.myData.favourites2.push({"larsCode": req.session.myData.standard,"locations": [_newLoc]})
-                // req.session.myData.favourites2.push({"larsCode": req.session.myData.standard,"providers": [_newProv]})
-                req.session.myData.notifications = {"message": _addMessage}
-                req.session.myData.showNotification = "true"
             }
                 
         }

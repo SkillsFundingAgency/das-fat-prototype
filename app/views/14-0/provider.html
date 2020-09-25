@@ -174,14 +174,6 @@ Training provider details
         </p>
         {% endif %}
 
-        {% if myData.cmppdo != "false" %}
-        <!-- Ofsted -->
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Ofsted rating</h2>
-        <p class="govuk-body-l govuk-!-margin-bottom-4" >
-            {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight-bold">{{_ratingOfstedTextToShow}}</span>
-        </p>
-        {% endif %}
-
         {% if myData.cmppde != "false" %}
         <!-- Employer reviews -->
         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Employer reviews</h2>
@@ -192,7 +184,7 @@ Training provider details
         {% endif %}
 
         {% if _zeroEmployerReviews %}
-        <p class="govuk-body-l govuk-!-margin-bottom-8">
+        <p class="govuk-body-l govuk-!-margin-bottom-4">
         <span class="poor-employer govuk-!-font-weight-bold">Not yet reviewed</span>
         </p>
         {% else %}
@@ -258,6 +250,16 @@ Training provider details
             </div>
         </details>
         {% endif %}
+        {% endif %}
+
+
+
+        {% if myData.cmppdo != "false" %}
+        <!-- Ofsted -->
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Ofsted rating</h2>
+        <p class="govuk-body-l govuk-!-margin-bottom-8" >
+            {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight-bold">{{_ratingOfstedTextToShow}}</span>
+        </p>
         {% endif %}
 
         <!-- Course panel -->

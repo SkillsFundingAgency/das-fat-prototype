@@ -989,11 +989,11 @@ module.exports = function (router,_myData) {
             // Training options filter setup
             trainingOptionsFilterSetup(req)
 
-            // Ofsted ratings filter setup
-            ofstedFilterSetup(req)
-
             // Employer reviews filter setup
             employerReviewsFilterSetup(req)
+
+            // Ofsted ratings filter setup
+            ofstedFilterSetup(req)
 
             // Keyword search reset/setup
             searchFilterSetup(req,"Training provider name")
@@ -1086,18 +1086,6 @@ module.exports = function (router,_myData) {
                     }
                 }
 
-                // OFSTED RATING
-                if(req.session.myData.ofstedratingsapplied) {
-                    _provider.search = false
-                    _provider.searchExcludingLocation = false
-                    req.session.myData.ofstedratings.forEach(function(_rating, index) {
-                        if(_provider.ofsted == _rating){
-                            req.session.myData.hasAMatchcount++
-                            req.session.myData.hasAMatchcountExcludingLocation++
-                        }
-                    });
-                }
-
                 // EMPLOYER REVIEW
                 if(req.session.myData.employerreviewsapplied) {
                     _provider.search = false
@@ -1112,6 +1100,18 @@ module.exports = function (router,_myData) {
                                 req.session.myData.hasAMatchcount++
                                 req.session.myData.hasAMatchcountExcludingLocation++
                             }
+                        }
+                    });
+                }
+
+                // OFSTED RATING
+                if(req.session.myData.ofstedratingsapplied) {
+                    _provider.search = false
+                    _provider.searchExcludingLocation = false
+                    req.session.myData.ofstedratings.forEach(function(_rating, index) {
+                        if(_provider.ofsted == _rating){
+                            req.session.myData.hasAMatchcount++
+                            req.session.myData.hasAMatchcountExcludingLocation++
                         }
                     });
                 }
@@ -2196,7 +2196,7 @@ module.exports = function (router,_myData) {
 
         // req.session.myData.factor1Answer = req.body["_factor-1"]
         req.session.myData.factorsAnswersTemp = {}
-        req.session.myData.provideFeedbackFactors3.forEach(function(_factor, index) {
+        req.session.myData.provideFeedbackFactors4.forEach(function(_factor, index) {
             var _answer = req.body[_factor.id]
 
             if(!_answer){

@@ -252,6 +252,34 @@ Available training providers
                             </fieldset>
                         </div>
 
+                        {% if myData.cmppfe != "false" %}
+                        <!-- Employer reviews -->
+                        {% set _empOptions = [{"id":1,"label":"Excellent"},{"id":2,"label":"Good"},{"id":3,"label":"Poor"},{"id":4,"label":"Very poor"},{"id":0,"label":"Not yet reviewed"}] %}
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Average employer review
+                                </legend>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    {% for _empOption in _empOptions %}
+                                        {% set _checked = "" %}
+                                        {% for _item in myData.employerreviews %}
+                                            {% if _item == _empOption.id and myData.employerreviewsapplied == true %}
+                                                {% set _checked = "checked" %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <div class="govuk-checkboxes__item">
+                                            <input {{_checked}} class="govuk-checkboxes__input" id="employer-{{_empOption.id}}" name="employerreviews" type="checkbox" value="{{_empOption.id}}">
+                                            <label class="govuk-label govuk-checkboxes__label" for="employer-{{_empOption.id}}">
+                                                {{_empOption.label}}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </fieldset>
+                        </div>
+                        {% endif %}
+
 
                         {% if myData.cmppfo != "false" %}
                         <!-- Ofsted rating -->
@@ -273,34 +301,6 @@ Available training providers
                                             <input {{_checked}} class="govuk-checkboxes__input" id="ofsted-{{_ofstedOption.id}}" name="ofstedratings" type="checkbox" value="{{_ofstedOption.id}}">
                                             <label class="govuk-label govuk-checkboxes__label" for="ofsted-{{_ofstedOption.id}}">
                                                 {{_ofstedOption.label}}
-                                            </label>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </fieldset>
-                        </div>
-                        {% endif %}
-
-                        {% if myData.cmppfe != "false" %}
-                        <!-- Employer reviews -->
-                        {% set _empOptions = [{"id":1,"label":"Excellent"},{"id":2,"label":"Good"},{"id":3,"label":"Poor"},{"id":4,"label":"Very poor"},{"id":0,"label":"Not yet reviewed"}] %}
-                        <div class="govuk-form-group">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Average employer review
-                                </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    {% for _empOption in _empOptions %}
-                                        {% set _checked = "" %}
-                                        {% for _item in myData.employerreviews %}
-                                            {% if _item == _empOption.id and myData.employerreviewsapplied == true %}
-                                                {% set _checked = "checked" %}
-                                            {% endif %}
-                                        {% endfor %}
-                                        <div class="govuk-checkboxes__item">
-                                            <input {{_checked}} class="govuk-checkboxes__input" id="employer-{{_empOption.id}}" name="employerreviews" type="checkbox" value="{{_empOption.id}}">
-                                            <label class="govuk-label govuk-checkboxes__label" for="employer-{{_empOption.id}}">
-                                                {{_empOption.label}}
                                             </label>
                                         </div>
                                     {% endfor %}
@@ -515,20 +515,6 @@ Available training providers
                                 </ul>
                             </li>
 
-                            {% if myData.cmppda != "false" %}
-                            {% if _provider.distance < 4 or (_provider.distance > 10 and _provider.distance < 15) or _provider.distance > 40 %}
-                            <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                                <span class="govuk-!-font-size-16">68% pass rate</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(out of 50 apprentices)</span>
-                            </li>
-                            {% endif %}
-                            {% endif %}
-
-                            {% if myData.cmppdo != "false" %}
-                            <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                                {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight">{{_ratingOfstedTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(Ofsted rating)</span>
-                            </li>
-                            {% endif %}
-
                             {% if myData.cmppde != "false" %}
                             {% set _zeroEmployerReviews = false %}
                             {% if _provider.distance > 5 and _provider.distance < 10 %}
@@ -541,6 +527,20 @@ Available training providers
                                 {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight">{{_ratingTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">({{_totalRatings}} employer reviews)</span>
                                 {% endif %}
                             </li>
+                            {% endif %}
+
+                            {% if myData.cmppdo != "false" %}
+                            <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                                {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight">{{_ratingOfstedTextToShow}}</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(Ofsted rating)</span>
+                            </li>
+                            {% endif %}
+
+                            {% if myData.cmppda != "false" %}
+                            {% if _provider.distance < 4 or (_provider.distance > 10 and _provider.distance < 15) or _provider.distance > 40 %}
+                            <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                                <span class="govuk-!-font-size-16">68% pass rate</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(out of 50 apprentices)</span>
+                            </li>
+                            {% endif %}
                             {% endif %}
 
                             <!-- National -->

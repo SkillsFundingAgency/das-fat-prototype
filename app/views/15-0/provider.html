@@ -1,0 +1,606 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training" %}
+
+{% block pageTitle %}
+Training provider details
+{% endblock %}
+
+<!-- Provider selected -->
+{% set _selectedProvider = myData.selectedProvider %}
+{% set _providerTitle = _selectedProvider.name %}
+{% set _providerTitleForContact = _providerTitle|lower|replace(" ", "")|replace(".", "")|replace("(", "")|replace(")", "")|replace("/", "")|truncate(15, true, "") %}
+
+<!-- Employer Ratings -->
+{% set _rating = _selectedProvider.averageEmpRatingPlus1 | string %}
+{% if _rating | length == 1 %}
+    {% set _rating = _rating + ".0" %}
+{% endif %}
+{% set _ratingText = _selectedProvider.averageEmpRatingText %}
+{% set _totalRatings = _selectedProvider.totalEmpRatings %}
+
+{% if _ratingText == "Excellent" %}
+    {% set _stars = "<img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' />" %}
+    {% set _ratingTextToShow = "Excellent" %}
+    {% set _ratingColor = "excellent-employer" %}
+{% elif _ratingText == "Good" %}
+    {% set _stars = "<img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green-empty.svg' class='star-svg star-svg-large' />" %}
+    {% set _ratingTextToShow = "Good" %}
+    {% set _ratingColor = "good-employer" %}
+{% elif _ratingText == "Poor" %}
+    {% set _stars = "<img src='/public/images/icon-star-grey.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' />" %}
+    {% set _ratingTextToShow = "Poor" %}
+    {% set _ratingColor = "poor-employer" %}
+{% elif _ratingText == "Very poor" %}
+    {% set _stars = "<img src='/public/images/icon-star-grey.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' />" %}
+    {% set _ratingTextToShow = "Very poor" %}
+    {% set _ratingColor = "very-poor-employer" %}
+{% endif %}
+
+<!-- Ofsted -->
+{% if _selectedProvider.ofsted == 1 %}
+{% set _starsOfsted = "<img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' />" %}
+{% set _ratingOfstedTextToShow = "Outstanding" %}
+{% set _ratingOfstedColor = "excellent-employer" %}
+{% elif _selectedProvider.ofsted == 2 %}
+{% set _starsOfsted = "<img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-green-empty.svg' class='star-svg star-svg-large' />" %}
+{% set _ratingOfstedTextToShow = "Good" %}
+{% set _ratingOfstedColor = "good-employer" %}
+{% elif _selectedProvider.ofsted == 3 %}
+{% set _starsOfsted = "<img src='/public/images/icon-star-grey.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' />" %}
+{% set _ratingOfstedTextToShow = "Requires improvement" %}
+{% set _ratingOfstedColor = "poor-employer" %}
+{% elif _selectedProvider.ofsted == 4 %}
+{% set _starsOfsted = "<img src='/public/images/icon-star-grey.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' /><img src='/public/images/icon-star-grey-empty.svg' class='star-svg star-svg-large' />" %}
+{% set _ratingOfstedTextToShow = "Inadequate" %}
+{% set _ratingOfstedColor = "very-poor-employer" %}
+{% elif _selectedProvider.ofsted == 0 %}
+<!-- not rated -->
+{% set _starsOfsted = "" %}
+{% set _ratingOfstedTextToShow = "Not yet rated" %}
+{% set _ratingOfstedColor = "poor-employer" %}
+{% endif %}
+
+<!-- Standard selected -->
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+<!-- Location search -->
+{% set _citiesAutocompleteList = myData.citiesAutocompleteList %}
+{% set _defaultLocationSearchvalue = "" %}
+{% if myData.locationapplied == true %}
+    {% set _defaultLocationSearchvalue = myData.location %}
+{% endif %}
+
+{% set _matchesLocation = _selectedProvider.national or _selectedProvider.locationmatch %}
+
+{% set _selectedMatchesLocation = _matchesLocation %}
+{% if _selectedStandard.larsCode == 34 %}
+    {% set _selectedMatchesLocation = false %}
+{% endif %}
+
+<!-- Query strings -->
+{% set _standardQuery = "" %}
+{% set _locationQuery = "" %}
+{% set _providerQuery = "&provider=" + _selectedProvider.id %}
+{% if myData.standardsearchapplied %}
+    {% set _standardQuery = "&standard=" + _selectedStandard.larsCode %}
+{% endif %}
+{% if myData.locationapplied %}
+    {% set _locationQuery = "&location=" + myData.location %}
+{% endif %}
+{% set _fullURL = "provider?" + _standardQuery + _locationQuery + _providerQuery %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+
+    <div class="govuk-grid-row">
+		<div class="govuk-grid-column-three-quarters">
+			<div class="govuk-breadcrumbs ">
+				<ol class="govuk-breadcrumbs__list">
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" href="home">Home</a>
+                    </li>
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" href="training">Apprenticeship training courses</a>
+                    </li>
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" href="standard?standard={{_selectedStandard.larsCode}}">{{_standardTitle|safe}}</a>
+                    </li>
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" href="providers?standard={{_selectedStandard.larsCode}}">Training providers</a>
+                    </li>
+                </ol>
+			</div>
+        </div>
+        {% include "includes/shortlist-2.html" %}
+	</div>
+    
+{% endblock %}
+
+{% block content %}
+<style>
+    #search-location {
+        height: 40px;
+        /* background: white; */
+        border-right: 0;
+    }
+    .autocomplete__hint {
+        height: 40px;
+    }
+    .graph, .bar {
+        border: 0 !important;
+        border-radius: 10px !important;
+        height: 15px !important;
+    }
+    .bar {
+        min-width: 10px !important;
+    }
+    .bar-zero {
+        min-width: 0px !important;
+    }
+    .graph {
+        background: #efefef !important;
+    }
+</style>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        {% if _selectedProvider.nonewstarts %}
+        <!-- <div class="alert-blue alert-blue-no-heading govuk-!-margin-bottom-7">
+			<p class="govuk-body">
+				{{_providerTitle | safe}} is currently unable to start any apprenticeship training courses.
+			</p>
+		</div> -->
+        {% endif %}
+        {% if myData.showNotification != "false" %} 
+        <div class="alert-blue alert-blue-no-heading govuk-!-margin-bottom-7">
+			<p class="govuk-body">
+				{{myData.notifications.message}}
+			</p>
+		</div>
+        {% endif %}
+
+        <span class="govuk-caption-xl">Training provider</span>
+        <h1 class="govuk-heading-xl {% if myData.cmppdo != 'false' and myData.cmppde != 'false' %}govuk-!-margin-bottom-6{% endif %}" >
+            {{_providerTitle | safe}}
+        </h1>
+        <!-- <p class="govuk-body">{{myData.favourites|dump|safe}}</p> -->
+
+        {% if _selectedProvider.tradingNames.length > 0 %}
+        <p class="govuk-!-margin-top-">
+            <span class="govuk-!-font-weight-bold">Also trades as:</span><br>{{_selectedProvider.tradingNames | join(", ")}}
+        </p>
+        {% endif %}
+
+        {% if myData.cmppde != "false" %}
+        <!-- Employer reviews -->
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Employer reviews</h2>
+
+        {% set _zeroEmployerReviews = false %}
+        {% if _selectedProvider.distance > 5 and _selectedProvider.distance < 10 %}
+        {% set _zeroEmployerReviews = true %}
+        {% endif %}
+
+        {% if _zeroEmployerReviews %}
+        <p class="govuk-body-l govuk-!-margin-bottom-4">
+        <span class="poor-employer govuk-!-font-weight-bold">Not yet reviewed</span>
+        </p>
+        {% else %}
+        <p class="govuk-body-l govuk-!-margin-bottom-4">
+            {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight-bold">{{_ratingTextToShow}}</span><span class="govuk-body govuk-!-font-size" style="margin-left: 10px;">({{_totalRatings}} reviews)</span>
+        </p>
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text govuk-!-font-size">
+                View more details
+            </span>
+            </summary> 
+            <div class="govuk-details__text">
+                <ul class="govuk-list graph-list govuk-!-width-three-quarters">
+                    <li class="level-1">
+                        <span class="label">Excellent</span>
+                        <span class="chart">
+                            <span class="graph">
+                                <span class="bar {% if _selectedProvider.empRatingsPercentages['excellent'] == 0 %}bar-zero{% endif %}" style="width: {{_selectedProvider.empRatingsPercentages['excellent']}}%"></span>
+                            </span>
+                        </span>
+                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatings['excellent']}} review{% if _selectedProvider.empRatings['excellent'] != 1 %}s{% endif %}</span>
+                    </li>
+                    <li class="level-2">
+                        <span class="label">Good</span>
+                        <span class="chart">
+                            <span class="graph">
+                                <span class="bar {% if _selectedProvider.empRatingsPercentages['good'] == 0 %}bar-zero{% endif %}" style="width: {{_selectedProvider.empRatingsPercentages['good']}}%"></span>
+                            </span>
+                        </span>
+                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatings['good']}} review{% if _selectedProvider.empRatings['good'] != 1 %}s{% endif %}</span>
+                    </li>
+                    <li class="level-3">
+                        <span class="label">Poor</span>
+                        <span class="chart">
+                            <span class="graph">
+                                <span class="bar {% if _selectedProvider.empRatingsPercentages['poor'] == 0 %}bar-zero{% endif %}" style="width: {{_selectedProvider.empRatingsPercentages['poor']}}%"></span>
+                            </span>
+                        </span>
+                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatings['poor']}} review{% if _selectedProvider.empRatings['poor'] != 1 %}s{% endif %}</span>
+                    </li>
+                    <li class="level-4">
+                        <span class="label">Very poor</span>
+                        <span class="chart">
+                            <span class="graph">
+                                <span class="bar {% if _selectedProvider.empRatingsPercentages['very poor'] == 0 %}bar-zero{% endif %}" style="width: {{_selectedProvider.empRatingsPercentages['very poor']}}%"></span>
+                            </span>
+                        </span>
+                        <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatings['very poor']}} review{% if _selectedProvider.empRatings['very poor'] != 1 %}s{% endif %}</span>
+                    </li>
+                </ul>
+                <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Strengths</h2>
+                <ol class="govuk-list govuk-list--number">
+                    <li>Working with small numbers of apprentices</li>
+                    <li>Getting new apprentices started</li>
+                    <li>Improving apprentice skills</li>
+                </ol>
+                <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Things to improve</h2>
+                <ol class="govuk-list govuk-list--number">
+                    <li>Reporting on progress of apprentices</li>
+                    <li>Communication with employers</li>
+                </ol>
+            </div>
+        </details>
+        {% endif %}
+        {% endif %}
+
+
+
+        {% if myData.cmppdo != "false" %}
+        <!-- Ofsted -->
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Ofsted rating</h2>
+        <p class="govuk-body-l govuk-!-margin-bottom-8" >
+            {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight-bold">{{_ratingOfstedTextToShow}}</span>
+        </p>
+        {% endif %}
+
+        <!-- Course panel -->
+        {% if myData.standardsearchapplied %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            
+            <span class="govuk-caption-l">Apprenticeship training course</span>
+            <h2 class="govuk-heading-l govuk-!-margin-bottom-3">{{_standardTitle | safe}}</h2>
+            <p class="govuk-body govuk-!-margin-bottom-5"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{_selectedStandard.larsCode}}">Overview of {{_standardTitle | safe}}</a></p>
+
+
+            {% if myData.cmppda != "false" %}
+                {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 10 and _selectedProvider.distance < 15) or _selectedProvider.distance > 40 %}
+                <p class="govuk-body govuk-!-margin-bottom-1"><span class=" govuk-!-font-weight-bold">68% pass rate</span> <span>(out of 50 apprentices)</span></p>
+                <p class="govuk-body "><span>65% national average pass rate</span></p>
+                <details class="govuk-details" data-module="govuk-details">
+                    <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text govuk-!-font-size">
+                        Explain pass rate
+                    </span>
+                    </summary> 
+                    <div class="govuk-details__text">
+                        Percentage of apprentices who successfully passed a similar apprenticeship with this training provider in the last academic year.
+                    </div>
+                </details>
+                {% endif %}
+            {% endif %}
+
+            {% if myData.locationapplied %}
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
+            <p class="govuk-body govuk-!-margin-bottom-"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
+                {% if _selectedMatchesLocation != true %}
+                <p class="govuk-body fat-availability fat-cross-2" >
+                    This training provider does not offer this course at the apprenticeship location
+                </p>
+                {% endif %}
+            {% endif %}
+
+            {% if myData.locationapplied and _selectedMatchesLocation != true %}
+
+                {% if myData.providersOnStandardCount > 0 %}
+                <p class="govuk-body">There are {{myData.providersOnStandardCount}} training providers for {{_standardTitle | safe}} in the apprenticeship location.</p>
+                <p class="govuk-body govuk-!-margin-bottom-0"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-button govuk-link--no-visited-state">View other training providers</a></p>
+                {% else %}
+                <p class="govuk-body">There are 0 training providers for {{_standardTitle | safe}} in the apprenticeship location.</p>
+                {% endif %}
+
+            {% endif %}
+
+            <!-- nearest location and training options -->
+            {% if (myData.locationapplied and _selectedMatchesLocation) or myData.locationapplied != true %}
+            <div class="govuk-!-margin-bottom-6">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-3 govuk-!-margin-top-6">{{_providerTitle | safe}}’s training options</h2>
+                
+                {% set _dayRelease = _selectedProvider.distance > 11 %}
+                {% set _blockRelease = _selectedProvider.distance > 20 %}
+                {% set _inWorkplace = _selectedProvider.distance < 11 or _selectedProvider.national %}
+
+                {% set _dayDistance = _selectedProvider.distance %}
+                {% set _blockDistance = _selectedProvider.distance %}
+                {% set _inWorkplaceDistance = _selectedProvider.distance %}
+
+                {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 6 and _selectedProvider.distance < 9) %}
+                    {% set _dayRelease = true %}
+                    {% set _blockRelease = true %}
+                    {% set _dayDistance = _selectedProvider.distance + 2.8 %}
+                    {% set _blockDistance = _dayDistance + 5.3 %}
+                {% endif %}
+
+                {% set _address1 = "12 King Edwards Rd, Birmingham, B1 2AA" %}
+                {% set _address2 = "1 High Street, Birmingham, West Midlands, B1 3BP" %}
+                {% set _address3 = "Old School, Pennington Court, Warwickshire, CV21 2BB" %}
+
+                <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-font-weight-bold">
+                    Head office {% if myData.locationapplied %}{{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away{% endif %}
+                </p>
+                <p class="govuk-body">{{_address1}}</p>
+
+                <ul class="govuk-list fat-training-options govuk-!-margin-bottom-4" >
+
+                    <li class="{% if _inWorkplace %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
+                        At&nbsp;apprentice’s&nbsp;workplace {% if _inWorkplace and _selectedProvider.national %}(national){% endif %}
+                    </li>
+
+                    <li class="{% if _dayRelease %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
+                        Day&nbsp;release{% if _dayRelease and myData.locationapplied %}: {{_dayDistance | round(2)}} mile{% if _dayDistance != 1 %}s{% endif %} away{% endif %}
+                    </li>
+
+                    <li class="{% if _blockRelease %}fat-tick-3{% else %}fat-cross-3{% endif %} govuk-!-margin-bottom-2">
+                        Block&nbsp;release{% if _blockRelease and myData.locationapplied %}: {{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away{% endif %}
+                    </li>
+
+                </ul>
+
+                <!-- Addresses -->
+
+                <!-- At location (used by day and block too if same distance) -->
+
+                <!-- Day release AND different to at location and block -->
+                {% if (_dayDistance != _blockDistance or (_blockRelease == false and _dayDistance == _blockDistance)) and _dayRelease and myData.locationapplied %}
+                    <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day release address</p>
+                    <p class="govuk-body">{{_address2}}</p>
+                {% endif %}
+
+                <!-- Block release AND different to at location and day -->
+                {% if (_dayDistance != _blockDistance or (_dayRelease == false and _dayDistance == _blockDistance)) and _blockRelease and myData.locationapplied %}
+                    <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Block release address</p>
+                    <p class="govuk-body">{{_address3}}</p>
+                {% endif %}
+
+                <!-- Day and Block release same AND different to at location -->
+                {% if _dayRelease and _blockRelease and _dayDistance == _blockDistance and myData.locationapplied %}
+                    <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Day and block release address</p>
+                    <p class="govuk-body">{{_address2}}</p>
+                {% endif %}
+
+            </div>
+            {% endif %}
+
+            {% if myData.locationapplied != true %}
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
+                <!-- Enter location form -->
+                <p class="govuk-body">Check {{_providerTitle | safe}}’s training options for the apprenticeship location.</p>
+                <form action="provider" method="GET" class="govuk-!-width-three-quarters" >
+                    <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
+                        <label for="search-location" class="govuk-label" >
+                            <span class="govuk-!-font-weight-bol">Enter location</span>
+                        </label>
+                        <div class="search-input-wrapper">
+                            <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input ">
+                            <div class="search-input-submit-wrapper">
+                                <button type="submit" class="search-submit" id="search-location-submit">Enter location</button>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" value="{{_selectedStandard.larsCode}}" name="standard" >
+                    <input type="hidden" value="{{_selectedProvider.id}}" name="provider" >
+                </form>
+            {% endif %}
+        </div>
+
+            <!-- Course specific enquiries -->
+            <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Contact this provider about this course</h2>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Email</dt>
+                        <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a></dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Telephone</dt>
+                        <dd class="govuk-summary-list__value">078&nbsp;7856&nbsp;9856</dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Website</dt>
+                        <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></dd>
+                    </div>
+                </dl>
+            </div>
+
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <p class="govuk-body shortlist-label-non-js " >
+                {% if _selectedProvider.inFavourites == true %}
+                <strong class="govuk-tag">
+                    Shortlisted
+                </strong><br>
+                <a href="{{_fullURL}}&favdel={{_selectedProvider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2 remove-shortlist-button " style="display: inline-block">Remove from shortlist</a>
+                {% else %}
+                <a href="{{_fullURL}}&fav={{_selectedProvider.id}}" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0 add-shortlist-button ">Add to shortlist</a>
+                {% endif %}
+            </p>
+            <p class="govuk-body shortlist-label-js " style="display:none" >
+                <span class="remove-elements" style="display: none">
+                    <strong class="govuk-tag govuk-!-margin-bottom-3">
+                        Shortlisted
+                    </strong><br>
+                    <a href="{{_fullURL}}&favdel={{_selectedProvider.id}}" data-href="{{_fullURL}}&favdel={{_selectedProvider.id}}" class="govuk-link govuk-link--no-visited-state govuk-!-margin-top-2 remove-shortlist">Remove from shortlist</a>
+                </span>
+
+                <a href="{{_fullURL}}&fav={{_selectedProvider.id}}" data-href="{{_fullURL}}&fav={{_selectedProvider.id}}" class="govuk-button add-shortlist-button add-shortlist govuk-!-margin-bottom-0">Add to shortlist</a>
+            </p>
+            {% if myData.locationapplied and _selectedMatchesLocation %}
+                {% if myData.providersOnStandardCount > 1 %}
+                <p class="govuk-body">{{_providerTitle | safe}} is 1 of {{myData.providersOnStandardCount}} training providers for {{_standardTitle | safe}} in the apprenticeship location.</p>
+                <p class="govuk-body"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">View other training providers</a></p>
+                {% else %}
+                <p class="govuk-body">{{_providerTitle | safe}} is the only training provider for {{_standardTitle | safe}} in the apprenticeship location.</p>
+                {% endif %}
+            {% endif %}
+        </div>
+
+            
+            
+        
+        {% elif myData.locationapplied %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Apprenticeship location</h2>
+            <p class="govuk-body govuk-!-margin-bottom-2"><span style="margin-right: 10px">{{myData.location}}</span> <a href="provider?standard={{_selectedStandard.larsCode}}&provider={{_selectedProvider.id}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
+            {% if _matchesLocation %}
+            <p class="govuk-body fat-availability fat-tick-2" >This provider offers training for {{myData.displaycount}} courses in the apprenticeship location</p>
+            {% else %}
+            <p class="govuk-body fat-availability fat-cross-2" >This provider does not offer training for the apprenticeship location</p>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
+            <!-- Enter location form -->
+            <p class="govuk-body">Check if {{_providerTitle | safe}} offers training for the apprenticeship location.</p>
+            <form action="provider" method="GET" class="govuk-!-width-three-quarters" >
+                <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
+                    <label for="search-location" class="govuk-label" >
+                        <span class="govuk-!-font-weight-bol">Enter location</span>
+                    </label>
+                    <div class="search-input-wrapper">
+                        <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input ">
+                        <div class="search-input-submit-wrapper">
+                            <button type="submit" class="search-submit" id="search-location-submit">Enter location</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- <input type="hidden" value="{{_selectedStandard.larsCode}}" name="standard" > -->
+                <input type="hidden" value="{{_selectedProvider.id}}" name="provider" >
+            </form>
+        </div>
+        {% endif %}
+        
+        {% if myData.standardsearchapplied != true %}
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Contact details</h2>
+        
+        <dl class="govuk-summary-list govuk-!-margin-bottom-7">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Email</dt>
+                <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a></dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Telephone</dt>
+                <dd class="govuk-summary-list__value">078&nbsp;7856&nbsp;9856</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Website</dt>
+                <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></dd>
+            </div>
+        </dl>
+        {% endif %}
+
+        {% if myData.cmppdoc != "false" %}
+        <!-- All courses -->
+        <details class="govuk-details govuk-!-margin-top-7" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text govuk-!-font-size">
+                View all {{myData.displaycount}} courses offered by this provider
+            </span>
+            </summary> 
+            <div class="govuk-details__text">
+                <p class="govuk-body ">Select a course to view locations, training options and contact details.</p>
+                <table class="govuk-table">
+                    <tbody class="govuk-table__body">
+                        {% for _standard in myData.standards.list %}
+                            {% set _match = true %}
+                            {% if _standard.larsCode == 34 or _matchesLocation == false %}
+                                {% set _match = false %}
+                            {% endif %}
+                            {% if _standard.matchesProvider %}
+                                <tr class="govuk-table__row">
+                                    <td class="govuk-table__cell">
+                                        <a href="provider?standard={{_standard.larsCode}}&provider={{_selectedProvider.id}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-link--no-visited-state">{{_standard.title}} (level&nbsp;{{_standard.level}})</a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </details>
+        {% endif %}
+
+    </div>
+    <div class="govuk-grid-column-one-third">
+       &nbsp;
+    </div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+
+    shortlistingSticky(30)
+    shortlisting({{myData.clearLocalStorage}},{{myData.populateShortlist}})
+    
+    // Locations 
+    function suggestLocations(query, populateResults) {
+        var _allSuggestions = []
+
+        // Cities
+        var _citiesResults = {{_citiesAutocompleteList | dump | safe }},
+            _filteredCitiesResults = _citiesResults.filter(
+                result => result.toUpperCase().startsWith(query.trim().toUpperCase())
+            )
+        _filteredCitiesResults.sort(function(a,b){
+            var returnValue = 0;
+            if (a.toUpperCase() < b.toUpperCase()){
+                returnValue = -1
+            } else if(a.toUpperCase() > b.toUpperCase()){
+                returnValue = 1
+            }
+            return returnValue
+        });
+
+        // Postcodes
+        $.getJSON('https://api.postcodes.io/postcodes/' + query + '/autocomplete', function(body){
+            var _postcodes = body.result || []
+            _allSuggestions = _allSuggestions.concat(_filteredCitiesResults,_postcodes)
+            populateResults(_allSuggestions)
+        })
+    }
+    function fireLocationSearch(){setTimeout(function(){ $("#search-location-submit").trigger("click") },200);}
+    var locationInput = document.querySelector('#search-location')
+    if (locationInput) {
+        var locationInputID = locationInput.id,
+            locationElement = document.createElement('div'),
+            defaultLocationSearchvalue = {{_defaultLocationSearchvalue | dump | safe }}
+        locationElement.className = "autocomplete__parent_wrapper";
+        locationInput.parentNode.insertBefore(locationElement, locationInput)
+        accessibleAutocomplete({
+            // other options
+            element: locationElement,
+            id: locationInputID,
+            name: locationInput.name,
+            source: suggestLocations,
+            defaultValue: defaultLocationSearchvalue,
+            minLength: 1,
+            confirmOnBlur: false,
+            autoselect: true,
+            onConfirm: fireLocationSearch,
+            displayMenu: 'overlay'
+        })
+        locationInput.style.display = 'none'
+        locationInput.id = locationInputID + '-old'
+        locationInput.name = ''
+    }
+</script>
+{% endblock %}

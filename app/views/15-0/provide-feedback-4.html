@@ -1,0 +1,101 @@
+{% extends myData.layout %}
+{% set serviceName = "Manage apprenticeships" %}
+{% set serviceUrl = "provide-feedback-approvals" %}
+
+{% set _inError = myData.validationError %}
+
+{% block pageTitle %} 
+Check answers
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="provide-feedback-3" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        
+
+            <h1 class="govuk-heading-xl">
+                Check your answers
+            </h1>
+
+            <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                  TRAINING UK LTD's strengths
+                </dt>
+                <dd class="govuk-summary-list__value">
+                  {% if myData.strengthsAnswer == "_unchecked" %}
+                    You didn't select any
+                  {% else %}
+                    {% for _factor in myData.strengthsAnswer %}
+                      {% for _factor2 in myData.provideFeedbackFactors %}
+                        {% if _factor == _factor2.id %}
+                          {{_factor2.name}}<br><br>
+                        {% endif %}
+                      {% endfor %}
+                    {% endfor %}
+                  {% endif %}
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                  <a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-1">
+                    Change<span class="govuk-visually-hidden"> name</span>
+                  </a>
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                  Areas to improve
+                </dt>
+                <dd class="govuk-summary-list__value">
+                  {% if myData.weaknessesAnswer == "_unchecked" %}
+                    You didn't select any
+                  {% else %}
+                    {% for _factor in myData.weaknessesAnswer %}
+                      {% for _factor2 in myData.provideFeedbackFactors %}
+                        {% if _factor == _factor2.id %}
+                          {{_factor2.name}}<br><br>
+                        {% endif %}
+                      {% endfor %}
+                    {% endfor %}
+                  {% endif %}
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                  <a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-2">
+                    Change<span class="govuk-visually-hidden"> name</span>
+                  </a>
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                  Overall rating
+                </dt>
+                <dd class="govuk-summary-list__value">
+                  {{myData.overallRatingAnswer}}
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                  <a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-3">
+                    Change<span class="govuk-visually-hidden"> name</span>
+                  </a>
+                </dd>
+              </div>
+            </dl>
+            
+            <p class="govuk-body">Your answers will be published anonymously on the <span class="govuk-!-font-weight-bold">Find apprenticeship training service</span> in the near future.</p>
+            
+            <p class="govuk-body">
+              <a class="govuk-button" href="provide-feedback-5">
+                  Submit answers
+              </a>
+            </p>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

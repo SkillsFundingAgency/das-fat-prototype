@@ -172,8 +172,13 @@ Available training providers
                             {% if _filter.typeof == "array" %}
                                 {% for _item in _filter.value %}
                                     {% set _urlBit = "&" + _filter.type + "=" + _item.id %}
-                                    {% set _url2 = _fullURL|replace(_urlBit,"") %}
-                                    <li><a class="fat-filter__tag" href="{{_url2}}"><span class="govuk-visually-hidden">Clear this filter</span> {{_item.label}}</a></li>
+                                    {% if _urlBit == "&trainingoptions=3" %}
+                                        {% set _url2 = _fullURL|replace("&trainingoptions=4","") %}
+                                        {% set _url2 = _url2|replace(_urlBit,"") %}
+                                    {% else %}
+                                        {% set _url2 = _fullURL|replace(_urlBit,"") %}
+                                    {% endif %}
+                                    <li><a class="fat-filter__tag" href="{{_url2}}"><span class="govuk-visually-hidden">Clear this filter</span>{{_item.label}}</a></li>
                                 {% endfor %}
                             {% else %}
                             <li><a class="fat-filter__tag" href="{{_url}}"><span class="govuk-visually-hidden">Clear this filter</span> {{_filter.value}}</a></li>
@@ -344,7 +349,10 @@ Available training providers
 
         <!-- Sort -->
         {% if myData.locationapplied == true and myData.displaycount > 1 %}
-        <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
+        <!-- <p class="govuk-body govuk-!-margin-bottom-6">Sorted by:
+            <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>
+        </p> -->
+        <!-- <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
             {% if myData.sortby == "name" %}
             <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}{{_trainingOptionsQuery}}&sort=distance">Distance (nearest first)</a>,
             <span class="govuk-!-font-weight-bold">Name</span>
@@ -352,11 +360,11 @@ Available training providers
             <span class="govuk-!-font-weight-bold">Distance (nearest first)</span>,
             <a class="govuk-link govuk-link--no-visited-state" href="providers?{{_locationQuery}}{{_standardQuery}}{{_searchQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}{{_trainingOptionsQuery}}&sort=name">Name</a>
             {% endif %}
-        </p>
+        </p> -->
         {% elif myData.displaycount > 1 %}
-        <p class="govuk-body govuk-!-margin-bottom-6">Sorted by:
+        <!-- <p class="govuk-body govuk-!-margin-bottom-6">Sorted by:
             <span class="govuk-!-font-weight-bold">Name</span>
-        </p>
+        </p> -->
         {% endif %}
 
         {% if myData.cmppfl != "false" %}
@@ -488,9 +496,9 @@ Available training providers
                             {% endif %}
 
                             {% if myData.locationapplied %}
-                            <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
+                            <!-- <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
                                 Head office {{_inWorkplaceDistance | round(2)}} mile{% if _inWorkplaceDistance != 1 %}s{% endif %} away
-                            </li>
+                            </li> -->
                             {% endif %}
 
                             <!-- <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
@@ -543,6 +551,10 @@ Available training providers
                             {% endif %}
                             {% endif %}
 
+                            <!-- <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
+                                {{_provider.qualityPoints.total}} total points
+                            </li> -->
+                            
                             <!-- National -->
                             {% if _provider.national %}
                             <!-- <li class="govuk-!-font-size-16" ><span class="govuk-secondary-colour" style="color:red">National</span></li> -->

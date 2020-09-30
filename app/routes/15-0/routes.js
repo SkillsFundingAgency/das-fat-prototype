@@ -2,6 +2,81 @@ module.exports = function (router,_myData) {
 
     var version = "15-0";
 
+    //Set quality points
+    function setProviderPoints(req,_provider){
+        req.session.myData.qualityPointsSet = true
+        _provider.qualityPoints = {
+            "passRate": 0,
+            "ofsted": 0,
+            "employer": 0,
+            "total": 0
+        }
+
+        //
+        // Pass rate
+        //
+        if (_provider.distance < 4 || (_provider.distance > 10 && _provider.distance < 15) || _provider.distance > 40){
+            _provider.qualityPoints.passRate = 4
+        } else {
+            _provider.qualityPoints.passRate = 1
+        }
+
+        //
+        // Ofsted
+        //
+
+        //"Outstanding",
+        if(_provider.ofsted == 1){
+            _provider.qualityPoints.ofsted = 8
+        } 
+        // "Good"
+        else if(_provider.ofsted == 2){
+            _provider.qualityPoints.ofsted = 6
+        }
+        // "Requires improvement"
+        else if(_provider.ofsted == 3){
+            _provider.qualityPoints.ofsted = 0
+        }
+        // "Inadequate"
+        else if(_provider.ofsted == 4){
+            _provider.qualityPoints.ofsted = -2
+        }
+        // "Not yet rated"
+        else if(_provider.ofsted == 0){
+            _provider.qualityPoints.ofsted = 5
+        }
+
+
+        //
+        //Employer reviews
+        //
+
+        //"Excellent",
+        if(_provider.averageEmpRatingID == 1){
+            _provider.qualityPoints.employer = 8
+        } 
+        // "Good"
+        else if(_provider.averageEmpRatingID == 2){
+            _provider.qualityPoints.employer = 7
+        }
+        // "Poor"
+        else if(_provider.averageEmpRatingID == 3){
+            _provider.qualityPoints.employer = -1.5
+        }
+        // "Very poor"
+        else if(_provider.averageEmpRatingID == 4){
+            _provider.qualityPoints.employer = -3
+        }
+        // Not yet reviewed
+        if (_provider.distance > 5 && _provider.distance < 10){
+            _provider.qualityPoints.employer = 6
+        }
+
+        //Total
+        _provider.qualityPoints.total = _provider.qualityPoints.passRate + _provider.qualityPoints.ofsted + _provider.qualityPoints.employer
+
+    }
+
     //Sort standards
     function sortStandards(req, _sortBy){
         req.session.myData.standards.list.sort(function(a,b){
@@ -37,21 +112,152 @@ module.exports = function (router,_myData) {
     }
     //Sort providers
     function sortProviders(req, _sortBy){
-        if(_sortBy == "distance"){
-            req.session.myData["providers-new"].list.sort(function(a,b){
-                return a.distance - b.distance
+        
+        if(_sortBy == "distancequality"){
+
+            var _providers = req.session.myData["providers-new"].list,
+                _distance_0to5miles_11plusPoints = [],
+                _distance_5to10miles_11plusPoints = [],
+                _distance_0to10miles_less11Points = [],
+                _distance_10to15miles = [],
+                _distance_15plusMiles = []
+            
+            //Set chunk assignment and actual closest distance
+            _providers.forEach(function(_provider, index) {
+
+                //Distance
+                var _dayRelease = _provider.distance > 11,
+                    _blockRelease = _provider.distance > 20,
+                    _dayDistance = _provider.distance,
+                    _blockDistance = _provider.distance,
+                    _release = _dayRelease || _blockRelease,
+                    _distance = 0
+                if (_dayRelease) {
+                    _closestReleaseDistance = _dayDistance
+                } else if (_blockRelease) {
+                    _closestReleaseDistance = _blockDistance
+                }
+                if (_provider.distance < 4 || (_provider.distance > 6 && _provider.distance < 9)){
+                    _dayRelease = true
+                    _blockRelease = true
+                    _release = true
+                    _dayDistance = _provider.distance + 2.8
+                    _blockDistance = _dayDistance + 5.3
+                    _closestReleaseDistance = _dayDistance
+                }
+                var _distance = _closestReleaseDistance || _distance
+                _provider.distanceClosest = _distance
+
+                //Chunks
+                var _points = _provider.qualityPoints.total
+
+                // 1. _distance_0to5miles_11plusPoints
+                if(_distance <= 5 && _points >= 11){
+                    _distance_0to5miles_11plusPoints.push(_provider)
+
+                // 2. _distance_5to10miles_11plusPoints
+                } else if((_distance > 5 && _distance <= 10) && _points >= 11){
+                    _distance_5to10miles_11plusPoints.push(_provider)
+
+                // 3. _distance_0to10miles_less11Points
+                } else if(_distance <= 10){
+                    _distance_0to10miles_less11Points.push(_provider)
+
+                // 4. _distance_10to15miles
+                } else if(_distance > 10 && _distance <= 15){
+                    _distance_10to15miles.push(_provider)
+
+                // 5. _distance_15plusMiles
+                } else if(_distance > 15){
+                    _distance_15plusMiles.push(_provider)
+                    
+                }
+
             });
+
+            //Sort each chunk
+            chunkSorter(_distance_0to5miles_11plusPoints)
+            chunkSorter(_distance_5to10miles_11plusPoints)
+            chunkSorter(_distance_0to10miles_less11Points)
+            chunkSorter(_distance_10to15miles)
+            chunkSorter(_distance_15plusMiles)
+            function chunkSorter(_list) {
+                return _list.sort(function(a,b){
+
+                    var returnValue = 0;
+
+                    // QUALITY
+                    if (a.qualityPoints.total == b.qualityPoints.total){
+                        //DISTANCE
+                        if (a.distanceClosest == b.distanceClosest){
+                            // NAME 
+                            if (a.name.toUpperCase() < b.name.toUpperCase()){
+                                returnValue = -1
+                            } else if(a.name.toUpperCase() > b.name.toUpperCase()){
+                                returnValue = 1
+                            }
+                        } else if (a.distanceClosest < b.distanceClosest){
+                            returnValue = -1
+                        } else if(a.distanceClosest > b.distanceClosest){
+                            returnValue = 1
+                        }
+                    } else if (b.qualityPoints.total < a.qualityPoints.total){
+                        returnValue = -1
+                    } else if(b.qualityPoints.total > a.qualityPoints.total){
+                        returnValue = 1
+                    }
+    
+                    return returnValue
+    
+                });
+            }
+
+            //PUT EACH CHUNK TOGETHER & ASSIGN NEW ARRAY AS PROVIDER LIST
+            req.session.myData["providers-new"].list = _distance_0to5miles_11plusPoints.concat(_distance_5to10miles_11plusPoints.concat(_distance_0to10miles_less11Points.concat(_distance_10to15miles.concat(_distance_15plusMiles))))
+
         } else {
             req.session.myData["providers-new"].list.sort(function(a,b){
+
                 var returnValue = 0;
-                if (a.name.toUpperCase() < b.name.toUpperCase()){
-                    returnValue = -1
-                } else if(a.name.toUpperCase() > b.name.toUpperCase()){
-                    returnValue = 1
+
+                // DISTANCE
+                if(_sortBy == "distance"){
+                    if (a.distance == b.distance){
+                        // NAME 
+                        sortByName()
+                    } else if (a.distance < b.distance){
+                        returnValue = -1
+                    } else if(a.distance > b.distance){
+                        returnValue = 1
+                    }
+                // QUALITY
+                } else if(_sortBy == "quality"){
+                    if (a.qualityPoints.total == b.qualityPoints.total){
+                        // NAME 
+                        sortByName()
+                    } else if (b.qualityPoints.total < a.qualityPoints.total){
+                        returnValue = -1
+                    } else if(b.qualityPoints.total > a.qualityPoints.total){
+                        returnValue = 1
+                    }
+                } else {
+                    // NAME
+                    sortByName()
                 }
+
+                function sortByName(){
+                    if (a.name.toUpperCase() < b.name.toUpperCase()){
+                        returnValue = -1
+                    } else if(a.name.toUpperCase() > b.name.toUpperCase()){
+                        returnValue = 1
+                    }
+                }
+
                 return returnValue
+
             });
         }
+
     }
     //Sort EPAOs
     function sortEPAOs(req, _sortBy){
@@ -493,6 +699,11 @@ module.exports = function (router,_myData) {
     function reset(req){
         req.session.myData = JSON.parse(JSON.stringify(_myData))
 
+        //Set quality points
+        req.session.myData["providers-new"].list.forEach(function(_provider, index) {
+            setProviderPoints(req,_provider)
+        });
+
         req.session.myData.favourites = [
             {
                 "larsCode":196,
@@ -615,6 +826,13 @@ module.exports = function (router,_myData) {
     router.all('/' + version + '/*', function (req, res, next) {
         if(!req.session.myData || req.query.r) {
             reset(req)
+        }
+
+        if(req.session.myData.qualityPointsSet == false){
+            //Set quality points
+            req.session.myData["providers-new"].list.forEach(function(_provider, index) {
+                setProviderPoints(req,_provider)
+            });
         }
 
         //1st load reset could be true
@@ -1005,6 +1223,10 @@ module.exports = function (router,_myData) {
             // Add and removing favourites
             // addRemoveFavourite(req,false)
 
+            // for sorting
+            var _atWorkplace = false,
+                _release = false
+
             _providers.forEach(function(_provider, index) {
                 
                 var _deliversStandard = false
@@ -1068,16 +1290,19 @@ module.exports = function (router,_myData) {
                             }
                         //at apprentice workplace
                         } else if(_trainingOption == 3){ 
+                            _atWorkplace = true
                             if(_provider.distance < 11 || _provider.national){
                                 _matchedOptions++
                             }
                         //block
                         } else if(_trainingOption == 2){ 
+                            _release = true
                             if(_provider.distance > 20 || _provider.distance < 4 || (_provider.distance > 6 && _provider.distance < 9)){
                                 _matchedOptions++
                             }
                         //day
                         } else if(_trainingOption == 1){ 
+                            _release = true
                             if(_provider.distance > 11 || _provider.distance < 4 || (_provider.distance > 6 && _provider.distance < 9)){
                                 _matchedOptions++
                             }
@@ -1141,14 +1366,16 @@ module.exports = function (router,_myData) {
 
             });
 
-            if(req.session.myData.locationapplied){
-                if(req.session.myData.sortby == "name"){
-                    sortProviders(req, "name")
-                } else {
-                    sortProviders(req, "distance")
-                }
+            if(req.session.myData.locationapplied && (!req.session.myData.trainingoptionsapplied || _release)){
+                // if(req.session.myData.sortby == "name"){
+                //     sortProviders(req, "name")
+                // } else {
+                    // sortProviders(req, "distance")
+                    sortProviders(req, "distancequality")
+                // }
             } else {
-                sortProviders(req, "name")
+                sortProviders(req, "quality")
+                // sortProviders(req, "name")
             }
 
             res.render(version + '/providers', {

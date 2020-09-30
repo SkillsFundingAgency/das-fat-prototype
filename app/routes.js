@@ -3,6 +3,7 @@ const router = express.Router()
 
 // Base session data
 var _myData = {
+    "qualityPointsSet": false,
     "maxrows": 999999,
     "populateShortlist": false,
     "favourites": [],

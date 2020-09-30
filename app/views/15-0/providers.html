@@ -400,7 +400,7 @@ Available training providers
             {% set _ratingText = _provider.averageEmpRatingText %}
 
             <!-- Total employer ratings -->
-            {% set _totalRatings = _provider.totalEmpRatings %}
+            {% set _totalRatings = _provider.totalEmpRatings + 10 %}
             {% if _totalRatings > 49 %}
                 {% set _totalRatings = "50+" %}
             {% endif %}

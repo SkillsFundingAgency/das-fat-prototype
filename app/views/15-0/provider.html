@@ -191,15 +191,19 @@ Training provider details
         </p>
         {% else %}
         <p class="govuk-body-l govuk-!-margin-bottom-4">
-            {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight-bold">{{_ratingTextToShow}}</span><span class="govuk-body govuk-!-font-size" style="margin-left: 10px;">({{_totalRatings}} reviews)</span>
+            {{_stars|safe}} <span class="{{_ratingColor}} govuk-!-font-weight-bold">{{_ratingTextToShow}}</span><span class="govuk-body" style="margin-left: 10px;">({{_totalRatings + 10}} reviews)</span>
         </p>
         <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
-            <span class="govuk-details__summary-text govuk-!-font-size">
+            <span class="govuk-details__summary-text">
                 View more details
             </span>
             </summary> 
             <div class="govuk-details__text">
+                
+                <h3 class="govuk-heading-s govuk-!-margin-bottom-2">Overall <span class="govuk-body" style="margin-left: 5px;">({{_totalRatings}} reviews)</span></h3>
+
+                <!-- Overall table -->
                 <ul class="govuk-list graph-list govuk-!-width-three-quarters">
                     <li class="level-1">
                         <span class="label">Excellent</span>
@@ -238,6 +242,49 @@ Training provider details
                         <span class="figure govuk-!-font-size-16">{{_selectedProvider.empRatings['very poor']}} review{% if _selectedProvider.empRatings['very poor'] != 1 %}s{% endif %}</span>
                     </li>
                 </ul>
+
+                <h3 class="govuk-heading-s govuk-!-margin-bottom-2">Onboarding <span class="govuk-body" style="margin-left: 5px;">(10 reviews)</span></h3>
+
+                <!-- Onboarding table -->
+                <ul class="govuk-list graph-list govuk-!-width-three-quarters">
+                    <li class="level-1">
+                        <span class="label">Excellent</span>
+                        <span class="chart">
+                            <span class="graph">
+                                <span class="bar" style="width: 33.33%"></span>
+                            </span>
+                        </span>
+                        <span class="figure govuk-!-font-size-16">3 reviews</span>
+                    </li>
+                    <li class="level-2">
+                        <span class="label">Good</span>
+                        <span class="chart">
+                            <span class="graph">
+                                <span class="bar" style="width: 66.66%"></span>
+                            </span>
+                        </span>
+                        <span class="figure govuk-!-font-size-16">6 reviews</span>
+                    </li>
+                    <li class="level-3">
+                        <span class="label">Poor</span>
+                        <span class="chart">
+                            <span class="graph">
+                                <span class="bar" style="width: 10%"></span>
+                            </span>
+                        </span>
+                        <span class="figure govuk-!-font-size-16">1 review</span>
+                    </li>
+                    <li class="level-4">
+                        <span class="label">Very poor</span>
+                        <span class="chart">
+                            <span class="graph">
+                                <span class="bar bar-zero" style="width: 0%"></span>
+                            </span>
+                        </span>
+                        <span class="figure govuk-!-font-size-16">0 reviews</span>
+                    </li>
+                </ul>
+
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Strengths</h2>
                 <ol class="govuk-list govuk-list--number">
                     <li>Working with small numbers of apprentices</li>
@@ -247,6 +294,7 @@ Training provider details
                 <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Things to improve</h2>
                 <ol class="govuk-list govuk-list--number">
                     <li>Reporting on progress of apprentices</li>
+                    <li>Assistance with apprentice recruitment</li>
                     <li>Communication with employers</li>
                 </ol>
             </div>

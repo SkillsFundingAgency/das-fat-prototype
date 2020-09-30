@@ -150,7 +150,7 @@ Shortlist
                                         {% set _ratingText = _selectedProvider.averageEmpRatingText %}
 
                                         <!-- Total employer ratings -->
-                                        {% set _totalRatings = _selectedProvider.totalEmpRatings %}
+                                        {% set _totalRatings = _selectedProvider.totalEmpRatings + 10 %}
                                         {% if _totalRatings > 49 %}
                                             {% set _totalRatings = "50+" %}
                                         {% endif %}

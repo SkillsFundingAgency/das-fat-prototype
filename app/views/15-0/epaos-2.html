@@ -53,7 +53,7 @@
 
         <!-- <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
         <p class="govuk-body">[add location to show only ones who can assess and order by distance]</p> -->
-        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+        <!-- <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             {% if myData.locationapplied != true %}
             <form action="epaos-2" method="GET" class="govuk-!-margin-bottom-6"  >
                 <p class="govuk-body govuk-!-margin-bottom-1"><span class="govuk-!-font-weight-bold">Apprenticeship location </span></p>
@@ -75,7 +75,7 @@
             <span style="margin-right: 10px">{{myData.location}}</span></p>
             <p class="govuk-body govuk-!-margin-bottom-"><a href="epaos-2?standard={{_selectedStandard.larsCode}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
             {% endif %}
-        </div>
+        </div> -->
 
         
 
@@ -86,9 +86,9 @@
     <div class="govuk-grid-column-two-thirds">
 
         {% if myData.locationapplied %}
-        <p class="govuk-body govuk-!-margin-bottom-6">Ordered by:
+        <!-- <p class="govuk-body govuk-!-margin-bottom-6">Ordered by:
             <span class="govuk-!-font-weight-bold">Distance</span>
-        </p>
+        </p> -->
         {% endif %}
 
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
@@ -133,7 +133,7 @@
                     <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Address:</span> {{_addressLabel}}</li>
 
                     {% if myData.locationapplied %}
-                    <li class="govuk-!-font-size-16"><span class="">{{_epao.distance}} mile{% if _epao.distance != 1 %}s{% endif %} away</li>
+                    <!-- <li class="govuk-!-font-size-16"><span class="">{{_epao.distance}} mile{% if _epao.distance != 1 %}s{% endif %} away</li> -->
                     {% endif %}
                     
                     {% if _epao.regions != 10 %}
@@ -153,7 +153,7 @@
 {% endblock %}
 
 {% block pageScripts %}
-<script>
+<!-- <script>
     
     // Locations 
     function suggestLocations(query, populateResults) {
@@ -206,5 +206,5 @@
         locationInput.id = locationInputID + '-old'
         locationInput.name = ''
     }
-</script>
+</script> -->
 {% endblock %}

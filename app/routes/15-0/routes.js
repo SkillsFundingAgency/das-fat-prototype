@@ -471,7 +471,7 @@ module.exports = function (router,_myData) {
                     })
                 }
             });
-            req.session.myData.searchfilters.push({"value": routefiltersValues, "type": "routefilters", "typeText": "Sector","typeof":"array"})
+            req.session.myData.searchfilters.push({"value": routefiltersValues, "type": "routefilters", "typeText": "Apprenticeship category","typeof":"array"})
         }
     }
 

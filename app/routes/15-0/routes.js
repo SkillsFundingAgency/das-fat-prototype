@@ -2570,6 +2570,15 @@ module.exports = function (router,_myData) {
         });
     });
 
+
+
+    // Accessibility statement
+    router.get('/' + version + '/accessibility', function (req, res) {
+        res.render(version + '/accessibility', {
+            myData:req.session.myData
+        });
+    });
+
     
 
 }

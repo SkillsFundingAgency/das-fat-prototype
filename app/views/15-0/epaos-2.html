@@ -3,11 +3,6 @@
 {% set serviceName = "Find an end-point assessment organisation" %}
 {% set serviceUrl = "home-epao" %}
 
-
-{% block pageTitle %} 
-{{myData.displaycount}} end-point assessment organisations
-{% endblock %}
-
 {% set _selectedStandard = myData.selectedStandard %}
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 {% set _epaos = myData.epaos.list %}
@@ -24,6 +19,10 @@
 {% if myData.locationapplied == true %}
     {% set _defaultLocationSearchvalue = myData.location %}
 {% endif %}
+
+{% block pageTitle %} 
+{{myData.displaycount}} end-point assessment organisations for {{_standardTitle|safe}}
+{% endblock %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}

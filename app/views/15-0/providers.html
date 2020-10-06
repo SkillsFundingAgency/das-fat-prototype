@@ -2,9 +2,6 @@
 
 {% set serviceName = "Find apprenticeship training for your apprentice" %}
 
-{% block pageTitle %}
-Available training providers
-{% endblock %}
 
 {% set _selectedStandard = {} %}
 {% for _standard in myData.standards.list %}
@@ -73,6 +70,11 @@ Available training providers
 
 <!-- Filters -->
 {% set _filtersApplied = myData.searchapplied or myData.locationapplied or myData.employerreviewsapplied or myData.ofstedratingsapplied or myData.trainingoptionsapplied %}
+
+
+{% block pageTitle %}
+Training providers for - {{_standardTitle|safe}}
+{% endblock %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}

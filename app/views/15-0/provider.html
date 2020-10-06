@@ -2,9 +2,6 @@
 
 {% set serviceName = "Find apprenticeship training for your apprentice" %}
 
-{% block pageTitle %}
-Training provider details
-{% endblock %}
 
 <!-- Provider selected -->
 {% set _selectedProvider = myData.selectedProvider %}
@@ -90,6 +87,11 @@ Training provider details
     {% set _locationQuery = "&location=" + myData.location %}
 {% endif %}
 {% set _fullURL = "provider?" + _standardQuery + _locationQuery + _providerQuery %}
+
+
+{% block pageTitle %}
+{{_providerTitle|safe}} - training provider
+{% endblock %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}

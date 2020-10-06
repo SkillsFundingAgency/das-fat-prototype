@@ -2,9 +2,6 @@
 
 {% set serviceName = "Find apprenticeship training for your apprentice" %}
 
-{% block pageTitle %}
-Apprenticeship training course overview
-{% endblock %}
 
 <!-- Location search -->
 {% set _citiesAutocompleteList = myData.citiesAutocompleteList %}
@@ -28,6 +25,10 @@ Apprenticeship training course overview
 {% if _overview.slice(-1) != "." %}
     {% set _overview = _overview + "." %}
 {% endif %}
+
+{% block pageTitle %}
+{{_standardTitle|safe}} - apprenticeship training course
+{% endblock %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}

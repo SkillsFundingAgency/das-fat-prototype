@@ -2579,6 +2579,13 @@ module.exports = function (router,_myData) {
         });
     });
 
+    // Privacy
+    router.get('/' + version + '/privacy', function (req, res) {
+        res.render(version + '/privacy', {
+            myData:req.session.myData
+        });
+    });
+
     
 
 }

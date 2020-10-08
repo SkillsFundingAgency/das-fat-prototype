@@ -2586,6 +2586,25 @@ module.exports = function (router,_myData) {
         });
     });
 
+    // Cookies - settings
+    router.get('/' + version + '/cookies-settings', function (req, res) {
+        res.render(version + '/cookies-settings', {
+            myData:req.session.myData
+        });
+    });
+    router.post('/' + version + '/cookies-settings', function (req, res) {
+        req.session.myData.showNotification = "true"
+        res.render(version + '/cookies-settings', {
+            myData: req.session.myData
+        });
+    });
+    // Cookies - details
+    router.get('/' + version + '/cookies-details', function (req, res) {
+        res.render(version + '/cookies-details', {
+            myData:req.session.myData
+        });
+    });
+
     
 
 }

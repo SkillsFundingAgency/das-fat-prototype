@@ -1,0 +1,30 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+{% if myData.service == "epao" %}
+    {% set serviceName = "Find an end-point assessment organisation" %}
+{% endif %}
+
+{% block pageTitle %} 
+Cookies details
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl">
+            Details about cookies
+        </h1>
+
+
+    </div>
+</div>
+
+{% endblock %}

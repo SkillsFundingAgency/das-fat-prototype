@@ -137,33 +137,6 @@ Apprenticeship training courses
                         </div>
                         {% endif %}
 
-                        {% if myData.cmpcfs != "false" %}
-                        {% set _routes = myData.routes.list %}
-                        <div class="govuk-form-group">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    Apprenticeship category
-                                </legend>
-                                <div class="govuk-checkboxes govuk-checkboxes--small">
-                                    {% for _route in _routes %}
-                                        {% set _checked = "" %}
-                                        {% for _item in myData.routefilters %}
-                                            {% if _item == _route.code and myData.routefilterapplied == true %}
-                                                {% set _checked = "checked" %}
-                                            {% endif %}
-                                        {% endfor %}
-                                        <div class="govuk-checkboxes__item">
-                                            <input {{_checked}} class="govuk-checkboxes__input" id="route-{{_route.code}}" name="routefilters" type="checkbox" value="{{_route.code}}">
-                                            <label class="govuk-label govuk-checkboxes__label" for="route-{{_route.code}}">
-                                                {{_route.name}}
-                                            </label>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </fieldset>
-                        </div>
-                        {% endif %}
-
                         {% if myData.cmpcfl != "false" %}
                         {% set _levels = myData.levels2 %}
                         <div class="govuk-form-group">
@@ -192,6 +165,34 @@ Apprenticeship training courses
 
                         <p class="govuk-body govuk-!-font-size-16"><a class="govuk-link govuk-link--no-visited-state" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank">What levels mean (opens in new tab or window)</a></p>
                         {% endif %}
+
+                        {% if myData.cmpcfs != "false" %}
+                        {% set _routes = myData.routes.list %}
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Apprenticeship category
+                                </legend>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    {% for _route in _routes %}
+                                        {% set _checked = "" %}
+                                        {% for _item in myData.routefilters %}
+                                            {% if _item == _route.code and myData.routefilterapplied == true %}
+                                                {% set _checked = "checked" %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        <div class="govuk-checkboxes__item">
+                                            <input {{_checked}} class="govuk-checkboxes__input" id="route-{{_route.code}}" name="routefilters" type="checkbox" value="{{_route.code}}">
+                                            <label class="govuk-label govuk-checkboxes__label" for="route-{{_route.code}}">
+                                                {{_route.name}}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </fieldset>
+                        </div>
+                        {% endif %}
+
 
                         <input type="hidden" value="{{myData.level}}" name="level" >
 

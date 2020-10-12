@@ -972,12 +972,12 @@ module.exports = function (router,_myData) {
 
         // Keyword search reset/setup
         searchFilterSetup(req,"Keywords")
-        
-        // Route filter setup
-        routeFilterSetup(req)
 
         // Level filter reset/setup
         levelFilterSetup(req)
+        
+        // Route filter setup
+        routeFilterSetup(req)
 
         req.session.myData.standards.list.forEach(function(_standard, index) {
 
@@ -986,13 +986,15 @@ module.exports = function (router,_myData) {
             // Reset each standard
             _standard.search = true
 
-            //ROUTE
-            if(req.session.myData.routefilterapplied) {
-                _standard.search = false
-                var _route = req.session.myData.routefilters.find(obj => obj === _standard.routecode.toString())
-                if(_route){
-                    req.session.myData.hasAMatchcount++
-                }
+            //SEARCH TERM
+            if(req.session.myData.searchapplied) {
+                var _searchesToDo = [
+                    {"searchOn": _standard.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"},
+                    {"searchOn": _standard.title,"exactrelevance": 99999,"withinrelevance": 10000,"ifmatch": "exit"},
+                    {"searchOn": _standard.jobRoles,"exactrelevance": 5000,"withinrelevance": 100,"ifmatch": "carryon"},
+                    {"searchOn": _standard.keywords,"exactrelevance": 1000,"ifmatch": "carryon"}
+                ]
+                checkStandardSearchTerm(req,_standard,_searchesToDo)
             }
 
             //LEVEL
@@ -1004,15 +1006,13 @@ module.exports = function (router,_myData) {
                 }
             }
 
-            //SEARCH TERM
-            if(req.session.myData.searchapplied) {
-                var _searchesToDo = [
-                    {"searchOn": _standard.autoCompleteString,"exactrelevance": 999999,"withinrelevance": 100000,"ifmatch": "exit"},
-                    {"searchOn": _standard.title,"exactrelevance": 99999,"withinrelevance": 10000,"ifmatch": "exit"},
-                    {"searchOn": _standard.jobRoles,"exactrelevance": 5000,"withinrelevance": 100,"ifmatch": "carryon"},
-                    {"searchOn": _standard.keywords,"exactrelevance": 1000,"ifmatch": "carryon"}
-                ]
-                checkStandardSearchTerm(req,_standard,_searchesToDo)
+            //ROUTE
+            if(req.session.myData.routefilterapplied) {
+                _standard.search = false
+                var _route = req.session.myData.routefilters.find(obj => obj === _standard.routecode.toString())
+                if(_route){
+                    req.session.myData.hasAMatchcount++
+                }
             }
 
             //MATCHES ALL IT NEEDS TO?

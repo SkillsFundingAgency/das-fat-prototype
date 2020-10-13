@@ -73,7 +73,11 @@ module.exports = function (router,_myData) {
         }
 
         //Total
-        _provider.qualityPoints.total = _provider.qualityPoints.passRate + _provider.qualityPoints.ofsted + _provider.qualityPoints.employer
+        if(req.session.myData.cmppdo != "true"){
+            _provider.qualityPoints.total = _provider.qualityPoints.passRate + _provider.qualityPoints.employer
+        } else {
+            _provider.qualityPoints.total = _provider.qualityPoints.passRate + _provider.qualityPoints.employer + _provider.qualityPoints.ofsted
+        }
 
     }
 
@@ -190,12 +194,19 @@ module.exports = function (router,_myData) {
                     if (a.qualityPoints.total == b.qualityPoints.total){
                         //DISTANCE
                         if (a.distanceClosest == b.distanceClosest){
-                            // NAME 
-                            if (a.name.toUpperCase() < b.name.toUpperCase()){
+                            // Number of employer reviews (high to low)
+                            if (a.totalEmpRatings == b.totalEmpRatings){
+                                // NAME 
+                                if (a.name.toUpperCase() < b.name.toUpperCase()){
+                                    returnValue = -1
+                                } else if(a.name.toUpperCase() > b.name.toUpperCase()){
+                                    returnValue = 1
+                                }
+                            } else if (b.totalEmpRatings < a.totalEmpRatings){
                                 returnValue = -1
-                            } else if(a.name.toUpperCase() > b.name.toUpperCase()){
+                            } else if(b.totalEmpRatings > a.totalEmpRatings){
                                 returnValue = 1
-                            }
+                            } 
                         } else if (a.distanceClosest < b.distanceClosest){
                             returnValue = -1
                         } else if(a.distanceClosest > b.distanceClosest){
@@ -233,8 +244,15 @@ module.exports = function (router,_myData) {
                 // QUALITY
                 } else if(_sortBy == "quality"){
                     if (a.qualityPoints.total == b.qualityPoints.total){
-                        // NAME 
-                        sortByName()
+                        // Number of employer reviews (high to low)
+                        if (a.totalEmpRatings == b.totalEmpRatings){
+                            // NAME 
+                            sortByName()
+                        } else if (b.totalEmpRatings < a.totalEmpRatings){
+                            returnValue = -1
+                        } else if(b.totalEmpRatings > a.totalEmpRatings){
+                            returnValue = 1
+                        } 
                     } else if (b.qualityPoints.total < a.qualityPoints.total){
                         returnValue = -1
                     } else if(b.qualityPoints.total > a.qualityPoints.total){

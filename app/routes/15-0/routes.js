@@ -120,11 +120,16 @@ module.exports = function (router,_myData) {
         if(_sortBy == "distancequality"){
 
             var _providers = req.session.myData["providers-new"].list,
-                _distance_0to5miles_11plusPoints = [],
-                _distance_5to10miles_11plusPoints = [],
-                _distance_0to10miles_less11Points = [],
+                _distance_0to5miles_11or6plusPoints = [],
+                _distance_5to10miles_11or6plusPoints = [],
+                _distance_0to10miles_less11or6Points = [],
                 _distance_10to15miles = [],
-                _distance_15plusMiles = []
+                _distance_15plusMiles = [],
+                _pointsCutOff = 11
+
+            if(req.session.myData.cmppdo != "true"){
+                _pointsCutOff = 6
+            }
             
             //Set chunk assignment and actual closest distance
             _providers.forEach(function(_provider, index) {
@@ -156,11 +161,11 @@ module.exports = function (router,_myData) {
                 var _points = _provider.qualityPoints.total
 
                 // 1. _distance_0to5miles_11plusPoints
-                if(_distance <= 5 && _points >= 11){
+                if(_distance <= 5 && _points >= _pointsCutOff){
                     _distance_0to5miles_11plusPoints.push(_provider)
 
                 // 2. _distance_5to10miles_11plusPoints
-                } else if((_distance > 5 && _distance <= 10) && _points >= 11){
+                } else if((_distance > 5 && _distance <= 10) && _points >= _pointsCutOff){
                     _distance_5to10miles_11plusPoints.push(_provider)
 
                 // 3. _distance_0to10miles_less11Points

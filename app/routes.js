@@ -112,7 +112,7 @@ var _myData = {
         {
             "id": "_factor-9",
             "name": "Improving apprentice skills"
-        } 
+        }
     ],
     "provideFeedbackFactors2": [
         {
@@ -190,6 +190,49 @@ var _myData = {
     ]
 }
 
+
+
+
+// For getting new bits to add existing NEW template standards
+// var _larsCodesToUse = []
+// _myData.standards.list.forEach(function(_standard, index) {
+//     if(_standard.coreSkillsCount > 0){
+//         _larsCodesToUse.push(_standard.larsCode.toString())
+//     }
+// });
+// var Request = require("request"),
+//     _count = 0,
+//     _tempStds = _myData.standards.list,
+//     _occupationalSummaries = []
+// for(var i = 0; i < _larsCodesToUse.length; i++){
+//     var current = _larsCodesToUse[i];
+//     GetMyResourceData(current);
+// }
+// function GetMyResourceData(current){
+//     Request.get("https://www.instituteforapprenticeships.org/api/apprenticeshipstandards/" + current, (error, response, body) => {
+//         var _apiData = JSON.parse(body),
+//             _stdObj = {
+//                 "behaviours": _apiData.behaviours,
+//                 "knowledges": _apiData.knowledges, 
+//                 "occupationalSummary": _apiData.occupationalSummary   
+//             }
+//         _tempStds.forEach(function(_standard, index) {
+//             if(_standard.larsCode.toString() == current){
+//                 // _standard.behaviours = _stdObj.behaviours
+//                 // _standard.knowledges = _stdObj.knowledges
+//                 // _standard.occupationalSummary = _stdObj.occupationalSummary
+//                 _occupationalSummaries.push(_stdObj.occupationalSummary)
+//             }
+//         });
+//         _count++
+//         if(_count == _larsCodesToUse.length){
+//             // console.log(JSON.stringify(_tempStds)) 
+//             console.log(JSON.stringify(_occupationalSummaries))
+//         }
+//     });
+// }
+
+
 // DO NOT UNCOMMENT AND PUSH LIVE
 // require('./generate-data-standards.js')(router,_myData);
 // require('./generate-data-providers.js')(router,_myData);
@@ -249,6 +292,8 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 // FOR DOING TESTS ON IFATE DATA
 //
 //
+
+
 
 // // for pulling out counts of statuses on all stds in IFATE api
 // _myData.testStandardsData = []

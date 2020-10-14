@@ -70,6 +70,7 @@
 			</p>
 		</div>
         {% endif %}
+        <!-- <p>{{_selectedStandard|dump}}</p> -->
 
         <span class="govuk-caption-xl">Apprenticeship training course</span>
         <h1 class="govuk-heading-xl" >
@@ -78,6 +79,21 @@
 
         <!-- overviewOfRole -->
         <p class="govuk-body-l">{{_overview}}</p>
+
+        {% set _occupationalSummary = _selectedStandard.occupationalSummary|replace("&lt;","<")|replace("&gt;",">")|replace("&quot;",'"') %}
+
+        {% if _selectedStandard.occupationalSummary %}
+        <details class="govuk-details govuk-!-margin-top-1" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                View more details
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                <p class="govuk-body">{{_occupationalSummary|safe}}</p>
+            </div>
+        </details>
+        {% endif %}
         
         <!-- Summary -->
         <dl class="govuk-summary-list">
@@ -114,14 +130,94 @@
                 </dd>
             </div>
             {% endif %}
+            {% if _selectedStandard.options %}
+            <!-- <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">[Options]</dt>
+                <dd class="govuk-summary-list__value">
+                    <ul class="govuk-list govuk-list--bullet">
+                        {% for _option in _selectedStandard.options %}
+                        <li>{{_option.name|safe}}</li>
+                        {% endfor %}
+                    </ul>
+                </dd>
+            </div> -->
+            {% endif %}
             {% if _selectedStandard.coreSkillsCount > 0 %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Duties</dt>
+                <dd class="govuk-summary-list__value">
+                    <details class="govuk-details govuk-!-margin-top-1" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Apprentice duties
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            <ul class="govuk-list govuk-list--bullet">
+                                {% for _duty in _selectedStandard.duties %}
+                                    <li>{{_duty.dutyDetail}}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </details>
+                </dd>
+            </div>
+            {% if _selectedStandard.options %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Course options</dt>
+                <dd class="govuk-summary-list__value">
+                    <ul class="govuk-list govuk-list--bullet">
+                        {% for _option in _selectedStandard.options %}
+                        <li>{{_option.name|safe}}</li>
+                        {% endfor %}
+                    </ul>
+                    <details class="govuk-details govuk-!-margin-top-1" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Course option duties
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            
+                            {% for _option in _selectedStandard.options %}
+                            <h3 class="govuk-heading-s">{{_option.name}}</h3>
+                            <ul class="govuk-list govuk-list--bullet">
+                                {% for _duty in _option.duties %}
+                                    <li>{{_duty|safe}}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endfor %}
+                        </div>
+                    </details>
+                </dd>
+            </div>
+            {% endif %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Knowledge</dt>
+                <dd class="govuk-summary-list__value">
+                    <details class="govuk-details govuk-!-margin-top-1" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Knowledge an apprentice will gain
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            <ul class="govuk-list govuk-list--bullet">
+                                {% for _knowledge in _selectedStandard.knowledges %}
+                                    <li>{{_knowledge.detail}}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </details>
+                </dd>
+            </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Skills</dt>
                 <dd class="govuk-summary-list__value">
                     <details class="govuk-details govuk-!-margin-top-1" data-module="govuk-details">
                         <summary class="govuk-details__summary">
                             <span class="govuk-details__summary-text">
-                            Skills an apprentice will learn
+                                Skills an apprentice will learn
                             </span>
                         </summary>
                         <div class="govuk-details__text">
@@ -136,12 +232,31 @@
                     </details>
                 </dd>
             </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Behaviours</dt>
+                <dd class="govuk-summary-list__value">
+                    <details class="govuk-details govuk-!-margin-top-1" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Behaviours an apprentice will develop
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            <ul class="govuk-list govuk-list--bullet">
+                                {% for _behaviour in _selectedStandard.behaviours %}
+                                    <li>{{_behaviour.detail}}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </details>
+                </dd>
+            </div>
             {% endif %}
         </dl>
 
-        <p class="govuk-body-s govuk-!-margin-bottom-6">
+        <!-- <p class="govuk-body-s govuk-!-margin-bottom-6">
             Full information on <a class="govuk-link govuk-link--no-visited-state" href="{{_selectedStandard.standardPageUrl}}" target="_blank" >{{_standardTitle | safe}}</a> is available from the Institute for Apprenticeships and Technical Education.
-        </p>
+        </p> -->
 
         
 

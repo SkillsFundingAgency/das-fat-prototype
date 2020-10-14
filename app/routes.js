@@ -322,7 +322,10 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         hasFullStop = 0,
 //         doesntHaveFullStop = 0,
 //         endsInSpace = 0,
-//         _testStandardsData = []
+//         _testStandardsData = [],
+//         _hasOccupationalSummary = 0,
+//         _hasOptions = 0,
+//         _hasDuties = 0
 //     console.log(_apiData.length + " standards in API (https://www.instituteforapprenticeships.org/api/apprenticeshipstandards) - checked on " + today)
 //     _apiData.forEach(function(_standard, index) {
 //         _statusTypes[_standard.status] = (_statusTypes[_standard.status] || 0) + 1
@@ -336,7 +339,7 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         _standardData.overview = _standard.overviewOfRole
 
 //         if(_standardData.overview.trim().slice(-1) == "."){
-//             console.log("larsCode: " + _standardData.larsCode + " - " + _standardData.title)
+//             // console.log("larsCode: " + _standardData.larsCode + " - " + _standardData.title)
 //             hasFullStop++
 //         } else {
 //             doesntHaveFullStop++
@@ -395,6 +398,18 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         // console.log("checked")
 //         // console.log(_title)
 
+//         if((_standard.occupationalSummary != "") && _standard.status == "Approved for delivery"){
+//             _hasOccupationalSummary++
+//         }
+
+//         if((_standard.options.length > 0) && _standard.status == "Approved for delivery"){
+//             _hasOptions++
+//         }
+
+//         if((_standard.duties.length > 0) && _standard.status == "Approved for delivery"){
+//             _hasDuties++
+//         }
+
 //         if((_standard.title.toUpperCase().indexOf("(INTEGRATED") != -1) && _standard.status == "Approved for delivery"){
 //             _integratedInTitle++
 //             _integratedInTitleTypes[_standard.integratedDegree] = (_integratedInTitleTypes[_standard.integratedDegree] || 0) + 1
@@ -428,9 +443,9 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
         
 //     });
 
-//     console.log("hasFullStop = " + hasFullStop)
-//     console.log("doesntHaveFullStop = " + doesntHaveFullStop)
-//     console.log("endsInSpace = " + endsInSpace);
+//     // console.log("hasFullStop = " + hasFullStop)
+//     // console.log("doesntHaveFullStop = " + doesntHaveFullStop)
+//     // console.log("endsInSpace = " + endsInSpace);
 
     
     
@@ -450,6 +465,11 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //     // console.log("START")
 //     // console.log(JSON.stringify(_testStandardsData))
 //     // console.log("END")
+
+//     console.log(_hasOccupationalSummary + " with an occupational summary and 'Approved for delivery'")
+//     console.log(_hasDuties + " with duties and 'Approved for delivery'")
+//     console.log(_hasOptions + " with options and 'Approved for delivery'")
+
 // });
 // // var distinctStatuses = [...new Set(_apiData.map(function(data){return data.statuses}))];
 

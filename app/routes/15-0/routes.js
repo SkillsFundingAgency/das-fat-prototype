@@ -160,17 +160,17 @@ module.exports = function (router,_myData) {
                 //Chunks
                 var _points = _provider.qualityPoints.total
 
-                // 1. _distance_0to5miles_11plusPoints
+                // 1. _distance_0to5miles_11or6plusPoints
                 if(_distance <= 5 && _points >= _pointsCutOff){
-                    _distance_0to5miles_11plusPoints.push(_provider)
+                    _distance_0to5miles_11or6plusPoints.push(_provider)
 
-                // 2. _distance_5to10miles_11plusPoints
+                // 2. _distance_5to10miles_11or6plusPoints
                 } else if((_distance > 5 && _distance <= 10) && _points >= _pointsCutOff){
-                    _distance_5to10miles_11plusPoints.push(_provider)
+                    _distance_5to10miles_11or6plusPoints.push(_provider)
 
-                // 3. _distance_0to10miles_less11Points
+                // 3. _distance_0to10miles_less11or6Points
                 } else if(_distance <= 10){
-                    _distance_0to10miles_less11Points.push(_provider)
+                    _distance_0to10miles_less11or6Points.push(_provider)
 
                 // 4. _distance_10to15miles
                 } else if(_distance > 10 && _distance <= 15){
@@ -185,9 +185,9 @@ module.exports = function (router,_myData) {
             });
 
             //Sort each chunk
-            chunkSorter(_distance_0to5miles_11plusPoints)
-            chunkSorter(_distance_5to10miles_11plusPoints)
-            chunkSorter(_distance_0to10miles_less11Points)
+            chunkSorter(_distance_0to5miles_11or6plusPoints)
+            chunkSorter(_distance_5to10miles_11or6plusPoints)
+            chunkSorter(_distance_0to10miles_less11or6Points)
             chunkSorter(_distance_10to15miles)
             chunkSorter(_distance_15plusMiles)
             function chunkSorter(_list) {
@@ -229,7 +229,7 @@ module.exports = function (router,_myData) {
             }
 
             //PUT EACH CHUNK TOGETHER & ASSIGN NEW ARRAY AS PROVIDER LIST
-            req.session.myData["providers-new"].list = _distance_0to5miles_11plusPoints.concat(_distance_5to10miles_11plusPoints.concat(_distance_0to10miles_less11Points.concat(_distance_10to15miles.concat(_distance_15plusMiles))))
+            req.session.myData["providers-new"].list = _distance_0to5miles_11or6plusPoints.concat(_distance_5to10miles_11or6plusPoints.concat(_distance_0to10miles_less11or6Points.concat(_distance_10to15miles.concat(_distance_15plusMiles))))
 
         } else {
             req.session.myData["providers-new"].list.sort(function(a,b){

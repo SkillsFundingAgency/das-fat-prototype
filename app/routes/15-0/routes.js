@@ -722,11 +722,6 @@ module.exports = function (router,_myData) {
     function reset(req){
         req.session.myData = JSON.parse(JSON.stringify(_myData))
 
-        //Set quality points
-        req.session.myData["providers-new"].list.forEach(function(_provider, index) {
-            setProviderPoints(req,_provider)
-        });
-
         req.session.myData.favourites = [
             {
                 "larsCode":196,
@@ -843,19 +838,17 @@ module.exports = function (router,_myData) {
         req.session.myData.strengthsAnswer = []
         req.session.myData.factorsAnswers = {}
 
+        // //Set quality points
+        // req.session.myData["providers-new"].list.forEach(function(_provider, index) {
+        //     setProviderPoints(req,_provider)
+        // });
+
     }
 
     // Every GET and POST
     router.all('/' + version + '/*', function (req, res, next) {
         if(!req.session.myData || req.query.r) {
             reset(req)
-        }
-
-        if(req.session.myData.qualityPointsSet == false){
-            //Set quality points
-            req.session.myData["providers-new"].list.forEach(function(_provider, index) {
-                setProviderPoints(req,_provider)
-            });
         }
 
         //1st load reset could be true
@@ -951,6 +944,14 @@ module.exports = function (router,_myData) {
                 req.session.myData[_checkboxQuery] = [req.session.myData[_checkboxQuery]]
             }
         });
+
+        // Sort providers
+        if(req.session.myData.qualityPointsSet == false){
+            //Set quality points
+            req.session.myData["providers-new"].list.forEach(function(_provider, index) {
+                setProviderPoints(req,_provider)
+            });
+        }
 
         next()
     });

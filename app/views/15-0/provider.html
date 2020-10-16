@@ -173,7 +173,7 @@
         
 
         {% if _selectedProvider.tradingNames.length > 0 %}
-        <p class="govuk-!-margin-top-">
+        <p class="govuk-body">
             <span class="govuk-!-font-weight-bold">Also trades as:</span><br>{{_selectedProvider.tradingNames | join(", ")}}
         </p>
         {% endif %}
@@ -198,7 +198,7 @@
         <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
             <span class="govuk-details__summary-text">
-                View more details
+                Employer review details
             </span>
             </summary> 
             <div class="govuk-details__text">
@@ -304,15 +304,25 @@
         {% endif %}
         {% endif %}
 
-
-
         {% if myData.cmppdo != "false" %}
         <!-- Ofsted -->
         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Ofsted rating</h2>
-        <p class="govuk-body-l govuk-!-margin-bottom-8" >
+        <p class="govuk-body-l govuk-!-margin-bottom-" >
             {{_starsOfsted|safe}} <span class="{{_ratingOfstedColor}} govuk-!-font-weight-bold">{{_ratingOfstedTextToShow}}</span>
         </p>
         {% endif %}
+
+        <p class="govuk-body">{{_providerTitle | safe}} offers a wide range of apprenticeships to suit your business needs. A dedicated account manager will work with you to identify the level suited to your business. An account manager will work with you to:</p>
+        <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-8">
+            <li>Help you decide which apprenticeship is right for your business;</li>
+            <li>Explain the way that apprenticeships might work for your business;</li>
+            <li>Recruit an apprentice or support your existing staff into apprenticeships;</li>
+            <li>Agree a training plan with your apprentice.</li>
+            <li>Understanding the levy and making the most of it of the new funding available and maximising your return</li>
+            <li>Apprenticeship Strategy Development (getting organisations started/making it sustainable)</li>
+            <li>Apprenticeship/Framework Design</li>
+            <li>Completion reporting and benchmarking</li>
+        </ul>
 
         <!-- Course panel -->
         {% if myData.standardsearchapplied %}
@@ -320,13 +330,14 @@
             
             <span class="govuk-caption-l">Apprenticeship training course</span>
             <h2 class="govuk-heading-l govuk-!-margin-bottom-3">{{_standardTitle | safe}}</h2>
-            <p class="govuk-body govuk-!-margin-bottom-5"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{_selectedStandard.larsCode}}">Overview of {{_standardTitle | safe}}</a></p>
+            <!-- <p class="govuk-body govuk-!-margin-bottom-5"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{_selectedStandard.larsCode}}">Overview of {{_standardTitle | safe}}</a></p> -->
 
 
             {% if myData.cmppda != "false" %}
                 {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 10 and _selectedProvider.distance < 15) or _selectedProvider.distance > 40 %}
                 <p class="govuk-body govuk-!-margin-bottom-1"><span class=" govuk-!-font-weight-bold">68% pass rate</span> <span>(out of 50 apprentices)</span></p>
                 <p class="govuk-body "><span>65% national average pass rate</span></p>
+                <!-- <p class="govuk-body govuk-!-font-size-16 "><span>Pass rate means the percentage of apprentices who successfully passed a similar apprenticeship with this training provider in the last academic year.</span></p> -->
                 <details class="govuk-details" data-module="govuk-details">
                     <summary class="govuk-details__summary">
                     <span class="govuk-details__summary-text govuk-!-font-size">
@@ -502,9 +513,6 @@
                 {% endif %}
             {% endif %}
         </div>
-
-            
-            
         
         {% elif myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">

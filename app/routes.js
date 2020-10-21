@@ -466,9 +466,15 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //     // console.log(JSON.stringify(_testStandardsData))
 //     // console.log("END")
 
-//     console.log(_hasOccupationalSummary + " with an occupational summary and 'Approved for delivery'")
-//     console.log(_hasDuties + " with duties and 'Approved for delivery'")
-//     console.log(_hasOptions + " with options and 'Approved for delivery'")
+//     console.log("_statusTypes")
+//     console.log(_statusTypes)
+
+//     console.log("_versionTypes")
+//     console.log(_versionTypes)
+
+//     // console.log(_hasOccupationalSummary + " with an occupational summary and 'Approved for delivery'")
+//     // console.log(_hasDuties + " with duties and 'Approved for delivery'")
+//     // console.log(_hasOptions + " with options and 'Approved for delivery'")
 
 // });
 // // var distinctStatuses = [...new Set(_apiData.map(function(data){return data.statuses}))];

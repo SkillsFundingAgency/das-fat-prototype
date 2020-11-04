@@ -1,0 +1,173 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+{% if myData.service == "epao" %}
+    {% set serviceName = "Find an end-point assessment organisation" %}
+{% endif %}
+
+{% block pageTitle %} 
+Cookies
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        {% if myData.showNotification != "false" %} 
+        <div class="alert-blue alert-blue-no-heading govuk-!-margin-bottom-7">
+			<h2 class="govuk-heading-m">
+				Your cookie settings were saved
+            </h2>
+		</div>
+        {% endif %}
+
+        <h1 class="govuk-heading-xl">
+            Cookies on this service
+        </h1>
+
+        <p class="govuk-body">Cookies are files saved on your phone, tablet or computer when you visit a service.</p>
+
+        <p class="govuk-body">We use cookies to store information about how you use this service, such as the pages you visit.</p>
+
+        <p class="govuk-body">This service is delivered over a set of subdomains.</p>
+
+        <p class="govuk-body">Your cookie preferences on this service automatically apply to the following domains:</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <!-- <li><a href="" target="_blank"></a></li>
+            <li><a href="" target="_blank"></a></li>
+            <li><a href="" target="_blank"></a></li>
+            <li><a href="" target="_blank"></a></li>
+            <li><a href="" target="_blank"></a></li>
+            <li><a href="" target="_blank"></a></li>
+            <li><a href="" target="_blank"></a></li>
+            <li><a href="https://selection.manage-apprenticeships.service.gov.uk " target="_blank">selection.manage-apprenticeships.service.gov.uk </a></li> -->
+            <li style="color:red">[FAT domain to go here]</li>
+            <li style="color:red">[FEPAO domain to go here]</li>
+            <li>accounts.manage-apprenticeships.service.gov.uk</li>
+            <li>manage-apprenticeships.service.gov.uk</li>
+            <li>finance.manage-apprenticeships.service.gov.uk</li>
+            <li>reporting.manage-apprenticeships.service.gov.uk</li>
+            <li>permissions.manage-apprenticeships.service.gov.uk</li>
+            <li>securefunding.manage-apprenticeships.service.gov.uk</li>
+            <li>beta-login.manage-apprenticeships.service.gov.uk</li>
+            <li>selection.manage-apprenticeships.service.gov.uk</li>
+        </ul>
+
+        <h2 class="govuk-heading-l">Cookie settings</h2>
+
+        <p class="govuk-body">We use 3 types of cookie. You can choose which cookies you’re happy for us to use.</p>
+
+        <form method="POST" class="form">
+
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" >
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                    <h1 class="govuk-fieldset__heading">
+                        Cookies that measure website use
+                    </h1>
+                    </legend>
+                    <div class="govuk-hint">
+                    
+                        <p class="govuk-body">We use Google Analytics to measure how you use the webservice so we can improve it based on user needs. We do not allow Google to use or share the data about how you use this service.</p>
+
+                        <p class="govuk-body">Google Analytics sets cookies that store anonymised information about:</p>
+
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li>how you got to the service</li>
+                            <li>the pages you visit on GOV.UK and government digital services, and how long you spend on each page</li>
+                            <li>what you click on while you’re visiting the service</li>
+                        </ul>
+
+                        <p class="govuk-body">Cookies may be set by other third-party services to do things like measure how you view YouTube videos that are on the service.</p>
+
+                        <p class="govuk-body">If you have an account with other services provided by the Education and Skills Funding Agency, the information collected using analytics cookies will be linked to your account. This will help us make the service work better for you.</p>
+
+                    </div>
+                    <div class="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="website-use-1" name="website-use" type="radio" value="yes" checked>
+                            <label class="govuk-label govuk-radios__label" for="website-use-1">
+                                Use cookies that measure my service use
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="website-use-2" name="website-use" type="radio" value="no">
+                            <label class="govuk-label govuk-radios__label" for="website-use-2">
+                                Do not use cookies that measure my service use
+                            </label>
+                        </div>
+                    </div>
+                
+                </fieldset>
+            </div>
+
+            <hr class="govuk-section-break govuk-section-break--l">
+
+            <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset" >
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                    <h1 class="govuk-fieldset__heading">
+                        Cookies that help with our communications and marketing
+                    </h1>
+                    </legend>
+                    <div class="govuk-hint">
+                    
+                        <p class="govuk-body">These cookies help us improve the relevancy of advertising campaigns you receive from us.</p>
+
+                        <p class="govuk-body">We also share information about your use of this service with our social media, advertising and analytics partner. They combine it with other information that they’ve collected from your use of our services to guide the advertising that you receive.</p>
+
+                    </div>
+                    <div class="govuk-radios">
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="communications-use-1" name="communications-use" type="radio" value="yes" checked>
+                            <label class="govuk-label govuk-radios__label" for="communications-use-1">
+                                Use cookies that help with communications and marketing
+                            </label>
+                        </div>
+                        <div class="govuk-radios__item">
+                            <input class="govuk-radios__input" id="communications-use-2" name="communications-use" type="radio" value="no">
+                            <label class="govuk-label govuk-radios__label" for="communications-use-2">
+                                Do not use cookies that help with communications and marketing
+                            </label>
+                        </div>
+                    </div>
+                
+                </fieldset>
+            </div>
+
+            <hr class="govuk-section-break govuk-section-break--l">
+
+            <h2 class="govuk-heading-m">Strictly necessary cookies</h2>
+
+
+            <p class="govuk-body">These essential cookies remember:</p>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>your progress through a form (for example a licence application)</li>
+                <li>the notifications you’ve seen so we do not show them to you again</li>
+            </ul>
+
+            <p class="govuk-body">They always need to be on.</p>
+
+            <p class="govuk-body">Find out more about <a href="cookies-details" class="govuk-link govuk-link--no-visited-state">cookies on this service</a>.</p>
+
+            <hr class="govuk-section-break govuk-section-break--l">
+
+            <button type="submit" class="govuk-button">
+                Save changes
+            </button>
+
+        </form>
+
+
+    </div>
+</div>
+
+{% endblock %}

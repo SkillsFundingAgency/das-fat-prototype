@@ -1,0 +1,97 @@
+{% extends myData.layout %}
+{% set serviceName = "Manage apprenticeships" %}
+{% set serviceUrl = "provide-feedback-approvals-a" %}
+
+{% set _inError = myData.validationError %}
+
+{% block pageTitle %} 
+{% if _inError == "true" %}Error: {% endif %}
+How would you rate TRAINING UK LTD in these areas of onboarding and approval?
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="provide-feedback-approvals-a" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        
+        <form method="POST" class="form">
+
+            {% if _inError == "true" %}
+            <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+                <h2 class="govuk-error-summary__title" id="error-summary-title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        {% for name, item in myData.validationErrors %}
+                        {% if loop.index == 1 %} 
+                        <li>
+                            <a href="#{{item.anchor}}">{{item.message}}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <h1 class="govuk-heading-xl">
+              How would you rate TRAINING UK LTD in these areas of onboarding and approval?
+            </h1>
+
+            <p class="govuk-body govuk-!-margin-bottom-6">We publish your feedback anonymously.</p>
+
+            {% set _factors = myData.provideFeedbackFactors4 %}
+            {% set _ratings = [
+              "Excellent",
+              "Good",
+              "Poor",
+              "Very poor",
+              "N/A"
+            ] %}
+
+            {% for _factor in _factors %}
+            {% set _itemID = _factor.id %}
+            <div class="govuk-form-group {% if myData.validationErrors[_itemID] %}govuk-form-group--error{% endif %}">
+              <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                  <h1 class="govuk-fieldset__heading">
+                    {{_factor.name}}
+                  </h1>
+                </legend>
+                {% if myData.validationErrors[_itemID] %}
+                <span id="{{_itemID}}-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span>
+                    {{myData.validationErrors[_itemID].message}}
+                </span>
+                {% endif %}
+                <div class="govuk-radios">
+                {% for _rating in _ratings %}
+                {% set __itemID_rating = _itemID + "-" + loop.index %}
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="{{__itemID_rating}}" name="{{_itemID}}" type="radio" value="{{_rating}}" {% if (_inError and myData.factorsAnswersTemp[_itemID] == _rating) or (_inError == 'false' and myData.factorsAnswers[_itemID] == _rating) %}checked{% endif %} >
+                  <label class="govuk-label govuk-radios__label" for="{{__itemID_rating}}">
+                    {{_rating}}
+                  </label>
+                </div>
+                {% endfor %}
+              </div>
+              </fieldset>
+            </div>
+            {% endfor %}
+            
+            <button type="submit" class="govuk-button">
+                Continue
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

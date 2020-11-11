@@ -1,4 +1,4 @@
-function shortlisting(_clear, _populateShortlist){
+function shortlisting(_clear, _populateShortlist,_countShortlist){
 
     // Shortlist
     // add-shortlist
@@ -6,7 +6,7 @@ function shortlisting(_clear, _populateShortlist){
         _addButtons = $(".shortlist-label-js .add-shortlist"),
         _removeButtons = $(".shortlist-label-js .remove-shortlist"),
         _shortlistTotalLabel = $(".shortlist-total"),
-        _total = Number(localStorage.getItem('shortlistTotal')) || 0
+        _total = _countShortlist || (Number(localStorage.getItem('shortlistTotal')) || 0)
 
     if (_clear) {
         localStorage.setItem("shortlistTotal", 0)

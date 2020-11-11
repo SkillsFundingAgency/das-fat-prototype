@@ -9,8 +9,8 @@ function shortlisting(_clear, _populateShortlist,_countShortlist){
         _total = _countShortlist || (Number(localStorage.getItem('shortlistTotal')) || 0)
 
     if (_clear) {
-        localStorage.setItem("shortlistTotal", 0)
-        _total = Number(localStorage.getItem('shortlistTotal'))
+        // localStorage.setItem("shortlistTotal", 0)
+        // _total = Number(localStorage.getItem('shortlistTotal'))
     }
 
     if(_populateShortlist){

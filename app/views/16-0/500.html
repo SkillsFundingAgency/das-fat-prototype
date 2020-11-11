@@ -1,0 +1,33 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+{% if myData.service == "epao" %}
+    {% set serviceName = "Find an end-point assessment organisation" %}
+{% endif %}
+
+{% block pageTitle %} 
+Sorry, there is a problem with the service
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl">
+            Sorry, there is a problem with the service
+        </h1>
+
+        <p class="govuk-body">Try again later.</p>
+
+        <p class="govuk-body"><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">Contact the Apprenticeship Service</a> if you need help.</p>
+
+    </div>
+</div>
+
+{% endblock %}

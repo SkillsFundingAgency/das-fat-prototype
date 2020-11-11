@@ -2596,6 +2596,20 @@ module.exports = function (router,_myData) {
 
 
 
+    // 404
+    router.get('/' + version + '/404', function (req, res) {
+        res.render(version + '/404', {
+            myData:req.session.myData
+        });
+    });
+
+    // 500
+    router.get('/' + version + '/500', function (req, res) {
+        res.render(version + '/500', {
+            myData:req.session.myData
+        });
+    });
+
     // Accessibility statement
     router.get('/' + version + '/accessibility', function (req, res) {
         res.render(version + '/accessibility', {

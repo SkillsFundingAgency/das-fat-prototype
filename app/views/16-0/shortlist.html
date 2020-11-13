@@ -42,6 +42,7 @@ Shortlist
     <div class="govuk-grid-column-two-thirds">
         <!-- No results for filters -->
         <div class="favsEmpty">
+            <p class="govuk-body">We will save your shortlist for 30 days.</p>
             <p class="govuk-body">You have 0 training providers shortlisted.</p>
             <p class="govuk-body"><a class="govuk-button" href="training">View apprenticeship training courses</a></p>
         </div>
@@ -52,6 +53,9 @@ Shortlist
 
 <!-- Providers -->
 <div class="favsList">
+
+    <p class="govuk-body govuk-!-margin-bottom-8">We will save your shortlist for 30 days.</p>
+
 {% set loopLast = false %}
 {% set loopLast2 = false %}
 {% set _moreThanOne = myData.favourites2.length > 1 or _favourite.locations.length > 1 %}

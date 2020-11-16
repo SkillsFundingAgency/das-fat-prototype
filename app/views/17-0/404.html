@@ -1,0 +1,35 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+{% if myData.service == "epao" %}
+    {% set serviceName = "Find an end-point assessment organisation" %}
+{% endif %}
+
+{% block pageTitle %} 
+Page not found
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl">
+            Page not found
+        </h1>
+
+        <p class="govuk-body">If you typed the web address, check it is correct.</p>
+
+        <p class="govuk-body">If you pasted the web address, check you copied the entire address.</p>
+
+        <p class="govuk-body">If the web address is correct or you selected a link or button, <a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">contact the Apprenticeship Service</a> to get help.</p>
+
+    </div>
+</div>
+
+{% endblock %}

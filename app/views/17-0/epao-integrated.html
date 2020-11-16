@@ -1,0 +1,42 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find an end-point assessment organisation" %}
+{% set serviceUrl = "home-epao" %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% set _epaoCount = myData.epaoCount or _selectedStandard.epaos.number %}
+
+{% block pageTitle %} 
+The training provider will carry out the end-point assessment for {{_standardTitle|safe}}
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="epao-course" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl" >
+            The training provider will carry out the end-point assessment
+        </h1>
+
+        <!-- <p class="govuk-body "><span class="govuk-!-font-weight-bold">Apprenticeship training course:</span><br> {{_standardTitle|safe}}</p> -->
+
+        <p class="govuk-body" >{{_standardTitle|safe}} is an integrated apprenticeship. The end-point assessment for integrated apprenticeships is carried out by the training provider.</p>
+        
+        <p class="govuk-body" >Contact the training provider to find out more about the assessment.</p>
+
+        
+    </div>
+    <div class="govuk-grid-column-one-third">
+       &nbsp;
+    </div>
+</div>
+
+{% endblock %}

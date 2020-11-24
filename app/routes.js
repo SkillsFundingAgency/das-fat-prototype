@@ -313,6 +313,7 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         _integratedDegreeTypes = {},
 //         _integratedDegreeTypesApproved = {},
 //         _integratedInTitleTypes = {},
+//         _integratedApprenticeshipTypes = {},
 //         _approvedForDelivery = 0,
 //         _integratedInTitle = 0,
 //         _integratedOnlyInTitle = 0,
@@ -322,6 +323,7 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         hasFullStop = 0,
 //         doesntHaveFullStop = 0,
 //         endsInSpace = 0,
+//         integratedApprenticeship = 0,
 //         _testStandardsData = [],
 //         _hasOccupationalSummary = 0,
 //         _hasOptions = 0,
@@ -331,6 +333,7 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         _statusTypes[_standard.status] = (_statusTypes[_standard.status] || 0) + 1
 //         _versionTypes["version " + _standard.version] = (_versionTypes["version " + _standard.version] || 0) + 1
 //         _integratedDegreeTypes[_standard.integratedDegree] = (_integratedDegreeTypes[_standard.integratedDegree] || 0) + 1
+//         _integratedApprenticeshipTypes[_standard.integratedApprenticeship] = (_integratedApprenticeshipTypes[_standard.integratedApprenticeship] || 0) + 1
 //         var _title = _standard.title + " (level " + _standard.level + ")",
 //             _standardData = {}
         
@@ -348,6 +351,11 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         if(_standardData.overview.slice(-1) == " "){
 //             // console.log("ends in a space = larsCode: " + _standardData.larsCode + " - " + _standardData.title)
 //             endsInSpace++
+//         }
+
+//         if(_standard.integratedApprenticeship){
+//             console.log(_standardData.larsCode + " - " + _standardData.title)
+//             integratedApprenticeship++
 //         }
 
 //         if(_standard.status == "Approved for delivery"){
@@ -466,11 +474,17 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //     // console.log(JSON.stringify(_testStandardsData))
 //     // console.log("END")
 
-//     console.log("_statusTypes")
-//     console.log(_statusTypes)
+//     // console.log("_statusTypes")
+//     // console.log(_statusTypes)
 
-//     console.log("_versionTypes")
-//     console.log(_versionTypes)
+//     // console.log("_versionTypes")
+//     // console.log(_versionTypes)
+
+//     console.log("_integratedApprenticeshipTypes")
+
+//     console.log(_integratedApprenticeshipTypes)
+
+//     console.log("integratedApprenticeship count = " + integratedApprenticeship)
 
 //     // console.log(_hasOccupationalSummary + " with an occupational summary and 'Approved for delivery'")
 //     // console.log(_hasDuties + " with duties and 'Approved for delivery'")

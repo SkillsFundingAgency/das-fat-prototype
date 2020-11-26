@@ -6,7 +6,7 @@
 
 {% block pageTitle %} 
 {% if _inError == "true" %}Error: {% endif %}
-How would you rate TRAINING UK LTD in these areas of onboarding and approval?
+Give feedback about TRAINING UK LTD
 {% endblock %}
 
 {% block beforeContent %}
@@ -41,23 +41,23 @@ How would you rate TRAINING UK LTD in these areas of onboarding and approval?
             {% endif %}
 
             <h1 class="govuk-heading-xl">
-              How would you rate TRAINING UK LTD in these areas of onboarding and approval?
+              Give feedback about TRAINING UK LTD
             </h1>
 
-            <p class="govuk-body govuk-!-margin-bottom-6">We publish your feedback anonymously.</p>
+            <p class="govuk-body govuk-!-margin-bottom-6">Your feedback is anonymous. </p>
 
-            {% set _factors = myData.provideFeedbackFactors4 %}
+            {% set _factors = myData.provideFeedbackFactors5 %}
             {% set _ratings = [
               "Excellent",
               "Good",
               "Poor",
               "Very poor",
-              "N/A"
+              "Not applicable or not sure"
             ] %}
 
             {% for _factor in _factors %}
             {% set _itemID = _factor.id %}
-            <div class="govuk-form-group {% if myData.validationErrors[_itemID] %}govuk-form-group--error{% endif %}">
+            <div class="govuk-form-group {% if myData.validationErrors[_itemID] %}govuk-form-group--error{% endif %} govuk-!-margin-bottom-8">
               <fieldset class="govuk-fieldset">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                   <h1 class="govuk-fieldset__heading">
@@ -73,12 +73,17 @@ How would you rate TRAINING UK LTD in these areas of onboarding and approval?
                 <div class="govuk-radios">
                 {% for _rating in _ratings %}
                 {% set __itemID_rating = _itemID + "-" + loop.index %}
-                <div class="govuk-radios__item">
-                  <input class="govuk-radios__input" id="{{__itemID_rating}}" name="{{_itemID}}" type="radio" value="{{_rating}}" {% if (_inError and myData.factorsAnswersTemp[_itemID] == _rating) or (_inError == 'false' and myData.factorsAnswers[_itemID] == _rating) %}checked{% endif %} >
-                  <label class="govuk-label govuk-radios__label" for="{{__itemID_rating}}">
-                    {{_rating}}
-                  </label>
-                </div>
+                  
+                  {% if _rating == "Not applicable or not sure" %}
+                  <div class="govuk-radios__divider">or</div>
+                  {% endif %}
+
+                  <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="{{__itemID_rating}}" name="{{_itemID}}" type="radio" value="{{_rating}}" {% if (_inError and myData.factorsAnswersTemp[_itemID] == _rating) or (_inError == 'false' and myData.factorsAnswers[_itemID] == _rating) %}checked{% endif %} >
+                    <label class="govuk-label govuk-radios__label" for="{{__itemID_rating}}">
+                      {{_rating}}
+                    </label>
+                  </div>
                 {% endfor %}
               </div>
               </fieldset>

@@ -2451,14 +2451,14 @@ module.exports = function (router,_myData) {
 
         // req.session.myData.factor1Answer = req.body["_factor-1"]
         req.session.myData.factorsAnswersTemp = {}
-        req.session.myData.provideFeedbackFactors4.forEach(function(_factor, index) {
+        req.session.myData.provideFeedbackFactors5.forEach(function(_factor, index) {
             var _answer = req.body[_factor.id]
 
             if(!_answer){
                 req.session.myData.validationError = "true"
                 req.session.myData.validationErrors[_factor.id] = {
                     "anchor": _factor.id + "-1",
-                    "message": "Give TRAINING UK LTD a rating"
+                    "message": "Give TRAINING UK LTD a feedback rating"
                 }
                 // "message": "error for " + _factor.id
             }

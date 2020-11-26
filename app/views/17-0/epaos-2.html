@@ -50,47 +50,18 @@
 
         <p class="govuk-body govuk-!-margin-bottom-6"><span class="govuk-!-font-weight-bold">Showing end-point assessment organisations for </span><br> {{_standardTitle|safe}}</p>
 
-        <!-- <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-4">Apprenticeship location</h2>
-        <p class="govuk-body">[add location to show only ones who can assess and order by distance]</p> -->
-        <!-- <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            {% if myData.locationapplied != true %}
-            <form action="epaos-2" method="GET" class="govuk-!-margin-bottom-6"  >
-                <p class="govuk-body govuk-!-margin-bottom-1"><span class="govuk-!-font-weight-bold">Apprenticeship location </span></p>
-                <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small govuk-!-margin-bottom-" >
-                    <label for="search-location" class="govuk-label" >
-                        <span class="govuk-!-font-weight-bol">Enter location to order results by distance</span>
-                    </label>
-                    <div class="search-input-wrapper govuk-!-width-three-quarters">
-                        <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input ">
-                        <div class="search-input-submit-wrapper">
-                            <button type="submit" class="search-submit" id="search-location-submit">Enter location</button>
-                        </div>
-                    </div>
-                </div>
-                <input type="hidden" value="{{_selectedStandard.larsCode}}" name="standard" >
-            </form>
-            {% else %}
-            <p class="govuk-body govuk-!-margin-bottom-2"><span class="govuk-!-font-weight-bold">Apprenticeship location </span><br>
-            <span style="margin-right: 10px">{{myData.location}}</span></p>
-            <p class="govuk-body govuk-!-margin-bottom-"><a href="epaos-2?standard={{_selectedStandard.larsCode}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
-            {% endif %}
-        </div> -->
-
-        
-
     </div>
 </div>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        {% if myData.locationapplied %}
-        <!-- <p class="govuk-body govuk-!-margin-bottom-6">Ordered by:
-            <span class="govuk-!-font-weight-bold">Distance</span>
-        </p> -->
-        {% endif %}
-
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+
+        {% set _blackListStandard = false %}
+        {% if _selectedStandard.larsCode < 250 %}
+            {% set _blackListStandard = true %}
+        {% endif %}
 
         <!-- epaos -->
         {% for _epao in _epaos %}
@@ -126,18 +97,27 @@
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
                     <a href="epao-2?epao={{_epao.id}}{{_standardQuery}}&returnURLepao2=epaos-2" class="govuk-link govuk-link--no-visited-state">{{_epao.name}}</a>
                 </h2>
+                
                 <ul class="govuk-list">
+
+                    <li class="govuk-!-font-size-16">
+                    {% if _epao.ready or _blackListStandard == false %}
+                        Available to assess
+                    {% elif _epao.readinessdate != "" %}
+                        Available to assess from {{_epao.readinessdate}}
+                    {% else %}
+                        Not available to assess yet
+                    {% endif %}
+                    </li>
+
                     <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Locations covered: </span> {{_deliveryAreasLabel}}</li>
                     
                     <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Address:</span> {{_addressLabel}}</li>
 
-                    {% if myData.locationapplied %}
-                    <!-- <li class="govuk-!-font-size-16"><span class="">{{_epao.distance}} mile{% if _epao.distance != 1 %}s{% endif %} away</li> -->
-                    {% endif %}
-                    
-                    {% if _epao.regions != 10 %}
-                    <!-- <li class="govuk-!-font-size-16">Assesses in: {{_deliveryAreasLabel}} -->
-                    {% endif %}
+                    <!-- <li class="govuk-!-font-size-16">
+                        <span class="govuk-secondary-colour">Total courses they assess:</span> 
+                        10
+                    </li> -->
 
                 </ul>
             </div>

@@ -43,11 +43,29 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
+        <span class="govuk-caption-xl">End-point assessment organisation</span>
         <h1 class="govuk-heading-xl" >
             {{_selectedEPAO.name}} 
         </h1>
 
-        <p class="govuk-body "><span class="govuk-!-font-weight-bold">End-point assessment organisation for </span><br> {{_standardTitle|safe}}</p>
+        
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <p class="govuk-body">{{_standardTitle|safe}}<br>
+
+                {% set _blackListStandard = false %}
+                {% if _selectedStandard.larsCode < 250 %}
+                    {% set _blackListStandard = true %}
+                {% endif %}
+
+                {% if _selectedEPAO.ready or _blackListStandard == false %}
+                    <span class="govuk-!-font-weight-bold">Available to assess</span>
+                {% elif _selectedEPAO.readinessdate != "" %}
+                    <span class="govuk-!-font-weight-bold">Available to assess from {{_selectedEPAO.readinessdate}}</span>
+                {% else %}
+                    <span class="govuk-!-font-weight-bold">Not available to assess yet</span>
+                {% endif %}
+            </p>
+        </div>
 
         <dl class="govuk-summary-list">
             {% if _selectedEPAO.contactname %}

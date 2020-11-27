@@ -65,9 +65,17 @@
                     <span class="govuk-!-font-weight-bold">Not available to assess yet</span>
                 {% endif %}
             </p>
+
+            {% if _epaoCount == 1 %}
+            <p class="govuk-body ">{{_selectedEPAO.name}} is the only end-point assessment organisation for {{_standardTitle|safe}}.</p>
+            {% else %}
+            <p class="govuk-body ">{{_selectedEPAO.name}} is 1 of {{myData.epaoCount}} end-point assessment organisations for {{_standardTitle|safe}}.</p>
+            <p class="govuk-body govuk-!-margin-bottom-6"><a href="{{myData.returnURLepao2}}" class="govuk-link govuk-link--no-visited-state"> View the other end-point assessment organisations</a></p>
+            {% endif %}
+
         </div>
 
-        <dl class="govuk-summary-list">
+        <dl class="govuk-summary-list govuk-!-margin-bottom-8">
             {% if _selectedEPAO.contactname %}
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Contact name</dt>
@@ -110,14 +118,22 @@
                     {{_deliveryAreasLabel}}
                 </dd>
             </div>
-        </dl>
 
-        {% if _epaoCount == 1 %}
-        <p class="govuk-body ">{{_selectedEPAO.name}} is the only end-point assessment organisation for {{_standardTitle|safe}}.</p>
-        {% else %}
-        <p class="govuk-body ">{{_selectedEPAO.name}} is 1 of {{myData.epaoCount}} end-point assessment organisations for {{_standardTitle|safe}}.</p>
-        <p class="govuk-body govuk-!-margin-bottom-6"><a href="{{myData.returnURLepao2}}" class="govuk-link govuk-link--no-visited-state"> View the other end-point assessment organisations</a></p>
-        {% endif %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Apprenticeship training courses</dt>
+                <dd class="govuk-summary-list__value">
+                    {% if _selectedEPAO.standards.length == 1 %}
+                    {{_standardTitle|safe}}
+                    {% else %}
+                    <ul class="govuk-list govuk-list--bullet">
+                        {% for _epaoCourse in _selectedEPAO.standards %}
+                        <li>{{_epaoCourse}}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </dd>
+            </div>
+        </dl>
         
     </div>
     <div class="govuk-grid-column-one-third">

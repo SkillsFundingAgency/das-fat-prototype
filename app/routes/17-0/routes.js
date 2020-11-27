@@ -2149,6 +2149,8 @@ module.exports = function (router,_myData) {
 
         setSelectedStandard(req,req.session.myData.standard)
 
+        req.session.myData.epaoCount = req.session.myData.selectedStandard.epaos.number
+
         res.render(version + '/epao-2', {
             myData:req.session.myData
         });

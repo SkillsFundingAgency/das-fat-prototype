@@ -1684,6 +1684,8 @@ module.exports = function (router,_myData) {
         var _standards = req.session.myData.standards.list,
             _providers = req.session.myData["providers-new"].list
 
+        req.session.myData.countproviders = 0
+
         // Selected provider        
         setSelectedProvider(req,req.session.myData.provider)
 
@@ -1744,6 +1746,7 @@ module.exports = function (router,_myData) {
                 if(_provider.courses.includes(req.session.myData.selectedStandard.larsCode)){
                     _deliversStandard = true
                     _hasAMatchcount++
+                    req.session.myData.countproviders++
                 }
 
                 //LOCATION

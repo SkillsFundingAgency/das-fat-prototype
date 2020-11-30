@@ -778,6 +778,7 @@ module.exports = function (router,_myData) {
         req.session.myData.epaoinfat = "false"
         req.session.myData.service = "fat"
         // req.session.myData.phase = "latest"
+        req.session.myData.pfemail = "nondynamic"
 
         // Dev settings
         // KEY: 
@@ -878,6 +879,7 @@ module.exports = function (router,_myData) {
         req.session.myData.layout = ((req.session.myData.employeraccount == "true") ? "layout-as-emp.html" : "layout.html")
         req.session.myData.service =  req.query.s || req.session.myData.service
         // req.session.myData.phase =  req.query.p || req.session.myData.phase
+        req.session.myData.pfemail =  req.query.pfe || req.session.myData.pfemail
         
         //component visibility - for devs
         //courses
@@ -913,7 +915,6 @@ module.exports = function (router,_myData) {
         req.session.myData.returnURLepao2 = req.body.returnURLepao2 || req.session.myData.returnURLepao2
         req.session.myData.returnURLepaodropout =  req.query.returnURLepaodropout || req.session.myData.returnURLepaodropout
         req.session.myData.returnURLepaodropout = req.body.returnURLepaodropout || req.session.myData.returnURLepaodropout
-
         
         //Constant checks for query
         req.session.myData.standard = req.query.standard || req.session.myData.standard
@@ -2595,6 +2596,13 @@ module.exports = function (router,_myData) {
     // Provide feedback 5a
     router.get('/' + version + '/provide-feedback-5a', function (req, res) {
         res.render(version + '/provide-feedback-5a', {
+            myData:req.session.myData
+        });
+    });
+
+    // Provide feedback - email
+    router.get('/' + version + '/provide-feedback-email', function (req, res) {
+        res.render(version + '/provide-feedback-email', {
             myData:req.session.myData
         });
     });

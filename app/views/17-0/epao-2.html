@@ -127,7 +127,8 @@
                     {% else %}
                     <ul class="govuk-list govuk-list--bullet">
                         {% for _epaoCourse in _selectedEPAO.standards %}
-                        <li>{{_epaoCourse}}</li>
+                            {% set _epaoCourse = _epaoCourse | replace("(level ", "(level&nbsp;") %}
+                            <li>{{_epaoCourse|safe}}</li>
                         {% endfor %}
                     </ul>
                     {% endif %}

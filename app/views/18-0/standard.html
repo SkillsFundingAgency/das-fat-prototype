@@ -1,0 +1,439 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+
+
+<!-- Location search -->
+{% set _citiesAutocompleteList = myData.citiesAutocompleteList %}
+{% set _defaultLocationSearchvalue = "" %}
+{% if myData.locationapplied == true %}
+    {% set _defaultLocationSearchvalue = myData.location %}
+{% endif %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% set _standardLevel = {} %}
+{% for _level  in myData.levels2 %}
+    {% if _level.value == _selectedStandard.level %}
+        {% set _standardLevel = _level %}
+    {% endif %}
+{% endfor %}
+
+<!-- overview -->
+{% set _overview = _selectedStandard.overviewOfRole|trim %}
+{% if _overview.slice(-1) != "." %}
+    {% set _overview = _overview + "." %}
+{% endif %}
+
+{% block pageTitle %}
+{{_standardTitle|safe}} - apprenticeship training course
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+
+    <div class="govuk-grid-row">
+		<div class="govuk-grid-column-three-quarters">
+			<div class="govuk-breadcrumbs ">
+				<ol class="govuk-breadcrumbs__list">
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" href="home">Home</a>
+                    </li>
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" href="training">Apprenticeship training courses</a>
+                    </li>
+                </ol>
+			</div>
+        </div>
+        {% include "includes/shortlist-2.html" %}
+    </div>
+
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .govuk-input-background,
+    .autocomplete__input {
+        background-color: white;
+    }
+</style>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        {% if _selectedStandard.lastDateStarts %}
+        <div class="alert-blue alert-blue-no-heading govuk-!-margin-bottom-7">
+			<p class="govuk-body">
+				{{_standardTitle | safe}} is available for new starts until 31 October 2020.
+			</p>
+		</div>
+        {% endif %}
+        <!-- <p>{{_selectedStandard|dump}}</p> -->
+
+        <span class="govuk-caption-xl">Apprenticeship training course</span>
+        <h1 class="govuk-heading-xl" >
+            {{_standardTitle | safe}}
+        </h1>
+
+        <!-- overviewOfRole -->
+        <p class="govuk-body-l">{{_overview}}</p>
+
+        {% set _occupationalSummary = _selectedStandard.occupationalSummary|replace("&lt;","<")|replace("&gt;",">")|replace("&quot;",'"') %}
+
+        {% if _selectedStandard.occupationalSummary %}
+        <details class="govuk-details govuk-!-margin-top-1" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                View more details
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                <p class="govuk-body">{{_occupationalSummary|safe}}</p>
+            </div>
+        </details>
+        {% endif %}
+        
+        <!-- Summary -->
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Qualification level</dt>
+                <dd class="govuk-summary-list__value">
+                    {{_standardLevel.value}} <br><span class="govuk-!-font-size-16 govuk-secondary-colour">Equivalent to {{_standardLevel.equiv3}}.</span>
+                    <!-- <br><a class="govuk-link govuk-link--no-visited-state govuk-!-font-size-16" href="https://www.gov.uk/what-different-qualification-levels-mean/list-of-qualification-levels" target="_blank">What levels mean (opens in new tab or window)</a> -->
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Typical duration</dt>
+                <dd class="govuk-summary-list__value">{{_selectedStandard.typicalDuration}} months</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Apprenticeship category</dt>
+                <dd class="govuk-summary-list__value">{{_selectedStandard.route}}</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Maximum funding</dt>
+                <dd class="govuk-summary-list__value">
+                    £{{_selectedStandard.maxFundingFormatted}} <br><span class="govuk-!-font-size-16 govuk-secondary-colour">Maximum amount government will fund <br>for apprenticeship training.</span>
+                </dd>
+            </div>
+            {% if _selectedStandard.typicalJobTitles.length > 0 %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Also known as</dt>
+                <dd class="govuk-summary-list__value">
+                    <ul class="govuk-list {% if _selectedStandard.typicalJobTitles.length > 1 %}govuk-list--bullet{% endif %}">
+                        {% for _typicalJobTitle in _selectedStandard.typicalJobTitles %}
+                        <li>{{_typicalJobTitle}}</li>
+                        {% endfor %}
+                    </ul>
+                </dd>
+            </div>
+            {% endif %}
+            {% if _selectedStandard.options %}
+            <!-- <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">[Options]</dt>
+                <dd class="govuk-summary-list__value">
+                    <ul class="govuk-list govuk-list--bullet">
+                        {% for _option in _selectedStandard.options %}
+                        <li>{{_option.name|safe}}</li>
+                        {% endfor %}
+                    </ul>
+                </dd>
+            </div> -->
+            {% endif %}
+            {% if _selectedStandard.coreSkillsCount > 0 %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Duties</dt>
+                <dd class="govuk-summary-list__value">
+                    <details class="govuk-details govuk-!-margin-top-1" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Apprentice duties
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            <ul class="govuk-list govuk-list--bullet">
+                                {% for _duty in _selectedStandard.duties %}
+                                    <li>{{_duty.dutyDetail}}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </details>
+                </dd>
+            </div>
+            {% if _selectedStandard.options %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Course options</dt>
+                <dd class="govuk-summary-list__value">
+                    <ul class="govuk-list govuk-list--bullet">
+                        {% for _option in _selectedStandard.options %}
+                        <li>{{_option.name|safe}}</li>
+                        {% endfor %}
+                    </ul>
+                    <details class="govuk-details govuk-!-margin-top-1" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Course option duties
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            
+                            {% for _option in _selectedStandard.options %}
+                            <h3 class="govuk-heading-s">{{_option.name}}</h3>
+                            <ul class="govuk-list govuk-list--bullet">
+                                {% for _duty in _option.duties %}
+                                    <li>{{_duty|safe}}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endfor %}
+                        </div>
+                    </details>
+                </dd>
+            </div>
+            {% endif %}
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Knowledge</dt>
+                <dd class="govuk-summary-list__value">
+                    <details class="govuk-details govuk-!-margin-top-1" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Knowledge an apprentice will gain
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            <ul class="govuk-list govuk-list--bullet">
+                                {% for _knowledge in _selectedStandard.knowledges %}
+                                    <li>{{_knowledge.detail}}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </details>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Skills</dt>
+                <dd class="govuk-summary-list__value">
+                    <details class="govuk-details govuk-!-margin-top-1" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Skills an apprentice will learn
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            <ul class="govuk-list govuk-list--bullet">
+                                {% for _skill in _selectedStandard.skills %}
+                                    {% if _skill.isThisACoreSkill == true %}
+                                        <li>{{_skill.detail}}</span></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </details>
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Behaviours</dt>
+                <dd class="govuk-summary-list__value">
+                    <details class="govuk-details govuk-!-margin-top-1" data-module="govuk-details">
+                        <summary class="govuk-details__summary">
+                            <span class="govuk-details__summary-text">
+                                Behaviours an apprentice will develop
+                            </span>
+                        </summary>
+                        <div class="govuk-details__text">
+                            <ul class="govuk-list govuk-list--bullet">
+                                {% for _behaviour in _selectedStandard.behaviours %}
+                                    <li>{{_behaviour.detail}}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </details>
+                </dd>
+            </div>
+            {% endif %}
+        </dl>
+
+        <p class="govuk-body-s govuk-!-margin-bottom-6">
+            Full information on <a class="govuk-link govuk-link--no-visited-state" href="{{_selectedStandard.standardPageUrl}}" target="_blank" >{{_standardTitle | safe}}</a> is available from the Institute for Apprenticeships and Technical Education.
+        </p>
+
+        <!-- Providers -->
+        
+        {% set _displaycountproviders = myData.displaycountproviders %}
+
+        {% if myData.countproviders == 0 %}
+
+            <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-8" >
+                <h2 class="govuk-heading-l" >Find training providers for this course</h2>
+                
+                <p class="govuk-body">There are no training providers available for this course.</p>
+                <p class="govuk-body">You can either:</p>
+                <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
+                    <li><a href="training" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
+                    <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
+                </ul>
+            </div>
+
+        {% else %}
+
+            <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-8" >
+                <h2 class="govuk-heading-l" >Find training providers for this course</h2>
+
+                <!-- Regulated -->
+                {% if _selectedStandard.regulatedProvider6 or _selectedStandard.regulatedProvider7 %}
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Regulated occupation</h2>
+                    <p class="govuk-body">{{_standardTitle | safe}} needs a training provider who is approved by the appropriate regulatory body.</p>
+                {% elif _selectedStandard.regulatedProvider %}
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Regulated occupation</h2>
+                    <p class="govuk-body">{{_standardTitle | safe}} needs a training provider who is approved by {{_selectedStandard.regulatedBody}}.</p>
+                {% endif %}
+                
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
+                
+                {% if myData.locationapplied %}
+
+                    
+                    <p class="govuk-body govuk-!-margin-bottom-5"><span style="margin-right: 10px">{{myData.location}}</span> <a href="standard?standard={{myData.standard}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
+
+
+                    {% if _displaycountproviders != 0 %}
+                    <p class="govuk-body fat-availability fat-tick-2" >{{_displaycountproviders}} provider{% if _displaycountproviders != 1 %}s{% endif %} available for this apprenticeship location</p>
+                    {% else %}
+                    <p class="govuk-body fat-availability fat-cross-2" >There are no training providers available for this course at the apprenticeship location.</p>
+                    {% endif %}
+
+                    
+                    {% if _displaycountproviders != 0 %}
+                        <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state">View providers for this course</a></p>
+                    {% endif %}
+
+                {% else %}
+
+                    <p class="govuk-body">Check if a provider can offer this training for the apprenticeship location.</p>
+                    <form action="providers" method="GET" class="govuk-!-width-three-quarters" >
+                        <div class="govuk-form-group" >
+                            <label for="search-location" class="govuk-label" >
+                                <span class="govuk-!-font-weight-bol">Enter a town, city or postcode</span>
+                            </label>
+                            <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input govuk-input-background">
+                        </div>
+                        <!-- <p class="govuk-body">{{myData.countproviders}} providers offer this training.</p> -->
+                        <button class="govuk-button location-submit" data-module="govuk-button">
+                            View providers for this course
+                        </button>
+                        <input type="hidden" value="{{myData.standard}}" name="standard" >
+                    </form>
+
+                {% endif %}
+
+                {% if myData.locationapplied and _displaycountproviders == 0 %}
+                    <!-- <p class="govuk-body">The Education and Skills Funding Agency (ESFA) can advise you what to do next.</p> -->
+                    <p class="govuk-body">You can either:</p>
+                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
+                        <!-- <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">contact ESFA</a></li> -->
+                        <li><a href="training" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
+                        <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
+                    </ul>
+                    <p class="govuk-body">{{myData.countproviders}} providers available at other locations.</p>
+                    <p class="govuk-body govuk-!-margin-bottom-6"><a href="providers?standard={{myData.standard}}&location" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">View all providers for this course</a></p>
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+        <!-- EPAOS -->
+        {% if myData.epaoinfat != "false" %}
+            {% if _selectedStandard.integratedDegree == "integrated degree" %}
+                <h2 class="govuk-heading-m" >
+                    End-point assessment organisation
+                </h2>
+                <p class="govuk-body">The training provider will also conduct the end-point assessment for {{_standardTitle | safe}}.</p>
+            {% else %}
+                <h2 class="govuk-heading-m" >
+                    End-point assessment organisations
+                </h2>
+                {% if myData.countepaos == 0 %}
+                    {% if _selectedStandard.epaos.inprinciple %}
+                        <p class="govuk-body">Currently there are no end-point assessment organisations (EPAO) available; we are working with potential EPAOs to assess {{_standardTitle | safe}}.</p>
+                    {% else %}
+                        <p class="govuk-body">Currently there are no end-point assessment organisations available to assess {{_standardTitle | safe}}.</p>  
+                    {% endif %}
+                    <p class="govuk-body">If you have any queries please contact the <a href="https://help.apprenticeships.education.gov.uk/hc/en-gb" class="govuk-link govuk-link--no-visited-state">helpdesk</a>.</p>
+                {% else %}
+                    <p class="govuk-body"><a href="epaos?standard={{myData.standard}}" class="govuk-link govuk-link--no-visited-state">View end-point assessment organisations</a></p>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+        &nbsp;
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+
+    shortlistingSticky(30)
+    shortlisting({{myData.clearLocalStorage}},{{myData.populateShortlist}})
+
+    // Locations 
+    function suggestLocations(query, populateResults) {
+        var _allSuggestions = []
+
+        // Cities
+        var _citiesResults = {{_citiesAutocompleteList | dump | safe }},
+            _filteredCitiesResults = _citiesResults.filter(
+                result => result.toUpperCase().startsWith(query.trim().toUpperCase())
+            )
+        _filteredCitiesResults.sort(function(a,b){
+            var returnValue = 0;
+            if (a.toUpperCase() < b.toUpperCase()){
+                returnValue = -1
+            } else if(a.toUpperCase() > b.toUpperCase()){
+                returnValue = 1
+            }
+            return returnValue
+        });
+
+        // Postcodes
+        $.getJSON('https://api.postcodes.io/postcodes/' + query + '/autocomplete', function(body){
+            var _postcodes = body.result || []
+            _allSuggestions = _allSuggestions.concat(_filteredCitiesResults,_postcodes)
+            populateResults(_allSuggestions)
+        })
+    }
+    // function fireLocationSearch(){setTimeout(function(){ $("#search-location-submit").trigger("click") },200);}
+    function fireLocationSearch(){setTimeout(function(){ $(".location-submit").trigger("click") },200);}
+    var locationInput = document.querySelector('#search-location')
+    if (locationInput) {
+        var locationInputID = locationInput.id,
+            locationElement = document.createElement('div'),
+            defaultLocationSearchvalue = {{_defaultLocationSearchvalue | dump | safe }}
+        locationElement.className = "autocomplete__parent_wrapper";
+        locationInput.parentNode.insertBefore(locationElement, locationInput)
+        accessibleAutocomplete({
+            // other options
+            element: locationElement,
+            id: locationInputID,
+            name: locationInput.name,
+            source: suggestLocations,
+            defaultValue: defaultLocationSearchvalue,
+            minLength: 1,
+            confirmOnBlur: false,
+            autoselect: true,
+            onConfirm: fireLocationSearch,
+            displayMenu: 'overlay'
+        })
+        locationInput.style.display = 'none'
+        locationInput.id = locationInputID + '-old'
+        locationInput.name = ''
+    }
+</script>
+{% endblock %}

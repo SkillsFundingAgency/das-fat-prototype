@@ -1,0 +1,37 @@
+{% extends myData.layout %}
+{% set serviceName = "Find an end-point assessment organisation" %}
+{% set serviceUrl = "home-epao" %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block pageTitle %} 
+0 end-point assessment organisations for {{_standardTitle|safe}}
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="{{myData.returnURLepaodropout}}" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl" >
+            0 end-point assessment organisations
+        </h1>
+
+        <p class="govuk-body govuk-!-margin-bottom-6"> <span class="govuk-!-font-weight-bold">Apprenticeship training course:</span><br> {{_standardTitle|safe}}</p>
+
+
+        <p class="govuk-body">The Education and Skills Funding Agency (ESFA) can advise you what to do next.</p>
+        <a class="govuk-button govuk-link govuk-link--no-visited-state" href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us">
+            Contact ESFA
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

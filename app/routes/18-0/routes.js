@@ -998,7 +998,7 @@ module.exports = function (router,_myData) {
         req.session.myData.needToMatchCount = 0
 
         // Keyword search reset/setup
-        searchFilterSetup(req,"Keywords")
+        searchFilterSetup(req,"Apprenticeship training&nbsp;course")
 
         // Level filter reset/setup
         levelFilterSetup(req)

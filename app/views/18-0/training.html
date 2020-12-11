@@ -104,7 +104,7 @@ Apprenticeship training courses
                     <!-- For each filter type -->
                     {% for _filter in myData.searchfilters %}
                         {% set _url = "training?" + _sortQuery + _levelfilterQuery + _routefilterQuery %}
-                        <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText}}</h3>
+                        <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{_filter.typeText|safe}}</h3>
                         <ul class="fat-filter-tags">
                             {% if _filter.typeof == "array" %}
                                 {% for _item in _filter.value %}
@@ -131,7 +131,9 @@ Apprenticeship training courses
                         {% if myData.cmpcfk != "false" %}
                         <div class="govuk-form-group" data-list-search-filter >
                             <label for="search-training" class="govuk-label" >
-                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Keywords</span>
+                                <!-- <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship training course</span> -->
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship training&nbsp;course</span>
+                                <span class="govuk-hint">Enter a job role or keywords</span>
                             </label>
                             <input type="search" value="{% if myData.searchapplied == true %}{{myData.searchTerm}}{% endif %}" id="search-training" name="q" title="Search" class="govuk-input search-input" >
                         </div>

@@ -74,6 +74,17 @@
           </div> -->
 
         <!-- Employer account -->
+        <div class="govuk-form-group ksbs">
+            <label class="govuk-label" >
+                Course KSBs info
+            </label>
+            <select class="govuk-select" style="min-width: 100%" id="ksbs" name="ksbs" data-option="ksbs">
+                <option {% if myData.ksbs == 'show' %}selected{% endif %} value="show">Show</option>
+                <option {% if myData.ksbs != 'show' %}selected{% endif %} value="hide">Hide</option>
+            </select>
+        </div>
+
+        <!-- Employer account -->
         <div class="govuk-form-group employeraccount">
           <label class="govuk-label" >
             Employer account
@@ -483,7 +494,8 @@
                 _urlReset = "r=t",
                 _urlPage = "home?",
                 _urlService = "&s=" + $('input[name=service]:checked').val(),
-                _urlEmpAccount = "&ea=" + _options.filter("#employeraccount").val();
+                _urlEmpAccount = "&ea=" + _options.filter("#employeraccount").val(),
+                _urlKSBs = "&ksbs=" + _options.filter("#ksbs").val();
                 // _urlEpaoInFAT = "&epaofat=" + _options.filter("#epaoinfat").val();
             // EPAO
             if(_urlService == "&s=epao"){
@@ -498,9 +510,11 @@
                 }
                 _urlEmpAccount = "&ea=true"
                 $('.employeraccount').hide()
+                $('.ksbs').hide()
             } else {
                 $('.pfType').hide()
                 $('.employeraccount').show()
+                $('.ksbs').show()
             }
 
             // Components queries
@@ -526,7 +540,7 @@
             }
            
             //Queries combined
-            var _urlPageQueries = _urlPage + _urlReset + _urlEmpAccount + _urlService + _urlComponents;
+            var _urlPageQueries = _urlPage + _urlReset + _urlEmpAccount + _urlKSBs + _urlService + _urlComponents;
 
             //URL text
             var _startURLText = _urlBase + _urlPageQueries,

@@ -354,6 +354,13 @@ Training providers for - {{_standardTitle|safe}}
         <h2 class="govuk-heading-m">{{myData.displaycount}} result{% if myData.displaycount != 1 %}s{% endif %}</h2>
         {% endif %}
 
+
+        {% if myData.providerssortby == "distancequality" %}
+        <p class="govuk-body govuk-!-margin-bottom-6">Sorted by:
+            <span class="govuk-!-font-weight-bold">Relevance</span>
+        </p>
+        {% endif %}
+
         {% if myData.cmppfl != "false" %}
         {% if myData.displaycount != 0 %}
         {% if myData.locationapplied %}

@@ -1394,6 +1394,7 @@ module.exports = function (router,_myData) {
             });
 
             if(req.session.myData.locationapplied && (!req.session.myData.trainingoptionsapplied || _release)){
+                req.session.myData.providerssortby = "distancequality"
                 // if(req.session.myData.sortby == "name"){
                 //     sortProviders(req, "name")
                 // } else {
@@ -1401,6 +1402,7 @@ module.exports = function (router,_myData) {
                     sortProviders(req, "distancequality")
                 // }
             } else {
+                req.session.myData.providerssortby = "quality"
                 sortProviders(req, "quality")
                 // sortProviders(req, "name")
             }

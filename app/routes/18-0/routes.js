@@ -779,6 +779,7 @@ module.exports = function (router,_myData) {
         req.session.myData.service = "fat"
         // req.session.myData.phase = "latest"
         req.session.myData.pfemail = "nondynamic"
+        req.session.myData.ksbs = "show"
 
         // Dev settings
         // KEY: 
@@ -880,6 +881,7 @@ module.exports = function (router,_myData) {
         req.session.myData.service =  req.query.s || req.session.myData.service
         // req.session.myData.phase =  req.query.p || req.session.myData.phase
         req.session.myData.pfemail =  req.query.pfe || req.session.myData.pfemail
+        req.session.myData.ksbs =  req.query.ksbs || req.session.myData.ksbs
         
         //component visibility - for devs
         //courses

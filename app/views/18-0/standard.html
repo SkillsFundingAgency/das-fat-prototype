@@ -26,6 +26,8 @@
     {% set _overview = _overview + "." %}
 {% endif %}
 
+{% set _showCoursePageToggle = _selectedStandard.coreSkillsCount > 0 %}
+
 {% block pageTitle %}
 {{_standardTitle|safe}} - apprenticeship training course
 {% endblock %}
@@ -80,8 +82,8 @@
         <!-- overviewOfRole -->
         <p class="govuk-body-l">{{_overview}}</p>
 
+        {% if myData.ksbs != "hide" %}
         {% set _occupationalSummary = _selectedStandard.occupationalSummary|replace("&lt;","<")|replace("&gt;",">")|replace("&quot;",'"') %}
-
         {% if _selectedStandard.occupationalSummary %}
         <details class="govuk-details govuk-!-margin-top-1" data-module="govuk-details">
             <summary class="govuk-details__summary">
@@ -93,6 +95,7 @@
                 <p class="govuk-body">{{_occupationalSummary|safe}}</p>
             </div>
         </details>
+        {% endif %}
         {% endif %}
         
         <!-- Summary -->
@@ -143,6 +146,9 @@
             </div> -->
             {% endif %}
             {% if _selectedStandard.coreSkillsCount > 0 %}
+
+            {% if myData.ksbs != "hide" %}
+            <!-- Duties -->
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Duties</dt>
                 <dd class="govuk-summary-list__value">
@@ -162,6 +168,10 @@
                     </details>
                 </dd>
             </div>
+            {% endif %}
+
+            {% if myData.ksbs != "hide" %}
+            <!-- Options -->
             {% if _selectedStandard.options %}
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Course options</dt>
@@ -192,6 +202,10 @@
                 </dd>
             </div>
             {% endif %}
+            {% endif %}
+
+            {% if myData.ksbs != "hide" %}
+            <!-- Knowledges -->
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Knowledge</dt>
                 <dd class="govuk-summary-list__value">
@@ -211,6 +225,9 @@
                     </details>
                 </dd>
             </div>
+            {% endif %}
+
+            <!-- Skills -->
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Skills</dt>
                 <dd class="govuk-summary-list__value">
@@ -232,6 +249,9 @@
                     </details>
                 </dd>
             </div>
+
+            {% if myData.ksbs != "hide" %}
+            <!-- Behaviours -->
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Behaviours</dt>
                 <dd class="govuk-summary-list__value">
@@ -251,6 +271,8 @@
                     </details>
                 </dd>
             </div>
+            {% endif %}
+
             {% endif %}
         </dl>
 

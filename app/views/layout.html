@@ -83,6 +83,23 @@
         ]
       }
     }) }}
+
+    {% if _showCoursePageToggle == true %}
+      {% set _toggleTo = "hide" %}
+      {% if myData.ksbs == "hide" %}
+        {% set _toggleTo = "show" %}
+      {% endif %}
+      <p class="govuk-body govuk-!-font-size-14">
+        <a href="standard?standard={{_selectedStandard.larsCode}}&ksbs={{_toggleTo}}" class="govuk-link govuk-link--no-visited-state">
+          {% if myData.ksbs == "hide" %}
+          Show KSBs & extra info
+          {% else %}
+          Hide KSBs & extra info
+          {% endif %}
+        </a>
+      </p>
+    {% endif %}
+
   {% endblock %}
 {% endif %}
 

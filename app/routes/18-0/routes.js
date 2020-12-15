@@ -1786,6 +1786,15 @@ module.exports = function (router,_myData) {
 
     });
 
+    // EPAO - unavailable
+    router.get('/' + version + '/epao-unavailable', function (req, res) {
+
+        res.render(version + '/epao-unavailable', {
+            myData:req.session.myData
+        });
+
+    });
+
     // EPAOs
     router.get('/' + version + '/epaos', function (req, res) {
 

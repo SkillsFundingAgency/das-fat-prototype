@@ -101,12 +101,10 @@
                 <ul class="govuk-list">
 
                     <li class="govuk-!-font-size-16">
-                    {% if _epao.ready or _blackListStandard == false %}
-                        Available to assess
-                    {% elif _epao.readinessdate != "" %}
+                    {% if _epao.readinessdate != "" %}
                         Available to assess from {{_epao.readinessdate}}
                     {% else %}
-                        Not available to assess yet
+                        Available to assess
                     {% endif %}
                     </li>
 

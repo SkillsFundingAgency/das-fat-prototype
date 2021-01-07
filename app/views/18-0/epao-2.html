@@ -57,12 +57,10 @@
                     {% set _blackListStandard = true %}
                 {% endif %}
 
-                {% if _selectedEPAO.ready or _blackListStandard == false %}
-                    <span class="govuk-!-font-weight-bold">Available to assess</span>
-                {% elif _selectedEPAO.readinessdate != "" %}
+                {% if _selectedEPAO.readinessdate != "" %}
                     <span class="govuk-!-font-weight-bold">Available to assess from {{_selectedEPAO.readinessdate}}</span>
                 {% else %}
-                    <span class="govuk-!-font-weight-bold">Not available to assess yet</span>
+                    <span class="govuk-!-font-weight-bold">Available to assess</span>
                 {% endif %}
             </p>
 

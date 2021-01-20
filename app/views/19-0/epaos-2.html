@@ -1,0 +1,187 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find an end-point assessment organisation for your apprentice" %}
+{% set serviceUrl = "home-epao" %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+{% set _epaos = myData.epaos.list %}
+{% set _standardQuery = "&standard=" + myData.standard %}
+
+<!-- Location search -->
+{% set _citiesAutocompleteList = myData.citiesAutocompleteList %}
+{% set _defaultLocationSearchvalue = "" %}
+{% if myData.locationapplied == true %}
+    {% set _defaultLocationSearchvalue = myData.location %}
+{% endif %}
+
+{% set _defaultLocationSearchvalue = "" %}
+{% if myData.locationapplied == true %}
+    {% set _defaultLocationSearchvalue = myData.location %}
+{% endif %}
+
+{% block pageTitle %} 
+{{myData.displaycount}} end-point assessment organisations for {{_standardTitle|safe}}
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="{{myData.returnURLepaos2}}" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+<style>
+    #search-location {
+        height: 40px;
+        /* background: white; */
+        border-right: 0;
+    }
+    .autocomplete__hint {
+        height: 40px;
+    }
+</style>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl" >
+            {{myData.displaycount}} end-point assessment organisation{% if myData.displaycount != 1 %}s{% endif %}
+        </h1>
+
+        <p class="govuk-body govuk-!-margin-bottom-6"><span class="govuk-!-font-weight-bold">Showing end-point assessment organisations for </span><br> {{_standardTitle|safe}}</p>
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+
+        {% set _blackListStandard = false %}
+        {% if _selectedStandard.larsCode < 250 %}
+            {% set _blackListStandard = true %}
+        {% endif %}
+
+        <!-- epaos -->
+        {% for _epao in _epaos %}
+            {% if _epao.search == true %}
+
+            <!-- Delivery areas label -->
+            {% set _deliveryAreasLabel = "" %}
+            {% for _epaoRegion in _epao.regions %}
+                {% if _epaoRegion == 10 %}
+                    {% set _deliveryAreasLabel = "National coverage" %}
+                {% else %}
+                    {% set _loopLast = loop.last %}
+                    {% set _moreThanOne = _epao.regions.length > 1 %}
+                    {% for _region in myData.regions %}
+                        {% if _epaoRegion == _region.id %}
+                            {% set _deliveryAreasLabel = _deliveryAreasLabel + _region.label %}
+                            {% if _moreThanOne and _loopLast == false %}
+                                {% set _deliveryAreasLabel = _deliveryAreasLabel + ", " %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+
+            <!-- address label -->
+            {% set _addressLabel = "" %}
+           
+            {% if _epao.address4 %}{% set _addressLabel = _addressLabel + _epao.address4|trim + ', ' %}{% endif %}
+            {% if _epao.address5 %}{% set _addressLabel = _addressLabel + _epao.address5|trim + ', ' %}{% endif %}
+            {% if _epao.postcode %}{% set _addressLabel = _addressLabel + _epao.postcode|trim %}{% endif %}
+
+            <div class="govuk-!-margin-top-3 govuk-!-margin-bottom-3">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+                    <a href="epao-2?epao={{_epao.id}}{{_standardQuery}}&returnURLepao2=epaos-2" class="govuk-link govuk-link--no-visited-state">{{_epao.name}}</a>
+                </h2>
+                
+                <ul class="govuk-list">
+
+                    <li class="govuk-!-font-size-16">
+                    {% if _epao.readinessdate != "" %}
+                        Available to assess from {{_epao.readinessdate}}
+                    {% else %}
+                        Available to assess
+                    {% endif %}
+                    </li>
+
+                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Locations covered: </span> {{_deliveryAreasLabel}}</li>
+                    
+                    <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Address:</span> {{_addressLabel}}</li>
+
+                    <li class="govuk-!-font-size-16">
+                        <span class="govuk-secondary-colour">Total courses:</span> 
+                        {{_epao.standards.length}}
+                    </li>
+
+                </ul>
+            </div>
+            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+            {% endif %}
+        {% endfor %}
+
+    </div>
+    
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<!-- <script>
+    
+    // Locations 
+    function suggestLocations(query, populateResults) {
+        var _allSuggestions = []
+
+        // Cities
+        var _citiesResults = {{_citiesAutocompleteList | dump | safe }},
+            _filteredCitiesResults = _citiesResults.filter(
+                result => result.toUpperCase().startsWith(query.trim().toUpperCase())
+            )
+        _filteredCitiesResults.sort(function(a,b){
+            var returnValue = 0;
+            if (a.toUpperCase() < b.toUpperCase()){
+                returnValue = -1
+            } else if(a.toUpperCase() > b.toUpperCase()){
+                returnValue = 1
+            }
+            return returnValue
+        });
+
+        // Postcodes
+        $.getJSON('https://api.postcodes.io/postcodes/' + query + '/autocomplete', function(body){
+            var _postcodes = body.result || []
+            _allSuggestions = _allSuggestions.concat(_filteredCitiesResults,_postcodes)
+            populateResults(_allSuggestions)
+        })
+    }
+    function fireLocationSearch(){setTimeout(function(){ $("#search-location-submit").trigger("click") },200);}
+    var locationInput = document.querySelector('#search-location')
+    if (locationInput) {
+        var locationInputID = locationInput.id,
+            locationElement = document.createElement('div'),
+            defaultLocationSearchvalue = {{_defaultLocationSearchvalue | dump | safe }}
+        locationElement.className = "autocomplete__parent_wrapper";
+        locationInput.parentNode.insertBefore(locationElement, locationInput)
+        accessibleAutocomplete({
+            // other options
+            element: locationElement,
+            id: locationInputID,
+            name: locationInput.name,
+            source: suggestLocations,
+            defaultValue: defaultLocationSearchvalue,
+            minLength: 1,
+            confirmOnBlur: false,
+            autoselect: true,
+            onConfirm: fireLocationSearch,
+            displayMenu: 'overlay'
+        })
+        locationInput.style.display = 'none'
+        locationInput.id = locationInputID + '-old'
+        locationInput.name = ''
+    }
+</script> -->
+{% endblock %}

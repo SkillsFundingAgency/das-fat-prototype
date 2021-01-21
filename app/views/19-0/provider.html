@@ -365,9 +365,12 @@
             {% if myData.locationapplied and _selectedMatchesLocation != true %}
 
                 {% if myData.providersOnStandardCount > 0 %}
+
                 <p class="govuk-body">There are {{myData.providersOnStandardCount}} training providers for {{_standardTitle | safe}} at the apprenticeship location.</p>
                 <p class="govuk-body govuk-!-margin-bottom-0"><a href="providers?standard={{_selectedStandard.larsCode}}&location={{_defaultLocationSearchvalue}}" class="govuk-link govuk-button govuk-link--no-visited-state">View training providers</a></p>
+
                 {% else %}
+
                 <p class="govuk-body" >There are no other training providers available for {{_standardTitle | safe}} at the apprenticeship location.</p>
                 <p class="govuk-body">You can either:</p>
                 <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
@@ -376,6 +379,11 @@
                 </ul>
                 <p class="govuk-body">{{myData.countproviders}} providers available at other locations.</p>
                 <p class="govuk-body govuk-!-margin-bottom-6"><a href="providers?standard={{myData.standard}}&location" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">View all providers for this course</a></p>
+
+                {% if myData.aedinfat == "true" %}
+                {% include "includes/aed-cta.html" %}
+                {% endif %}
+
                 {% endif %}
 
             {% endif %}
@@ -472,24 +480,24 @@
             {% endif %}
         </div>
 
-            <!-- Course specific enquiries -->
-            <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Contact this provider about this course</h2>
-                <dl class="govuk-summary-list">
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Email</dt>
-                        <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a></dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Telephone</dt>
-                        <dd class="govuk-summary-list__value">078&nbsp;7856&nbsp;9856</dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">Website</dt>
-                        <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></dd>
-                    </div>
-                </dl>
-            </div>
+        <!-- Course specific enquiries -->
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Contact this provider about this course</h2>
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Email</dt>
+                    <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Telephone</dt>
+                    <dd class="govuk-summary-list__value">078&nbsp;7856&nbsp;9856</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Website</dt>
+                    <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></dd>
+                </div>
+            </dl>
+        </div>
 
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             <p class="govuk-body shortlist-label-non-js " >

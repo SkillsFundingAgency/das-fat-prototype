@@ -968,18 +968,6 @@ module.exports = function (router,_myData) {
         });
     });
 
-    // Survey tests
-    router.get('/' + version + '/surveytest1', function (req, res) {
-        res.render(version + '/surveytest1', {
-            myData:req.session.myData
-        });
-    });
-    router.get('/' + version + '/surveytest2', function (req, res) {
-        res.render(version + '/surveytest2', {
-            myData:req.session.myData
-        });
-    });
-
     // Standards test
     router.get('/' + version + '/standards', function (req, res) {
         res.render(version + '/standards', {
@@ -2681,6 +2669,60 @@ module.exports = function (router,_myData) {
         res.render(version + '/cookies-details', {
             myData:req.session.myData
         });
+    });
+
+
+
+
+
+
+    // AED 
+
+    // AED Employer form
+    router.get('/' + version + '/aed-employer-form', function (req, res) {
+
+        //Location reset/setup
+        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
+            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
+                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
+                if(cityMatch(req) || _postCodeMatch) {
+                    req.session.myData.locationapplied = true
+                    req.session.myData.location = req.session.myData.locationTemp
+                    req.session.myData.needToMatchCount++
+                } else {
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
+                }
+                continueRendering()
+            });
+        } else {
+            continueRendering()
+        }
+        
+        function continueRendering(){
+            res.render(version + '/aed-employer-form', {
+                myData:req.session.myData
+            });
+        }
+        
+    });
+    router.post('/' + version + '/aed-employer-form', function (req, res) {
+        res.redirect(301, '/' + version + '/aed-employer-confirmation');
+    });
+
+    // AED Employer confirmation
+    router.get('/' + version + '/aed-employer-confirmation', function (req, res) {
+
+        res.render(version + '/aed-employer-confirmation', {
+            myData:req.session.myData
+        });
+        
     });
 
     

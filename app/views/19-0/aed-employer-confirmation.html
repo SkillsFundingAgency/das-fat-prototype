@@ -1,0 +1,67 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block pageTitle %}
+We've registered your interest
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .govuk-input-background,
+    .autocomplete__input {
+        background-color: white;
+    }
+</style>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        {{ govukPanel({
+			titleText: "We've registered your interest",
+			html: data['request']['standard']['name']
+		}) }}
+
+		<p class="govuk-body">We’ve sent you a confirmation email.</p>
+
+		<h2 class="govuk-heading-m">What happens next</h2>
+
+		<p>
+			We'll share your interest in {{_standardTitle|safe}} with training providers for up to 12 weeks.
+		</p>
+
+		<p>
+			If a training provider tells us they’re interested in delivering your training, we’ll send you a notification email with their details. You can contact them to discuss your requirements. 
+		</p>
+
+		<p>
+			If you do not hear from us, it means that no training providers have expressed an interest in delivering your training.
+		</p>
+
+		<h2 class="govuk-heading-m govuk-!-margin-top-6">
+			What else can I do?
+		</h2>
+		<p class="govuk-body">You can go back and either:</p>
+		<ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
+			<li><a href="#" class="govuk-link govuk-link--no-visited-state" >remove the location</a></li>
+			<li><a href="training" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
+		</ul>
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+        &nbsp;
+    </div>
+
+</div>
+
+{% endblock %}

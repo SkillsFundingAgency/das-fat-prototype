@@ -295,6 +295,11 @@
                     <li><a href="training" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
                     <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
                 </ul>
+
+                {% if myData.aedinfat == "true" %}
+                {% include "includes/aed-cta.html" %}
+                {% endif %}
+
             </div>
 
         {% else %}
@@ -359,6 +364,11 @@
                     </ul>
                     <p class="govuk-body">{{myData.countproviders}} providers available at other locations.</p>
                     <p class="govuk-body govuk-!-margin-bottom-6"><a href="providers?standard={{myData.standard}}&location" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">View all providers for this course</a></p>
+
+                    {% if myData.aedinfat == "true" %}
+                    {% include "includes/aed-cta.html" %}
+                    {% endif %}
+
                 {% endif %}
 
             </div>

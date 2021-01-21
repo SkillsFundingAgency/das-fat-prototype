@@ -780,6 +780,7 @@ module.exports = function (router,_myData) {
         // req.session.myData.phase = "latest"
         req.session.myData.pfemail = "nondynamic"
         req.session.myData.ksbs = "show"
+        req.session.myData.aedinfat = "true"
 
         // Dev settings
         // KEY: 
@@ -882,6 +883,7 @@ module.exports = function (router,_myData) {
         // req.session.myData.phase =  req.query.p || req.session.myData.phase
         req.session.myData.pfemail =  req.query.pfe || req.session.myData.pfemail
         req.session.myData.ksbs =  req.query.ksbs || req.session.myData.ksbs
+        req.session.myData.aedinfat =  req.query.aed || req.session.myData.aedinfat
         
         //component visibility - for devs
         //courses
@@ -962,6 +964,18 @@ module.exports = function (router,_myData) {
     // Prototype setup
     router.get('/' + version + '/setup', function (req, res) {
         res.render(version + '/setup', {
+            myData:req.session.myData
+        });
+    });
+
+    // Survey tests
+    router.get('/' + version + '/surveytest1', function (req, res) {
+        res.render(version + '/surveytest1', {
+            myData:req.session.myData
+        });
+    });
+    router.get('/' + version + '/surveytest2', function (req, res) {
+        res.render(version + '/surveytest2', {
             myData:req.session.myData
         });
     });

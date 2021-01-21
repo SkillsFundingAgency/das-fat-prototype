@@ -72,6 +72,17 @@
               <option {% if myData.epaoinfat == 'false' %}selected{% endif %} value="false">No</option>
             </select>
           </div> -->
+        
+        <!-- AED in FAT -->
+        <div class="govuk-form-group">
+            <label class="govuk-label" >
+                AED in FAT
+            </label>
+            <select class="govuk-select" style="min-width: 100%" id="aedinfat" name="aedinfat" data-option="aedinfat">
+                <option {% if myData.aedinfat != 'false' %}selected{% endif %} value="true">Yes</option>
+                <option {% if myData.aedinfat == 'false' %}selected{% endif %} value="false">No</option>
+            </select>
+        </div>
 
         <!-- Employer account -->
         <div class="govuk-form-group ksbs">
@@ -499,7 +510,8 @@
                 _urlPage = "home?",
                 _urlService = "&s=" + $('input[name=service]:checked').val(),
                 _urlEmpAccount = "&ea=" + _options.filter("#employeraccount").val(),
-                _urlKSBs = "&ksbs=" + _options.filter("#ksbs").val();
+                _urlKSBs = "&ksbs=" + _options.filter("#ksbs").val(),
+                _urlAEDInFAT = "&aed=" + _options.filter("#aedinfat").val();
                 // _urlEpaoInFAT = "&epaofat=" + _options.filter("#epaoinfat").val();
             // EPAO
             if(_urlService == "&s=epao"){
@@ -544,7 +556,7 @@
             }
            
             //Queries combined
-            var _urlPageQueries = _urlPage + _urlReset + _urlEmpAccount + _urlKSBs + _urlService + _urlComponents;
+            var _urlPageQueries = _urlPage + _urlReset + _urlEmpAccount + _urlAEDInFAT + _urlKSBs + _urlService + _urlComponents;
 
             //URL text
             var _startURLText = _urlBase + _urlPageQueries,

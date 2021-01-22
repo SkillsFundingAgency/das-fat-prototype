@@ -2715,16 +2715,48 @@ module.exports = function (router,_myData) {
     router.post('/' + version + '/aed-employer-form', function (req, res) {
         res.redirect(301, '/' + version + '/aed-employer-confirmation');
     });
-
     // AED Employer confirmation
     router.get('/' + version + '/aed-employer-confirmation', function (req, res) {
-
         res.render(version + '/aed-employer-confirmation', {
             myData:req.session.myData
         });
-        
     });
-
+    // AED Employer removed
+    router.get('/' + version + '/aed-employer-removed', function (req, res) {
+        res.render(version + '/aed-employer-removed', {
+            myData:req.session.myData
+        });
+    });
+    // AED Employer EMAIL confirmation
+    router.get('/' + version + '/aed-employer-email-confirmation', function (req, res) {
+        res.render(version + '/aed-employer-email-confirmation', {
+            myData:req.session.myData
+        });
+    });
+    // AED Employer EMAIL reminder
+    router.get('/' + version + '/aed-employer-email-reminder', function (req, res) {
+        res.render(version + '/aed-employer-email-reminder', {
+            myData:req.session.myData
+        });
+    });
+    // AED Employer EMAIL reminder 2
+    router.get('/' + version + '/aed-employer-email-reminder-2', function (req, res) {
+        res.render(version + '/aed-employer-email-reminder-3', {
+            myData:req.session.myData
+        });
+    });
+    // AED Employer EMAIL reminder 3
+    router.get('/' + version + '/aed-employer-email-reminder-3', function (req, res) {
+        res.render(version + '/aed-employer-email-reminder-3', {
+            myData:req.session.myData
+        });
+    });
+    // AED Employer EMAIL expired
+    router.get('/' + version + '/aed-employer-email-expired', function (req, res) {
+        res.render(version + '/aed-employer-email-expired', {
+            myData:req.session.myData
+        });
+    });
     
 
 }

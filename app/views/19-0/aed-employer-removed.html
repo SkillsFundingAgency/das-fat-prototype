@@ -1,0 +1,32 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block pageTitle %} 
+We have removed your interest in {{_standardTitle|safe}}
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl">
+			We have removed your interest in {{_standardTitle|safe}}
+		</h1>
+
+		<p class="govuk-body">
+			<a href="home" class="govuk-button">Search for other apprenticeship training for your business</a> 
+		</p>
+
+    </div>
+</div>
+
+{% endblock %}

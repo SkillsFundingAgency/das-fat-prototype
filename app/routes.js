@@ -329,13 +329,16 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 // today = dd + '/' + mm + '/' + yyyy;
 
 // require("request").get("https://www.instituteforapprenticeships.org/api/apprenticeshipstandards", (error, response, body) => {
+//     console.log("test2")
 //     var _apiData = JSON.parse(body),
 //         _statusTypes = {},
 //         _versionTypes = {},
 //         _integratedDegreeTypes = {},
 //         _integratedDegreeTypesApproved = {},
+//         _integratedDegreeTypesApprovedLevels = {},
 //         _integratedInTitleTypes = {},
 //         _integratedApprenticeshipTypes = {},
+//         _integratedApprenticeshipTypesApproved = {},
 //         _approvedForDelivery = 0,
 //         _integratedInTitle = 0,
 //         _integratedOnlyInTitle = 0,
@@ -376,13 +379,19 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         }
 
 //         if(_standard.integratedApprenticeship){
-//             console.log(_standardData.larsCode + " - " + _standardData.title)
+//             // console.log(_standardData.larsCode + " - " + _standardData.title)
 //             integratedApprenticeship++
 //         }
 
 //         if(_standard.status == "Approved for delivery"){
 //             _approvedForDelivery++
 //             _integratedDegreeTypesApproved[_standard.integratedDegree] = (_integratedDegreeTypesApproved[_standard.integratedDegree] || 0) + 1
+//             _integratedApprenticeshipTypesApproved[_standard.integratedApprenticeship] = (_integratedApprenticeshipTypesApproved[_standard.integratedApprenticeship] || 0) + 1
+
+//             if(_standard.integratedDegree == "integrated degree"){
+//                 _integratedDegreeTypesApprovedLevels[_standard.level] = (_integratedDegreeTypesApprovedLevels[_standard.level] || 0) + 1
+//             }
+
 //             _testStandardsData.push(_standardData)
 //         }
 //         if(_standard.coreAndOptions && _standard.skills.length > 0){
@@ -481,7 +490,10 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
     
 //     // console.log("-----------------")
 //     // console.log(_approvedForDelivery + " 'Approved for delivery' standards on " + today)
-//     // console.log(_integratedDegreeTypesApproved)
+//     console.log("_integratedDegreeTypesApproved")
+//     console.log(_integratedDegreeTypesApproved)
+//     console.log("_integratedDegreeTypesApprovedLevels")
+//     console.log(_integratedDegreeTypesApprovedLevels)
 //     // console.log("-----------------")
 
 //     // console.log(_integratedInTitle + " with '(integrated' in title (case insensitive) and 'Approved for delivery'")
@@ -502,11 +514,13 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //     // console.log("_versionTypes")
 //     // console.log(_versionTypes)
 
-//     console.log("_integratedApprenticeshipTypes")
+//     // console.log("_integratedApprenticeshipTypes")
+//     // console.log(_integratedApprenticeshipTypes)
 
-//     console.log(_integratedApprenticeshipTypes)
+//     console.log("_integratedApprenticeshipTypesApproved")
+//     console.log(_integratedApprenticeshipTypesApproved)
 
-//     console.log("integratedApprenticeship count = " + integratedApprenticeship)
+//     // console.log("integratedApprenticeship count = " + integratedApprenticeship)
 
 //     // console.log(_hasOccupationalSummary + " with an occupational summary and 'Approved for delivery'")
 //     // console.log(_hasDuties + " with duties and 'Approved for delivery'")

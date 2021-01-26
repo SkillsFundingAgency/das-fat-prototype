@@ -2757,6 +2757,18 @@ module.exports = function (router,_myData) {
             myData:req.session.myData
         });
     });
+    // AED Employer EMAIL provider interested
+    router.get('/' + version + '/aed-employer-email-provider-interested', function (req, res) {
+        res.render(version + '/aed-employer-email-provider-interested', {
+            myData:req.session.myData
+        });
+    });
+    // AED Employer EMAIL found match
+    router.get('/' + version + '/aed-employer-email-match', function (req, res) {
+        res.render(version + '/aed-employer-email-match', {
+            myData:req.session.myData
+        });
+    });
     
 
 }

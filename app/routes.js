@@ -345,6 +345,8 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //         _integratedDegreeInTitle = 0,
 //         _integratedInTitleNotFlagged = 0,
 //         _integratedNotInTitleFlagged = 0,
+//         _integratedCourses = [],
+//         _integratedCoursesCount = 0,
 //         hasFullStop = 0,
 //         doesntHaveFullStop = 0,
 //         endsInSpace = 0,
@@ -390,6 +392,11 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 
 //             if(_standard.integratedDegree == "integrated degree"){
 //                 _integratedDegreeTypesApprovedLevels[_standard.level] = (_integratedDegreeTypesApprovedLevels[_standard.level] || 0) + 1
+//             }
+
+//             if(_standard.integratedDegree == "integrated degree" || _standard.integratedApprenticeship == true){
+//                 _integratedCourses.push(_standardData.title)
+//                 _integratedCoursesCount++
 //             }
 
 //             _testStandardsData.push(_standardData)
@@ -490,10 +497,10 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
     
 //     // console.log("-----------------")
 //     // console.log(_approvedForDelivery + " 'Approved for delivery' standards on " + today)
-//     console.log("_integratedDegreeTypesApproved")
-//     console.log(_integratedDegreeTypesApproved)
-//     console.log("_integratedDegreeTypesApprovedLevels")
-//     console.log(_integratedDegreeTypesApprovedLevels)
+//     // console.log("_integratedDegreeTypesApproved")
+//     // console.log(_integratedDegreeTypesApproved)
+//     // console.log("_integratedDegreeTypesApprovedLevels")
+//     // console.log(_integratedDegreeTypesApprovedLevels)
 //     // console.log("-----------------")
 
 //     // console.log(_integratedInTitle + " with '(integrated' in title (case insensitive) and 'Approved for delivery'")
@@ -517,14 +524,17 @@ _myData.epaosOnStandardsCounts = _epaosOnStandardsCounts
 //     // console.log("_integratedApprenticeshipTypes")
 //     // console.log(_integratedApprenticeshipTypes)
 
-//     console.log("_integratedApprenticeshipTypesApproved")
-//     console.log(_integratedApprenticeshipTypesApproved)
+//     // console.log("_integratedApprenticeshipTypesApproved")
+//     // console.log(_integratedApprenticeshipTypesApproved)
 
 //     // console.log("integratedApprenticeship count = " + integratedApprenticeship)
 
 //     // console.log(_hasOccupationalSummary + " with an occupational summary and 'Approved for delivery'")
 //     // console.log(_hasDuties + " with duties and 'Approved for delivery'")
 //     // console.log(_hasOptions + " with options and 'Approved for delivery'")
+
+//     console.log(_integratedCoursesCount)
+//     console.log(_integratedCourses)
 
 // });
 // // var distinctStatuses = [...new Set(_apiData.map(function(data){return data.statuses}))];

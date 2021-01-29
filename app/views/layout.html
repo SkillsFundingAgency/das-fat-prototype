@@ -53,6 +53,8 @@
 
 {% if useAutoStoreData %}
   {% block footer %}
+
+    {% if _email != true %}
     {{ govukFooter({
       meta: {
         items: [
@@ -83,6 +85,7 @@
         ]
       }
     }) }}
+    {% endif %}
 
     {% if _showCoursePageToggle == true %}
       {% set _toggleTo = "hide" %}
@@ -98,6 +101,67 @@
           {% endif %}
         </a>
       </p>
+    {% endif %}
+
+    {% if _showAEDEmployerLinks == true %}
+    <ol class="govuk-list govuk-list--number govuk-!-font-size-14 govuk-!-margin-top-8">
+      <!-- <li>
+        {% if _currentAEDEmployerLink == "aed-employer-confirmation" %}
+          <span class="govuk-!-font-weight-bold">Employer - confirmation</span>
+        {% else %}
+          <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-confirmation">Employer - confirmation</a>
+        {% endif %}
+      </li> -->
+      <li>
+        {% if _currentAEDEmployerLink == "aed-employer-email-confirmation" %}
+          <span class="govuk-!-font-weight-bold">Employer - email - confirmation</span>
+        {% else %}
+          <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-confirmation">Employer - email - confirmation</a>
+        {% endif %}
+      </li>
+      <li>
+        {% if _currentAEDEmployerLink == "aed-employer-email-reminder" %}
+        <span class="govuk-!-font-weight-bold">Employer - email - reminder 1</span>
+        {% else %}
+        <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-reminder">Employer - email - reminder 1</a>
+        {% endif %}
+      </li>
+      <li>
+        {% if _currentAEDEmployerLink == "aed-employer-email-reminder-2" %}
+          <span class="govuk-!-font-weight-bold">Employer - email - reminder 2</span>
+        {% else %}
+          <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-reminder-2">Employer - email - reminder 2</a>
+        {% endif %}
+      </li>
+      <li>
+        {% if _currentAEDEmployerLink == "aed-employer-email-reminder-3" %}
+          <span class="govuk-!-font-weight-bold">Employer - email - reminder 3</span>
+        {% else %}
+          <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-reminder-3">Employer - email - reminder 3</a>
+        {% endif %}
+      </li>
+      <li>
+        {% if _currentAEDEmployerLink == "aed-employer-email-expired" %}
+          <span class="govuk-!-font-weight-bold">Employer - email - expired</span>
+        {% else %}
+          <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-expired">Employer - email - expired</a>
+        {% endif %}
+      </li>
+      <li>
+        {% if _currentAEDEmployerLink == "aed-employer-email-provider-interested" %}
+          <span class="govuk-!-font-weight-bold">Employer - email - provider interested</span>
+        {% else %}
+          <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-provider-interested">Employer - email - provider interested</a>
+        {% endif %}
+      </li>
+      <li>
+        {% if _currentAEDEmployerLink == "aed-employer-email-match" %}
+          <span class="govuk-!-font-weight-bold">Employer - email - matched</span>
+        {% else %}
+          <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-match">Employer - email - matched</a>
+        {% endif %}
+      </li>
+    </ol>
     {% endif %}
 
   {% endblock %}

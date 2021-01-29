@@ -8,12 +8,14 @@
 {% block pageTitle %} 
 {% endblock %}
 
+{% set _email = true %}
+{% set _showAEDEmployerLinks = true %}
+{% set _currentAEDEmployerLink = "aed-employer-email-provider-interested" %}
+
 {% block beforeContent %}
 {% endblock %}
 
 {% block content %}
-
-
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -127,7 +129,4 @@
     </div>
 </div>
 
-{% endblock %}
-
-{% block footer %}
 {% endblock %}

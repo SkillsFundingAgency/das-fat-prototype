@@ -9,9 +9,12 @@
 We've registered your interest
 {% endblock %}
 
+{% set _showAEDEmployerLinks = true %}
+{% set _currentAEDEmployerLink = "aed-employer-confirmation" %}
+
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
-    {% include "includes/back-link.html" %}
+	<a href="aed-employer-form" class="govuk-back-link">Back</a>
 {% endblock %}
 
 {% block content %}
@@ -28,7 +31,7 @@ We've registered your interest
 
         {{ govukPanel({
 			titleText: "We've registered your interest",
-			html: data['request']['standard']['name']
+			html: _standardTitle|safe
 		}) }}
 
 		<p class="govuk-body">We’ve sent you a confirmation email.</p>

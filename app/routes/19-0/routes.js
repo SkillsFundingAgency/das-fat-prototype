@@ -2741,7 +2741,7 @@ module.exports = function (router,_myData) {
     });
     // AED Employer EMAIL reminder 2
     router.get('/' + version + '/aed-employer-email-reminder-2', function (req, res) {
-        res.render(version + '/aed-employer-email-reminder-3', {
+        res.render(version + '/aed-employer-email-reminder-2', {
             myData:req.session.myData
         });
     });

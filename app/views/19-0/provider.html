@@ -587,10 +587,8 @@
         {% endif %}
 
         <!-- AED -->
-        {% if myData.locationapplied %}
-            {% if myData.aedinfat == "true" %}
-                {% include "includes/aed-cta.html" %}
-            {% endif %}
+        {% if myData.aedinfat == "true" %}
+            {% include "includes/aed-cta.html" %}
         {% endif %}
 
         {% if myData.cmppdoc != "false" %}

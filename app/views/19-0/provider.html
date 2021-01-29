@@ -380,10 +380,6 @@
                 <p class="govuk-body">{{myData.countproviders}} providers available at other locations.</p>
                 <p class="govuk-body govuk-!-margin-bottom-6"><a href="providers?standard={{myData.standard}}&location" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">View all providers for this course</a></p>
 
-                {% if myData.aedinfat == "true" %}
-                {% include "includes/aed-cta.html" %}
-                {% endif %}
-
                 {% endif %}
 
             {% endif %}
@@ -499,7 +495,7 @@
             </dl>
         </div>
 
-        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-7">
             <p class="govuk-body shortlist-label-non-js " >
                 {% if _selectedProvider.inFavourites == true %}
                 <strong class="govuk-tag">
@@ -574,7 +570,6 @@
         
         {% if myData.standardsearchapplied != true %}
         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Contact details</h2>
-        
         <dl class="govuk-summary-list govuk-!-margin-bottom-7">
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Email</dt>
@@ -589,6 +584,13 @@
                 <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">www.{{_providerTitleForContact}}.co.uk</a></dd>
             </div>
         </dl>
+        {% endif %}
+
+        <!-- AED -->
+        {% if myData.locationapplied %}
+            {% if myData.aedinfat == "true" %}
+                {% include "includes/aed-cta.html" %}
+            {% endif %}
         {% endif %}
 
         {% if myData.cmppdoc != "false" %}

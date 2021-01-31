@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+
 // Base session data
 var _myData = {
     "qualityPointsSet": false,
@@ -213,7 +214,17 @@ var _myData = {
 }
 
 
-
+// Dates
+var _todaysDate = new Date(),
+    _day = String(_todaysDate.getDate()).padStart(2, '0'),
+    _nextMonthYear = _todaysDate.getFullYear(),
+    _monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"],
+    _nextMonthName = _monthNames[_todaysDate.getMonth() + 1]
+if(_todaysDate.getMonth() == 11){
+    _nextMonthName = "January"
+    _nextMonthYear++
+}
+_myData.monthFromToday = _day + " " + _nextMonthName + " " + _nextMonthYear
 
 // For getting new bits to add existing NEW template standards
 // var _larsCodesToUse = []

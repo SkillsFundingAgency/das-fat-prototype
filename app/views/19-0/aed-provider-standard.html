@@ -1,0 +1,244 @@
+{% extends "layout-as-pro.html" %}
+
+{% set serviceName = "Apprenticeships" %}
+
+{% block pageTitle %} 
+Meet employer demand for apprenticeships
+{% endblock %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="aed-provider-demand" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+			{{_standardTitle|safe}}
+		</h1>
+    </div>
+</div>
+
+
+<div class="govuk-grid-column-full govuk-!-margin-bottom-8" style="background-color:#DEE0E2; padding-top: 15px">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-half">
+            <div class="govuk-form-group govuk-!-margin-bottom-3" data-list-search-filter="">
+                <div class="govuk-form-group">
+                    <label for="search-location" class="govuk-label">
+                        Enter a town, city or postcode
+                    </label>
+                    <input type="search" value="" id="search-location" name="request[location]" title="Search" class="govuk-input govuk-input-background">
+                </div>
+            </div>
+
+            {{ govukSelect({
+                id: "sort",
+                name: "sort",
+                label:
+                {
+                    text: "Search radius"
+                },
+                items: [
+                {
+                    value: "published",
+                    text: "5 miles"
+                },
+                {
+                    value: "published",
+                    text: "10 miles"
+                },
+                {
+                    value: "published",
+                    text: "25 miles"
+                },
+                {
+                    value: "published",
+                    text: "50 miles"
+                },
+                {
+                    value: "published",
+                    text: "80 miles"
+                },
+                {
+                    value: "published",
+                    text: "England"
+                }
+                ]
+            }) }}
+
+        </div>
+
+        <div class="govuk-grid-column-one-third">
+            <div class="govuk-form-group">
+                <label class="govuk-label" for="start-date">
+                    Start date
+                </label>
+                <select class="govuk-select" id="start-date" name="start-date" style="min-width:100%;">
+                    <option value="all">All</option>
+                    <option value="feb2019">Before Feb 2019</option>
+                    <option value="feb2021">Before Feb 2021</option>
+                    <option value="mar2021">Before Mar 2021</option>
+                    <option value="apr2021">Before Apr 2021</option>
+                    <option value="apr2022">Before Apr 2022</option>
+                </select>
+            </div>
+
+            <div class="govuk-form-group">
+                <label class="govuk-label" for="recruit">
+                    Recruitment required
+                </label>
+                <select class="govuk-select" id="recruit" name="recruit" style="min-width:100%;">
+                    <option value="all">All</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- <div class="govuk-grid-column-one-third">
+            &nbsp;
+        </div> -->
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-third" >
+            <button type="submit" class="govuk-button" style="margin-bottom: 20px">Apply filters</button>
+        </div>
+    </div>
+
+</div>
+
+{% macro employerCheckbox(name, value='') %}
+<div class="govuk-checkboxes govuk-checkboxes--small">
+	<div class="govuk-checkboxes__item">
+		<input class="govuk-checkboxes__input" id="employer-{{ value }}" name="employer" type="checkbox" value="{{ value }}">
+		<label class="govuk-label govuk-checkboxes__label govuk-!-font-size-16" for="employer-{{ value }}">
+			{{ name }}
+		</label>
+	</div>
+</div>
+{% endmacro %}
+
+<div class="govuk-grid-row">
+	<div class="govuk-grid-column-full">
+		{{ govukTable({
+			caption: "3 employers interested in this training",
+			captionClasses: "govuk-heading-l",
+			classes: "govuk-margin-bottom-6 app-table--vertical-align-middle govuk-!-font-size-16",
+			firstCellIsHeader: false,
+			head: [
+			{
+				text: "Employer"
+			},
+			{
+				text: "Location"
+			},
+			{
+				text: "Apprentices"
+			},
+			{
+				text: "Start date"
+			},
+			{
+				text: "Recruitment"
+			},
+			{
+				text: "Interest registered"
+			}
+			],
+			rows: [
+			[
+			{
+				html: employerCheckbox('Employer 1', '1')
+			},
+			{
+				text: "Leamington Spa"
+			},
+			{
+				text: "3",
+				format: "numeric"
+			},
+			{
+				text: "Before March 2021"
+			},
+			{
+				text: "No"
+			},
+			{
+				text: "21 December 2020"
+			}
+			],
+			[
+			{
+				html: employerCheckbox('Employer 2', '2')
+			},
+			{
+				text: "Coventry"
+			},
+			{
+				text: "1",
+				format: "numeric"
+			},
+			{
+				text: "April 2021"
+			},
+			{
+				text: "No"
+			},
+			{
+				text: "21 December 2020"
+			}
+			],
+			[
+			{
+				html: employerCheckbox('Employer 3', '3')
+			},
+			{
+				text: "Coventry"
+			},
+			{
+				text: "2",
+				format: "numeric"
+			},
+			{
+				text: "No preference"
+			},
+			{
+				text: "No"
+			},
+			{
+				text: "21 December 2020"
+			}
+			]
+			]
+		}) }}
+
+		<h3 class="govuk-heading-m govuk-!-margin-top-8">
+			Interested in delivering this training?
+		</h3>
+
+		<p>
+			If you’re interested in providing training, select the employers you would like to work with.
+		</p>
+		<p>
+			Give us some details and we’ll send an email of your training offer to the employers you’ve selected.
+		</p>
+
+		{{govukButton({
+			text: "Continue and add your details",
+			href: "aed-provider-details?standard=" + _selectedStandard.larsCode
+		})}}
+	</div>
+</div>
+
+
+{% endblock %}
+
+{% block pageScripts %}
+{% endblock %}

@@ -2769,6 +2769,55 @@ module.exports = function (router,_myData) {
             myData:req.session.myData
         });
     });
-    
+
+
+    // AED Provider - home
+    router.get('/' + version + '/aed-provider-home', function (req, res) {
+        res.render(version + '/aed-provider-home', {
+            myData:req.session.myData
+        });
+    });
+    // AED Provider - demand
+    router.get('/' + version + '/aed-provider-demand', function (req, res) {
+        res.render(version + '/aed-provider-demand', {
+            myData:req.session.myData
+        });
+    });
+    // AED Provider - standard
+    router.get('/' + version + '/aed-provider-standard', function (req, res) {
+        res.render(version + '/aed-provider-standard', {
+            myData:req.session.myData
+        });
+    });
+    // AED Provider - details
+    router.get('/' + version + '/aed-provider-details', function (req, res) {
+        res.render(version + '/aed-provider-details', {
+            myData:req.session.myData
+        });
+    });
+    router.post('/' + version + '/aed-provider-details', function (req, res) {
+        res.redirect(301, '/' + version + '/aed-provider-check-answers');
+    })
+    // AED Provider - check answers
+    router.get('/' + version + '/aed-provider-check-answers', function (req, res) {
+        res.render(version + '/aed-provider-check-answers', {
+            myData:req.session.myData
+        });
+    });
+    router.post('/' + version + '/aed-provider-check-answers', function (req, res) {
+        res.redirect(301, '/' + version + '/aed-provider-confirmation');
+    })
+    // AED Provider - confirmation
+    router.get('/' + version + '/aed-provider-confirmation', function (req, res) {
+        res.render(version + '/aed-provider-confirmation', {
+            myData:req.session.myData
+        });
+    });
+    // AED Provider EMAIL confirmation
+    router.get('/' + version + '/aed-provider-email-confirmation', function (req, res) {
+        res.render(version + '/aed-provider-email-confirmation', {
+            myData:req.session.myData
+        });
+    });
 
 }

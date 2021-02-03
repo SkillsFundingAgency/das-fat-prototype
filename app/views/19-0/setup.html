@@ -42,6 +42,10 @@
                         <input {% if myData.service == 'pf' %}checked{% endif %} class="govuk-radios__input" data-option="service-3" id="service-3" name="service" type="radio" value="pf">
                         <label class="govuk-label govuk-radios__label" for="service-3">Provide feedback</label>
                     </div>
+                    <div class="govuk-radios__item">
+                        <input {% if myData.service == 'aedp' %}checked{% endif %} class="govuk-radios__input" data-option="service-4" id="service-4" name="service" type="radio" value="aedp">
+                        <label class="govuk-label govuk-radios__label" for="service-4">Provider AED (Aggregated employer demand)</label>
+                    </div>
                 </div>
             </fieldset>
         </div>
@@ -74,7 +78,7 @@
           </div> -->
         
         <!-- AED in FAT -->
-        <div class="govuk-form-group">
+        <div class="govuk-form-group aedInFAT">
             <label class="govuk-label" >
                 AED in FAT
             </label>
@@ -273,7 +277,7 @@
             <tbody class="govuk-table__body">    
 
                 <tr class="govuk-table__row">
-                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">Aggregated employer demand</h2></th>
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">Aggregated employer demand (employers)</h2></th>
                 </tr>
 
                 <tr class="govuk-table__row">
@@ -318,6 +322,38 @@
                     <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-match?standard=36&location=Coventry&r=t">/aed-employer-email-match</a></td>
                 </tr>
 
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">Aggregated employer demand (providers)</h2></th>
+                </tr>
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - account home</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-home?standard=36&location=Coventry&r=t&s=aedp">/aed-provider-home</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - full demand list</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-demand?standard=36&location=Coventry&r=t&s=aedp">/aed-provider-demand</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - course specific demand</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-standard?standard=36&location=Coventry&r=t&s=aedp">/aed-provider-standard</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - cohort details</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-details?standard=36&location=Coventry&r=t&s=aedp">/aed-provider-details</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - check answers</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-check-answers?standard=36&location=Coventry&r=t&s=aedp">/aed-provider-check-answers</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - confirmation</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-confirmation?standard=36&location=Coventry&r=t&s=aedp">/aed-provider-confirmation</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - email - confirmation</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-email-confirmation?standard=36&location=Coventry&r=t&s=aedp">/aed-provider-email-confirmation</a></td>
+                </tr>
 
 
                 <!-- <tr class="govuk-table__row">
@@ -565,6 +601,18 @@
             // EPAO
             if(_urlService == "&s=epao"){
                 _urlPage = "home-epao?"
+                $('.pfType').hide()
+                $('.employeraccount').show()
+                $('.ksbs').hide()
+                $('.aedInFAT').hide()
+            }
+            // FAT
+            if(_urlService == "&s=fat"){
+                _urlPage = "home-epao?"
+                $('.pfType').hide()
+                $('.employeraccount').show()
+                $('.ksbs').show()
+                $('.aedInFAT').show()
             }
             // Provide feedback
             if(_urlService == "&s=pf"){
@@ -576,10 +624,14 @@
                 _urlEmpAccount = "&ea=true"
                 $('.employeraccount').hide()
                 $('.ksbs').hide()
-            } else {
+            }
+            // AED provider
+            if(_urlService == "&s=aedp"){
+                _urlPage = "aed-provider-home?"
                 $('.pfType').hide()
-                $('.employeraccount').show()
-                $('.ksbs').show()
+                $('.employeraccount').hide()
+                $('.ksbs').hide()
+                $('.aedInFAT').hide()
             }
 
             // Components queries

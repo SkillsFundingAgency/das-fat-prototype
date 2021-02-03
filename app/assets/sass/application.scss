@@ -502,3 +502,51 @@ table.responsive {
     }
 
 }
+
+
+//Dashboard cards
+.das-cards {
+    margin: 0 -15px;
+    flex-wrap: wrap;
+    -ms-flex-wrap: wrap
+}
+
+@media (min-width: 40.0625em) {
+    .das-cards {
+        display: flex;
+        display: -ms-flex
+    }
+}
+
+.das-card {
+    padding: 0 15px;
+    margin-bottom: 15px;
+    box-sizing: border-box
+}
+
+@media (min-width: 40.0625em) {
+    .das-card {
+        width: 50%
+    }
+}
+
+.das-card__heading {
+    margin-top: 0;
+    margin-bottom: .5em
+}
+
+//Das provider cards
+.das-card__pro {
+  border-bottom: 1px solid #bfc1c3;
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+
+
+
+//AED table
+.app-table--vertical-align-middle {
+    td.govuk-table__cell {
+        vertical-align: middle;
+    }
+}

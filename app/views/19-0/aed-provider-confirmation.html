@@ -1,0 +1,44 @@
+{% extends "layout-as-pro.html" %}
+
+{% set serviceName = "Apprenticeships" %}
+
+{% block pageTitle %} 
+Meet employer demand for apprenticeships
+{% endblock %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+{% endblock %}
+
+{% set _showAEDProviderLinks = true %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+	<div class="govuk-grid-column-two-thirds">
+		{{ govukPanel({
+			titleText: "We've notified 4 employers",
+			html: _standardTitle|safe
+		}) }}
+
+		<p class="govuk-body">We have sent you a confirmation email.</p>
+
+		<h2 class="govuk-heading-m">What happens next</h2>
+
+		<p class="govuk-body">
+			We've sent an email containing your training offer to the employers you've selected.
+		</p>
+		<p class="govuk-body">
+			You may hear from employers if they're interested in discussing the training you have proposed.
+		</p>
+
+	</div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+{% endblock %}

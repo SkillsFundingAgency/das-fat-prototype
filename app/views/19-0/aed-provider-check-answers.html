@@ -1,0 +1,122 @@
+{% extends "layout-as-pro.html" %}
+
+{% set serviceName = "Apprenticeships" %}
+
+{% block pageTitle %} 
+Meet employer demand for apprenticeships
+{% endblock %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="aed-provider-details" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+	<div class="govuk-grid-column-two-thirds">
+		<h1 class="govuk-heading-xl govuk-!-margin-bottom-6">
+			Check your answers
+		</h1>
+
+		{{ govukSummaryList({
+			classes: 'govuk-!-margin-bottom-6',
+			rows: [
+			{
+				key:
+				{
+					text: "Apprenticeship training course"
+				},
+				value:
+				{
+					text: _standardTitle|safe
+				}
+			},
+			{
+				key:
+				{
+					text: "Training location"
+				},
+				value:
+				{
+					html: "<p>At apprentice's workplace</p>"
+				},
+				actions:
+				{
+					items: [
+					{
+						href: "aed-provider-details",
+						text: "Change",
+						visuallyHiddenText: "name"
+					}
+					]
+				}
+			},
+			{
+				key:
+				{
+					text: "Start date"
+				},
+				value:
+				{
+					text: "January 2021"
+				},
+				actions:
+				{
+					items: [
+					{
+						href: "aed-provider-details",
+						text: "Change",
+						visuallyHiddenText: "name"
+					}
+					]
+				}
+			},
+			{
+				key:
+				{
+					text: "Cost per apprentice"
+				},
+				value:
+				{
+					text: "£4,500"
+				},
+				actions:
+				{
+					items: [
+					{
+						href: "aed-provider-details",
+						text: "Change",
+						visuallyHiddenText: "name"
+					}
+					]
+				}
+			}
+			]
+		}) }}
+
+		<p>
+			We'll send an email with details of your training offer to the employers you've selected.
+		</p>
+
+		<p>
+			Employers may contact you if they're interested in your training offer.
+		</p>
+
+		<form method="post">
+			<p>
+				{{govukButton({
+					text: "Submit"
+				})}}
+			</p>
+		</form>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+{% endblock %}

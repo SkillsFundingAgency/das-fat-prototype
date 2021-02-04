@@ -1,0 +1,39 @@
+{% extends myData.layout %}
+{% set serviceName = "Manage apprenticeships" %}
+{% set serviceUrl = "provide-feedback-approvals-a" %}
+
+{% block pageTitle %} 
+Feedback complete
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% if myData.employeraccount == "true" %}
+        <div class="govuk-!-margin-top-5"></div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                Feedback complete
+            </h1>
+        </div>
+
+        <h2 class="govuk-heading-m">What happens next</h2>
+
+        <p class="govuk-body">Thanks for your anonymous feedback. </p>
+
+        <p class="govuk-body">We’ll use it to help other employers choose a training provider and to help TRAINING UK LTD improve.</p>
+
+        <a href="#" class="govuk-button">Go to homepage</a>
+
+
+    </div>
+</div>
+
+{% endblock %}

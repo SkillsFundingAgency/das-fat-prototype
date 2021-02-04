@@ -1,0 +1,109 @@
+{% extends "layout-as-pro.html" %}
+
+{% set serviceName = "Apprenticeships" %}
+
+{% block pageTitle %} 
+Meet employer demand for apprenticeships
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="aed-provider-home" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% set _standards = myData.standards.list %}
+
+{% block content %}
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl" >
+            Meet employer demand for apprenticeships
+        </h1>
+        <p class="govuk-body govuk-!-margin-bottom-8">
+            For training providers to see the interest registered by employers in specific apprenticeship training, so they can meet that employer demand.
+        </p>
+
+        <!-- Search box -->
+        <form>
+            <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
+                <label for="course" class="govuk-label govuk-label--l govuk-!-font-weight-bold" >
+                    Search
+                </label>
+                <span id="search-term-hint" class="govuk-hint">
+                    Search for apprenticeship training
+                </span>
+                <div class="search-input-wrapper">
+                    <input type="search" value="" id="course" name="course" title="Search" class="govuk-input">
+                    <div class="search-input-submit-wrapper">
+                        <button type="submit" class="search-submit" id="course-submit">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <h2 class="govuk-heading-m">Apprenticeship training with employer demand</h2>
+
+        {% set _count = 0 %}
+        {% for _standard in _standards %}
+            {% if _standard.demand == true %}
+                {% set _count = _count + 1 %}
+            {% endif %}
+        {% endfor %}
+
+
+        <p class="govuk-body">
+            <span class="govuk-!-font-weight-bold">{{_count}}</span> training courses found with employer-registered demand
+        </p>
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <table class="govuk-table govuk-table--small">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">
+                        <a class="sorted-ascending approved-sort govuk-link">Apprenticeship training</a>
+                    </th>
+                    <th scope="col" class="govuk-table__header govuk-table__header--numeric govuk-!-width-one-quarter">
+                        <a class="approved-sort govuk-link">Apprentices</a>
+                    </th>
+                    <th scope="col" class="govuk-table__header govuk-table__header--numeric govuk-!-width-one-quarter">
+                        <a class="approved-sort govuk-link">Interested employers</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+
+                {% for _standard in _standards %}
+
+                    {% set _standardTitle = _standard.title + " (level&nbsp;" + _standard.level + ")" %}
+
+                    {% if _standard.demand == true %}
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell">
+                            <a href="aed-provider-standard?standard={{_standard.larsCode}}" class="govuk-link">{{_standardTitle|safe}}</a>
+                        </td>
+                        <td class="govuk-table__cell govuk-table__cell--numeric">{{ [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] | random }}</td>
+                        <td class="govuk-table__cell govuk-table__cell--numeric">{{ [1,2,3,4] | random }}</td>
+                    </tr>
+                    {% endif %}
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block pageScripts %}
+{% endblock %}

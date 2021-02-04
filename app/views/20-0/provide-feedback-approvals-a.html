@@ -1,0 +1,65 @@
+{% extends myData.layout %}
+{% set serviceName = "Manage apprenticeships" %}
+{% set serviceUrl = "provide-feedback-approvals-a" %}
+
+{% block pageTitle %} 
+Apprentice details approved
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="#" class="govuk-back-link">Back to Apprentices</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        
+        <div class="govuk-panel govuk-panel--confirmation" >
+            <h1 class="govuk-panel__title">
+                Apprentice details approved
+            </h1>
+        </div>
+
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Reference</dt>
+                <dd class="govuk-summary-list__value">ABC123</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Training provider</dt>
+                <dd class="govuk-summary-list__value">TRAINING UK LTD</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Approved by</dt>
+                <dd class="govuk-summary-list__value">Business Name Ltd</dd>
+            </div>
+        </dl>
+
+        <h2 class="govuk-heading-m">What happens next</h2>
+
+        <p class="govuk-body">You can <a href="#" class="govuk-link govuk-link--no-visited-state">manage your apprentices</a> to view or update their details.</p>
+
+        <h2 class="govuk-heading-m">Give feedback</h2>
+
+        <p class="govuk-body">Tell us about your experience with TRAINING UK LTD when they onboarded and approved your apprentices.</p>
+
+        <p class="govuk-body">It’s only 5 multiple choice questions.</p>
+
+        <p class="govuk-body">We’ll use it to help other employers choose a training provider and to help TRAINING UK LTD improve.</p>
+
+        <p class="govuk-body">Your feedback is anonymous.</p>
+
+        <form method="POST" class="form">
+
+            <button type="submit" class="govuk-button">
+                Give feedback
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

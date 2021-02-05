@@ -73,6 +73,13 @@
 
         </div>
 
+        {% if _selectedStandard.integrated == true %}
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+            <h2 class="govuk-heading-s">This is an integrated apprenticeship</h2>
+            <p class="govuk-body">The end-point assessment for an integrated apprenticeship is usually carried out by the training provider. Contact the training provider to find out more about the assessment.</p>
+        </div>
+        {% endif %}
+
         <dl class="govuk-summary-list govuk-!-margin-bottom-8">
             {% if _selectedEPAO.contactname %}
             <div class="govuk-summary-list__row">

@@ -3,8 +3,13 @@
 	What to do if you cannot find a training provider
 </h3>
 
+{% set _aedLink = "aed-employer-location?standard=" + myData.standard + "&location=" %}
+{% if myData.locationapplied == true %}
+	{% set _aedLink = "aed-employer-form?standard=" + myData.standard + "&location=" + myData.location %}
+{% endif %}
+
 <p class="govuk-body">
-	You can <a href="aed-employer-form?standard={{myData.standard}}&location={% if myData.locationapplied == true %}{{myData.location}}{% endif %}">give us your contact details</a> and we’ll let training providers know that you’re interested in this course.
+	You can <a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">give us your contact details</a> and we’ll let training providers know that you’re interested in this course.
 </p>
 
 <p class="govuk-body govuk-!-margin-bottom-6">

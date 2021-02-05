@@ -841,6 +841,9 @@ module.exports = function (router,_myData) {
         req.session.myData.strengthsAnswer = []
         req.session.myData.factorsAnswers = {}
 
+
+        req.session.myData.aedLocationAnswer = "Coventry"
+
         // //Set quality points
         // req.session.myData["providers-new"].list.forEach(function(_provider, index) {
         //     setProviderPoints(req,_provider)
@@ -2210,10 +2213,10 @@ module.exports = function (router,_myData) {
 
 
 
-            if(req.session.myData.selectedStandard.integrated) {
-                //integrated course
-                res.redirect(301, '/' + version + '/epao-integrated?s=epao&standard=' + req.session.myData.standard);
-            } else {
+            // if(req.session.myData.selectedStandard.integrated) {
+            //     //integrated course
+            //     res.redirect(301, '/' + version + '/epao-integrated?s=epao&standard=' + req.session.myData.standard);
+            // } else {
                 if(req.session.myData.epaoCount == 0){
                     //0 EPAOs
                     req.session.myData.returnURLepaodropout = "epao-course"
@@ -2244,7 +2247,7 @@ module.exports = function (router,_myData) {
                         res.redirect(301, '/' + version + '/epaos-2?s=epao&standard=' + req.session.myData.standard);
                     }
                 }
-            }
+            // }
         }
     });
 
@@ -2714,6 +2717,98 @@ module.exports = function (router,_myData) {
     });
     router.post('/' + version + '/aed-employer-form', function (req, res) {
         res.redirect(301, '/' + version + '/aed-employer-confirmation');
+    });
+    // AED Employer location
+    router.get('/' + version + '/aed-employer-location', function (req, res) {
+
+        //Location reset/setup
+        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
+            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
+                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
+                if(cityMatch(req) || _postCodeMatch) {
+                    req.session.myData.locationapplied = true
+                    req.session.myData.location = req.session.myData.locationTemp
+                    req.session.myData.needToMatchCount++
+                } else {
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
+                }
+                continueRendering()
+            });
+        } else {
+            continueRendering()
+        }
+        
+        function continueRendering(){
+            res.render(version + '/aed-employer-location', {
+                myData:req.session.myData
+            });
+        }
+        
+    });
+    router.post('/' + version + '/aed-employer-location', function (req, res) {
+        req.session.myData.aedLocationAnswerTemp = req.body.aedLocationAnswer
+        if(req.session.myData.includeValidation == "false"){
+            req.session.myData.aedLocationAnswerTemp = req.session.myData.aedLocationAnswerTemp || "Coventry"
+        }
+
+        if(req.session.myData.aedLocationAnswerTemp != ""){
+            req.session.myData.aedLocationAnswerTemp = req.session.myData.aedLocationAnswerTemp.trim()
+        }
+
+        if(!req.session.myData.aedLocationAnswerTemp){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.aedLocationAnswer = {
+                "anchor": "search-location",
+                "message": "Enter a town, city or postcode"
+            }
+        }
+
+        //Location reset/setup
+        if(req.session.myData.aedLocationAnswerTemp){
+            req.session.myData.locationTemp = req.session.myData.aedLocationAnswerTemp
+            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
+                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
+                if(cityMatch(req) || _postCodeMatch) {
+                    req.session.myData.locationapplied = true
+                    req.session.myData.location = req.session.myData.locationTemp
+                    req.session.myData.needToMatchCount++
+                } else {
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
+
+                    req.session.myData.validationError = "true"
+                    req.session.myData.validationErrors.aedLocationAnswer = {
+                        "anchor": "search-location",
+                        "message": "Enter a real town, city or postcode"
+                    }
+                }
+                continueRendering()
+            });
+        } else {
+            continueRendering()
+        }
+
+        function continueRendering(){
+            if(req.session.myData.validationError == "true") {
+                res.render(version + '/aed-employer-location', {
+                    myData: req.session.myData
+                });
+            } else {
+                req.session.myData.aedLocationAnswer = req.session.myData.aedLocationAnswerTemp
+                req.session.myData.aedLocationAnswerApplied = false
+                req.session.myData.aedLocationAnswerTemp = ''
+
+                res.redirect(301, '/' + version + '/aed-employer-form?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
+            }
+        }
+
     });
     // AED Employer confirmation
     router.get('/' + version + '/aed-employer-confirmation', function (req, res) {

@@ -719,6 +719,32 @@ module.exports = function (router,_myData) {
         }
     }
 
+    function locationSetter(req,nextFunction){
+        //Location reset/setup
+        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
+            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
+                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
+                if(cityMatch(req) || _postCodeMatch) {
+                    req.session.myData.locationapplied = true
+                    req.session.myData.location = req.session.myData.locationTemp
+                    req.session.myData.needToMatchCount++
+                } else {
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
+                }
+                nextFunction()
+            });
+        } else {
+            nextFunction()
+        }
+    }
+
     function reset(req){
         req.session.myData = JSON.parse(JSON.stringify(_myData))
 
@@ -2685,73 +2711,66 @@ module.exports = function (router,_myData) {
 
     // AED Employer form
     router.get('/' + version + '/aed-employer-form', function (req, res) {
-
-        //Location reset/setup
-        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
-            req.session.myData.locationTemp = req.session.myData.location
-            if(req.query.location == ""){
-                req.session.myData.locationTemp = ""
-            } else if (req.query.location) {
-                req.session.myData.locationTemp = req.query.location.trim()
-            }
-            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
-                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
-                if(cityMatch(req) || _postCodeMatch) {
-                    req.session.myData.locationapplied = true
-                    req.session.myData.location = req.session.myData.locationTemp
-                    req.session.myData.needToMatchCount++
-                } else {
-                    req.session.myData.locationapplied = false
-                    req.session.myData.location = ""
-                }
-                continueRendering()
-            });
-        } else {
-            continueRendering()
-        }
         
         function continueRendering(){
             res.render(version + '/aed-employer-form', {
                 myData:req.session.myData
             });
         }
+
+        locationSetter(req,continueRendering)
         
     });
     router.post('/' + version + '/aed-employer-form', function (req, res) {
-        res.redirect(301, '/' + version + '/aed-employer-check-answers');
+
+        req.session.myData.orgNameAnswerTemp = req.body.orgNameAnswer
+        req.session.myData.emailAnswerTemp = req.body.emailAnswer
+        if(req.session.myData.includeValidation == "false"){
+            req.session.myData.orgNameAnswerTemp = req.session.myData.orgNameAnswerTemp || "ABC LTD"
+            req.session.myData.emailAnswerTemp = req.session.myData.emailAnswerTemp || "abc@email.com"
+        }
+
+        if(!req.session.myData.orgNameAnswerTemp){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.orgNameAnswer = {
+                "anchor": "orgNameAnswer",
+                "message": "Enter the name of the organisation"
+            }
+        }
+        if(!req.session.myData.emailAnswerTemp){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.emailAnswer = {
+                "anchor": "emailAnswer",
+                "message": "Enter your email address"
+            }
+        }
+
+        if(req.session.myData.validationError == "true") {
+            res.render(version + '/aed-employer-form', {
+                myData: req.session.myData
+            });
+        } else {
+            req.session.myData.orgNameAnswer = req.session.myData.orgNameAnswerTemp
+            req.session.myData.orgNameAnswerTemp = ''
+            req.session.myData.emailAnswer = req.session.myData.emailAnswerTemp
+            req.session.myData.emailAnswerTemp = ''
+
+            // res.redirect(301, '/' + version + '/aed-employer-form?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
+            res.redirect(301, '/' + version + '/aed-employer-check-answers');
+        }
+
+        
     });
     // AED Employer location
     router.get('/' + version + '/aed-employer-location', function (req, res) {
-
-        //Location reset/setup
-        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
-            req.session.myData.locationTemp = req.session.myData.location
-            if(req.query.location == ""){
-                req.session.myData.locationTemp = ""
-            } else if (req.query.location) {
-                req.session.myData.locationTemp = req.query.location.trim()
-            }
-            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
-                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
-                if(cityMatch(req) || _postCodeMatch) {
-                    req.session.myData.locationapplied = true
-                    req.session.myData.location = req.session.myData.locationTemp
-                    req.session.myData.needToMatchCount++
-                } else {
-                    req.session.myData.locationapplied = false
-                    req.session.myData.location = ""
-                }
-                continueRendering()
-            });
-        } else {
-            continueRendering()
-        }
         
         function continueRendering(){
             res.render(version + '/aed-employer-location', {
                 myData:req.session.myData
             });
         }
+
+        locationSetter(req,continueRendering)
         
     });
     router.post('/' + version + '/aed-employer-location', function (req, res) {
@@ -2812,39 +2831,18 @@ module.exports = function (router,_myData) {
         }
 
     });
+
     // AED Employer check answers
     router.get('/' + version + '/aed-employer-check-answers', function (req, res) {
 
-        //Location reset/setup
-        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
-            req.session.myData.locationTemp = req.session.myData.location
-            if(req.query.location == ""){
-                req.session.myData.locationTemp = ""
-            } else if (req.query.location) {
-                req.session.myData.locationTemp = req.query.location.trim()
-            }
-            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
-                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
-                if(cityMatch(req) || _postCodeMatch) {
-                    req.session.myData.locationapplied = true
-                    req.session.myData.location = req.session.myData.locationTemp
-                    req.session.myData.needToMatchCount++
-                } else {
-                    req.session.myData.locationapplied = false
-                    req.session.myData.location = ""
-                }
-                continueRendering()
-            });
-        } else {
-            continueRendering()
-        }
-        
         function continueRendering(){
             res.render(version + '/aed-employer-check-answers', {
                 myData:req.session.myData
             });
         }
 
+        locationSetter(req,continueRendering)
+        
     });
     // AED Employer confirmation
     router.get('/' + version + '/aed-employer-confirmation', function (req, res) {

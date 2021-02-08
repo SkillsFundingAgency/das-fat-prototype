@@ -123,7 +123,7 @@ Enter the apprenticeship training and contact details
 						{{myData.validationErrors.orgNameAnswer.message}}
 					</span>
 					{% endif %}
-					<input class="govuk-input" id="orgNameAnswer" name="orgNameAnswer" type="text">
+					<input class="govuk-input" id="orgNameAnswer" name="orgNameAnswer" type="text" value="{{myData.orgNameAnswerTemp}}">
 				</div>
 
 				<!-- Email address -->
@@ -140,7 +140,7 @@ Enter the apprenticeship training and contact details
 						{{myData.validationErrors.emailAnswer.message}}
 					</span>
 					{% endif %}
-					<input class="govuk-input" id="emailAnswer" name="emailAnswer" type="email" aria-describedby="emailAnswer-hint" autocomplete="email">
+					<input class="govuk-input" id="emailAnswer" name="emailAnswer" type="email" aria-describedby="emailAnswer-hint" autocomplete="email" value="{{myData.emailAnswerTemp}}">
 				</div>
 
 				<button type="submit" class="govuk-button">

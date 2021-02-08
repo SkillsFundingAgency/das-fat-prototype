@@ -2814,9 +2814,37 @@ module.exports = function (router,_myData) {
     });
     // AED Employer check answers
     router.get('/' + version + '/aed-employer-check-answers', function (req, res) {
-        res.render(version + '/aed-employer-check-answers', {
-            myData:req.session.myData
-        });
+
+        //Location reset/setup
+        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
+            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
+                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
+                if(cityMatch(req) || _postCodeMatch) {
+                    req.session.myData.locationapplied = true
+                    req.session.myData.location = req.session.myData.locationTemp
+                    req.session.myData.needToMatchCount++
+                } else {
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
+                }
+                continueRendering()
+            });
+        } else {
+            continueRendering()
+        }
+        
+        function continueRendering(){
+            res.render(version + '/aed-employer-check-answers', {
+                myData:req.session.myData
+            });
+        }
+
     });
     // AED Employer confirmation
     router.get('/' + version + '/aed-employer-confirmation', function (req, res) {

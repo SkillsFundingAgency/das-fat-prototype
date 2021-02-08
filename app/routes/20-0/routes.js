@@ -841,8 +841,7 @@ module.exports = function (router,_myData) {
         req.session.myData.strengthsAnswer = []
         req.session.myData.factorsAnswers = {}
 
-
-        req.session.myData.aedLocationAnswer = "Coventry"
+        req.session.myData.aedLocationAnswer = "Coventry, Warwickshire"
 
         // //Set quality points
         // req.session.myData["providers-new"].list.forEach(function(_provider, index) {
@@ -881,8 +880,11 @@ module.exports = function (router,_myData) {
         //defaults for setup
         req.session.myData.employeraccount =  req.query.ea || req.session.myData.employeraccount
         req.session.myData.epaoinfat =  req.query.epaofat || req.session.myData.epaoinfat
-        req.session.myData.layout = ((req.session.myData.employeraccount == "true") ? "layout-as-emp.html" : "layout.html")
         req.session.myData.service =  req.query.s || req.session.myData.service
+        req.session.myData.layout = ((req.session.myData.employeraccount == "true") ? "layout-as-emp.html" : "layout.html")
+        if(req.session.myData.service == "aedp"){
+            req.session.myData.layout = "layout-as-pro.html"
+        }
         // req.session.myData.phase =  req.query.p || req.session.myData.phase
         req.session.myData.pfemail =  req.query.pfe || req.session.myData.pfemail
         req.session.myData.ksbs =  req.query.ksbs || req.session.myData.ksbs
@@ -2716,7 +2718,7 @@ module.exports = function (router,_myData) {
         
     });
     router.post('/' + version + '/aed-employer-form', function (req, res) {
-        res.redirect(301, '/' + version + '/aed-employer-confirmation');
+        res.redirect(301, '/' + version + '/aed-employer-check-answers');
     });
     // AED Employer location
     router.get('/' + version + '/aed-employer-location', function (req, res) {
@@ -2809,6 +2811,12 @@ module.exports = function (router,_myData) {
             }
         }
 
+    });
+    // AED Employer check answers
+    router.get('/' + version + '/aed-employer-check-answers', function (req, res) {
+        res.render(version + '/aed-employer-check-answers', {
+            myData:req.session.myData
+        });
     });
     // AED Employer confirmation
     router.get('/' + version + '/aed-employer-confirmation', function (req, res) {

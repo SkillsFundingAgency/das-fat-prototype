@@ -2,11 +2,14 @@
 
 {% set serviceName = "Find apprenticeship training for your apprentice" %}
 
+{% set _inError = myData.validationError %}
+
 {% set _selectedStandard = myData.selectedStandard %}
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
 {% block pageTitle %}
-Tell us about your training needs
+{% if _inError == "true" %}Error: {% endif %}
+Enter the apprenticeship training and contact details
 {% endblock %}
 
 {% block beforeContent %}
@@ -16,266 +19,134 @@ Tell us about your training needs
 
 {% block content %}
 
-<style>
-    .govuk-input-background,
-    .autocomplete__input {
-        background-color: white;
-    }
-</style>
-
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
+		{% if _inError == "true" %}
+		<div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+			<h2 class="govuk-error-summary__title" id="error-summary-title">
+				There is a problem
+			</h2>
+			<div class="govuk-error-summary__body">
+				<ul class="govuk-list govuk-error-summary__list">
+					{% for name, item in myData.validationErrors %}
+					<li>
+						<a href="#{{item.anchor}}">{{item.message}}</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		{% endif %}
+
         <h1 class="govuk-heading-xl" >
-            Tell us about your training needs
+            Enter the apprenticeship training and contact details
 		</h1>
 
         <form method="post">
-			<h3 class="govuk-heading-m">
-				Apprenticeship training course
-			</h3>
-			<p class="govuk-!-margin-bottom-2">
-				{{_standardTitle|safe}}
-			</p>
-			<p class="govuk-!-margin-bottom-6">
-				<a href="#">Change</a>
-			</p>
-			
-			<h3 class="govuk-heading-m">
-				Training location
-			</h3>
-			<p class="govuk-!-margin-bottom-2">
-				{{myData.location}}
-			</p>
-			<p class="govuk-!-margin-bottom-6">
-				<a href="#">Change</a>
-			</p>
 
-			<hr class="govuk-section-break--visible govuk-section-break--xl govuk-section-break">
+			<!-- Training details -->
+			<fieldset class="govuk-fieldset" >
 
-			<h2 class="govuk-heading-l">
-				Apprentices
-			</h2>
+				<h2 class="govuk-heading-l">Apprenticeship training details</h2>
+				<p class="govuk-body">We will share the apprenticeship training details with training providers.</p>
 
-			{{ govukInput({
-				label:
-				{
-					text: "How many apprentices will be doing this training?",
-					classes: "govuk-label--m",
-					isPageHeading: false
-				},
-				classes: "govuk-input--width-4",
-				hint:
-				{
-					text: ""
-				},
-				id: "apprentices",
-				name: "request[apprentices]",
-				inputmode: "numeric",
-				pattern: "[0-9]*",
-				spellcheck: false
-			}) }}
-
-			{% set date %}
-			<p>
-				Enter the date you want the training to start by
-			</p>
-			<div id="before-month-date-hint" class="govuk-hint">
-				For example, 03 2021
-			</div>
-			<div class="govuk-date-input" id="before-month-date">
-				<div class="govuk-date-input__item">
-					<div class="govuk-form-group">
-						<label class="govuk-label govuk-date-input__label" for="before-month-date-month">
-							Month
-						</label>
-						<input class="govuk-input govuk-date-input__input govuk-input--width-2" id="before-month-date-month" name="request[before-month-date-month]" type="text" pattern="[0-9]*" inputmode="numeric">
-					</div>
+				<div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+					<p class="govuk-body govuk-!-margin-bottom-5">
+						Apprenticeship training course <br>
+						<span class="govuk-!-font-weight-bold">{{_standardTitle|safe}}</span>
+					</p>
+					<p class="govuk-body govuk-!-margin-bottom-5">
+						Apprenticeship location <br>
+						<span class="govuk-!-font-weight-bold">{{myData.location}}</span>
+					</p>
 				</div>
-				<div class="govuk-date-input__item">
-					<div class="govuk-form-group">
-						<label class="govuk-label govuk-date-input__label" for="before-month-date-year">
-							Year
-						</label>
-						<input class="govuk-input govuk-date-input__input govuk-input--width-4" id="before-month-date-year" name="request[before-month-date-year]" type="text" pattern="[0-9]*" inputmode="numeric">
-					</div>
+
+				<!-- Apprentices -->
+				<div class="govuk-form-group {% if myData.validationErrors.apprenticesAnswer or myData.validationErrors.apprenticesCountAnswer %}govuk-form-group--error{% endif %}">
+					<fieldset class="govuk-fieldset" >
+						<legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+							<h1 class="govuk-fieldset__heading">
+							Do you know how many apprentices will take this apprenticeship training?
+							</h1>
+						</legend>
+						{% if myData.validationErrors.apprenticesAnswer %}
+						<span id="apprenticesAnswer-error" class="govuk-error-message">
+							<span class="govuk-visually-hidden">Error:</span> {{myData.validationErrors.apprenticesAnswer.message}}
+						</span>
+						{% endif %}
+						<div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
+							<div class="govuk-radios__item">
+								<input class="govuk-radios__input" id="apprenticesAnswer-1" name="apprenticesAnswer" type="radio" value="yes" data-aria-controls="conditional-apprenticesAnswer" {% if myData.apprenticesAnswerTemp == "yes" %}checked{% endif %} >
+								<label class="govuk-label govuk-radios__label" for="apprenticesAnswer-1">
+								Yes
+								</label>
+							</div>
+							<div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-apprenticesAnswer">
+								<div class="govuk-form-group">
+								<label class="govuk-label" for="apprenticesCountAnswer">
+									Enter the number of apprentices
+								</label>
+								{% if myData.validationErrors.apprenticesCountAnswer %}
+								<span id="apprenticesCountAnswer-error" class="govuk-error-message">
+									<span class="govuk-visually-hidden">Error:</span> {{myData.validationErrors.apprenticesCountAnswer.message}}
+								</span>
+								{% endif %}
+								<input class="govuk-input govuk-input--width-3" id="apprenticesCountAnswer" name="apprenticesCountAnswer" type="number" spellcheck="false" pattern="[0-9]*" inputmode="numeric"></div>
+							</div>
+							<div class="govuk-radios__item">
+								<input class="govuk-radios__input" id="apprenticesAnswer-2" name="apprenticesAnswer" type="radio" value="no" {% if myData.apprenticesAnswerTemp == "no" %}checked{% endif %} >
+								<label class="govuk-label govuk-radios__label" for="apprenticesAnswer-2">
+								No
+								</label>
+							</div>
+						</div>
+					</fieldset>
 				</div>
-			</div>
-			{% endset %}
+			</fieldset>
 
-			{% set dateSpecific %}
-			<p>
-				Enter the month you want the training to start
-			</p>
-			<div id="specific-month-date-hint" class="govuk-hint">
-				For example, 03 2021
-			</div>
-			<div class="govuk-date-input" id="specific-month-date">
-				<div class="govuk-date-input__item">
-					<div class="govuk-form-group">
-						<label class="govuk-label govuk-date-input__label" for="specific-month-date-month">
-							Month
-						</label>
-						<input class="govuk-input govuk-date-input__input govuk-input--width-2" id="specific-month-date-month" name="request[specific-month-date-month]" type="text" pattern="[0-9]*" inputmode="numeric">
-					</div>
+
+			<!-- Contact details -->
+			<fieldset class="govuk-fieldset" >
+
+				<h2 class="govuk-heading-l">Contact details</h2>
+				<p class="govuk-body">We will not share any contact details with training providers directly.</p>
+
+				<!-- Org name -->
+				<div class="govuk-form-group {% if myData.validationErrors.orgNameAnswer %}govuk-form-group--error{% endif %}">
+					<label class="govuk-label govuk-label--m" for="orgNameAnswer">
+						What is the organisation’s name?
+					</label>
+					{% if myData.validationErrors.orgNameAnswer %}
+					<span id="orgNameAnswer-error" class="govuk-error-message">
+						<span class="govuk-visually-hidden">Error:</span>
+						{{myData.validationErrors.orgNameAnswer.message}}
+					</span>
+					{% endif %}
+					<input class="govuk-input" id="orgNameAnswer" name="orgNameAnswer" type="text">
 				</div>
-				<div class="govuk-date-input__item">
-					<div class="govuk-form-group">
-						<label class="govuk-label govuk-date-input__label" for="specific-month-date-year">
-							Year
-						</label>
-						<input class="govuk-input govuk-date-input__input govuk-input--width-4" id="specific-month-date-year" name="request[specific-month-date-year]" type="text" pattern="[0-9]*" inputmode="numeric">
+
+				<!-- Email address -->
+				<div class="govuk-form-group {% if myData.validationErrors.emailAnswer %}govuk-form-group--error{% endif %}">
+					<label class="govuk-label govuk-label--m" for="emailAnswer">
+						What email address should we contact?
+					</label>
+					<div id="emailAnswer-hint" class="govuk-hint">
+						We will only use this to send the details of any training providers who can offer the apprenticeship training.
 					</div>
+					{% if myData.validationErrors.emailAnswer %}
+					<span id="emailAnswer-error" class="govuk-error-message">
+						<span class="govuk-visually-hidden">Error:</span>
+						{{myData.validationErrors.emailAnswer.message}}
+					</span>
+					{% endif %}
+					<input class="govuk-input" id="emailAnswer" name="emailAnswer" type="email" aria-describedby="emailAnswer-hint" autocomplete="email">
 				</div>
-			</div>
-			{% endset %}
 
-			{{ govukRadios({
-				idPrefix: "start-date",
-				name: "request[start-date-preference]",
-				fieldset: 
-				{
-					legend: 
-					{
-						text: "When do you want the apprentices to start their training?",
-						isPageHeading: false,
-						classes: "govuk-fieldset__legend--m"
-					}
-				},
-				hint: 
-				{
-					text: ""
-				},
-				items: [
-				{
-					value: "before-month",
-					text: "Before a certain date",
-					conditional:
-					{
-						html: date
-					}
-				},
-				{
-					value: "specific-month",
-					text: "In a specific month",
-					conditional:
-					{
-						html: dateSpecific
-					}
-				},
-				{
-					value: "dont-know",
-					text: "I'm flexible"
-				}
-				]
-			}) }}
+				<button type="submit" class="govuk-button">
+					Continue
+				</button>
 
-			{{ govukRadios({
-				idPrefix: "recruitment-required",
-				name: "request[recruitment-required]",
-				fieldset: 
-				{
-					legend: 
-					{
-						text: "Do you need to recruit for this apprenticeship?",
-						isPageHeading: false,
-						classes: "govuk-fieldset__legend--m"
-					}
-				},
-				hint: 
-				{
-					text: ""
-				},
-				items: [
-				{
-					value: "yes",
-					text: "Yes"
-				},
-				{
-					value: "no",
-					text: "No"
-				}
-				]
-			}) }}
-
-			<hr class="govuk-section-break--visible govuk-section-break--xl govuk-section-break">
-
-			<h2 class="govuk-heading-l">
-				About you
-			</h2>
-
-			{{ govukInput({
-				label:
-				{
-					text: "What's the name of your organisation?",
-					classes: "govuk-label--m",
-					isPageHeading: false
-				},
-				id: "organisation-name",
-				name: "request[organisation-name]"
-			}) }}
-
-			{% call govukFieldset({
-				legend:
-				{
-					text: "Who should we contact about this?",
-					classes: "govuk-fieldset__legend--m",
-					isPageHeading: false
-				}
-			}) %}
-
-			<p class="govuk-!-margin-bottom-6">
-				We'll use these details to contact you if there are training providers interested in delivering this apprenticeship.
-			</p>
-
-			{{ govukInput({
-				label:
-				{
-					text: "Full name"
-				},
-				hint:
-				{
-					text: ""
-				},
-				id: "contact-full-name",
-				name: "request[contact-full-name]",
-				autocomplete: "name",
-				spellcheck: false
-			}) }}
-
-			{{ govukInput({
-				label:
-				{
-					text: "Email address"
-				},
-				hint:
-				{
-					text: ""
-				},
-				id: "email",
-				name: "request[email]"
-			}) }}
-			{% endcall %}
-
-			<hr class="govuk-section-break--visible govuk-section-break--l govuk-section-break">
-
-			<h2 class="govuk-heading-l govuk-!-margin-top-8">
-				Submit your training request
-			</h2>
-			<p class="govuk-body">
-				We'll share your interest in this training with relevant training providers to check if they can deliver the training.
-			</p>
-			<p>
-				We will not share your contact details.
-			</p>
-
-			<input type="hidden" name="request[standard][name]" value="{{data['courseName']}}">
-
-			<p>
-				{{govukButton({
-					text: "Submit"
-				})}}
-			</p>
 		</form>
 
     </div>

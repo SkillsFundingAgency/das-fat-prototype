@@ -2725,9 +2725,31 @@ module.exports = function (router,_myData) {
 
         req.session.myData.orgNameAnswerTemp = req.body.orgNameAnswer
         req.session.myData.emailAnswerTemp = req.body.emailAnswer
+        req.session.myData.apprenticesAnswerTemp = req.body.apprenticesAnswer
+        req.session.myData.apprenticesCountAnswerTemp = req.body.apprenticesCountAnswer
+
         if(req.session.myData.includeValidation == "false"){
             req.session.myData.orgNameAnswerTemp = req.session.myData.orgNameAnswerTemp || "ABC LTD"
             req.session.myData.emailAnswerTemp = req.session.myData.emailAnswerTemp || "abc@email.com"
+            req.session.myData.apprenticesAnswerTemp = req.session.myData.apprenticesAnswerTemp || "yes"
+            req.session.myData.apprenticesCountAnswerTemp = req.session.myData.apprenticesCountAnswerTemp || 1
+        }
+
+        if(!req.session.myData.apprenticesAnswerTemp){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.apprenticesAnswer = {
+                "anchor": "apprenticesAnswer-1",
+                "message": "Select yes if you know how many apprentices will take this apprenticeship training"
+            }
+        }
+        if(req.session.myData.apprenticesAnswerTemp == "yes"){
+            if(!req.session.myData.apprenticesCountAnswerTemp){
+                req.session.myData.validationError = "true"
+                req.session.myData.validationErrors.apprenticesCountAnswer = {
+                    "anchor": "apprenticesCountAnswer",
+                    "message": "Enter the number of apprentices"
+                }
+            }
         }
 
         if(!req.session.myData.orgNameAnswerTemp){
@@ -2741,7 +2763,7 @@ module.exports = function (router,_myData) {
             req.session.myData.validationError = "true"
             req.session.myData.validationErrors.emailAnswer = {
                 "anchor": "emailAnswer",
-                "message": "Enter your email address"
+                "message": "Enter an email address"
             }
         }
 
@@ -2754,9 +2776,13 @@ module.exports = function (router,_myData) {
             req.session.myData.orgNameAnswerTemp = ''
             req.session.myData.emailAnswer = req.session.myData.emailAnswerTemp
             req.session.myData.emailAnswerTemp = ''
+            req.session.myData.apprenticesAnswer = req.session.myData.apprenticesAnswerTemp
+            req.session.myData.apprenticesAnswerTemp = ''
+            req.session.myData.apprenticesCountAnswer = req.session.myData.apprenticesCountAnswerTemp
+            req.session.myData.apprenticesCountAnswerTemp = ''
 
-            // res.redirect(301, '/' + version + '/aed-employer-form?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
-            res.redirect(301, '/' + version + '/aed-employer-check-answers');
+            res.redirect(301, '/' + version + '/aed-employer-check-answers?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
+            // res.redirect(301, '/' + version + '/aed-employer-check-answers');
         }
 
         

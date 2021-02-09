@@ -82,7 +82,7 @@ Where is the apprenticeship location?
 					{{myData.validationErrors.aedLocationAnswer.message}}
 				</span>
 				{% endif %}
-				<input type="search" value="{{myData.aedLocationAnswer}}" id="search-location" name="aedLocationAnswer" title="Search" class="govuk-input govuk-input-background">
+				<input type="search" value="{{myData.aedLocationAnswer}}" id="search-location" name="aedLocationAnswer" title="Search" class="govuk-input govuk-input-background {% if myData.validationErrors.aedLocationAnswer %}govuk-input--error{% endif %} ">
 			</div>
 			<button class="govuk-button location-submit" id="location-submit" data-module="govuk-button">
 				Continue

@@ -52,19 +52,35 @@ Check your answers
 			</dd>
 		  </div>
 
-		  <div class="govuk-summary-list__row">
-			<dt class="govuk-summary-list__key" style="width:50%">
-				Do you know how many apprentices will take this apprenticeship training?
-			</dt>
-			<dd class="govuk-summary-list__value" style="width:30%;">
-			  [TO DO]
-			</dd>
-			<dd class="govuk-summary-list__actions">
-			  <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-form">
-				Change<span class="govuk-visually-hidden"> [to do]</span>
-			  </a>
-			</dd>
-		  </div>
+			<div class="govuk-summary-list__row">
+				<dt class="govuk-summary-list__key" style="width:50%">
+					Do you know how many apprentices will take this apprenticeship training?
+				</dt>
+				<dd class="govuk-summary-list__value" style="width:30%;">
+					{{myData.apprenticesAnswer | capitalize}}
+				</dd>
+				<dd class="govuk-summary-list__actions">
+					<a class="govuk-link govuk-link--no-visited-state" href="aed-employer-form">
+					Change<span class="govuk-visually-hidden"> [to do]</span>
+					</a>
+				</dd>
+			</div>
+
+			{% if myData.apprenticesAnswer == "yes" %}
+			<div class="govuk-summary-list__row">
+				<dt class="govuk-summary-list__key" style="width:50%">
+					Number of apprentices
+				</dt>
+				<dd class="govuk-summary-list__value" style="width:30%;">
+					{{myData.apprenticesCountAnswer}}
+				</dd>
+				<dd class="govuk-summary-list__actions">
+					<a class="govuk-link govuk-link--no-visited-state" href="aed-employer-form">
+					Change<span class="govuk-visually-hidden"> [to do]</span>
+					</a>
+				</dd>
+			</div>
+			{% endif %}
 
 		</dl>
 
@@ -101,7 +117,7 @@ Check your answers
 
 		</dl>
 
-		<a href="aed-employer-confirmation" class="govuk-button">Continue</a>
+		<a href="aed-employer-confirmation" class="govuk-button">Confirm</a>
 
 	</div>
 </div>

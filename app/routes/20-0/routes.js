@@ -867,7 +867,7 @@ module.exports = function (router,_myData) {
         req.session.myData.strengthsAnswer = []
         req.session.myData.factorsAnswers = {}
 
-        req.session.myData.aedLocationAnswer = "Coventry, Warwickshire"
+        // req.session.myData.aedLocationAnswer = "Coventry, Warwickshire"
 
         // //Set quality points
         // req.session.myData["providers-new"].list.forEach(function(_provider, index) {
@@ -2723,16 +2723,30 @@ module.exports = function (router,_myData) {
     });
     router.post('/' + version + '/aed-employer-form', function (req, res) {
 
+        req.session.myData.aedLocationAnswerTemp = req.body.aedLocationAnswer
         req.session.myData.orgNameAnswerTemp = req.body.orgNameAnswer
         req.session.myData.emailAnswerTemp = req.body.emailAnswer
         req.session.myData.apprenticesAnswerTemp = req.body.apprenticesAnswer
         req.session.myData.apprenticesCountAnswerTemp = req.body.apprenticesCountAnswer
 
+        if(req.session.myData.aedLocationAnswerTemp != ""){
+            req.session.myData.aedLocationAnswerTemp = req.session.myData.aedLocationAnswerTemp.trim()
+        }
+
         if(req.session.myData.includeValidation == "false"){
+            req.session.myData.aedLocationAnswerTemp = req.session.myData.aedLocationAnswerTemp || "Coventry"
             req.session.myData.orgNameAnswerTemp = req.session.myData.orgNameAnswerTemp || "ABC LTD"
             req.session.myData.emailAnswerTemp = req.session.myData.emailAnswerTemp || "abc@email.com"
             req.session.myData.apprenticesAnswerTemp = req.session.myData.apprenticesAnswerTemp || "yes"
             req.session.myData.apprenticesCountAnswerTemp = req.session.myData.apprenticesCountAnswerTemp || 1
+        }
+
+        if(!req.session.myData.aedLocationAnswerTemp){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.aedLocationAnswer = {
+                "anchor": "search-location",
+                "message": "Enter a town, city or postcode"
+            }
         }
 
         if(!req.session.myData.apprenticesAnswerTemp){
@@ -2767,57 +2781,7 @@ module.exports = function (router,_myData) {
             }
         }
 
-        if(req.session.myData.validationError == "true") {
-            res.render(version + '/aed-employer-form', {
-                myData: req.session.myData
-            });
-        } else {
-            req.session.myData.orgNameAnswer = req.session.myData.orgNameAnswerTemp
-            req.session.myData.orgNameAnswerTemp = ''
-            req.session.myData.emailAnswer = req.session.myData.emailAnswerTemp
-            req.session.myData.emailAnswerTemp = ''
-            req.session.myData.apprenticesAnswer = req.session.myData.apprenticesAnswerTemp
-            req.session.myData.apprenticesAnswerTemp = ''
-            req.session.myData.apprenticesCountAnswer = req.session.myData.apprenticesCountAnswerTemp
-            req.session.myData.apprenticesCountAnswerTemp = ''
-
-            res.redirect(301, '/' + version + '/aed-employer-check-answers?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
-            // res.redirect(301, '/' + version + '/aed-employer-check-answers');
-        }
-
-        
-    });
-    // AED Employer location
-    router.get('/' + version + '/aed-employer-location', function (req, res) {
-        
-        function continueRendering(){
-            res.render(version + '/aed-employer-location', {
-                myData:req.session.myData
-            });
-        }
-
-        locationSetter(req,continueRendering)
-        
-    });
-    router.post('/' + version + '/aed-employer-location', function (req, res) {
-        req.session.myData.aedLocationAnswerTemp = req.body.aedLocationAnswer
-        if(req.session.myData.includeValidation == "false"){
-            req.session.myData.aedLocationAnswerTemp = req.session.myData.aedLocationAnswerTemp || "Coventry"
-        }
-
-        if(req.session.myData.aedLocationAnswerTemp != ""){
-            req.session.myData.aedLocationAnswerTemp = req.session.myData.aedLocationAnswerTemp.trim()
-        }
-
-        if(!req.session.myData.aedLocationAnswerTemp){
-            req.session.myData.validationError = "true"
-            req.session.myData.validationErrors.aedLocationAnswer = {
-                "anchor": "search-location",
-                "message": "Enter a town, city or postcode"
-            }
-        }
-
-        //Location reset/setup
+        //Location valiation
         if(req.session.myData.aedLocationAnswerTemp){
             req.session.myData.locationTemp = req.session.myData.aedLocationAnswerTemp
             require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
@@ -2844,19 +2808,93 @@ module.exports = function (router,_myData) {
 
         function continueRendering(){
             if(req.session.myData.validationError == "true") {
-                res.render(version + '/aed-employer-location', {
+                res.render(version + '/aed-employer-form', {
                     myData: req.session.myData
                 });
             } else {
                 req.session.myData.aedLocationAnswer = req.session.myData.aedLocationAnswerTemp
-                req.session.myData.aedLocationAnswerApplied = false
-                req.session.myData.aedLocationAnswerTemp = ''
+                req.session.myData.orgNameAnswer = req.session.myData.orgNameAnswerTemp
+                req.session.myData.emailAnswer = req.session.myData.emailAnswerTemp
+                req.session.myData.apprenticesAnswer = req.session.myData.apprenticesAnswerTemp
+                req.session.myData.apprenticesCountAnswer = req.session.myData.apprenticesCountAnswerTemp
 
-                res.redirect(301, '/' + version + '/aed-employer-form?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
+                res.redirect(301, '/' + version + '/aed-employer-check-answers?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
+                // res.redirect(301, '/' + version + '/aed-employer-check-answers');
             }
         }
 
+        
     });
+    // // AED Employer location
+    // router.get('/' + version + '/aed-employer-location', function (req, res) {
+        
+    //     function continueRendering(){
+    //         res.render(version + '/aed-employer-location', {
+    //             myData:req.session.myData
+    //         });
+    //     }
+
+    //     locationSetter(req,continueRendering)
+        
+    // });
+    // router.post('/' + version + '/aed-employer-location', function (req, res) {
+    //     req.session.myData.aedLocationAnswerTemp = req.body.aedLocationAnswer
+    //     if(req.session.myData.includeValidation == "false"){
+    //         req.session.myData.aedLocationAnswerTemp = req.session.myData.aedLocationAnswerTemp || "Coventry"
+    //     }
+
+    //     if(req.session.myData.aedLocationAnswerTemp != ""){
+    //         req.session.myData.aedLocationAnswerTemp = req.session.myData.aedLocationAnswerTemp.trim()
+    //     }
+
+    //     if(!req.session.myData.aedLocationAnswerTemp){
+    //         req.session.myData.validationError = "true"
+    //         req.session.myData.validationErrors.aedLocationAnswer = {
+    //             "anchor": "search-location",
+    //             "message": "Enter a town, city or postcode"
+    //         }
+    //     }
+
+    //     //Location reset/setup
+    //     if(req.session.myData.aedLocationAnswerTemp){
+    //         req.session.myData.locationTemp = req.session.myData.aedLocationAnswerTemp
+    //         require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
+    //             var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
+    //             if(cityMatch(req) || _postCodeMatch) {
+    //                 req.session.myData.locationapplied = true
+    //                 req.session.myData.location = req.session.myData.locationTemp
+    //                 req.session.myData.needToMatchCount++
+    //             } else {
+    //                 req.session.myData.locationapplied = false
+    //                 req.session.myData.location = ""
+
+    //                 req.session.myData.validationError = "true"
+    //                 req.session.myData.validationErrors.aedLocationAnswer = {
+    //                     "anchor": "search-location",
+    //                     "message": "Enter a real town, city or postcode"
+    //                 }
+    //             }
+    //             continueRendering()
+    //         });
+    //     } else {
+    //         continueRendering()
+    //     }
+
+    //     function continueRendering(){
+    //         if(req.session.myData.validationError == "true") {
+    //             res.render(version + '/aed-employer-location', {
+    //                 myData: req.session.myData
+    //             });
+    //         } else {
+    //             req.session.myData.aedLocationAnswer = req.session.myData.aedLocationAnswerTemp
+    //             req.session.myData.aedLocationAnswerApplied = false
+    //             req.session.myData.aedLocationAnswerTemp = ''
+
+    //             res.redirect(301, '/' + version + '/aed-employer-form?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
+    //         }
+    //     }
+
+    // });
 
     // AED Employer check answers
     router.get('/' + version + '/aed-employer-check-answers', function (req, res) {
@@ -2869,6 +2907,26 @@ module.exports = function (router,_myData) {
 
         locationSetter(req,continueRendering)
         
+    });
+    // AED Employer check answers
+    router.get('/' + version + '/aed-employer-check-answers', function (req, res) {
+
+        function continueRendering(){
+            res.render(version + '/aed-employer-check-answers', {
+                myData:req.session.myData
+            });
+        }
+
+        locationSetter(req,continueRendering)
+        
+    });
+    router.post('/' + version + '/aed-employer-check-answers', function (req, res) {
+        req.session.myData.aedLocationAnswerTemp = ''
+        req.session.myData.apprenticesAnswerTemp = ''
+        req.session.myData.apprenticesCountAnswerTemp = ''
+        req.session.myData.orgNameAnswerTemp = ''
+        req.session.myData.emailAnswerTemp = ''
+        res.redirect(301, '/' + version + '/aed-employer-confirmation');
     });
     // AED Employer confirmation
     router.get('/' + version + '/aed-employer-confirmation', function (req, res) {

@@ -7,6 +7,10 @@
 {% set _selectedStandard = myData.selectedStandard %}
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
+<!-- Location search -->
+{% set _citiesAutocompleteList = myData.citiesAutocompleteList %}
+{% set _defaultLocationSearchvalue = myData.aedLocationAnswerTemp or "" %}
+
 {% block pageTitle %}
 {% if _inError == "true" %}Error: {% endif %}
 Enter the apprenticeship training and contact details
@@ -18,6 +22,16 @@ Enter the apprenticeship training and contact details
 {% endblock %}
 
 {% block content %}
+
+<style>
+	.govuk-input-background,
+    .autocomplete__input {
+		background-color: white;
+	}
+    .autocomplete__hint {
+        height: 40px;
+    }
+</style>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -56,10 +70,30 @@ Enter the apprenticeship training and contact details
 						Apprenticeship training course <br>
 						<span class="govuk-!-font-weight-bold">{{_standardTitle|safe}}</span>
 					</p>
-					<p class="govuk-body govuk-!-margin-bottom-5">
+					<!-- <p class="govuk-body govuk-!-margin-bottom-5">
 						Apprenticeship location <br>
 						<span class="govuk-!-font-weight-bold">{{myData.location}}</span>
-					</p>
+					</p> -->
+				</div>
+
+				<!-- Location -->
+				<div class="govuk-form-group {% if myData.validationErrors.aedLocationAnswer %}govuk-form-group--error{% endif %}" >
+					<label for="search-location" class="govuk-label" >
+						
+					</label>
+					<label class="govuk-label govuk-label--m" for="search-location">
+						Where is the apprenticeship location?
+					</label>
+					<div id="search-location-hint" class="govuk-hint">
+						Enter a town, city or postcode
+					</div>
+					{% if myData.validationErrors.aedLocationAnswer %}
+					<span id="aedlocationAnswer-error" class="govuk-error-message">
+						<span class="govuk-visually-hidden">Error:</span>
+						{{myData.validationErrors.aedLocationAnswer.message}}
+					</span>
+					{% endif %}
+					<input type="search" id="search-location" name="aedLocationAnswer" title="Search" class="govuk-input govuk-input-background {% if myData.validationErrors.aedLocationAnswer %}govuk-input--error{% endif %} " aria-describedby="search-location-hint">
 				</div>
 
 				<!-- Apprentices -->
@@ -160,4 +194,62 @@ Enter the apprenticeship training and contact details
 
 </div>
 
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+    
+    // Locations 
+    function suggestLocations(query, populateResults) {
+        var _allSuggestions = []
+
+        // Cities
+        var _citiesResults = {{_citiesAutocompleteList | dump | safe }},
+            _filteredCitiesResults = _citiesResults.filter(
+                result => result.toUpperCase().startsWith(query.trim().toUpperCase())
+            )
+        _filteredCitiesResults.sort(function(a,b){
+            var returnValue = 0;
+            if (a.toUpperCase() < b.toUpperCase()){
+                returnValue = -1
+            } else if(a.toUpperCase() > b.toUpperCase()){
+                returnValue = 1
+            }
+            return returnValue
+        });
+
+        // Postcodes
+        $.getJSON('https://api.postcodes.io/postcodes/' + query + '/autocomplete', function(body){
+            var _postcodes = body.result || []
+            _allSuggestions = _allSuggestions.concat(_filteredCitiesResults,_postcodes)
+            populateResults(_allSuggestions)
+        })
+    }
+    // function fireLocationSearch(){setTimeout(function(){ $("#location-submit").trigger("click") },200);}
+    var locationInput = document.querySelector('#search-location')
+    if (locationInput) {
+        var locationInputID = locationInput.id,
+            locationElement = document.createElement('div'),
+			defaultLocationSearchvalue = {{_defaultLocationSearchvalue | dump | safe }}
+			
+        locationElement.className = "autocomplete__parent_wrapper";
+        locationInput.parentNode.insertBefore(locationElement, locationInput)
+        accessibleAutocomplete({
+            // other options
+            element: locationElement,
+            id: locationInputID,
+            name: locationInput.name,
+            source: suggestLocations,
+            defaultValue: defaultLocationSearchvalue,
+            minLength: 1,
+            confirmOnBlur: false,
+            autoselect: true,
+            // onConfirm: fireLocationSearch,
+            displayMenu: 'overlay'
+        })
+        locationInput.style.display = 'none'
+        locationInput.id = locationInputID + '-old'
+        locationInput.name = ''
+    }
+</script>
 {% endblock %}

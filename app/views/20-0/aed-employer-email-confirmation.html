@@ -6,11 +6,16 @@
 {% set _selectedStandard = myData.selectedStandard %}
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
+{% set _orgNameAnswer = myData.orgNameAnswer or "ABC LTD" %}
+{% set _locationAnswer = myData.location or "Coventry, Warwickshire" %}
+{% set _apprenticesAnswer = myData.apprenticesAnswer or "yes" %}
+{% set _apprenticesCountAnswer = myData.apprenticesCountAnswer or 1 %}
+
 {% block pageTitle %} 
 {% endblock %}
 
 {% set _email = true %}
-{% set _showAEDEmployerLinks = true %}
+{% set _showAEDEmployerLinks2 = true %}
 {% set _currentAEDEmployerLink = "aed-employer-email-confirmation" %}
 
 {% block beforeContent %}
@@ -25,94 +30,43 @@
           <span class="govuk-!-font-weight-bold">From:</span> The Apprenticeship Service &lt;the.apprenticeship.service@notifications.service.gov.uk&gt;
           <br><span class="govuk-!-font-weight-bold">Sent:</span> Tue 08/12/2020 09:20
           <br><span class="govuk-!-font-weight-bold">To:</span> You
-          <br><span class="govuk-!-font-weight-bold">Subject:</span> We've registered your interest in an apprenticeship training course
+          <br><span class="govuk-!-font-weight-bold">Subject:</span> We’ve shared your interest in apprenticeship training with training providers
         </p>
 
         <img src="/public/images/esfa-logo.png" width="180px" style="margin-bottom:40px; display:block">
 
         <h1 class="govuk-heading-l">
-          We've registered your interest in an apprenticeship training course
+          We’ve shared your interest in apprenticeship training with training providers
         </h1>
-      
-        <div class="govuk-inset-text">
-          <dl class="govuk-summary-list govuk-!-margin-bottom-2">
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">
-                    Apprenticeship training course
-                  </dt>
-                  <dd class="govuk-summary-list__value">
-                    {{_standardTitle|safe}}
-                  </dd>
-                  
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">
-                    Training location
-                  </dt>
-                  <dd class="govuk-summary-list__value">
-                    Rugby, Warwickshire
-                  </dd>
-                  
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">
-                    Number of apprentices
-                  </dt>
-                  <dd class="govuk-summary-list__value">
-                    1
-                  </dd>
-                  
-                </div>
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">
-                    Start date
-                  </dt>
-                  <dd class="govuk-summary-list__value">
-                    I&#39;m flexible
-                  </dd>
-                </div>
-          </dl>
-        </div>
-      
+
+        <p>To {{_orgNameAnswer}},</p>
+
         <p class="govuk-body">
-          We'll share your interest in {{_standardTitle|safe}} with training providers for up to 12 weeks.
+          Apprenticeship training course <br>
+          <span class="govuk-!-font-weight-bold">{{_standardTitle|safe}}</span>
         </p>
-      
+    
         <p class="govuk-body">
-          If a training provider tells us they’re interested in delivering your training, we’ll send you a notification email with their details. You can contact them to discuss your requirements.
+          Apprenticeship location <br>
+          <span class="govuk-!-font-weight-bold">{{_locationAnswer}}</span>
         </p>
-      
+    
+        {% if _apprenticesAnswer == "yes" %}
         <p class="govuk-body">
-          If you do not hear from us, it means that no training providers have expressed an interest in delivering your training.
+          Number of apprentices <br>
+          <span class="govuk-!-font-weight-bold">{{_apprenticesCountAnswer}}</span>
         </p>
-      
-        <p class="govuk-body">Kind regards</p>
-        <p class="govuk-body">Apprenticeship service team</p>
-        <p class="govuk-body">Education and Skills Funding Agency</p>
-        <p class="govuk-body"><a href="https://www.apprenticeships.gov.uk/employers" class="govuk-link govuk-link--no-visited-state">www.apprenticeships.gov.uk/employers</a></p>
-        <p class="govuk-body">This is an automated message. Please don’t reply to this email.</p>
+        {% endif %}
 
-       
+        <p class="govuk-body">We’ll send you the details of any training providers who can offer the apprenticeship training.</p>
 
-
-
-
-
-
-
-
-
-       
+        <p class="govuk-body">We’ve not shared your organisation name or email address with training providers.</p>
         
+        <p class="govuk-body">From</p>
         
-        <!-- Registered account footer style -->
-        
-        <!-- <p class="govuk-body">From</p>
         <p class="govuk-body">Apprenticeship Service</p>
-        <p class="govuk-body">If you want to stop these type of emails, you can change your notification settings (<a class="govuk-link govuk-link--no-visited-state" href="http://manage-apprenticeships.service.gov.uk/settings/notifications" target="_blank">http://manage-apprenticeships.service.gov.uk/settings/notifications</a>).</p> -->
-
         
-
+        <p class="govuk-body"><a href="aed-employer-removed" target="_blank" class="govuk-link govuk-link--no-visited-state">Unsubscribe</a> to stop sharing your interest in this apprenticeship training course.</p>
 
     </div>
 </div>

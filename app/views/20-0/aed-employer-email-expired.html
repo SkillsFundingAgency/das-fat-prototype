@@ -9,8 +9,13 @@
 {% endblock %}
 
 {% set _email = true %}
-{% set _showAEDEmployerLinks = true %}
+{% set _showAEDEmployerLinks2 = true %}
 {% set _currentAEDEmployerLink = "aed-employer-email-expired" %}
+
+{% set _orgNameAnswer = myData.orgNameAnswer or "ABC LTD" %}
+{% set _locationAnswer = myData.location or "Coventry, Warwickshire" %}
+{% set _apprenticesAnswer = myData.apprenticesAnswer or "yes" %}
+{% set _apprenticesCountAnswer = myData.apprenticesCountAnswer or 1 %}
 
 {% block beforeContent %}
 {% endblock %}
@@ -18,50 +23,49 @@
 {% block content %}
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-grid-column-two-thirds">
 
-        <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-6" style="border-bottom: 1px solid grey; padding-bottom:20px">
-          <span class="govuk-!-font-weight-bold">From:</span> The Apprenticeship Service &lt;the.apprenticeship.service@notifications.service.gov.uk&gt;
-          <br><span class="govuk-!-font-weight-bold">Sent:</span> Tue 08/12/2020 09:20
-          <br><span class="govuk-!-font-weight-bold">To:</span> You
-          <br><span class="govuk-!-font-weight-bold">Subject:</span> Interest removed for {{_standardTitle|safe}} training
-        </p>
+      <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-6" style="border-bottom: 1px solid grey; padding-bottom:20px">
+        <span class="govuk-!-font-weight-bold">From:</span> The Apprenticeship Service &lt;the.apprenticeship.service@notifications.service.gov.uk&gt;
+        <br><span class="govuk-!-font-weight-bold">Sent:</span> Tue 08/12/2020 09:20
+        <br><span class="govuk-!-font-weight-bold">To:</span> You
+        <br><span class="govuk-!-font-weight-bold">Subject:</span> We’ve stopped sharing your interest in apprenticeship training with training providers
+      </p>
 
-        <img src="/public/images/esfa-logo.png" width="180px" style="margin-bottom:40px; display:block">
+      <img src="/public/images/esfa-logo.png" width="180px" style="margin-bottom:40px; display:block">
 
-        <h1 class="govuk-heading-l">
-          Interest removed for {{_standardTitle|safe}} training
-        </h1>
+      <h1 class="govuk-heading-l">
+        We’ve stopped sharing your interest in apprenticeship training with training providers
+      </h1>
+
+      <p>To {{_orgNameAnswer}},</p>
+
+      <p class="govuk-body">
+        Apprenticeship training course <br>
+        <span class="govuk-!-font-weight-bold">{{_standardTitle|safe}}</span>
+      </p>
+  
+      <p class="govuk-body">
+        Apprenticeship location <br>
+        <span class="govuk-!-font-weight-bold">{{_locationAnswer}}</span>
+      </p>
+  
+      {% if _apprenticesAnswer == "yes" %}
+      <p class="govuk-body">
+        Number of apprentices <br>
+        <span class="govuk-!-font-weight-bold">{{_apprenticesCountAnswer}}</span>
+      </p>
+      {% endif %}
+
+      <p class="govuk-body"><a href="#" target="_blank" class="govuk-link govuk-link--no-visited-state">Share your interest again</a> with training providers.</p>
+
+      <p class="govuk-body">We’ve not shared your organisation name or email address with training providers.</p>
       
-        <p>
-          We have removed your interest in {{_standardTitle|safe}} apprenticeship training.
-        </p>
+      <p class="govuk-body">From</p>
       
-        <p>
-          You can <a href="home" class="govuk-link govuk-link--no-visited-state">search for other apprenticeship training</a> for your business.
-        </p>
-      
-      
+      <p class="govuk-body">Apprenticeship Service</p>
 
-
-        <!-- AED footer -->
-        <p class="govuk-body">Kind regards</p>
-        <p class="govuk-body">Apprenticeship service team</p>
-        <p class="govuk-body">Education and Skills Funding Agency</p>
-        <p class="govuk-body"><a href="https://www.apprenticeships.gov.uk/employers" class="govuk-link govuk-link--no-visited-state">www.apprenticeships.gov.uk/employers</a></p>
-        <p class="govuk-body">This is an automated message. Please don’t reply to this email.</p>
-
-       
-        
-        <!-- Registered account footer style -->
-        <!-- <p class="govuk-body">From</p>
-        <p class="govuk-body">Apprenticeship Service</p>
-        <p class="govuk-body">If you want to stop these type of emails, you can change your notification settings (<a class="govuk-link govuk-link--no-visited-state" href="http://manage-apprenticeships.service.gov.uk/settings/notifications" target="_blank">http://manage-apprenticeships.service.gov.uk/settings/notifications</a>).</p> -->
-
-        
-
-
-    </div>
+  </div>
 </div>
 
 {% endblock %}

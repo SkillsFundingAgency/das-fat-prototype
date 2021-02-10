@@ -6,7 +6,7 @@
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
 {% block pageTitle %}
-We've registered your interest
+We’ve shared your interest with training providers
 {% endblock %}
 
 {% set _showAEDEmployerLinks = true %}
@@ -14,7 +14,6 @@ We've registered your interest
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
-	<!-- <a href="aed-employer-form" class="govuk-back-link">Back</a> -->
 {% endblock %}
 
 {% block content %}
@@ -30,34 +29,37 @@ We've registered your interest
     <div class="govuk-grid-column-two-thirds">
 
         {{ govukPanel({
-			titleText: "We've registered your interest",
-			html: _standardTitle|safe
+			titleText: "We’ve shared this interest with training providers"
 		}) }}
 
-		<p class="govuk-body">We’ve sent you a confirmation email.</p>
+		<p class="govuk-body">We’ve sent a confirmation email to {{myData.emailAnswer}}.</p>
+
+		<p class="govuk-body">
+			Apprenticeship training course <br>
+			<span class="govuk-!-font-weight-bold">{{_standardTitle|safe}}</span>
+		</p>
+
+		<p class="govuk-body">
+			Apprenticeship location <br>
+			<span class="govuk-!-font-weight-bold">{{myData.location}}</span>
+		</p>
+
+		{% if myData.apprenticesAnswer == "yes" %}
+		<p class="govuk-body">
+			Number of apprentices <br>
+			<span class="govuk-!-font-weight-bold">{{myData.apprenticesCountAnswer}}</span>
+		</p>
+		{% endif %}
 
 		<h2 class="govuk-heading-m">What happens next</h2>
 
-		<p>
-			We'll share your interest in {{_standardTitle|safe}} with training providers for up to 12 weeks.
-		</p>
+		<p class="govuk-body">We’ll send the details of any training providers who can offer the apprenticeship training to {{myData.emailAnswer}}.</p>
+			
+		<p class="govuk-body">We’ve not shared the organisation name or email address with training providers.</p>
+		
+		<a href="training" class="govuk-button" >Search for another course</a>
 
-		<p>
-			If a training provider tells us they’re interested in delivering your training, we’ll send you a notification email with their details. You can contact them to discuss your requirements. 
-		</p>
-
-		<p>
-			If you do not hear from us, it means that no training providers have expressed an interest in delivering your training.
-		</p>
-
-		<h2 class="govuk-heading-m govuk-!-margin-top-6">
-			What else can I do?
-		</h2>
-		<p class="govuk-body">You can go back and either:</p>
-		<ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
-			<li><a href="#" class="govuk-link govuk-link--no-visited-state" >remove the location</a></li>
-			<li><a href="training" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
-		</ul>
+		<p class="govuk-body"><a href="#" class="govuk-link">What did you think of this service?</a></p>
 
     </div>
 

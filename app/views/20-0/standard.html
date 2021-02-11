@@ -282,7 +282,10 @@
 
         <!-- Providers -->
 
-        {% set _aedLink = "aed-employer-form?standard=" + myData.standard + "&location=" + myData.location %}
+        {% set _aedLink = "https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" %}
+        {% if myData.aedinfat == "true" %}
+            {% set _aedLink = "aed-employer-form?standard=" + myData.standard + "&location=" + myData.location %}
+        {% endif %}
         
         {% set _displaycountproviders = myData.displaycountproviders %}
 

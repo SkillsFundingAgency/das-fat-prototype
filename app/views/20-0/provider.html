@@ -373,7 +373,12 @@
 
                 <p class="govuk-body" >There are no other training providers available for {{_standardTitle | safe}} at the apprenticeship location.</p>
                 <p class="govuk-body">You can either:</p>
-                {% set _aedLink = "aed-employer-form?standard=" + myData.standard + "&location=" + myData.location %}
+
+                {% set _aedLink = "https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" %}
+                {% if myData.aedinfat == "true" %}
+                    {% set _aedLink = "aed-employer-form?standard=" + myData.standard + "&location=" + myData.location %}
+                {% endif %}
+
                 <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
                     <li><a href="training" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
                     <li><a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>

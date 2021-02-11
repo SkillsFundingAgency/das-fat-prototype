@@ -1,0 +1,14 @@
+
+{% set _aedLink = "aed-employer-location?standard=" + myData.standard + "&location=" %}
+{% if myData.locationapplied == true %}
+	{% set _aedLink = "aed-employer-form?standard=" + myData.standard + "&location=" + myData.location %}
+{% endif %}
+
+
+{% set _aedLink = "aed-employer-form?standard=" + myData.standard + "&location=" + myData.location %}
+
+<div class="fat-panel fat-panel-blocked">
+	<p class="govuk-body">
+		<a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">Get help with finding a training provider</a>
+	</p>
+</div>

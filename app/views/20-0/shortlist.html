@@ -77,6 +77,7 @@ Shortlist
                 {% endfor %}
                 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
                 <h2 class="govuk-heading-l govuk-!-margin-bottom-4">{{_standardTitle|safe}}</h2>
+
             </div>
         </div>
 
@@ -345,6 +346,13 @@ Shortlist
                                 </table>
 
                                 <p class="govuk-body govuk-!-margin-bottom-6"><a href="providers?location={{_location.id}}&standard={{_selectedStandard.larsCode}}" class="govuk-link govuk-link--no-visited-state">Add more training providers</a></p>
+
+                                {% if myData.aedinfat == "true" and myData.displaycount != 0 %}
+                                {% set _aedLink = "aed-employer-form?standard=" + _selectedStandard.larsCode + "&location=" + _location.id %}
+                                <p class="govuk-body">
+                                    <a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">Get help with finding a training provider</a>
+                                </p>
+                                {% endif %}
 
                         {% if myData.favourites2.length > 1 or _favourite.locations.length > 1 %}
                             </div>

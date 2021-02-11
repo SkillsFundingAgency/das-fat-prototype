@@ -463,14 +463,6 @@ Training providers for - {{_standardTitle|safe}}
             {% if _provider.search == true and _renderedRows < myData.maxrows  %}
 
                 {% set _renderedRows = _renderedRows + 1 %}
-
-                {% if (_renderedRows%10 == 0) %}
-                    {% if myData.aedinfat == "true" and myData.displaycount != 0 %}
-                        <hr class="govuk-section-break govuk-section-break--m">
-                        {% include "includes/aed-cta-v2.html" %}
-                        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
-                    {% endif %}
-                {% endif %}
                 
                 <div class="govuk-grid-row govuk-!-margin-left-0 govuk-!-margin-right-0 govuk-!-margin-top-3">
 

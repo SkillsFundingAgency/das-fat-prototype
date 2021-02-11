@@ -336,15 +336,12 @@ Training providers for - {{_standardTitle|safe}}
             {% if myData.locationapplied and myData.trainingoptionsapplied != true and myData.employerreviewsapplied != true and myData.ofstedratingsapplied != true %}
             <h2 class="govuk-heading-m">0 results at {{myData.location}}</h2>
             <p class="govuk-body">You can either:</p>
+            {% set _aedLink = "aed-employer-form?standard=" + myData.standard + "&location=" + myData.location %}
             <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
                 <li><a href="providers?{{_sortQuery}}{{_searchQuery}}{{_standardQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}{{_trainingOptionsQuery}}&location" class="govuk-link govuk-link--no-visited-state" >remove the location</a></li>
                 <li><a href="training" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
-                <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
+                <li><a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
             </ul>
-
-            {% if myData.aedinfat == "true" %}
-            {% include "includes/aed-cta.html" %}
-            {% endif %}
 
             {% else %}
             <!-- IF any other filter applied AND 0 results -->

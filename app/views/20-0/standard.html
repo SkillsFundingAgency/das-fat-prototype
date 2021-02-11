@@ -281,6 +281,8 @@
         </p>
 
         <!-- Providers -->
+
+        {% set _aedLink = "aed-employer-form?standard=" + myData.standard + "&location=" + myData.location %}
         
         {% set _displaycountproviders = myData.displaycountproviders %}
 
@@ -293,12 +295,8 @@
                 <p class="govuk-body">You can either:</p>
                 <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
                     <li><a href="training" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
-                    <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
+                    <li><a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
                 </ul>
-
-                {% if myData.aedinfat == "true" %}
-                {% include "includes/aed-cta.html" %}
-                {% endif %}
 
             </div>
 
@@ -345,7 +343,6 @@
                             </label>
                             <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input govuk-input-background">
                         </div>
-                        <!-- <p class="govuk-body">{{myData.countproviders}} providers offer this training.</p> -->
                         <button class="govuk-button location-submit" data-module="govuk-button">
                             View providers for this course
                         </button>
@@ -355,20 +352,13 @@
                 {% endif %}
 
                 {% if myData.locationapplied and _displaycountproviders == 0 %}
-                    <!-- <p class="govuk-body">The Education and Skills Funding Agency (ESFA) can advise you what to do next.</p> -->
                     <p class="govuk-body">You can either:</p>
                     <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
-                        <!-- <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">contact ESFA</a></li> -->
                         <li><a href="training" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
-                        <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
+                        <li><a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
                     </ul>
                     <p class="govuk-body">{{myData.countproviders}} providers available at other locations.</p>
                     <p class="govuk-body govuk-!-margin-bottom-6"><a href="providers?standard={{myData.standard}}&location" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">View all providers for this course</a></p>
-
-                    {% if myData.aedinfat == "true" %}
-                    {% include "includes/aed-cta.html" %}
-                    {% endif %}
-
                 {% endif %}
 
             </div>

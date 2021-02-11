@@ -373,9 +373,10 @@
 
                 <p class="govuk-body" >There are no other training providers available for {{_standardTitle | safe}} at the apprenticeship location.</p>
                 <p class="govuk-body">You can either:</p>
+                {% set _aedLink = "aed-employer-form?standard=" + myData.standard + "&location=" + myData.location %}
                 <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
                     <li><a href="training" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
-                    <li><a href="https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
+                    <li><a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
                 </ul>
                 <p class="govuk-body">{{myData.countproviders}} providers available at other locations.</p>
                 <p class="govuk-body govuk-!-margin-bottom-6"><a href="providers?standard={{myData.standard}}&location" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">View all providers for this course</a></p>
@@ -495,7 +496,7 @@
             </dl>
         </div>
 
-        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-7">
+        <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             <p class="govuk-body shortlist-label-non-js " >
                 {% if _selectedProvider.inFavourites == true %}
                 <strong class="govuk-tag">
@@ -570,7 +571,7 @@
         
         {% if myData.standardsearchapplied != true %}
         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Contact details</h2>
-        <dl class="govuk-summary-list govuk-!-margin-bottom-7">
+        <dl class="govuk-summary-list govuk-!-margin-bottom-5">
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Email</dt>
                 <dd class="govuk-summary-list__value"><a class="govuk-link govuk-link--no-visited-state" href="#">contact@{{_providerTitleForContact}}.co.uk</a></dd>

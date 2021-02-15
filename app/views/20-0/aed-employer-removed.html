@@ -10,6 +10,7 @@ We’ve stopped sharing your interest in apprenticeship training with training p
 {% endblock %}
 
 {% set _orgNameAnswer = myData.orgNameAnswer or "ABC LTD" %}
+{% set _emailAnswer = myData.emailAnswer or "name@example.com" %}
 {% set _locationAnswer = myData.location or "Coventry, Warwickshire" %}
 {% set _apprenticesAnswer = myData.apprenticesAnswer or "yes" %}
 {% set _apprenticesCountAnswer = myData.apprenticesCountAnswer or 1 %}
@@ -27,7 +28,9 @@ We’ve stopped sharing your interest in apprenticeship training with training p
 			We’ve stopped sharing your interest in apprenticeship training with training providers
 		</h1>
 
-		<p>{{_orgNameAnswer}},</p>
+		<p class="govuk-body">We’ve sent a confirmation email to {{_emailAnswer}}.</p>
+
+		<!-- <p>{{_orgNameAnswer}},</p>
 
 		<p class="govuk-body">
 			Apprenticeship training course <br>
@@ -37,13 +40,13 @@ We’ve stopped sharing your interest in apprenticeship training with training p
 		<p class="govuk-body">
 			Apprenticeship location <br>
 			<span class="govuk-!-font-weight-bold">{{_locationAnswer}}</span>
-		</p>
+		</p> -->
 	
 		{% if _apprenticesAnswer == "yes" %}
-		<p class="govuk-body">
+		<!-- <p class="govuk-body">
 			Number of apprentices <br>
 			<span class="govuk-!-font-weight-bold">{{_apprenticesCountAnswer}}</span>
-		</p>
+		</p> -->
 		{% endif %}
 
 		<p class="govuk-body">

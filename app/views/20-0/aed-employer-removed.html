@@ -6,8 +6,13 @@
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
 {% block pageTitle %} 
-We have removed your interest in {{_standardTitle|safe}}
+We’ve stopped sharing your interest in apprenticeship training with training providers
 {% endblock %}
+
+{% set _orgNameAnswer = myData.orgNameAnswer or "ABC LTD" %}
+{% set _locationAnswer = myData.location or "Coventry, Warwickshire" %}
+{% set _apprenticesAnswer = myData.apprenticesAnswer or "yes" %}
+{% set _apprenticesCountAnswer = myData.apprenticesCountAnswer or 1 %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
@@ -19,13 +24,38 @@ We have removed your interest in {{_standardTitle|safe}}
     <div class="govuk-grid-column-two-thirds">
 
         <h1 class="govuk-heading-xl">
-			We have removed your interest in {{_standardTitle|safe}}
+			We’ve stopped sharing your interest in apprenticeship training with training providers
 		</h1>
 
+		<p>{{_orgNameAnswer}},</p>
+
 		<p class="govuk-body">
-			<a href="home" class="govuk-button">Search for other apprenticeship training for your business</a> 
+			Apprenticeship training course <br>
+			<span class="govuk-!-font-weight-bold">{{_standardTitle|safe}}</span>
+		</p>
+	
+		<p class="govuk-body">
+			Apprenticeship location <br>
+			<span class="govuk-!-font-weight-bold">{{_locationAnswer}}</span>
+		</p>
+	
+		{% if _apprenticesAnswer == "yes" %}
+		<p class="govuk-body">
+			Number of apprentices <br>
+			<span class="govuk-!-font-weight-bold">{{_apprenticesCountAnswer}}</span>
+		</p>
+		{% endif %}
+
+		<p class="govuk-body">
+			<a href="home" class="govuk-button">Find apprenticeship training</a> 
 		</p>
 
+		<p class="govuk-body"><a href="#" class="govuk-link">What did you think of this service?</a></p>
+
+	</div>
+	
+	<div class="govuk-grid-column-one-third">
+        &nbsp;
     </div>
 </div>
 

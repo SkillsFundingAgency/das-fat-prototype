@@ -867,6 +867,10 @@ module.exports = function (router,_myData) {
         req.session.myData.strengthsAnswer = []
         req.session.myData.factorsAnswers = {}
 
+        req.session.myData.emailProviderAnswer = "name@example.com"
+        req.session.myData.telephoneProviderAnswer = "07700 900 982"
+        req.session.myData.websiteProviderAnswer = "www.website.com"
+
         // req.session.myData.aedLocationAnswer = "Coventry, Warwickshire"
 
         // //Set quality points
@@ -3010,6 +3014,61 @@ module.exports = function (router,_myData) {
     });
     router.post('/' + version + '/aed-provider-details', function (req, res) {
         res.redirect(301, '/' + version + '/aed-provider-check-answers');
+    })
+    // AED Provider - contact details
+    router.get('/' + version + '/aed-provider-contact-details', function (req, res) {
+        res.render(version + '/aed-provider-contact-details', {
+            myData:req.session.myData
+        });
+    });
+    router.post('/' + version + '/aed-provider-contact-details', function (req, res) {
+        res.redirect(301, '/' + version + '/aed-provider-check-answers');
+    })
+    // AED Provider - contact details edit
+    router.get('/' + version + '/aed-provider-contact-details-edit', function (req, res) {
+        res.render(version + '/aed-provider-contact-details-edit', {
+            myData:req.session.myData
+        });
+    });
+    router.post('/' + version + '/aed-provider-contact-details-edit', function (req, res) {
+
+        req.session.myData.emailProviderAnswerTemp = req.body.emailProviderAnswer
+        req.session.myData.telephoneProviderAnswerTemp = req.body.telephoneProviderAnswer
+        req.session.myData.websiteProviderAnswerTemp = req.body.websiteProviderAnswer
+
+        if(req.session.myData.includeValidation == "false"){
+            req.session.myData.emailProviderAnswerTemp = req.session.myData.emailProviderAnswerTemp || "name@example.com"
+            req.session.myData.telephoneProviderAnswerTemp = req.session.myData.telephoneProviderAnswerTemp || "07700 900 982"
+        }
+        
+        if(!req.session.myData.emailProviderAnswerTemp){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.emailProviderAnswer = {
+                "anchor": "emailProviderAnswer",
+                "message": "Enter an email address"
+            }
+        }
+        if(!req.session.myData.telephoneProviderAnswerTemp){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.telephoneProviderAnswer = {
+                "anchor": "telephoneProviderAnswer",
+                "message": "Enter a telephone number"
+            }
+        }
+
+        if(req.session.myData.validationError == "true") {
+            res.render(version + '/aed-provider-contact-details-edit', {
+                myData: req.session.myData
+            });
+        } else {
+            req.session.myData.emailProviderAnswer = req.session.myData.emailProviderAnswerTemp
+            req.session.myData.telephoneProviderAnswer = req.session.myData.telephoneProviderAnswerTemp
+            req.session.myData.websiteProviderAnswer = req.session.myData.websiteProviderAnswerTemp
+
+            res.redirect(301, '/' + version + '/aed-provider-contact-details?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
+        }
+
+        
     })
     // AED Provider - check answers
     router.get('/' + version + '/aed-provider-check-answers', function (req, res) {

@@ -53,15 +53,17 @@ Meet employer demand for apprenticeships
             {% endif %}
 
 			<h1 class="govuk-heading-xl">
-				<span class="govuk-caption-xl">Apprenticeship training opportunities for</span>
-				{{_standardTitle|safe}}
+				<span class="govuk-caption-xl">{{_standardTitle|safe}}</span>
+				Which opportunities are you interested in?
 			</h1>
 
-			<p class="govuk-body">The following employers are trying to find a training provider for {{_standardTitle|safe}}.</p>
+			<!-- <p class="govuk-body">The following employers are trying to find a training provider for {{_standardTitle|safe}}.</p> -->
 
-			<p class="govuk-body">We will share your contact details with employers that you’re interested in.</p>
+			<!-- <p class="govuk-body govuk-!-margin-bottom-6">We will share your contact details with employers that you’re interested in.</p> -->
 
-			<h2 class="govuk-heading-l">Which opportunities are you interested in?</h2>
+
+
+			<!-- <h2 class="govuk-heading-l">Which {{_standardTitle|safe}} opportunities are you interested in?</h2> -->
 
 	</div>
 
@@ -161,6 +163,13 @@ Meet employer demand for apprenticeships
 		<form method="POST">
 
 			<p class="govuk-body">Select all that apply.</p>
+
+
+			<!-- <p class="govuk-body govuk-!-margin-bottom-6">After you tell us which opportunities you're interested in, we will share your contact details with employers.</p>
+
+			<p class="govuk-body govuk-!-margin-bottom-6">Select the employers that you want to share your contact details with.</p>
+
+			<p class="govuk-body govuk-!-margin-bottom-6">Select the locations that you're interested in and we will share your contact details with relevant employers.</p> -->
 
 			{% set _employers = myData.aedemployers %}
 

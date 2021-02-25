@@ -3016,7 +3016,7 @@ module.exports = function (router,_myData) {
             req.session.myData.validationError = "true"
             req.session.myData.validationErrors.selectedEmployersAnswer = {
                 "anchor": "_employer-1",
-                "message": "[error here]"
+                "message": "Select the opportunities you’re interested in"
             }
         }
         

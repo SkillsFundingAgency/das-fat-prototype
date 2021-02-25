@@ -9,7 +9,7 @@ Meet employer demand for apprenticeships
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
-    <a href="aed-provider-home" class="govuk-back-link">Back</a>
+    {% include "includes/back-link.html" %}
 {% endblock %}
 
 {% set _standards = myData.standards.list %}
@@ -34,7 +34,7 @@ Meet employer demand for apprenticeships
             Find apprenticeship training opportunities
         </h1>
         <p class="govuk-body">Employers are trying to find a training provider for the following apprenticeship training courses.</p>
-        <p class="govuk-body govuk-!-margin-bottom-8">We can share your contact details with employers that you're interested in.</p>
+        <p class="govuk-body govuk-!-margin-bottom-8">We can share your contact details with employers that you’re interested in.</p>
       
     </div>
 </div>
@@ -78,7 +78,6 @@ Meet employer demand for apprenticeships
                               <option value="25">25 miles</option>
                               <option value="50">50 miles</option>
                               <option value="80">80 miles</option>
-                              <option value="england">England</option>
                             </select>
                           </div>
 

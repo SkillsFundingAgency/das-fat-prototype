@@ -2996,9 +2996,11 @@ module.exports = function (router,_myData) {
     });
     // AED Provider - demand
     router.get('/' + version + '/aed-provider-demand', function (req, res) {
+
         res.render(version + '/aed-provider-demand', {
             myData:req.session.myData
         });
+
     });
     // AED Provider - standard
     router.get('/' + version + '/aed-provider-standard', function (req, res) {

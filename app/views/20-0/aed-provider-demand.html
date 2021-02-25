@@ -1,3 +1,4 @@
+
 {% extends "layout-as-pro.html" %}
 
 {% set serviceName = "Apprenticeships" %}
@@ -13,38 +14,114 @@ Meet employer demand for apprenticeships
 
 {% set _standards = myData.standards.list %}
 
-{% block content %}
+<!-- Location search -->
+{% set _citiesAutocompleteList = myData.citiesAutocompleteList %}
+{% set _defaultLocationSearchvalue = "" %}
 
+<!-- Training search -->
+{% set _standardAutocompleteList = myData.standardAutocompleteList %} 
+{% set _defaultStandardSearchvalue = "" %}
+
+<!-- Filters -->
+{% set _filtersApplied = false %}
+
+{% block content %}
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
         <h1 class="govuk-heading-xl" >
-            Meet employer demand for apprenticeships
+            Find apprenticeship training opportunities
         </h1>
-        <p class="govuk-body govuk-!-margin-bottom-8">
-            For training providers to see the interest registered by employers in specific apprenticeship training, so they can meet that employer demand.
-        </p>
+        <p class="govuk-body">Employers are trying to find a training provider for the following apprenticeship training courses.</p>
+        <p class="govuk-body govuk-!-margin-bottom-8">We can share your contact details with employers that you're interested in.</p>
+      
+    </div>
+</div>
 
-        <!-- Search box -->
-        <form>
-            <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
-                <label for="course" class="govuk-label govuk-label--l govuk-!-font-weight-bold" >
-                    Search
-                </label>
-                <span id="search-term-hint" class="govuk-hint">
-                    Search for apprenticeship training
-                </span>
-                <div class="search-input-wrapper">
-                    <input type="search" value="" id="course" name="course" title="Search" class="govuk-input">
-                    <div class="search-input-submit-wrapper">
-                        <button type="submit" class="search-submit" id="course-submit">Search</button>
-                    </div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+
+        <!-- FILTERS  -->
+        <div class="fat-filter" >
+
+            <div class="fat-filter__header">
+                <div class="fat-filter__header-title">
+                    <h2 class="govuk-heading-m">Filter</h2>
+                </div>
+                <div class="fat-filter__header-action">
                 </div>
             </div>
-        </form>
+            <div class="fat-filter__content">
 
-        <h2 class="govuk-heading-m">Apprenticeship training with employer demand</h2>
+                <div class="fat-filter__options">
+
+                    <form method="GET">
+
+                        <button type="submit" class="fat-filter__submit govuk-button" id="filters-submit">Apply filters</button>
+
+                        <!-- Location -->
+                        <div class="govuk-form-group govuk-!-margin-bottom-3" >
+                            <label for="search-location" class="govuk-label" >
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Location</span>
+                                <span class="govuk-hint">Enter a town, city or postcode</span>
+                            </label>
+                            <input type="search" value="" id="search-location" name="location" class="govuk-input" >
+                        </div>
+                        <div class="govuk-form-group">
+                            <label class="govuk-label" for="radius">
+                              Radius
+                            </label>
+                            <select class="govuk-select" id="radius" name="radius">
+                              <option value="5">5 miles</option>
+                              <option value="10" >10 miles</option>
+                              <option value="25">25 miles</option>
+                              <option value="50">50 miles</option>
+                              <option value="80">80 miles</option>
+                              <option value="england">England</option>
+                            </select>
+                          </div>
+
+                        <!-- Course -->
+                        <div class="govuk-form-group" >
+                            <label for="search-training" class="govuk-label" >
+                                <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship training course</span>
+                            </label>
+                            <input type="search" value="" id="search-training" name="standard" class="govuk-input">
+                        </div>
+
+                        {% set _routes = myData.routes.list %}
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    Apprenticeship category
+                                </legend>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    {% for _route in _routes %}
+                                        <div class="govuk-checkboxes__item">
+                                            <input class="govuk-checkboxes__input" id="route-{{_route.code}}" name="routefilters" type="checkbox" value="{{_route.code}}">
+                                            <label class="govuk-label govuk-checkboxes__label" for="route-{{_route.code}}">
+                                                {{_route.name}}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </fieldset>
+                        </div>
+
+
+                        <button type="submit" class="govuk-button fat-filter__submit" id="filters-submit-2">Apply filters</button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="govuk-grid-column-two-thirds">
 
         {% set _count = 0 %}
         {% for _standard in _standards %}
@@ -53,57 +130,148 @@ Meet employer demand for apprenticeships
             {% endif %}
         {% endfor %}
 
+        <h2 class="govuk-heading-m">{{_count}} results</h2>
 
-        <p class="govuk-body">
-            <span class="govuk-!-font-weight-bold">{{_count}}</span> training courses found with employer-registered demand
-        </p>
+        <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+       
+        <!-- 
+            List
+        -->
+        
+        <!-- Standards -->
+        {% for _standard in _standards %}
 
-    </div>
-</div>
+            {% if _standard.demand == true %}
+                {% set _standardTitle = _standard.title + " (level&nbsp;" + _standard.level + ")" %}
+                <div class="govuk-grid-row govuk-!-margin-left-0 govuk-!-margin-right-0 govuk-!-margin-top-3">
+                    <div class="govuk-grid-column-two-thirds govuk-!-padding-0" >
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+                            {{_standardTitle|safe}}
+                        </h2>
+                        <ul class="govuk-list">
+                            <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Apprenticeship category:</span> {{_standard.route}}</li>
+                            <li class="govuk-!-font-size-16">
+                                <span class="govuk-secondary-colour">Apprentices:</span> 
+                                {{ [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] | random }}
+                            </li>
+                            <li class="govuk-!-font-size-16">
+                                <span class="govuk-secondary-colour">Employers:</span> 
+                                {{ [1,2,3,4] | random }}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-grid-column-one-third govuk-!-padding-0">
+                        <p class="govuk-body opportunities-label" >
+                            <a href="aed-provider-standard?standard={{_standard.larsCode}}" class="govuk-link govuk-link--no-visited-state">View opportunities</a>
+                        </p>
+                    </div>
+                    <hr class="govuk-section-break govuk-section-break--visible" style="clear:both">
+                </div>
+            {% endif %}
 
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-
-        <table class="govuk-table govuk-table--small">
-            <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header">
-                        <a class="sorted-ascending approved-sort govuk-link">Apprenticeship training</a>
-                    </th>
-                    <th scope="col" class="govuk-table__header govuk-table__header--numeric govuk-!-width-one-quarter">
-                        <a class="approved-sort govuk-link">Apprentices</a>
-                    </th>
-                    <th scope="col" class="govuk-table__header govuk-table__header--numeric govuk-!-width-one-quarter">
-                        <a class="approved-sort govuk-link">Interested employers</a>
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="govuk-table__body">
-
-                {% for _standard in _standards %}
-
-                    {% set _standardTitle = _standard.title + " (level&nbsp;" + _standard.level + ")" %}
-
-                    {% if _standard.demand == true %}
-                    <tr class="govuk-table__row">
-                        <td class="govuk-table__cell">
-                            <a href="aed-provider-standard?standard={{_standard.larsCode}}" class="govuk-link">{{_standardTitle|safe}}</a>
-                        </td>
-                        <td class="govuk-table__cell govuk-table__cell--numeric">{{ [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20] | random }}</td>
-                        <td class="govuk-table__cell govuk-table__cell--numeric">{{ [1,2,3,4] | random }}</td>
-                    </tr>
-                    {% endif %}
-
-                {% endfor %}
-
-            </tbody>
-        </table>
+        {% endfor %}
 
     </div>
+    
 </div>
-
 
 {% endblock %}
 
 {% block pageScripts %}
-{% endblock %}
+<script>
+
+    // shortlistingSticky(30)
+    // shortlisting({{myData.clearLocalStorage}},{{myData.populateShortlist}})
+
+    filterVisibilityToggle({{_filtersApplied | dump | safe }})
+
+    // function fireApplyFilters(){setTimeout(function(){ $("#filters-submit").trigger("click") },200);}
+
+    // Normal
+    function suggestTraining(query, populateResults) {
+        var results = {{_standardAutocompleteList | dump | safe }},
+            filteredResults = results.filter(
+            result => result.toUpperCase().indexOf(query.trim().toUpperCase()) !== -1
+        )
+        populateResults(filteredResults)
+    }
+    var trainingInput = document.querySelector('#search-training')
+    if (trainingInput) {
+        var trainingInputID = trainingInput.id,
+            trainingElement = document.createElement('div'),
+            defaultStandardSearchvalue = {{_defaultStandardSearchvalue | dump | safe }}
+        trainingElement.className = "autocomplete__parent_wrapper";
+        trainingInput.parentNode.insertBefore(trainingElement, trainingInput)
+        accessibleAutocomplete({
+            // other options
+            element: trainingElement,
+            id: trainingInputID,
+            name: trainingInput.name,
+            source: suggestTraining,
+            defaultValue: defaultStandardSearchvalue,
+            minLength: 2,
+            confirmOnBlur: false,
+            autoselect: true,
+            // onConfirm: fireApplyFilters,
+            displayMenu: 'overlay'
+            // showAllValues: true
+        })
+        trainingInput.style.display = 'none'
+        trainingInput.id = trainingInputID + '-old'
+        trainingInput.name = ''
+    }
+
+    // Locations 
+    function suggestLocations(query, populateResults) {
+        var _allSuggestions = []
+
+        // Cities
+        var _citiesResults = {{_citiesAutocompleteList | dump | safe }},
+            _filteredCitiesResults = _citiesResults.filter(
+                result => result.toUpperCase().startsWith(query.trim().toUpperCase())
+            )
+        _filteredCitiesResults.sort(function(a,b){
+            var returnValue = 0;
+            if (a.toUpperCase() < b.toUpperCase()){
+                returnValue = -1
+            } else if(a.toUpperCase() > b.toUpperCase()){
+                returnValue = 1
+            }
+            return returnValue
+        });
+
+        // Postcodes
+        $.getJSON('https://api.postcodes.io/postcodes/' + query + '/autocomplete', function(body){
+            var _postcodes = body.result || []
+            _allSuggestions = _allSuggestions.concat(_filteredCitiesResults,_postcodes)
+            populateResults(_allSuggestions)
+        })
+    }
+    
+    var locationInput = document.querySelector('#search-location')
+    if (locationInput) {
+        var locationInputID = locationInput.id,
+            locationElement = document.createElement('div'),
+            defaultLocationSearchvalue = {{_defaultLocationSearchvalue | dump | safe }}
+        locationElement.className = "autocomplete__parent_wrapper";
+        locationInput.parentNode.insertBefore(locationElement, locationInput)
+        accessibleAutocomplete({
+            // other options
+            element: locationElement,
+            id: locationInputID,
+            name: locationInput.name,
+            source: suggestLocations,
+            defaultValue: defaultLocationSearchvalue,
+            minLength: 1,
+            confirmOnBlur: false,
+            autoselect: true,
+            // onConfirm: fireApplyFilters,
+            displayMenu: 'overlay'
+        })
+        locationInput.style.display = 'none'
+        locationInput.id = locationInputID + '-old'
+        locationInput.name = ''
+    }
+</script>
+
+{% endblock pageScripts %}

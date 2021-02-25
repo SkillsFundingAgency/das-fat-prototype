@@ -228,7 +228,8 @@ li.fat-cross-3 {
 
 //Shortlist
 @media (min-width: 641px){
-    .shortlist-label {
+    .shortlist-label,
+    .opportunities-label {
         text-align: right;
     }
 }

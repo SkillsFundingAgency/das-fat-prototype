@@ -2996,17 +2996,50 @@ module.exports = function (router,_myData) {
     });
     // AED Provider - demand
     router.get('/' + version + '/aed-provider-demand', function (req, res) {
-
         res.render(version + '/aed-provider-demand', {
             myData:req.session.myData
         });
-
     });
     // AED Provider - standard
     router.get('/' + version + '/aed-provider-standard', function (req, res) {
         res.render(version + '/aed-provider-standard', {
             myData:req.session.myData
         });
+    });
+    router.post('/' + version + '/aed-provider-standard', function (req, res) {
+
+        req.session.myData.selectedEmployersAnswerTemp = req.body.employer
+        if(req.session.myData.includeValidation == "false"){
+            req.session.myData.selectedEmployersAnswerTemp = req.session.myData.selectedEmployersAnswerTemp || "1"
+        }
+        if(req.session.myData.selectedEmployersAnswerTemp == "_unchecked"){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.selectedEmployersAnswer = {
+                "anchor": "_employer-1",
+                "message": "[error here]"
+            }
+        }
+        
+        if(req.session.myData.validationError == "true") {
+            res.render(version + '/aed-provider-standard', {
+                myData: req.session.myData
+            });
+        } else {
+            req.session.myData.selectedEmployersAnswer = req.session.myData.selectedEmployersAnswerTemp
+            req.session.myData.selectedEmployersAnswerTemp = ''
+
+            req.session.myData.selectedEmployers = []
+            req.session.myData.aedemployers.forEach(function(_employer, index) {
+                if(req.session.myData.selectedEmployersAnswer.indexOf(_employer.id.toString()) != -1){
+                    _employer.selected = true
+                    req.session.myData.selectedEmployers.push(_employer)
+                } else {
+                    _employer.selected = false
+                }
+            });
+
+            res.redirect(301, '/' + version + '/aed-provider-contact-details');
+        }
     });
     // AED Provider - details
     router.get('/' + version + '/aed-provider-details', function (req, res) {

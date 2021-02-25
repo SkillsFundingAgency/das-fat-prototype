@@ -2,6 +2,8 @@
 
 {% set serviceName = "Apprenticeships" %}
 
+{% set _inError = myData.validationError %}
+
 {% block pageTitle %} 
 Meet employer demand for apprenticeships
 {% endblock %}
@@ -33,14 +35,33 @@ Meet employer demand for apprenticeships
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
+			{% if _inError == "true" %}
+            <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+                <h2 class="govuk-error-summary__title" id="error-summary-title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        {% for name, item in myData.validationErrors %}
+                        <li>
+                            <a href="#{{item.anchor}}">{{item.message}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
 			<h1 class="govuk-heading-xl">
 				<span class="govuk-caption-xl">Apprenticeship training opportunities for</span>
 				{{_standardTitle|safe}}
 			</h1>
 
-			<h2 class="govuk-heading-l">Which opportunities are you interested in?</h2>
+			<p class="govuk-body">The following employers are trying to find a training provider for {{_standardTitle|safe}}.</p>
 
 			<p class="govuk-body">We will share your contact details with employers that you’re interested in.</p>
+
+			<h2 class="govuk-heading-l">Which opportunities are you interested in?</h2>
 
 	</div>
 
@@ -143,7 +164,7 @@ Meet employer demand for apprenticeships
 
 			{% set _employers = myData.aedemployers %}
 
-			<div class="govuk-form-group">
+			<div class="govuk-form-group {% if myData.validationErrors.selectedEmployersAnswer %}govuk-form-group--error{% endif %}">
 				<fieldset class="govuk-fieldset" >
 					<!-- <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
 						<h1 class="govuk-fieldset__heading">
@@ -153,6 +174,14 @@ Meet employer demand for apprenticeships
 					<div id="employer-hint" class="govuk-hint">
 						Select all that apply.
 					</div> -->
+
+					{% if myData.validationErrors.selectedEmployersAnswer %}
+                    <span id="selectedEmployers-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span>
+                        {{myData.validationErrors.selectedEmployersAnswer.message}}
+                    </span>
+					{% endif %}
+					
 					{% for _employer in _employers %}
 					<div class="govuk-checkboxes">
 						<div class="govuk-checkboxes__item">
@@ -162,6 +191,7 @@ Meet employer demand for apprenticeships
 								<span class="govuk-!-font-weight-bold">{{_employer.location}}</span><br>
 								<!-- {{_employer.location}}<br> -->
 								{{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}
+								
 							</label>
 						</div>
 					</div>
@@ -171,8 +201,7 @@ Meet employer demand for apprenticeships
 		
 
 			{{govukButton({
-				text: "Continue",
-				href: "aed-provider-contact-details"
+				text: "Continue"
 			})}}
 
 		</form>

@@ -162,7 +162,7 @@ Meet employer demand for apprenticeships
 
 		<form method="POST">
 
-			<p class="govuk-body">Select all that apply.</p>
+			<p class="govuk-body">Select all opportunities that apply.</p>
 
 
 			<!-- <p class="govuk-body govuk-!-margin-bottom-6">After you tell us which opportunities you're interested in, we will share your contact details with employers.</p>
@@ -196,9 +196,8 @@ Meet employer demand for apprenticeships
 						<div class="govuk-checkboxes__item">
 							<input class="govuk-checkboxes__input" id="{{_employer.id}}" name="employer" type="checkbox" value="{{_employer.id}}">
 							<label class="govuk-label govuk-checkboxes__label" for="{{_employer.id}}">
-								<!-- <span class="govuk-!-font-weight-bold">Employer</span><br> -->
-								<span class="govuk-!-font-weight-bold">{{_employer.location}}</span><br>
-								<!-- {{_employer.location}}<br> -->
+								<span class="govuk-!-font-weight-bold">Employer</span><br>
+								{{_employer.location}}<br>
 								{{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}
 								
 							</label>

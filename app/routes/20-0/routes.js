@@ -993,6 +993,14 @@ module.exports = function (router,_myData) {
             });
         }
 
+        //Set default selected apprentices (for deep links to work)
+        req.session.myData.defaultSelectedEmployers = []
+        req.session.myData.aedemployers.forEach(function(_employer, index) {
+            if (index < 3) {
+                req.session.myData.defaultSelectedEmployers.push(_employer)
+            }
+        });
+
         next()
     });
 

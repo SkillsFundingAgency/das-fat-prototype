@@ -44,12 +44,14 @@ We’ve shared your interest with training providers
 			<span class="govuk-!-font-weight-bold">{{myData.location}}</span>
 		</p>
 
-		{% if myData.apprenticesAnswer == "yes" %}
 		<p class="govuk-body">
 			Number of apprentices <br>
+			{% if myData.apprenticesAnswer == "yes" %}
 			<span class="govuk-!-font-weight-bold">{{myData.apprenticesCountAnswer}}</span>
+			{% else %}
+			<span class="govuk-!-font-weight-bold">Not sure</span>
+			{% endif %}
 		</p>
-		{% endif %}
 
 		<h2 class="govuk-heading-m">What happens next</h2>
 

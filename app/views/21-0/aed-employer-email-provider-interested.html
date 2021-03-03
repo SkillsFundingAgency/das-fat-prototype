@@ -27,35 +27,33 @@
 
       <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-6" style="border-bottom: 1px solid grey; padding-bottom:20px">
         <span class="govuk-!-font-weight-bold">From:</span> The Apprenticeship Service &lt;the.apprenticeship.service@notifications.service.gov.uk&gt;
-        <br><span class="govuk-!-font-weight-bold">Sent:</span> Tue 08/12/2020 09:20
-        <br><span class="govuk-!-font-weight-bold">To:</span> You
         <br><span class="govuk-!-font-weight-bold">Subject:</span> A training provider is interested in offering your apprenticeship training
       </p>
-
-      <img src="/public/images/esfa-logo.png" width="180px" style="margin-bottom:40px; display:block">
 
       <h1 class="govuk-heading-l">
         A training provider is interested in offering your apprenticeship training
       </h1>
 
-      <p>To {{_orgNameAnswer}},</p>
+      <p class="govuk-body">To {{_orgNameAnswer}},</p>
 
       <p class="govuk-body">
         Apprenticeship training course <br>
-        <span class="govuk-!-font-weight-bold">{{_standardTitle|safe}}</span>
+        <span>{{_standardTitle|safe}}</span>
       </p>
   
       <p class="govuk-body">
         Apprenticeship location <br>
-        <span class="govuk-!-font-weight-bold">{{_locationAnswer}}</span>
+        <span>{{_locationAnswer}}</span>
       </p>
   
-      {% if _apprenticesAnswer == "yes" %}
       <p class="govuk-body">
         Number of apprentices <br>
-        <span class="govuk-!-font-weight-bold">{{_apprenticesCountAnswer}}</span>
+        {% if _apprenticesAnswer == "yes" %}
+        <span>{{_apprenticesCountAnswer}}</span>
+        {% else %}
+        <span>Not sure</span>
+        {% endif %}
       </p>
-      {% endif %}
 
       <h2 class="govuk-heading-l">Contact the training provider</h2>
 
@@ -63,31 +61,31 @@
 
       <p class="govuk-body">
         Training provider <br>
-        <span class="govuk-!-font-weight-bold">TRAINING UK LTD</span>
+        <span>TRAINING UK LTD</span>
       </p>
 
       <p class="govuk-body">
-        Email <br>
-        <span class="govuk-!-font-weight-bold"><a href="#" target="_blank" class="govuk-link govuk-link--no-visited-state">name@example.com</a></span>
+        Email address<br>
+        <span><a href="#" target="_blank" class="govuk-link govuk-link--no-visited-state">name@example.com</a></span>
       </p>
 
       <p class="govuk-body">
-        Telephone <br>
-        <span class="govuk-!-font-weight-bold">07700 900 982</span>
+        Telephone number<br>
+        <span>07700 900 982</span>
       </p>
 
       <p class="govuk-body">
         Website <br>
-        <span class="govuk-!-font-weight-bold"><a href="#" target="_blank" class="govuk-link govuk-link--no-visited-state">www.website.com</a></span>
+        <span><a href="#" target="_blank" class="govuk-link govuk-link--no-visited-state">www.website.com</a></span>
       </p>
 
-      <p class="govuk-body">You can find out more about this training provider on <a href="provider?r=t&standard=370&provider=100&location=" target="_blank" class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>.</p>
+      <p class="govuk-body">You can find out more about this training provider at <a href="provider?r=t&standard=370&provider=100&location=" target="_blank" class="govuk-link govuk-link--no-visited-state">https://findapprenticeshiptraining.apprenticeships.education.gov.uk/courses/274/providers/10027269</a></p>
       
       <p class="govuk-body">From</p>
       
       <p class="govuk-body">Apprenticeship Service</p>
 
-      <p class="govuk-body"><a href="aed-employer-removed" target="_blank" class="govuk-link govuk-link--no-visited-state">Stop sharing your interest</a> in this apprenticeship training course.</p>
+      <p class="govuk-body">Stop sharing your interest in this apprenticeship training course at <a href="aed-employer-removed" target="_blank" class="govuk-link govuk-link--no-visited-state">https://findapprenticeshiptraining.apprenticeships.education.gov.uk/stop-sharing?id=1234567890123456789</a></p>
 
   </div>
 </div>

@@ -1,0 +1,69 @@
+{% extends "layout-as-pro.html" %}
+
+{% set serviceName = "Apprenticeships" %}
+
+{% block pageTitle %} 
+Meet employer demand for apprenticeships
+{% endblock %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+	<div class="govuk-grid-column-two-thirds">
+
+		<form method="post">
+
+			<h1 class="govuk-heading-xl">
+				Confirm ABC LTD’s contact details
+			</h1>
+
+			<p class="govuk-body">We’ll share these with the employers you’re showing interest in, so they can contact you about {{_standardTitle|safe}}.</p>
+
+			<p class="govuk-body">
+				Email address <br>
+				<span class="govuk-!-font-weight-bold">{{myData.emailProviderAnswer}}</span>
+			</p>
+
+			<p class="govuk-body">
+				Telephone number <br>
+				<span class="govuk-!-font-weight-bold">{{myData.telephoneProviderAnswer}}</span>
+			</p>
+
+			<p class="govuk-body">
+				Website <br>
+				{% if myData.websiteProviderAnswer == "" %}
+				<a href="aed-provider-contact-details-edit" class="govuk-link govuk-link--no-visited-state">
+					Add website
+				</a>
+				{% else %}
+				<span class="govuk-!-font-weight-bold">{{myData.websiteProviderAnswer}}</span>
+				{% endif %}
+			</p>
+
+			<p class="govuk-body govuk-!-margin-top-6">
+				<a href="aed-provider-contact-details-edit" class="govuk-link govuk-link--no-visited-state">
+					Edit contact details
+				</a>
+			</p>
+		
+			{{govukButton({
+				text: "Continue"
+			})}}
+
+		</form>
+
+	</div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+{% endblock %}

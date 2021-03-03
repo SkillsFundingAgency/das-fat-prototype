@@ -1,0 +1,694 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-m">Prototype {{myData.version}} setup</h1>
+
+        <p class="govuk-body" >
+              <a href="setup?r=true" class="govuk-link govuk-link--no-visited-state">Reset</a>
+          </p>  
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+    </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+
+        <!-- Start from -->
+        <!-- <div class="govuk-form-group">
+          <label class="govuk-label" >
+            Start from
+          </label>
+          <select class="govuk-select" style="min-width: 100%" id="start" name="start" data-option="start">
+              <option {% if myData.start == 'start' %}selected{% endif %} value="start">Start page</option>
+              <option {% if myData.start == 'home' %}selected{% endif %} value="home">Home page</option>
+          </select>
+        </div> -->
+
+        <!-- FAT or EPAO register -->
+        <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend">Service</legend>
+                <div class="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input {% if myData.service == 'fat' %}checked{% endif %} class="govuk-radios__input" data-option="service-1" id="service-1" name="service" type="radio" value="fat">
+                        <label class="govuk-label govuk-radios__label" for="service-1">FAT (Find apprenticeship training)</label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input {% if myData.service == 'epao' %}checked{% endif %} class="govuk-radios__input" data-option="service-2" id="service-2" name="service" type="radio" value="epao">
+                        <label class="govuk-label govuk-radios__label" for="service-2">FEPAO (Find an end-point assessment organisation)</label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input {% if myData.service == 'pf' %}checked{% endif %} class="govuk-radios__input" data-option="service-3" id="service-3" name="service" type="radio" value="pf">
+                        <label class="govuk-label govuk-radios__label" for="service-3">Provide feedback</label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input {% if myData.service == 'aedp' %}checked{% endif %} class="govuk-radios__input" data-option="service-4" id="service-4" name="service" type="radio" value="aedp">
+                        <label class="govuk-label govuk-radios__label" for="service-4">Provider AED (Aggregated employer demand)</label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="govuk-form-group pfType" >
+            <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend">Provide feedback version</legend>
+                <div class="govuk-radios">
+                    <div class="govuk-radios__item">
+                        <input {% if myData.pfType != 'old' %}checked{% endif %} class="govuk-radios__input" data-option="pfType-2" id="pfType-2" name="pfType" type="radio" value="new">
+                        <label class="govuk-label govuk-radios__label" for="pfType-2">Onboarding feedback</label>
+                    </div>
+                    <div class="govuk-radios__item">
+                        <input {% if myData.pfType == 'old' %}checked{% endif %} class="govuk-radios__input" data-option="pfType-1" id="pfType-1" name="pfType" type="radio" value="old">
+                        <label class="govuk-label govuk-radios__label" for="pfType-1">Old provide feedback</label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <!-- EPAO in FAT -->
+        <!-- <div class="govuk-form-group">
+            <label class="govuk-label" >
+              EPAO in FAT
+            </label>
+            <select class="govuk-select" style="min-width: 100%" id="epaoinfat" name="epaoinfat" data-option="epaoinfat">
+              <option {% if myData.epaoinfat != 'false' %}selected{% endif %} value="true">Yes</option>
+              <option {% if myData.epaoinfat == 'false' %}selected{% endif %} value="false">No</option>
+            </select>
+          </div> -->
+        
+        <!-- AED in FAT -->
+        <div class="govuk-form-group aedInFAT">
+            <label class="govuk-label" >
+                AED in FAT
+            </label>
+            <select class="govuk-select" style="min-width: 100%" id="aedinfat" name="aedinfat" data-option="aedinfat">
+                <option {% if myData.aedinfat != 'false' %}selected{% endif %} value="true">Yes</option>
+                <option {% if myData.aedinfat == 'false' %}selected{% endif %} value="false">No</option>
+            </select>
+        </div>
+
+        <!-- Employer account -->
+        <div class="govuk-form-group ksbs">
+            <label class="govuk-label" >
+                Course KSBs info
+            </label>
+            <select class="govuk-select" style="min-width: 100%" id="ksbs" name="ksbs" data-option="ksbs">
+                <option {% if myData.ksbs == 'show' %}selected{% endif %} value="show">Show</option>
+                <option {% if myData.ksbs != 'show' %}selected{% endif %} value="hide">Hide</option>
+            </select>
+        </div>
+
+        <!-- Employer account -->
+        <div class="govuk-form-group employeraccount">
+          <label class="govuk-label" >
+            Employer account
+          </label>
+          <select class="govuk-select" style="min-width: 100%" id="employeraccount" name="employeraccount" data-option="employeraccount">
+            <option {% if myData.employeraccount != 'true' %}selected{% endif %} value="false">Not signed in</option>
+            <option {% if myData.employeraccount == 'true' %}selected{% endif %} value="true">Signed in</option>
+          </select>
+        </div>
+
+        <!-- Components -->
+        <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text">
+                Component visibility <span style="color:red; text-decoration: none">(dev setting)</span> 
+              </span>
+            </summary>
+            <div class="govuk-details__text">
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset">
+                        <!-- <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                            Components <span style="color:red">(dev setting)</span> 
+                        </legend> -->
+                        
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmpcfk != 'false' %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmpcfk" id="cmpcfk" name="cmpcfk" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmpcfk">
+                                            Courses - filter - keyword
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmpcfs != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmpcfs" id="cmpcfs" name="cmpcfs" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmpcfs">
+                                            Courses - filter - sector
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmpcfl != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmpcfl" id="cmpcfl" name="cmpcfl" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmpcfl">
+                                            Courses - filter - level
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmppfl != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmppfl" id="cmppfl" name="cmppfl" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmppfl">
+                                            Providers - filter - location
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmppfo != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmppfo" id="cmppfo" name="cmppfo" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmppfo">
+                                            Providers - filter - ofsted
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmppfe != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmppfe" id="cmppfe" name="cmppfe" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmppfe">
+                                            Providers - filter - employer reviews
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmppfd != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmppfd" id="cmppfd" name="cmppfd" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmppfd">
+                                            Providers - filter - delivery area
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmppfc != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmppfc" id="cmppfc" name="cmppfc" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmppfc">
+                                            Providers - filter - course (all providers list only)
+                                        </label>
+                                    </div>
+                                </div>
+                                
+
+
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmppda != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmppda" id="cmppda" name="cmppda" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmppda">
+                                            Providers - display - acheivement rate
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmppdo != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmppdo" id="cmppdo" name="cmppdo" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmppdo">
+                                            Providers - display - ofsted
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmppde != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmppde" id="cmppde" name="cmppde" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmppde">
+                                            Providers - display - employer reviews
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmppdoc != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmppdoc" id="cmppdoc" name="cmppdoc" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmppdoc">
+                                            Providers - display - other courses (provider page)
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="govuk-checkboxes govuk-checkboxes--small">
+                                    <div class="govuk-checkboxes__item">
+                                        <input {% if myData.cmpstar != false %}checked{% endif %} class="govuk-checkboxes__input" data-option="cmpstar" id="cmpstar" name="cmpstar" type="checkbox" value="true">
+                                        <label class="govuk-label govuk-checkboxes__label" for="cmpstar">
+                                            Star images
+                                        </label>
+                                    </div>
+                                </div>
+                            
+                    </fieldset>
+                </div>
+            </div>
+        </details>
+
+    </div>
+
+    <div class="govuk-grid-column-one-half" >
+
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <p class="govuk-body" id="start-url" style="display:none">
+            <a href="#" role="button" draggable="false" class="govuk-button">Start prototype</a>
+        </p>
+
+        <p class="govuk-body" >
+            <span class="govuk-!-font-weight-bold">Shareable link:</span><br>
+            <span class="govuk-body" id="start-url-label" style="display:none"></span>
+        </p>
+
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <h2 class="govuk-heading-m">Full page list</h2>
+        <table class="govuk-table">
+            <!-- <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Page</th>
+                <th scope="col" class="govuk-table__header">Link</th>
+                </tr>
+            </thead> -->
+            <tbody class="govuk-table__body">    
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">Aggregated employer demand (employers)</h2></th>
+                </tr>
+
+                <!-- <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Employer - location</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-employer-location?standard=36&location=&r=t">/aed-employer-location</a></td>
+                </tr> -->
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Employer - form</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-employer-form?standard=36&location=Coventry&r=t">/aed-employer-form</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Employer - check answers</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-employer-check-answers?standard=36&location=Coventry&r=t">/aed-check-answers</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Employer - form submitted</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-employer-confirmation?standard=36&location=Coventry&r=t">/aed-employer-confirmation</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Employer - demand removed</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-employer-removed?standard=36">/aed-employer-removed</a></td>
+                </tr>
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Employer - email - form submitted</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-confirmation?standard=36&location=Coventry&r=t">/aed-employer-email-confirmation</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Employer - email - reminder</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-reminder?standard=36&location=Coventry&r=t">/aed-employer-email-reminder</a></td>
+                </tr>
+                <!-- <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Employer - email - reminder 2</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-reminder-2?standard=36&location=Coventry&r=t">/aed-employer-email-reminder-2</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Employer - email - reminder 3</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-reminder-3?standard=36&location=Coventry&r=t">/aed-employer-email-reminder-3</a></td>
+                </tr> -->
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Employer - email - expired</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-expired?standard=36&location=Coventry&r=t">/aed-employer-email-expired</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Employer - email - provider interested</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-provider-interested?standard=36&location=Coventry&r=t">/aed-employer-email-provider-interested</a></td>
+                </tr>
+                <!-- <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Employer - email - found match</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-match?standard=36&location=Coventry&r=t">/aed-employer-email-match</a></td>
+                </tr> -->
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">Aggregated employer demand (providers)</h2></th>
+                </tr>
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - account home</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-home?standard=36&location=Coventry&r=t&s=aedp">/aed-provider-home</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - full demand list</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-demand?standard=36&location=Coventry&r=t&s=aedp">/aed-provider-demand</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - course specific demand</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-standard?standard=36&location=Coventry&r=t&s=aedp">/aed-provider-standard</a></td>
+                </tr>
+                <!-- <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - cohort details</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-details?standard=36&location=Coventry&r=t&s=aedp">/aed-provider-details</a></td>
+                </tr> -->
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - confirm contact details</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-contact-details?standard=36&r=t&s=aedp">/aed-provider-contact-details</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - edit contact details</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-contact-details-edit?standard=36&r=t&s=aedp">/aed-provider-contact-details-edit</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - check answers</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-check-answers?standard=36&location=Coventry&r=t&s=aedp">/aed-provider-check-answers</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - confirmation</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-confirmation?standard=36&location=Coventry&r=t&s=aedp">/aed-provider-confirmation</a></td>
+                </tr>
+                <!-- <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - email - confirmation</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-email-confirmation?standard=36&location=Coventry&r=t&s=aedp">/aed-provider-email-confirmation</a></td>
+                </tr> -->
+
+
+                <!-- <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Start</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="start">/start</a></td>
+                </tr> -->
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">Miscellaneous</h2></th>
+                </tr>
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Accessibility statement</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="accessibility?r=t">/accessibility</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Privacy</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="privacy?r=t">/privacy</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Cookies - settings</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="cookies-settings?r=t">/cookies-settings</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Cookies - details</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="cookies-details?r=t">/cookies-details</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">404</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="404?r=t">/404</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">500</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="500?r=t">/500</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">FAT</h2></th>
+                </tr>
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Home</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="home?r=t">/home</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Courses list</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="training?r=t">/training</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Course overview</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="standard?r=t">/standard</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Course overview - closed</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="standard-closed?r=t">/standard-closed</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Providers (all) list</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="providers-all?r=t">/providers-all</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Providers (for a standard) list</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="providers?standard=274&r=t">/providers?standard=274</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider overview</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provider?r=t">/provider</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Provider - unavailable</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provider-unavailable?r=t">/provider-unavailable</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Shortlisted providers</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="shortlist?r=t">/shortlist</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Shortlist - remove</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="shortlist-remove?r=t">/shortlist-remove</a></td>
+                </tr>
+                <!-- <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAOs (for a standard) list</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epaos?standard=274&r=t">/epaos?standard=274</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAO overview</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epao?r=t">/epao</a></td>
+                </tr> -->
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">Find EPAO</h2></th>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Home</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="home-epao?&r=t&s=epao">/home-epao</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAO - course?</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epao-course?r=t&s=epao">/epao-course</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAO - location?</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epao-location?r=t&s=epao">/epao-location</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAOs for course</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epaos-2?r=t&s=epao&standard=274">/epaos-2</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAO overview</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epao-2?r=t&s=epao&standard=274">/epao-2</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAO - unavailable</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epao-unavailable?r=t&s=epao">/epao-unavailable</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAO integrated course</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epao-integrated?r=t&s=epao&standard=274">/epao-integrated</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAO - dropout</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epao-dropout?r=t&s=epao&standard=274">/epao-dropout</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">EPAOs (all) list</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="epaos-all?&r=t&s=epao">/epaos-all</a></td>
+                </tr>
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">Provide feedback (onboarding)</h2></th>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Approvals end</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-approvals-a?r=t&ea=true&s=pf">/provide-feedback-approvals-a</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Onboarding questions</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-1b?r=t&ea=true&s=pf">/provide-feedback-1b</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Check answers</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-4a?r=t&ea=true&s=pf">/provide-feedback-4a</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Confirmation</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-5a?r=t&ea=true&s=pf">/provide-feedback-5a</a></td>
+                </tr>
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">Provide feedback</h2></th>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Approvals end</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-approvals?&r=t&s=pf&ea=true">/provide-feedback-approvals</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Strengths</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-1?&r=t&s=pf&ea=true">/provide-feedback-1</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Weaknesses</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-2?&r=t&s=pf&ea=true">/provide-feedback-2</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Overall rating</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-3?&r=t&s=pf&ea=true">/provide-feedback-3</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Check answers</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-4?&r=t&s=pf&ea=true">/provide-feedback-4</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">Feedback submitted</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-5?&r=t&s=pf&ea=true">/provide-feedback-5</a></td>
+                </tr>
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-4">Provide feedback (emails)</h2></th>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">3 monthly (non-dynamic)</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-email?&r=t&s=pf&ea=false">/provide-feedback-email</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">3 monthly (dynamic, 1 provider)</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-email?&r=t&s=pf&ea=false&pfe=one">/provide-feedback-email</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">3 monthly (dynamic, 2 providers)</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="provide-feedback-email?&r=t&s=pf&ea=false&pfe=two">/provide-feedback-email</a></td>
+                </tr>
+
+
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell" colspan="2"> <h2 class="govuk-heading-m govuk-!-margin-top-8">-- Test data / pages --</h2></th>
+                </tr>
+
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">_Setup prototype</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="setup">/setup</a></td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__cell">_Display test data</th>
+                    <td class="govuk-table__cell" ><a class="govuk-link govuk-link--no-visited-state" href="standards">/standards</a></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <p class="govuk-body" >{{myData.apiData|dump|safe}}</p>
+    </div>
+</div> -->
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+    $(document).ready(function(){
+
+        var _startURL = $("#start-url a"),
+            _startURLLabel = $("#start-url-label"),
+            _options = $("[data-option]");
+
+        _options.change(function(){
+            setValues()
+        }).trigger("change");
+
+        //SET VALUES
+        function setValues(){
+            //Base URL
+            var _urlBase = "https://das-fat-prototype.herokuapp.com/" + {{myData.version|dump|safe}} + "/";
+            //Queries
+            var _urlComponents = "",
+                _urlReset = "r=t",
+                _urlPage = "home?",
+                _urlService = "&s=" + $('input[name=service]:checked').val(),
+                _urlEmpAccount = "&ea=" + _options.filter("#employeraccount").val(),
+                _urlKSBs = "&ksbs=" + _options.filter("#ksbs").val(),
+                _urlAEDInFAT = "&aed=" + _options.filter("#aedinfat").val();
+                // _urlEpaoInFAT = "&epaofat=" + _options.filter("#epaoinfat").val();
+            // EPAO
+            if(_urlService == "&s=epao"){
+                _urlPage = "home-epao?"
+                $('.pfType').hide()
+                $('.employeraccount').show()
+                $('.ksbs').hide()
+                $('.aedInFAT').hide()
+            }
+            // FAT
+            if(_urlService == "&s=fat"){
+                $('.pfType').hide()
+                $('.employeraccount').show()
+                $('.ksbs').show()
+                $('.aedInFAT').show()
+            }
+            // Provide feedback
+            if(_urlService == "&s=pf"){
+                $('.pfType').show()
+                _urlPage = "provide-feedback-approvals-a?"
+                if($('input[name=pfType]:checked').val() == "old"){
+                    _urlPage = "provide-feedback-approvals?"
+                }
+                _urlEmpAccount = "&ea=true"
+                $('.employeraccount').hide()
+                $('.ksbs').hide()
+                $('.aedInFAT').hide()
+            }
+            // AED provider
+            if(_urlService == "&s=aedp"){
+                _urlPage = "aed-provider-home?"
+                $('.pfType').hide()
+                $('.employeraccount').hide()
+                $('.ksbs').hide()
+                $('.aedInFAT').hide()
+            }
+
+            // Components queries
+            var _components = {
+                    "cmpcfk": $('input[name=cmpcfk]:checked').val() || "false",
+                    "cmpcfs": $('input[name=cmpcfs]:checked').val() || "false",
+                    "cmpcfl": $('input[name=cmpcfl]:checked').val() || "false",
+                    "cmppfl": $('input[name=cmppfl]:checked').val() || "false",
+                    "cmppfo": $('input[name=cmppfo]:checked').val() || "false",
+                    "cmppfe": $('input[name=cmppfe]:checked').val() || "false",
+                    "cmppfd": $('input[name=cmppfd]:checked').val() || "false",
+                    "cmppdo": $('input[name=cmppdo]:checked').val() || "false",
+                    "cmppde": $('input[name=cmppde]:checked').val() || "false",
+                    "cmppda": $('input[name=cmppda]:checked').val() || "false",
+                    "cmppdoc": $('input[name=cmppdoc]:checked').val() || "false",
+                    "cmpstar": $('input[name=cmpstar]:checked').val() || "false",
+                    "cmppfc": $('input[name=cmppfc]:checked').val() || "false"
+                };
+            for (var [component, visibility] of Object.entries(_components)) {
+                if(visibility == "false"){
+                    _urlComponents = _urlComponents + "&" + component + "=false"
+                }
+            }
+           
+            //Queries combined
+            var _urlPageQueries = _urlPage + _urlReset + _urlEmpAccount + _urlAEDInFAT + _urlKSBs + _urlService + _urlComponents;
+
+            //URL text
+            var _startURLText = _urlBase + _urlPageQueries,
+                _startURLHREF =  _urlPageQueries;
+            // update label
+            _startURLLabel
+                .text(_startURLText)
+                .show()
+            //update link
+            _startURL
+                .attr("href", _startURLHREF)
+                .parent().show()
+        }
+
+    });
+</script>
+{% endblock %}

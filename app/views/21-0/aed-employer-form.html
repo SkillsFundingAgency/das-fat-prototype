@@ -1,0 +1,254 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+
+{% set _inError = myData.validationError %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+<!-- Location search -->
+{% set _citiesAutocompleteList = myData.citiesAutocompleteList %}
+{% set _defaultLocationSearchvalue = myData.aedLocationAnswerTemp or "" %}
+
+{% block pageTitle %}
+{% if _inError == "true" %}Error: {% endif %}
+Enter the apprenticeship training and contact details
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+	{% include "includes/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+	.govuk-input-background,
+    .autocomplete__input {
+		background-color: white;
+	}
+    .autocomplete__hint {
+        height: 40px;
+    }
+</style>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+		{% if _inError == "true" %}
+		<div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+			<h2 class="govuk-error-summary__title" id="error-summary-title">
+				There is a problem
+			</h2>
+			<div class="govuk-error-summary__body">
+				<ul class="govuk-list govuk-error-summary__list">
+					{% for name, item in myData.validationErrors %}
+					<li>
+						<a href="#{{item.anchor}}">{{item.message}}</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		{% endif %}
+
+        <h1 class="govuk-heading-xl" >
+            Get help with finding a training provider
+		</h1>
+
+		<p class="govuk-body">We will share your apprenticeship training interest with all training providers. If a training provider can offer you training, we will send you their contact details.</p>
+
+        <form method="post">
+
+			<!-- Training details -->
+			<fieldset class="govuk-fieldset" >
+
+				<h2 class="govuk-heading-l govuk-!-margin-top-3">Apprenticeship training details</h2>
+				<!-- <p class="govuk-body">We will share the apprenticeship training details with training providers.</p> -->
+
+				<div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+					<p class="govuk-body govuk-!-margin-bottom-5">
+						Apprenticeship training course <br>
+						<span class="govuk-!-font-weight-bold">{{_standardTitle|safe}}</span>
+					</p>
+					<!-- <p class="govuk-body govuk-!-margin-bottom-5">
+						Apprenticeship location <br>
+						<span class="govuk-!-font-weight-bold">{{myData.location}}</span>
+					</p> -->
+				</div>
+
+				<!-- Location -->
+				<div class="govuk-form-group {% if myData.validationErrors.aedLocationAnswer %}govuk-form-group--error{% endif %}" >
+					<label class="govuk-label govuk-label--m" for="search-location">
+						Where is the apprenticeship location?
+					</label>
+					<div id="search-location-hint" class="govuk-hint">
+						Enter a town, city or postcode
+					</div>
+					{% if myData.validationErrors.aedLocationAnswer %}
+					<span id="aedlocationAnswer-error" class="govuk-error-message">
+						<span class="govuk-visually-hidden">Error:</span>
+						{{myData.validationErrors.aedLocationAnswer.message}}
+					</span>
+					{% endif %}
+					<input type="search" id="search-location" name="aedLocationAnswer" title="Search" class="govuk-input govuk-input-background {% if myData.validationErrors.aedLocationAnswer %}govuk-input--error{% endif %} " aria-describedby="search-location-hint">
+				</div>
+
+				<!-- Apprentices -->
+				<div class="govuk-form-group {% if myData.validationErrors.apprenticesAnswer or myData.validationErrors.apprenticesCountAnswer %}govuk-form-group--error{% endif %}">
+					<fieldset class="govuk-fieldset" >
+						<legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+							<h1 class="govuk-fieldset__heading">
+							Do you know how many apprentices will take this apprenticeship training?
+							</h1>
+						</legend>
+						{% if myData.validationErrors.apprenticesAnswer %}
+						<span id="apprenticesAnswer-error" class="govuk-error-message">
+							<span class="govuk-visually-hidden">Error:</span> {{myData.validationErrors.apprenticesAnswer.message}}
+						</span>
+						{% endif %}
+						<div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
+							<div class="govuk-radios__item">
+								<input class="govuk-radios__input" id="apprenticesAnswer-1" name="apprenticesAnswer" type="radio" value="yes" data-aria-controls="conditional-apprenticesAnswer" {% if myData.apprenticesAnswerTemp == "yes" %}checked{% endif %} >
+								<label class="govuk-label govuk-radios__label" for="apprenticesAnswer-1">
+								Yes
+								</label>
+							</div>
+							<div class="govuk-radios__conditional govuk-radios__conditional--hidden {% if myData.validationErrors.apprenticesCountAnswer %}govuk-form-group--error{% endif %}" id="conditional-apprenticesAnswer">
+								<div class="govuk-form-group">
+								<label class="govuk-label" for="apprenticesCountAnswer">
+									Enter the number of apprentices
+								</label>
+								{% if myData.validationErrors.apprenticesCountAnswer %}
+								<span id="apprenticesCountAnswer-error" class="govuk-error-message">
+									<span class="govuk-visually-hidden">Error:</span> {{myData.validationErrors.apprenticesCountAnswer.message}}
+								</span>
+								{% endif %}
+								<input class="govuk-input govuk-input--width-4 {% if myData.validationErrors.apprenticesCountAnswer %}govuk-input--error{% endif %}" id="apprenticesCountAnswer" name="apprenticesCountAnswer" type="number" spellcheck="false" pattern="[0-9]*" inputmode="numeric" value="{{myData.apprenticesCountAnswerTemp}}"></div>
+							</div>
+							<div class="govuk-radios__item">
+								<input class="govuk-radios__input" id="apprenticesAnswer-2" name="apprenticesAnswer" type="radio" value="no" {% if myData.apprenticesAnswerTemp == "no" %}checked{% endif %} >
+								<label class="govuk-label govuk-radios__label" for="apprenticesAnswer-2">
+								No
+								</label>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+			</fieldset>
+
+
+			<!-- Contact details -->
+			<fieldset class="govuk-fieldset" >
+
+				<h2 class="govuk-heading-l govuk-!-margin-top-3">Contact details</h2>
+				<p class="govuk-body">We will not share any contact details with training providers.</p>
+
+				<!-- Org name -->
+				<div class="govuk-form-group {% if myData.validationErrors.orgNameAnswer %}govuk-form-group--error{% endif %}">
+					<label class="govuk-label govuk-label--m" for="orgNameAnswer">
+						What is the organisation’s name?
+					</label>
+					{% if myData.validationErrors.orgNameAnswer %}
+					<span id="orgNameAnswer-error" class="govuk-error-message">
+						<span class="govuk-visually-hidden">Error:</span>
+						{{myData.validationErrors.orgNameAnswer.message}}
+					</span>
+					{% endif %}
+					<input class="govuk-input {% if myData.validationErrors.orgNameAnswer %}govuk-input--error{% endif %}" id="orgNameAnswer" name="orgNameAnswer" type="text" value="{{myData.orgNameAnswerTemp}}">
+				</div>
+
+				<!-- Email address -->
+				<div class="govuk-form-group {% if myData.validationErrors.emailAnswer %}govuk-form-group--error{% endif %}">
+					<label class="govuk-label govuk-label--m" for="emailAnswer">
+						What email address should we contact?
+					</label>
+					<div id="emailAnswer-hint" class="govuk-hint">
+						We will only use this to send the details of any training providers who can offer the apprenticeship training.
+					</div>
+					{% if myData.validationErrors.emailAnswer %}
+					<span id="emailAnswer-error" class="govuk-error-message">
+						<span class="govuk-visually-hidden">Error:</span>
+						{{myData.validationErrors.emailAnswer.message}}
+					</span>
+					{% endif %}
+					<input class="govuk-input {% if myData.validationErrors.emailAnswer %}govuk-input--error{% endif %}" id="emailAnswer" name="emailAnswer" type="email" aria-describedby="emailAnswer-hint" autocomplete="email" value="{{myData.emailAnswerTemp}}" >
+				</div>
+
+				<input type="hidden" value="{{_selectedStandard.larsCode}}" name="standard" >
+                <input type="hidden" value="{{myData.location}}" name="location" >
+
+				<button type="submit" class="govuk-button">
+					Continue
+				</button>
+
+		</form>
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+        &nbsp;
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+    
+    // Locations 
+    function suggestLocations(query, populateResults) {
+        var _allSuggestions = []
+
+        // Cities
+        var _citiesResults = {{_citiesAutocompleteList | dump | safe }},
+            _filteredCitiesResults = _citiesResults.filter(
+                result => result.toUpperCase().startsWith(query.trim().toUpperCase())
+            )
+        _filteredCitiesResults.sort(function(a,b){
+            var returnValue = 0;
+            if (a.toUpperCase() < b.toUpperCase()){
+                returnValue = -1
+            } else if(a.toUpperCase() > b.toUpperCase()){
+                returnValue = 1
+            }
+            return returnValue
+        });
+
+        // Postcodes
+        $.getJSON('https://api.postcodes.io/postcodes/' + query + '/autocomplete', function(body){
+            var _postcodes = body.result || []
+            _allSuggestions = _allSuggestions.concat(_filteredCitiesResults,_postcodes)
+            populateResults(_allSuggestions)
+        })
+    }
+    // function fireLocationSearch(){setTimeout(function(){ $("#location-submit").trigger("click") },200);}
+    var locationInput = document.querySelector('#search-location')
+    if (locationInput) {
+        var locationInputID = locationInput.id,
+            locationElement = document.createElement('div'),
+			defaultLocationSearchvalue = {{_defaultLocationSearchvalue | dump | safe }}
+			
+        locationElement.className = "autocomplete__parent_wrapper";
+        locationInput.parentNode.insertBefore(locationElement, locationInput)
+        accessibleAutocomplete({
+            // other options
+            element: locationElement,
+            id: locationInputID,
+            name: locationInput.name,
+            source: suggestLocations,
+            defaultValue: defaultLocationSearchvalue,
+            minLength: 1,
+            confirmOnBlur: false,
+            autoselect: true,
+            // onConfirm: fireLocationSearch,
+            displayMenu: 'overlay'
+        })
+        locationInput.style.display = 'none'
+        locationInput.id = locationInputID + '-old'
+        locationInput.name = ''
+    }
+</script>
+{% endblock %}

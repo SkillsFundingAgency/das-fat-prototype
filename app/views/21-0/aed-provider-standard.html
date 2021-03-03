@@ -1,0 +1,286 @@
+{% extends "layout-as-pro.html" %}
+
+{% set serviceName = "Apprenticeships" %}
+
+{% set _inError = myData.validationError %}
+
+{% block pageTitle %} 
+Meet employer demand for apprenticeships
+{% endblock %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/back-link.html" %}
+{% endblock %}
+
+<!-- Location search -->
+{% set _citiesAutocompleteList = myData.citiesAutocompleteList %}
+{% set _defaultLocationSearchvalue = "" %}
+
+<!-- Filters -->
+{% set _filtersApplied = false %}
+
+{% block content %}
+
+<style>
+    #search-location {
+		background: white;
+		border-right: 0;
+    }
+</style>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+			{% if _inError == "true" %}
+            <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+                <h2 class="govuk-error-summary__title" id="error-summary-title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        {% for name, item in myData.validationErrors %}
+                        <li>
+                            <a href="#{{item.anchor}}">{{item.message}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+			<h1 class="govuk-heading-xl">
+				<span class="govuk-caption-xl">{{_standardTitle|safe}}</span>
+				Which opportunities are you interested in?
+			</h1>
+
+			<!-- <p class="govuk-body">The following employers are trying to find a training provider for {{_standardTitle|safe}}.</p> -->
+
+			<!-- <p class="govuk-body govuk-!-margin-bottom-6">We will share your contact details with employers that you’re interested in.</p> -->
+
+
+
+			<!-- <h2 class="govuk-heading-l">Which {{_standardTitle|safe}} opportunities are you interested in?</h2> -->
+
+	</div>
+
+</div>
+
+			<!-- <p class="govuk-body">5 opportunities</p> -->
+
+			<!-- <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+				<form action="aed-provider-standard" method="GET" class="govuk-!-margin-bottom-6"  >
+					<p class="govuk-body govuk-!-margin-bottom-1"><span class="govuk-!-font-weight-bold">Filter opportunities by location </span></p>
+					<div class="govuk-form-group govuk-!-margin-bottom-3 govuk-!-width-three-quarters" >
+						<label for="search-location" class="govuk-label" >
+							<span class="govuk-hint">Enter a town, city or postcode</span>
+						</label>
+						<input type="search" value="" id="search-location" name="location" class="govuk-input" >
+					</div>
+					<div class="govuk-form-group">
+						<label class="govuk-label" for="radius">
+						  Radius
+						</label>
+						<select class="govuk-select" id="radius" name="radius">
+						  <option value="5">5 miles</option>
+						  <option value="10" >10 miles</option>
+						  <option value="25">25 miles</option>
+						  <option value="50">50 miles</option>
+						  <option value="80">80 miles</option>
+						  <option value="england">England</option>
+						</select>
+					  </div>
+
+					<button type="submit" class="fat-filter__submit govuk-button " id="filters-submit">Apply filters</button>
+
+				</form>
+			</div> -->
+
+<!-- Filters -->
+<div class="govuk-grid-column-two-thirds fat-panel fat-panel-blocked govuk-!-margin-bottom-6" >
+
+	<div class="govuk-grid-row">
+		<div class="govuk-grid-column-two-thirds" >
+			<h3 class="govuk-heading-s govuk-!-margin-bottom-2">Filter opportunities by location</h3>
+		</div>
+	</div>
+	
+	<div class="govuk-grid-row">
+
+		<div class="govuk-grid-column-two-thirds" id="filters" >
+			<div class="govuk-form-group govuk-!-margin-bottom-5" >
+				<!-- <label for="search-location" class="govuk-label" >
+					Enter a town, city or postcode
+				</label>
+				<input type="search" value="" id="search-location" name="location" class="govuk-input" > -->
+
+				<div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
+                    <label for="search-location" class="govuk-label" >
+                        Enter a town, city or postcode
+                    </label>
+                    <div class="search-input-wrapper">
+                        <input type="search" value="" id="search-location" name="location" title="Search" class="govuk-input ">
+                        <div class="search-input-submit-wrapper">
+                            <button type="submit" class="search-submit" id="search-location-submit">Enter location</button>
+                        </div>
+                    </div>
+                </div>
+
+			</div>
+		</div>
+
+		<div class="govuk-grid-column-one-quarter" >
+			<div class="govuk-form-group govuk-!-margin-bottom-5">
+				<label class="govuk-label" for="radius">
+					Radius
+				</label>
+				<select class="govuk-select" id="radius" name="radius" style="min-width: 100%">
+					<option value="5" selected>5 miles</option>
+					<option value="10" >10 miles</option>
+					<option value="25">25 miles</option>
+					<option value="50">50 miles</option>
+					<option value="80">80 miles</option>
+				</select>
+			</div>
+		</div>
+
+	</div>
+	
+	<!-- <div class="govuk-grid-row">
+		<div class="govuk-grid-column-one-third" >
+			<button type="submit" class="govuk-button" style="margin-bottom: 20px">Apply filters</button>
+		</div>
+	</div> -->
+
+</div>
+
+<div class="govuk-grid-row">
+	<div class="govuk-grid-column-two-thirds">
+
+		<form method="POST">
+
+			<p class="govuk-body">Select all opportunities that apply.</p>
+
+
+			<!-- <p class="govuk-body govuk-!-margin-bottom-6">After you tell us which opportunities you're interested in, we will share your contact details with employers.</p>
+
+			<p class="govuk-body govuk-!-margin-bottom-6">Select the employers that you want to share your contact details with.</p>
+
+			<p class="govuk-body govuk-!-margin-bottom-6">Select the locations that you're interested in and we will share your contact details with relevant employers.</p> -->
+
+			{% set _employers = myData.aedemployers %}
+
+			<div class="govuk-form-group {% if myData.validationErrors.selectedEmployersAnswer %}govuk-form-group--error{% endif %}">
+				<fieldset class="govuk-fieldset" >
+					<!-- <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+						<h1 class="govuk-fieldset__heading">
+							Which opportunities are you interested in?
+						</h1>
+					</legend>
+					<div id="employer-hint" class="govuk-hint">
+						Select all that apply.
+					</div> -->
+
+					{% if myData.validationErrors.selectedEmployersAnswer %}
+                    <span id="selectedEmployers-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span>
+                        {{myData.validationErrors.selectedEmployersAnswer.message}}
+                    </span>
+					{% endif %}
+					
+					{% for _employer in _employers %}
+					<div class="govuk-checkboxes">
+						<div class="govuk-checkboxes__item">
+							<input class="govuk-checkboxes__input" id="{{_employer.id}}" name="employer" type="checkbox" value="{{_employer.id}}">
+							<label class="govuk-label govuk-checkboxes__label" for="{{_employer.id}}">
+								<span class="govuk-!-font-weight-bold">Employer</span><br>
+								{{_employer.location}}<br>
+								{{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}
+								
+							</label>
+						</div>
+					</div>
+					{% endfor %}
+				</fieldset>
+			</div>
+		
+
+			{{govukButton({
+				text: "Continue"
+			})}}
+
+		</form>
+
+	</div>
+</div>
+
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+
+    // shortlistingSticky(30)
+    // shortlisting({{myData.clearLocalStorage}},{{myData.populateShortlist}})
+
+    // filterVisibilityToggle({{_filtersApplied | dump | safe }})
+
+    // function fireApplyFilters(){setTimeout(function(){ $("#filters-submit").trigger("click") },200);}
+
+    // Locations 
+    function suggestLocations(query, populateResults) {
+        var _allSuggestions = []
+
+        // Cities
+        var _citiesResults = {{_citiesAutocompleteList | dump | safe }},
+            _filteredCitiesResults = _citiesResults.filter(
+                result => result.toUpperCase().startsWith(query.trim().toUpperCase())
+            )
+        _filteredCitiesResults.sort(function(a,b){
+            var returnValue = 0;
+            if (a.toUpperCase() < b.toUpperCase()){
+                returnValue = -1
+            } else if(a.toUpperCase() > b.toUpperCase()){
+                returnValue = 1
+            }
+            return returnValue
+        });
+
+        // Postcodes
+        $.getJSON('https://api.postcodes.io/postcodes/' + query + '/autocomplete', function(body){
+            var _postcodes = body.result || []
+            _allSuggestions = _allSuggestions.concat(_filteredCitiesResults,_postcodes)
+            populateResults(_allSuggestions)
+        })
+    }
+    
+    var locationInput = document.querySelector('#search-location')
+    if (locationInput) {
+        var locationInputID = locationInput.id,
+            locationElement = document.createElement('div'),
+            defaultLocationSearchvalue = {{_defaultLocationSearchvalue | dump | safe }}
+        locationElement.className = "autocomplete__parent_wrapper";
+        locationInput.parentNode.insertBefore(locationElement, locationInput)
+        accessibleAutocomplete({
+            // other options
+            element: locationElement,
+            id: locationInputID,
+            name: locationInput.name,
+            source: suggestLocations,
+            defaultValue: defaultLocationSearchvalue,
+            minLength: 1,
+            confirmOnBlur: false,
+            autoselect: true,
+            // onConfirm: fireApplyFilters,
+            displayMenu: 'overlay'
+        })
+        locationInput.style.display = 'none'
+        locationInput.id = locationInputID + '-old'
+        locationInput.name = ''
+    }
+</script>
+
+{% endblock pageScripts %}

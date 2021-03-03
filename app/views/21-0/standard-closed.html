@@ -1,0 +1,44 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+
+{% block pageTitle %}
+Academic professional (level 7) - apprenticeship training course
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/back-link.html" %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <span class="govuk-caption-xl">Apprenticeship training course</span>
+        <h1 class="govuk-heading-xl" >
+            Academic professional (level&nbsp;7)
+        </h1>
+
+        <p class="govuk-body-l">This apprenticeship training course is no longer available for new apprentices.</p>
+        
+        <p class="govuk-body"><a class="govuk-button" href="training">View apprenticeship training courses</a></p>
+
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+        &nbsp;
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+    shortlisting({{myData.clearLocalStorage}},{{myData.populateShortlist}})
+</script>
+{% endblock %}

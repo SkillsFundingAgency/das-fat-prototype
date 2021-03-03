@@ -1,0 +1,115 @@
+{% extends "layout-as-pro.html" %}
+
+{% set serviceName = "Apprenticeships" %}
+
+{% set _inError = myData.validationError %}
+
+{% block pageTitle %} 
+Meet employer demand for apprenticeships
+{% endblock %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+	<div class="govuk-grid-column-two-thirds">
+
+		<form method="post">
+
+			{% if _inError == "true" %}
+			<div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+				<h2 class="govuk-error-summary__title" id="error-summary-title">
+					There is a problem
+				</h2>
+				<div class="govuk-error-summary__body">
+					<ul class="govuk-list govuk-error-summary__list">
+						{% for name, item in myData.validationErrors %}
+						<li>
+							<a href="#{{item.anchor}}">{{item.message}}</a>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+			{% endif %}
+
+			<h1 class="govuk-heading-xl">
+				Edit ABC LTD’s contact details
+			</h1>
+
+			<p class="govuk-body">We’ll share these with the employers you’re showing interest in, so they can contact you about {{_standardTitle|safe}}.</p>
+
+			<!-- Email address -->
+
+			{% set _emailValueToShow = myData.emailProviderAnswerTemp or myData.emailProviderAnswer %}
+			{% if myData.emailProviderAnswerTemp == "" %}
+				{% set _emailValueToShow = myData.emailProviderAnswerTemp %}
+			{% endif %}
+
+			<div class="govuk-form-group {% if myData.validationErrors.emailProviderAnswer %}govuk-form-group--error{% endif %}">
+				<label class="govuk-label govuk-label--m" for="emailProviderAnswer">
+					Email address
+				</label>
+				{% if myData.validationErrors.emailProviderAnswer %}
+				<span id="emailProviderAnswer-error" class="govuk-error-message">
+					<span class="govuk-visually-hidden">Error:</span>
+					{{myData.validationErrors.emailProviderAnswer.message}}
+				</span>
+				{% endif %}
+				<input class="govuk-input govuk-input--width-20 {% if myData.validationErrors.emailProviderAnswer %}govuk-input--error{% endif %}" id="emailProviderAnswer" name="emailProviderAnswer" type="email" aria-describedby="emailProviderAnswer-hint" autocomplete="email" value="{{_emailValueToShow}}" >
+			</div>
+
+			<!-- Telephone -->
+
+			{% set _telephoneValueToShow = myData.telephoneProviderAnswerTemp or myData.telephoneProviderAnswer %}
+			{% if myData.telephoneProviderAnswerTemp == "" %}
+				{% set _telephoneValueToShow = myData.telephoneProviderAnswerTemp %}
+			{% endif %}
+
+			<div class="govuk-form-group {% if myData.validationErrors.telephoneProviderAnswer %}govuk-form-group--error{% endif %}">
+				<label class="govuk-label govuk-label--m" for="telephoneProviderAnswer">
+					Telephone
+				</label>
+				{% if myData.validationErrors.telephoneProviderAnswer %}
+				<span id="telephoneProviderAnswer-error" class="govuk-error-message">
+					<span class="govuk-visually-hidden">Error:</span>
+					{{myData.validationErrors.telephoneProviderAnswer.message}}
+				</span>
+				{% endif %}
+				<input class="govuk-input govuk-input--width-20 {% if myData.validationErrors.telephoneProviderAnswer %}govuk-input--error{% endif %}" id="telephoneProviderAnswer" name="telephoneProviderAnswer" type="tel" aria-describedby="telephoneProviderAnswer-hint" autocomplete="tel" value="{{_telephoneValueToShow}}" >
+			</div>
+
+			<!-- Website -->
+			
+			{% set _websiteValueToShow = myData.websiteProviderAnswerTemp or myData.websiteProviderAnswer %}
+			{% if myData.websiteProviderAnswerTemp == "" %}
+				{% set _websiteValueToShow = myData.websiteProviderAnswerTemp %}
+			{% endif %}
+
+			<div class="govuk-form-group">
+				<label class="govuk-label govuk-label--m" for="websiteProviderAnswer">
+					Website (optional)
+				</label>
+				<input class="govuk-input govuk-input--width-20" id="websiteProviderAnswer" name="websiteProviderAnswer" type="text" value="{{_websiteValueToShow}}">
+			</div>
+		
+			{{govukButton({
+				text: "Continue"
+			})}}
+
+		</form>
+
+	</div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+{% endblock %}

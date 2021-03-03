@@ -1,0 +1,75 @@
+{% extends myData.layout %}
+
+{% set serviceName = "" %}
+{% set serviceUrl = "" %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% set _orgNameAnswer = myData.orgNameAnswer or "ABC LTD" %}
+{% set _locationAnswer = myData.location or "Coventry, Warwickshire" %}
+{% set _apprenticesAnswer = myData.apprenticesAnswer or "yes" %}
+{% set _apprenticesCountAnswer = myData.apprenticesCountAnswer or 1 %}
+
+{% block pageTitle %} 
+{% endblock %}
+
+{% set _email = true %}
+{% set _showAEDEmployerLinks2 = true %}
+{% set _currentAEDEmployerLink = "aed-employer-email-confirmation" %}
+
+{% block beforeContent %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-6" style="border-bottom: 1px solid grey; padding-bottom:20px">
+          <span class="govuk-!-font-weight-bold">From:</span> The Apprenticeship Service &lt;the.apprenticeship.service@notifications.service.gov.uk&gt;
+          <br><span class="govuk-!-font-weight-bold">Sent:</span> Tue 08/12/2020 09:20
+          <br><span class="govuk-!-font-weight-bold">To:</span> You
+          <br><span class="govuk-!-font-weight-bold">Subject:</span> We’ve shared your interest in apprenticeship training with training providers
+        </p>
+
+        <img src="/public/images/esfa-logo.png" width="180px" style="margin-bottom:40px; display:block">
+
+        <h1 class="govuk-heading-l">
+          We’ve shared your interest in apprenticeship training with training providers
+        </h1>
+
+        <p>To {{_orgNameAnswer}},</p>
+
+        <p class="govuk-body">
+          Apprenticeship training course <br>
+          <span class="govuk-!-font-weight-bold">{{_standardTitle|safe}}</span>
+        </p>
+    
+        <p class="govuk-body">
+          Apprenticeship location <br>
+          <span class="govuk-!-font-weight-bold">{{_locationAnswer}}</span>
+        </p>
+    
+        {% if _apprenticesAnswer == "yes" %}
+        <p class="govuk-body">
+          Number of apprentices <br>
+          <span class="govuk-!-font-weight-bold">{{_apprenticesCountAnswer}}</span>
+        </p>
+        {% endif %}
+
+        <p class="govuk-body">We’ll send you the details of any training providers who can offer the apprenticeship training.</p>
+
+        <p class="govuk-body">We’ve not shared your organisation name or email address with training providers.</p>
+        
+        <p class="govuk-body">From</p>
+        
+        <p class="govuk-body">Apprenticeship Service</p>
+        
+        <p class="govuk-body"><a href="aed-employer-removed" target="_blank" class="govuk-link govuk-link--no-visited-state">Stop sharing your interest</a> in this apprenticeship training course.</p>
+
+    </div>
+</div>
+
+{% endblock %}
+

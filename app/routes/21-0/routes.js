@@ -2982,6 +2982,12 @@ module.exports = function (router,_myData) {
             myData:req.session.myData
         });
     });
+    // AED Employer EMAIL expired (course closed)
+    router.get('/' + version + '/aed-employer-email-expired-2', function (req, res) {
+        res.render(version + '/aed-employer-email-expired-2', {
+            myData:req.session.myData
+        });
+    });
     // AED Employer EMAIL provider interested
     router.get('/' + version + '/aed-employer-email-provider-interested', function (req, res) {
         res.render(version + '/aed-employer-email-provider-interested', {

@@ -2,6 +2,8 @@
 {% set serviceName = "Manage apprenticeships" %}
 {% set serviceUrl = "provide-feedback-approvals" %}
 
+{% set _rating = myData.overallRatingAnswer or "Excellent" %}
+
 {% block pageTitle %} 
 Feedback complete
 {% endblock %}
@@ -25,7 +27,9 @@ Feedback complete
         </div>
 
         <p class="govuk-body">Thanks for your feedback. It'll help TRAINING UK LTD to continuously improve its apprenticeship training.</p>
-        <p class="govuk-body">You rated TRAINING UK LTD as <span class="govuk-!-font-weight-bold">{{myData.overallRatingAnswer}}</span>. Your feedback will be published in the near future.</p>
+        <p class="govuk-body">You rated TRAINING UK LTD as <span class="govuk-!-font-weight-bold">{{_rating}}</span>. Your feedback will be published in the near future.</p>
+        
+        <a class="govuk-button" href="home?ea=false">Find apprenticeship training</a>
 
 
     </div>

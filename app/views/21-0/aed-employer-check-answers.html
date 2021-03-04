@@ -5,6 +5,12 @@
 {% set _selectedStandard = myData.selectedStandard %}
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
+{% set _orgNameAnswer = myData.orgNameAnswer or "ABC LTD" %}
+{% set _emailAnswer = myData.emailAnswer or "name@example.com" %}
+{% set _locationAnswer = myData.location or "Coventry, Warwickshire" %}
+{% set _apprenticesAnswer = myData.apprenticesAnswer or "yes" %}
+{% set _apprenticesCountAnswer = myData.apprenticesCountAnswer or 1 %}
+
 {% block pageTitle %} 
 Check your answers
 {% endblock %}
@@ -43,7 +49,7 @@ Check your answers
 				Where is the apprenticeship location?
 			</dt>
 			<dd class="govuk-summary-list__value" style="width:30%;">
-			  {{myData.location}}
+			  {{_locationAnswer}}
 			</dd>
 			<dd class="govuk-summary-list__actions">
 			  <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-form">
@@ -57,7 +63,7 @@ Check your answers
 					Do you know how many apprentices will take this apprenticeship training?
 				</dt>
 				<dd class="govuk-summary-list__value" style="width:30%;">
-					{{myData.apprenticesAnswer | capitalize}}
+					{{_apprenticesAnswer | capitalize}}
 				</dd>
 				<dd class="govuk-summary-list__actions">
 					<a class="govuk-link govuk-link--no-visited-state" href="aed-employer-form">
@@ -66,13 +72,13 @@ Check your answers
 				</dd>
 			</div>
 
-			{% if myData.apprenticesAnswer == "yes" %}
+			{% if _apprenticesAnswer == "yes" %}
 			<div class="govuk-summary-list__row">
 				<dt class="govuk-summary-list__key" style="width:50%">
 					Number of apprentices
 				</dt>
 				<dd class="govuk-summary-list__value" style="width:30%;">
-					{{myData.apprenticesCountAnswer}}
+					{{_apprenticesCountAnswer}}
 				</dd>
 				<dd class="govuk-summary-list__actions">
 					<a class="govuk-link govuk-link--no-visited-state" href="aed-employer-form">
@@ -92,7 +98,7 @@ Check your answers
 				What is the organisation’s name?
 			</dt>
 			<dd class="govuk-summary-list__value" style="width:30%;">
-			  {{myData.orgNameAnswer}}
+			  {{_orgNameAnswer}}
 			</dd>
 			<dd class="govuk-summary-list__actions">
 			  <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-form">
@@ -106,7 +112,7 @@ Check your answers
 				What email address should we contact?
 			</dt>
 			<dd class="govuk-summary-list__value" style="width:30%;">
-			  {{myData.emailAnswer}}
+			  {{_emailAnswer}}
 			</dd>
 			<dd class="govuk-summary-list__actions">
 			  <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-form">

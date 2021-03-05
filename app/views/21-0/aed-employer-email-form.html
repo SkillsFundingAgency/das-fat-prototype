@@ -62,7 +62,7 @@ Check this is the correct contact email address
 						{{myData.validationErrors.emailAnswer.message}}
 					</span>
 					{% endif %}
-					<input class="govuk-input {% if myData.validationErrors.emailAnswer %}govuk-input--error{% endif %}" id="emailAnswer" name="emailAnswer" type="email" aria-describedby="emailAnswer-hint" autocomplete="email" value="{{myData.emailAnswerTemp}}" >
+					<input class="govuk-input {% if myData.validationErrors.emailAnswer %}govuk-input--error{% endif %} govuk-!-width-three-quarters" id="emailAnswer" name="emailAnswer" type="email" aria-describedby="emailAnswer-hint" autocomplete="email" value="{{myData.emailAnswerTemp}}" >
 				</div>
 
 				<input type="hidden" value="{{_selectedStandard.larsCode}}" name="standard" >

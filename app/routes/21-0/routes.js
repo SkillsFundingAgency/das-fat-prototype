@@ -2945,19 +2945,6 @@ module.exports = function (router,_myData) {
     //     }
 
     // });
-
-    // AED Employer check answers
-    router.get('/' + version + '/aed-employer-check-answers', function (req, res) {
-
-        function continueRendering(){
-            res.render(version + '/aed-employer-check-answers', {
-                myData:req.session.myData
-            });
-        }
-
-        locationSetter(req,continueRendering)
-        
-    });
     // AED Employer check answers
     router.get('/' + version + '/aed-employer-check-answers', function (req, res) {
 
@@ -2976,7 +2963,13 @@ module.exports = function (router,_myData) {
         req.session.myData.apprenticesCountAnswerTemp = ''
         req.session.myData.orgNameAnswerTemp = ''
         req.session.myData.emailAnswerTemp = ''
-        res.redirect(301, '/' + version + '/aed-employer-confirmation');
+        res.redirect(301, '/' + version + '/aed-employer-check-email');
+    });
+    // AED Employer check email
+    router.get('/' + version + '/aed-employer-check-email', function (req, res) {
+        res.render(version + '/aed-employer-check-email', {
+            myData:req.session.myData
+        });
     });
     // AED Employer confirmation
     router.get('/' + version + '/aed-employer-confirmation', function (req, res) {
@@ -2987,6 +2980,12 @@ module.exports = function (router,_myData) {
     // AED Employer removed
     router.get('/' + version + '/aed-employer-removed', function (req, res) {
         res.render(version + '/aed-employer-removed', {
+            myData:req.session.myData
+        });
+    });
+    // AED Employer EMAIL confirm email
+    router.get('/' + version + '/aed-employer-email-confirm-email', function (req, res) {
+        res.render(version + '/aed-employer-email-confirm-email', {
             myData:req.session.myData
         });
     });

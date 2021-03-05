@@ -92,7 +92,7 @@ Enter the apprenticeship training and contact details
 						{{myData.validationErrors.aedLocationAnswer.message}}
 					</span>
 					{% endif %}
-					<input type="search" id="search-location" name="aedLocationAnswer" title="Search" class="govuk-input govuk-input-background {% if myData.validationErrors.aedLocationAnswer %}govuk-input--error{% endif %} " aria-describedby="search-location-hint">
+					<input type="search" id="search-location" name="aedLocationAnswer" title="Search" class="govuk-input govuk-input-background {% if myData.validationErrors.aedLocationAnswer %}govuk-input--error{% endif %} govuk-!-width-three-quarters" aria-describedby="search-location-hint">
 				</div>
 
 				<!-- Apprentices -->
@@ -156,7 +156,7 @@ Enter the apprenticeship training and contact details
 						{{myData.validationErrors.orgNameAnswer.message}}
 					</span>
 					{% endif %}
-					<input class="govuk-input {% if myData.validationErrors.orgNameAnswer %}govuk-input--error{% endif %}" id="orgNameAnswer" name="orgNameAnswer" type="text" value="{{myData.orgNameAnswerTemp}}">
+					<input class="govuk-input {% if myData.validationErrors.orgNameAnswer %}govuk-input--error{% endif %} govuk-!-width-three-quarters" id="orgNameAnswer" name="orgNameAnswer" type="text" value="{{myData.orgNameAnswerTemp}}">
 				</div>
 
 				<!-- Email address -->
@@ -173,7 +173,7 @@ Enter the apprenticeship training and contact details
 						{{myData.validationErrors.emailAnswer.message}}
 					</span>
 					{% endif %}
-					<input class="govuk-input {% if myData.validationErrors.emailAnswer %}govuk-input--error{% endif %}" id="emailAnswer" name="emailAnswer" type="email" aria-describedby="emailAnswer-hint" autocomplete="email" value="{{myData.emailAnswerTemp}}" >
+					<input class="govuk-input {% if myData.validationErrors.emailAnswer %}govuk-input--error{% endif %} govuk-!-width-three-quarters" id="emailAnswer" name="emailAnswer" type="email" aria-describedby="emailAnswer-hint" autocomplete="email" value="{{myData.emailAnswerTemp}}" >
 				</div>
 
 				<input type="hidden" value="{{_selectedStandard.larsCode}}" name="standard" >
@@ -231,7 +231,7 @@ Enter the apprenticeship training and contact details
             locationElement = document.createElement('div'),
 			defaultLocationSearchvalue = {{_defaultLocationSearchvalue | dump | safe }}
 			
-        locationElement.className = "autocomplete__parent_wrapper";
+        locationElement.className = "autocomplete__parent_wrapper govuk-!-width-three-quarters";
         locationInput.parentNode.insertBefore(locationElement, locationInput)
         accessibleAutocomplete({
             // other options

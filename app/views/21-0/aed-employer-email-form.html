@@ -1,0 +1,85 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+
+{% set _inError = myData.validationError %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block pageTitle %}
+{% if _inError == "true" %}Error: {% endif %}
+Check this is the correct contact email address
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+	{% include "includes/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+		{% if _inError == "true" %}
+		<div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+			<h2 class="govuk-error-summary__title" id="error-summary-title">
+				There is a problem
+			</h2>
+			<div class="govuk-error-summary__body">
+				<ul class="govuk-list govuk-error-summary__list">
+					{% for name, item in myData.validationErrors %}
+					<li>
+						<a href="#{{item.anchor}}">{{item.message}}</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		{% endif %}
+
+        <h1 class="govuk-heading-xl" >
+            Check this is the correct contact email address
+		</h1>
+
+		<p class="govuk-body">Change the contact email address if it is wrong.</p>
+
+        <form method="post">
+
+			<!-- Contact details -->
+			<fieldset class="govuk-fieldset" >
+
+				<!-- Email address -->
+				<div class="govuk-form-group {% if myData.validationErrors.emailAnswer %}govuk-form-group--error{% endif %}">
+					<label class="govuk-label govuk-label--m" for="emailAnswer" style="display:none">
+						What email address should we contact?
+					</label>
+					{% if myData.validationErrors.emailAnswer %}
+					<span id="emailAnswer-error" class="govuk-error-message">
+						<span class="govuk-visually-hidden">Error:</span>
+						{{myData.validationErrors.emailAnswer.message}}
+					</span>
+					{% endif %}
+					<input class="govuk-input {% if myData.validationErrors.emailAnswer %}govuk-input--error{% endif %}" id="emailAnswer" name="emailAnswer" type="email" aria-describedby="emailAnswer-hint" autocomplete="email" value="{{myData.emailAnswerTemp}}" >
+				</div>
+
+				<input type="hidden" value="{{_selectedStandard.larsCode}}" name="standard" >
+                <input type="hidden" value="{{myData.location}}" name="location" >
+
+				<button type="submit" class="govuk-button">
+					Continue
+				</button>
+
+		</form>
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+        &nbsp;
+    </div>
+
+</div>
+
+{% endblock %}

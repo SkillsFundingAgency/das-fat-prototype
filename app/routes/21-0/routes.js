@@ -2830,13 +2830,51 @@ module.exports = function (router,_myData) {
                 req.session.myData.apprenticesAnswer = req.session.myData.apprenticesAnswerTemp
                 req.session.myData.apprenticesCountAnswer = req.session.myData.apprenticesCountAnswerTemp
 
-                res.redirect(301, '/' + version + '/aed-employer-check-answers?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
-                // res.redirect(301, '/' + version + '/aed-employer-check-answers');
+                res.redirect(301, '/' + version + '/aed-employer-email-form?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
+
+                // res.redirect(301, '/' + version + '/aed-employer-check-answers?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
+
             }
         }
 
         
     });
+
+    // AED Employer email form
+    router.get('/' + version + '/aed-employer-email-form', function (req, res) {
+        res.render(version + '/aed-employer-email-form', {
+            myData:req.session.myData
+        });
+    });
+    router.post('/' + version + '/aed-employer-email-form', function (req, res) {
+
+        req.session.myData.emailAnswerTemp = req.body.emailAnswer
+
+        if(req.session.myData.includeValidation == "false"){
+            req.session.myData.emailAnswerTemp = req.session.myData.emailAnswerTemp || "abc@email.com"
+        }
+        if(!req.session.myData.emailAnswerTemp){
+            req.session.myData.validationError = "true"
+            req.session.myData.validationErrors.emailAnswer = {
+                "anchor": "emailAnswer",
+                "message": "Enter an email address"
+            }
+        }
+        if(req.session.myData.validationError == "true") {
+            res.render(version + '/aed-employer-email-form', {
+                myData: req.session.myData
+            });
+        } else {
+            req.session.myData.emailAnswer = req.session.myData.emailAnswerTemp
+
+            res.redirect(301, '/' + version + '/aed-employer-check-answers?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
+
+        }
+    });
+
+
+
+
     // // AED Employer location
     // router.get('/' + version + '/aed-employer-location', function (req, res) {
         

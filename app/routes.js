@@ -4,6 +4,28 @@ const router = express.Router()
 
 // Base session data
 var _myData = {
+    "passrates": [
+        {
+            "provider": 1788,
+            "rate": "68"
+        },
+        {
+            "provider": 14,
+            "rate": "50"
+        },
+        {
+            "provider": 172,
+            "rate": "48"
+        },
+        {
+            "provider": 49,
+            "rate": "42"
+        },
+        {
+            "provider": 168,
+            "rate": "50"
+        }
+    ],
     "qualityPointsSet": false,
     "maxrows": 999999,
     "populateShortlist": false,

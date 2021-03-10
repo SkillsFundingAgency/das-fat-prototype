@@ -3,7 +3,7 @@
 {% set serviceName = "Apprenticeships" %}
 
 {% block pageTitle %} 
-Meet employer demand for apprenticeships
+Find employers who need a training provider
 {% endblock %}
 
 {% set _selectedStandard = myData.selectedStandard %}
@@ -41,7 +41,7 @@ Meet employer demand for apprenticeships
   
 			<div class="govuk-summary-list__row">
 			  <dt class="govuk-summary-list__key" >
-				Opportunities
+				Employers
 			  </dt>
 			  <dd class="govuk-summary-list__value" >
 				{% for _employer in _selectedEmployers %}
@@ -52,7 +52,7 @@ Meet employer demand for apprenticeships
 			  </dd>
 			  <dd class="govuk-summary-list__actions">
 					<a class="govuk-link govuk-link--no-visited-state" href="aed-provider-standard">
-						Change<span class="govuk-visually-hidden"> opportunities</span>
+						Change<span class="govuk-visually-hidden"> employers</span>
 				  	</a>
 			  </dd>
 			</div>

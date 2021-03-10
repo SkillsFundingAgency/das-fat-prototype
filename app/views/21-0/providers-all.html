@@ -481,8 +481,14 @@ Training providers
                         {% if myData.cmppda != "false" %}
                         {% if myData.standardsearchapplied %}
                         {% if _provider.distance < 4 or (_provider.distance > 10 and _provider.distance < 15) or _provider.distance > 40 %}
+                        {% set _passrate = "68" %}
+                        {% for _providerPassRate in myData.passrates %}
+                            {% if _providerPassRate.provider == _provider.id %}
+                                {% set _passrate = _providerPassRate.rate %}
+                            {% endif %}
+                        {% endfor %}
                         <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
-                            <span class="govuk-!-font-size-16">68% pass rate</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(out of 50 apprentices)</span>
+                            <span class="govuk-!-font-size-16">{{_passrate}}% pass rate</span> <span style="color: #626a6e" class="govuk-!-font-size-16">(out of 50 apprentices)</span>
                         </li>
                         {% endif %}
                         {% endif %}

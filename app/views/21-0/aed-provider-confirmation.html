@@ -3,7 +3,7 @@
 {% set serviceName = "Apprenticeships" %}
 
 {% block pageTitle %} 
-Meet employer demand for apprenticeships
+Find employers who need a training provider
 {% endblock %}
 
 {% set _selectedStandard = myData.selectedStandard %}
@@ -50,11 +50,11 @@ Meet employer demand for apprenticeships
 			We’ve shared your contact details with the employers you showed interest in.
 		</p>
 		<p class="govuk-body">
-			We’ve removed these opportunities from your account.
+			We’ve removed these employers from your account.
 		</p>
 
 		{{govukButton({
-			text: "View other opportunities",
+			text: "View other employers",
 			href: "aed-provider-demand"
 		})}}
 

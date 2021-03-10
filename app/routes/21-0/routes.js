@@ -1168,7 +1168,7 @@ module.exports = function (router,_myData) {
                 req.session.myData.hasAMatchcount = 0
                 //STANDARD
                 var _courseBlacklisted = false
-                if(req.session.myData.standard == 36){
+                if(req.session.myData.standard == 36 || req.session.myData.standard == 236){
                     _courseBlacklisted = true
                 }
                 if(_provider.courses.includes(parseInt(req.session.myData.standard)) && !_courseBlacklisted){
@@ -1179,7 +1179,7 @@ module.exports = function (router,_myData) {
                 //LOCATION
                 if(req.session.myData.locationapplied) {
                     var _providerBlacklisted = false
-                    if(req.session.myData.standard == 34 || req.session.myData.standard == 174){
+                    if(req.session.myData.standard == 34 || req.session.myData.standard == 174 || req.session.myData.standard == 379){
                         _providerBlacklisted = true
                     }
                     if(_deliversStandard && (_provider.national || _provider.locationmatch) && !_providerBlacklisted){
@@ -1328,7 +1328,7 @@ module.exports = function (router,_myData) {
                 //LOCATION
                 if(req.session.myData.locationapplied) {
                     var _providerBlacklisted = false
-                    if(req.session.myData.standard == 34 || req.session.myData.standard == 174){
+                    if(req.session.myData.standard == 34 || req.session.myData.standard == 174 || req.session.myData.standard == 379){
                         _providerBlacklisted = true
                     }
                     _provider.search = false
@@ -1801,7 +1801,7 @@ module.exports = function (router,_myData) {
 
                 //LOCATION
                 var _providerBlacklisted = false
-                if(req.session.myData.standard == 34 || req.session.myData.standard == 174){
+                if(req.session.myData.standard == 34 || req.session.myData.standard == 174 || req.session.myData.standard == 379){
                     _providerBlacklisted = true
                 }
                 _provider.search = false
@@ -3067,7 +3067,7 @@ module.exports = function (router,_myData) {
             req.session.myData.validationError = "true"
             req.session.myData.validationErrors.selectedEmployersAnswer = {
                 "anchor": "_employer-1",
-                "message": "Select the opportunities you’re interested in"
+                "message": "Select the employers you’re interested in"
             }
         }
         

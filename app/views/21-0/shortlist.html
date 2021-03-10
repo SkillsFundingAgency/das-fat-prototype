@@ -319,7 +319,13 @@ Shortlist
                                             <td class="govuk-table__cell" >
                                                 <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-2">
                                                     {% if _selectedProvider.distance < 4 or (_selectedProvider.distance > 10 and _selectedProvider.distance < 15) or _selectedProvider.distance > 40 %}
-                                                    68% <span class="visually-hidden-desktop">pass rate </span><span style="color: #626a6e" class="govuk-!-font-size-16 break-line-desktop">(out of 50 apprentices)</span>
+                                                    {% set _passrate = "68" %}
+                                                    {% for _providerPassRate in myData.passrates %}
+                                                        {% if _providerPassRate.provider == _selectedProvider.id %}
+                                                            {% set _passrate = _providerPassRate.rate %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {{_passrate}}% <span class="visually-hidden-desktop">pass rate </span><span style="color: #626a6e" class="govuk-!-font-size-16 break-line-desktop">(out of 50 apprentices)</span>
                                                     {% else %}
                                                     <!-- - -->
                                                     {% endif %}

@@ -5,7 +5,7 @@
 {% set _inError = myData.validationError %}
 
 {% block pageTitle %} 
-Meet employer demand for apprenticeships
+Find employers who need a training provider
 {% endblock %}
 
 {% set _selectedStandard = myData.selectedStandard %}
@@ -54,57 +54,20 @@ Meet employer demand for apprenticeships
 
 			<h1 class="govuk-heading-xl">
 				<span class="govuk-caption-xl">{{_standardTitle|safe}}</span>
-				Which opportunities are you interested in?
+				Which employers are you interested in?
 			</h1>
-
-			<!-- <p class="govuk-body">The following employers are trying to find a training provider for {{_standardTitle|safe}}.</p> -->
-
-			<!-- <p class="govuk-body govuk-!-margin-bottom-6">We will share your contact details with employers that you’re interested in.</p> -->
-
-
-
-			<!-- <h2 class="govuk-heading-l">Which {{_standardTitle|safe}} opportunities are you interested in?</h2> -->
 
 	</div>
 
 </div>
 
-			<!-- <p class="govuk-body">5 opportunities</p> -->
-
-			<!-- <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-				<form action="aed-provider-standard" method="GET" class="govuk-!-margin-bottom-6"  >
-					<p class="govuk-body govuk-!-margin-bottom-1"><span class="govuk-!-font-weight-bold">Filter opportunities by location </span></p>
-					<div class="govuk-form-group govuk-!-margin-bottom-3 govuk-!-width-three-quarters" >
-						<label for="search-location" class="govuk-label" >
-							<span class="govuk-hint">Enter a town, city or postcode</span>
-						</label>
-						<input type="search" value="" id="search-location" name="location" class="govuk-input" >
-					</div>
-					<div class="govuk-form-group">
-						<label class="govuk-label" for="radius">
-						  Radius
-						</label>
-						<select class="govuk-select" id="radius" name="radius">
-						  <option value="5">5 miles</option>
-						  <option value="10" >10 miles</option>
-						  <option value="25">25 miles</option>
-						  <option value="50">50 miles</option>
-						  <option value="80">80 miles</option>
-						  <option value="england">England</option>
-						</select>
-					  </div>
-
-					<button type="submit" class="fat-filter__submit govuk-button " id="filters-submit">Apply filters</button>
-
-				</form>
-			</div> -->
 
 <!-- Filters -->
 <div class="govuk-grid-column-two-thirds fat-panel fat-panel-blocked govuk-!-margin-bottom-6" >
 
 	<div class="govuk-grid-row">
 		<div class="govuk-grid-column-two-thirds" >
-			<h3 class="govuk-heading-s govuk-!-margin-bottom-2">Filter opportunities by location</h3>
+			<h3 class="govuk-heading-s govuk-!-margin-bottom-2">Filter employers by location</h3>
 		</div>
 	</div>
 	
@@ -162,14 +125,8 @@ Meet employer demand for apprenticeships
 
 		<form method="POST">
 
-			<p class="govuk-body">Select all opportunities that apply.</p>
+			<p class="govuk-body">Select all employers that apply.</p>
 
-
-			<!-- <p class="govuk-body govuk-!-margin-bottom-6">After you tell us which opportunities you're interested in, we will share your contact details with employers.</p>
-
-			<p class="govuk-body govuk-!-margin-bottom-6">Select the employers that you want to share your contact details with.</p>
-
-			<p class="govuk-body govuk-!-margin-bottom-6">Select the locations that you're interested in and we will share your contact details with relevant employers.</p> -->
 
 			{% set _employers = myData.aedemployers %}
 
@@ -177,7 +134,7 @@ Meet employer demand for apprenticeships
 				<fieldset class="govuk-fieldset" >
 					<!-- <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
 						<h1 class="govuk-fieldset__heading">
-							Which opportunities are you interested in?
+							Which employers are you interested in?
 						</h1>
 					</legend>
 					<div id="employer-hint" class="govuk-hint">

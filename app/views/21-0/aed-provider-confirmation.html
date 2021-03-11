@@ -53,6 +53,13 @@ Find employers who need a training provider
 			We’ve removed these employers from your account.
 		</p>
 
+		{% if myData.cd == "true" %}
+			<p class="govuk-body">We’ve also shared a link to your organisation on <a href="provider?provider=1419&standard=196&s=fat" target="_blank" class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>. You can <a href="https://coursedirectory.nationalcareersservice.org.uk/" target="_blank" class="govuk-link govuk-link--no-visited-state">publish to the course directory</a> to update your courses.</p>
+		{% else %}
+			<h2 class="govuk-heading-m">Publish to the course directory</h2>
+			<p class="govuk-body">ABC LTD is not on the course directory for {{_standardTitle|safe}}. <a href="https://coursedirectory.nationalcareersservice.org.uk/" target="_blank" class="govuk-link govuk-link--no-visited-state">Publish to the course directory</a>, so that employers can find you in the search results for this course on <a href="home?s=fat" target="_blank" class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>.</p>
+		{% endif %}
+
 		{{govukButton({
 			text: "View other employers",
 			href: "aed-provider-demand"

@@ -919,6 +919,7 @@ module.exports = function (router,_myData) {
         req.session.myData.pfemail =  req.query.pfe || req.session.myData.pfemail
         req.session.myData.ksbs =  req.query.ksbs || req.session.myData.ksbs
         req.session.myData.aedinfat =  req.query.aed || req.session.myData.aedinfat
+        req.session.myData.cd =  req.query.cd || false
         
         //component visibility - for devs
         //courses

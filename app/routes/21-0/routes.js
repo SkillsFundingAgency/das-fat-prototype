@@ -315,6 +315,22 @@ module.exports = function (router,_myData) {
 
         });
     }
+    //Sort AED demand
+    function sortDemand(req, _sortBy){
+        req.session.myData.demands.sort(function(a,b){
+
+            var returnValue = 0;
+
+            if (a.name.toUpperCase() < b.name.toUpperCase()){
+                returnValue = -1
+            } else if(a.name.toUpperCase() > b.name.toUpperCase()){
+                returnValue = 1
+            }
+
+            return returnValue
+
+        });
+    }
 
     // For back links
     function getRefererPage(referer){
@@ -3161,6 +3177,8 @@ module.exports = function (router,_myData) {
                 }
     
             });
+
+            sortDemand(req, "name")
     
             res.render(version + '/aed-provider-demand', {
                 myData:req.session.myData

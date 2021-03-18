@@ -6,9 +6,7 @@
 
 {% endblock %}
 
-{% set _selectedStandard = myData.selectedStandard %}
-{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
-
+{% set _selectedDemand = myData.selectedDemand %}
 {% set _selectedEmployers = myData.selectedEmployers or myData.defaultSelectedEmployers %}
 
 {% block beforeContent %}
@@ -32,7 +30,7 @@
 				  Apprenticeship <br>training course
 			  </dt>
 			  <dd class="govuk-summary-list__value" >
-				{{_standardTitle|safe}}
+				{{_selectedDemand.name|safe}}
 			  </dd>
 			  <dd class="govuk-summary-list__actions">
 				

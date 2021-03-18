@@ -4,6 +4,7 @@ const router = express.Router()
 
 // Base session data
 var _myData = {
+    "demands": require(__dirname + '/data/demand.json').list,
     "passrates": [
         {
             "provider": 1788,
@@ -262,6 +263,181 @@ var _myData = {
     ]
 }
 
+// console.log(JSON.stringify("test"))
+
+// var _courses = [
+//     {
+//       "larsCode": 274,
+//       "name": "Abattoir worker (level 2)",
+//       "route": "Engineering and manufacturing"
+//     },
+//     {
+//       "larsCode": 34,
+//       "name": "Able seafarer (deck) (level 2)",
+//       "route": "Transport and logistics"
+//     },
+//     {
+//       "larsCode": 240,
+//       "name": "Advanced carpentry and joinery (level 3)",
+//       "route": "Construction"
+//     },
+//     {
+//       "larsCode": 148,
+//       "name": "Advanced credit controller / debt collection specialist (level 3)",
+//       "route": "Legal, finance and accounting"
+//     },
+//     {
+//       "larsCode": 37,
+//       "name": "Aerospace engineer (degree) (level 6)",
+//       "route": "Engineering and manufacturing"
+//     },
+//     {
+//       "larsCode": 490,
+//       "name": "Air traffic controller (level 5)",
+//       "route": "Transport and logistics"
+//     },
+//     {
+//       "larsCode": 180,
+//       "name": "Arborist (level 2)",
+//       "route": "Agriculture, environmental and animal care"
+//     },
+//     {
+//       "larsCode": 299,
+//       "name": "Architectural assistant (degree) (level 6)",
+//       "route": "Construction"
+//     },
+//     {
+//       "larsCode": 198,
+//       "name": "Building services design engineer (degree) (level 6)",
+//       "route": "Construction"
+//     },
+//     {
+//       "larsCode": 77,
+//       "name": "Credit controller / collector (level 2)",
+//       "route": "Legal, finance and accounting"
+//     },
+//     {
+//       "larsCode": 469,
+//       "name": "Dietitian (degree) (level 6)",
+//       "route": "Health and science"
+//     },
+//     {
+//       "larsCode": 377,
+//       "name": "Engineering fitter (level 3)",
+//       "route": "Engineering and manufacturing"
+//     },
+//     {
+//       "larsCode": 245,
+//       "name": "Food and drink advanced engineer (degree) (level 6)",
+//       "route": "Engineering and manufacturing"
+//     },
+//     {
+//       "larsCode": 124,
+//       "name": "Highways electrician / service operative (level 3)",
+//       "route": "Construction"
+//     },
+//     {
+//       "larsCode": 223,
+//       "name": "Hospitality manager (level 4)",
+//       "route": "Catering and hospitality"
+//     },
+//     {
+//       "larsCode": 493,
+//       "name": "Lean manufacturing operative (level 2)",
+//       "route": "Engineering and manufacturing"
+//     },
+//     {
+//       "larsCode": 394,
+//       "name": "Marina and boatyard operative (level 2)",
+//       "route": "Transport and logistics"
+//     },
+//     {
+//       "larsCode": 365,
+//       "name": "Metal casting, foundry and patternmaking technician (level 3)",
+//       "route": "Engineering and manufacturing"
+//     },
+//     {
+//       "larsCode": 387,
+//       "name": "Midwife (degree) (level 6)",
+//       "route": "Health and science"
+//     },
+//     {
+//       "larsCode": 515,
+//       "name": "New furniture product developer (level 3)",
+//       "route": "Engineering and manufacturing"
+//     }
+//    ];
+
+// _myData.demands.forEach(function(_demand, index) {
+
+//     var _idNumber = 1
+//     // "_employer-1"
+
+//     _demand.employers.forEach(function(_employer, index) {
+//         _employer.id = "_employer-" + _idNumber
+//         _idNumber++
+//     });
+
+//     _courses.forEach(function(_course, index) {
+//         if(_course.larsCode == _demand.larsCode){
+//             _demand.name = _course.name
+//             _demand.route = _course.route
+//         }
+//     })
+
+    // _demand.locationmatch = true
+    // _random = [1,2,3,4,5,6][Math.floor(Math.random()*6)]
+    // if(_random < 4){
+    //     _demand.locationmatch = false 
+    // }
+
+    // _employersList = [
+    //     {
+    //         "apprentices": [1,2,3,4,5][Math.floor(Math.random()*5)],
+    //         "location": "Coventry, West Midlands",
+    //         "contacted": false,
+    //         "locationMatch": true
+    //     },
+    //     {
+    //         "apprentices": [1,2,3,4,5][Math.floor(Math.random()*5)],
+    //         "location": "CV11 Nuneaton and Bedworth",
+    //         "contacted": false,
+    //         "locationMatch": true
+    //     },
+    //     {
+    //         "apprentices": [1,2,3,4,5][Math.floor(Math.random()*5)],
+    //         "location": "TF1 Telford and Wrekin",
+    //         "contacted": false,
+    //         "locationMatch": false
+    //     },
+    //     {
+    //         "apprentices": [1,2,3,4,5][Math.floor(Math.random()*5)],
+    //         "location": "NW10 0AA Hammersmith and Fulham",
+    //         "contacted": false,
+    //         "locationMatch": false
+    //     },
+    //     {
+    //         "apprentices": [1,2,3,4,5][Math.floor(Math.random()*5)],
+    //         "location": "Newcastle-under-Lyme, Staffordshire",
+    //         "contacted": false,
+    //         "locationMatch": false
+    //     }
+    // ]
+
+    // _demand.employers = []
+
+    // var _employersCount = [1,2,3,4,5][Math.floor(Math.random()*5)];
+    // var i = 0;
+    // while (i < _employersCount) {
+
+    //     _demand.employers.push(_employersList[i])
+
+    //     i++;
+    //   }
+    
+
+// });
+// console.log(JSON.stringify(_myData.demands))
 
 // Dates
 var _todaysDate = new Date(),

@@ -8,8 +8,8 @@
 
 {% endblock %}
 
-{% set _selectedStandard = myData.selectedStandard %}
-{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+{% set _selectedDemand = myData.selectedDemand %}
+{% set _employers = _selectedDemand.employers %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
@@ -19,9 +19,20 @@
 <!-- Location search -->
 {% set _citiesAutocompleteList = myData.citiesAutocompleteList %}
 {% set _defaultLocationSearchvalue = "" %}
+{% if myData.locationapplied == true %}
+    {% set _defaultLocationSearchvalue = myData.location %}
+{% endif %}
+
+<!-- Query strings (for use in hrefs) -->
+{% set _locationQuery = "" %}
+{% if myData.locationapplied == true %}
+    {% set _locationQuery = "&location=" + myData.location %}
+{% endif %}
+
+{% set _fullURL = "aed-provider-demand?" + _locationQuery %}
 
 <!-- Filters -->
-{% set _filtersApplied = false %}
+{% set _filtersApplied = myData.locationapplied %}
 
 {% block content %}
 
@@ -53,7 +64,7 @@
             {% endif %}
 
 			<h1 class="govuk-heading-xl">
-				<span class="govuk-caption-xl">{{_standardTitle|safe}}</span>
+				<span class="govuk-caption-xl">{{_selectedDemand.name|safe}}</span>
 				Which employers are you interested in?
 			</h1>
 
@@ -73,43 +84,47 @@
 	
 	<div class="govuk-grid-row">
 
-		<div class="govuk-grid-column-two-thirds" id="filters" >
-			<div class="govuk-form-group govuk-!-margin-bottom-5" >
-				<!-- <label for="search-location" class="govuk-label" >
-					Enter a town, city or postcode
-				</label>
-				<input type="search" value="" id="search-location" name="location" class="govuk-input" > -->
+        <form method="GET">
 
-				<div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
-                    <label for="search-location" class="govuk-label" >
+            <div class="govuk-grid-column-two-thirds" id="filters" >
+                <div class="govuk-form-group govuk-!-margin-bottom-5" >
+                    <!-- <label for="search-location" class="govuk-label" >
                         Enter a town, city or postcode
                     </label>
-                    <div class="search-input-wrapper">
-                        <input type="search" value="" id="search-location" name="location" title="Search" class="govuk-input ">
-                        <div class="search-input-submit-wrapper">
-                            <button type="submit" class="search-submit" id="search-location-submit">Enter location</button>
+                    <input type="search" value="" id="search-location" name="location" class="govuk-input" > -->
+
+                    <div class="search-wrapper govuk-form-group search-wrapper-das search-wrapper-das-small" >
+                        <label for="search-location" class="govuk-label" >
+                            Enter a town, city or postcode
+                        </label>
+                        <div class="search-input-wrapper">
+                            <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" title="Search" class="govuk-input ">
+                            <div class="search-input-submit-wrapper">
+                                <button type="submit" class="search-submit" id="search-location-submit">Enter location</button>
+                            </div>
                         </div>
                     </div>
+
                 </div>
+            </div>
 
-			</div>
-		</div>
-
-		<div class="govuk-grid-column-one-quarter" >
-			<div class="govuk-form-group govuk-!-margin-bottom-5">
-				<label class="govuk-label" for="radius">
-					Radius
-				</label>
-				<select class="govuk-select" id="radius" name="radius" style="min-width: 100%">
-					<option value="5" selected>5 miles</option>
-					<option value="10" >10 miles</option>
-					<option value="25">25 miles</option>
-					<option value="50">50 miles</option>
-					<option value="80">80 miles</option>
-					<option value="england">England</option>
-				</select>
-			</div>
-		</div>
+            <div class="govuk-grid-column-one-quarter" >
+                <div class="govuk-form-group govuk-!-margin-bottom-5">
+                    <label class="govuk-label" for="radius">
+                        Radius
+                    </label>
+                    <select class="govuk-select" id="radius" name="radius" style="min-width: 100%">
+                        <option value="5" {% if myData.radius == "5" %}selected{% endif %}>5 miles</option>
+                        <option value="10" {% if myData.radius == "10" %}selected{% endif %}>10 miles</option>
+                        <option value="25" {% if myData.radius == "25" %}selected{% endif %}>25 miles</option>
+                        <option value="50" {% if myData.radius == "50" %}selected{% endif %}>50 miles</option>
+                        <option value="80" {% if myData.radius == "80" %}selected{% endif %}>80 miles</option>
+                        <option value="england" {% if myData.radius == "england" %}selected{% endif %}>England</option>
+                    </select>
+                </div>
+            </div>
+            
+        </form>
 
 	</div>
 	
@@ -124,12 +139,19 @@
 <div class="govuk-grid-row">
 	<div class="govuk-grid-column-two-thirds">
 
+        {% if myData.locationapplied %}
+            <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="aed-provider-standard?&location">Clear filters</a></p>
+            {% if myData.radius == "england" %}
+                <p class="govuk-body">{{myData.displaycount}} employer{% if myData.displaycount != 1 %}s{% endif %} within England.</p>
+            {% else %}
+                <p class="govuk-body">{{myData.displaycount}} employer{% if myData.displaycount != 1 %}s{% endif %} within {{myData.radius}} miles of {{myData.location}}.</p>
+            {% endif %}
+        {% endif %}
+
+        {% if myData.displaycount > 0 %}
 		<form method="POST">
 
 			<p class="govuk-body">Select all employers that apply.</p>
-
-
-			{% set _employers = myData.aedemployers %}
 
 			<div class="govuk-form-group {% if myData.validationErrors.selectedEmployersAnswer %}govuk-form-group--error{% endif %}">
 				<fieldset class="govuk-fieldset" >
@@ -149,28 +171,29 @@
                     </span>
 					{% endif %}
 					
-					{% for _employer in _employers %}
-					<div class="govuk-checkboxes">
-						<div class="govuk-checkboxes__item">
-							<input class="govuk-checkboxes__input" id="{{_employer.id}}" name="employer" type="checkbox" value="{{_employer.id}}">
-							<label class="govuk-label govuk-checkboxes__label" for="{{_employer.id}}">
-								<span class="govuk-!-font-weight-bold">Employer</span><br>
-								{{_employer.location}}<br>
-								{{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}
-								
-							</label>
-						</div>
-					</div>
+                    {% for _employer in _employers %}
+                        {% if _employer.search %}
+                        <div class="govuk-checkboxes">
+                            <div class="govuk-checkboxes__item">
+                                <input {% if _employer.selected %}checked{% endif %} class="govuk-checkboxes__input" id="{{_employer.id}}" name="employer" type="checkbox" value="{{_employer.id}}">
+                                <label class="govuk-label govuk-checkboxes__label" for="{{_employer.id}}">
+                                    <span class="govuk-!-font-weight-bold">Employer</span><br>
+                                    {{_employer.location}}<br>
+                                    {{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}
+                                </label>
+                            </div>
+                        </div>
+                        {% endif %}
 					{% endfor %}
 				</fieldset>
 			</div>
 		
-
 			{{govukButton({
 				text: "Continue"
 			})}}
 
-		</form>
+        </form>
+        {% endif %}
 
 	</div>
 </div>
@@ -186,7 +209,7 @@
 
     // filterVisibilityToggle({{_filtersApplied | dump | safe }})
 
-    // function fireApplyFilters(){setTimeout(function(){ $("#filters-submit").trigger("click") },200);}
+    function fireApplyFilters(){setTimeout(function(){ $("#search-location-submit").trigger("click") },200);}
 
     // Locations 
     function suggestLocations(query, populateResults) {
@@ -232,7 +255,7 @@
             minLength: 1,
             confirmOnBlur: false,
             autoselect: true,
-            // onConfirm: fireApplyFilters,
+            onConfirm: fireApplyFilters,
             displayMenu: 'overlay'
         })
         locationInput.style.display = 'none'

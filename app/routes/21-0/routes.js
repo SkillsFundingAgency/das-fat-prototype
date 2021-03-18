@@ -373,7 +373,7 @@ module.exports = function (router,_myData) {
                     req.session.myData.standardsearchapplied = true
                     req.session.myData.standardSearchTerm = req.session.myData.standardSearchTermTemp
                     req.session.myData.selectedStandard = _thisStandard
-                    req.session.myData.searchfilters.push({"value": _thisStandard.autoCompleteString, "type": "standard", "typeText": "Course name"})
+                    req.session.myData.searchfilters.push({"value": _thisStandard.autoCompleteString, "type": "standard", "typeText": "Apprenticeship training course"})
                 }
             }
         }
@@ -598,6 +598,21 @@ module.exports = function (router,_myData) {
                         req.session.myData.selectedProvider = _thisProvider
                         req.session.myData.provider = _thisProvider.id
                     }
+                }
+            }
+        }
+    }
+
+    // Set the selected demand
+    function setSelectedDemand(req, _demandParameter){
+        req.session.myData.demandsearchapplied = true
+        if(_demandParameter){
+            for (var i = 0; i < req.session.myData["demands"].length; i++) {
+                var _thisDemand = req.session.myData["demands"][i]
+                if(_thisDemand.larsCode.toString() == _demandParameter.toString() || _thisDemand.name.toUpperCase() == _demandParameter.toString().toUpperCase()){
+                    req.session.myData.demandsearchapplied = true
+                    req.session.myData.selectedDemand = _thisDemand
+                    req.session.myData.demand = _thisDemand.larsCode
                 }
             }
         }
@@ -840,9 +855,11 @@ module.exports = function (router,_myData) {
 
         // Default filters
         req.session.myData.location = ""
+        req.session.myData.radius = "5"
         req.session.myData.standard = "1"
         req.session.myData.provider = "1"
         req.session.myData.epao = "1"
+        req.session.myData.demand = req.session.myData.demands[0].larsCode.toString()
         req.session.myData.trainingoptions = []
         req.session.myData.employerreviews = []
         req.session.myData.ofstedratings = []
@@ -960,9 +977,11 @@ module.exports = function (router,_myData) {
         req.session.myData.standard = req.query.standard || req.session.myData.standard
         req.session.myData.provider = req.query.provider || req.session.myData.provider
         req.session.myData.epao = req.query.epao || req.session.myData.epao
+        req.session.myData.demand = req.query.demand || req.session.myData.demand
 
         setSelectedProvider(req,req.session.myData.provider)
         setSelectedStandard(req,req.session.myData.standard)
+        setSelectedDemand(req,req.session.myData.demand)
 
         //
         // Fixes for checkbox values in query string - turns them into arrays
@@ -996,10 +1015,8 @@ module.exports = function (router,_myData) {
 
         //Set default selected apprentices (for deep links to work)
         req.session.myData.defaultSelectedEmployers = []
-        req.session.myData.aedemployers.forEach(function(_employer, index) {
-            if (index < 3) {
-                req.session.myData.defaultSelectedEmployers.push(_employer)
-            }
+        req.session.myData.demands[0].employers.forEach(function(_employer, index) {
+            req.session.myData.defaultSelectedEmployers.push(_employer)
         });
 
         next()
@@ -1136,30 +1153,6 @@ module.exports = function (router,_myData) {
         req.session.myData.countepaos = 0
         req.session.myData.displaycountproviders = 0
         req.session.myData.displaycountepaos = 0
-
-        //Location reset/setup
-        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
-            req.session.myData.locationTemp = req.session.myData.location
-            if(req.query.location == ""){
-                req.session.myData.locationTemp = ""
-            } else if (req.query.location) {
-                req.session.myData.locationTemp = req.query.location.trim()
-            }
-            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
-                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
-                if(cityMatch(req) || _postCodeMatch) {
-                    req.session.myData.locationapplied = true
-                    req.session.myData.location = req.session.myData.locationTemp
-                    req.session.myData.needToMatchCount++
-                } else {
-                    req.session.myData.locationapplied = false
-                    req.session.myData.location = ""
-                }
-                continueRendering()
-            });
-        } else {
-            continueRendering()
-        }
         
         function continueRendering(){
 
@@ -1219,6 +1212,8 @@ module.exports = function (router,_myData) {
                 myData:req.session.myData
             });
         }
+
+        locationSetter(req,continueRendering)
 
     });
 
@@ -3048,15 +3043,226 @@ module.exports = function (router,_myData) {
     });
     // AED Provider - demand
     router.get('/' + version + '/aed-provider-demand', function (req, res) {
-        res.render(version + '/aed-provider-demand', {
-            myData:req.session.myData
-        });
+
+        var _demands = req.session.myData["demands"]
+
+        req.session.myData.searchfilters = []
+        req.session.myData.displaycount = 0
+        req.session.myData.needToMatchCount = 1
+
+        //Radius label
+        req.session.myData.radius = req.query.radius || req.session.myData.radius
+        var _radiusLabel = " <br>(within " + req.session.myData.radius + " miles)"
+        if(req.session.myData.radius == "england"){
+            _radiusLabel = " <br>(across England)"
+        }
+
+        //Location filter reset/setup
+        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
+
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
+            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
+                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
+                if(cityMatch(req) || _postCodeMatch) {
+                    req.session.myData.displaycount = 0
+                    req.session.myData.needToMatchCount++
+                    req.session.myData.locationapplied = true
+                    req.session.myData.location = req.session.myData.locationTemp
+                    req.session.myData.searchfilters.push({"value": req.session.myData.location + _radiusLabel, "type": "location", "typeText": "Location"})
+                } else {
+                    req.session.myData.radius = "5"
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
+                }
+                continueRendering()
+            });
+        } else {
+            req.session.myData.radius = "5"
+            continueRendering()
+        }
+
+        function continueRendering(){
+            
+            // Standard filter reset/setup
+            standardFilterSetup(req)
+            
+            // Route filter setup
+            if(req.session.myData.standardsearchapplied){
+                req.session.myData.routefilterapplied = false
+            } else {
+                routeFilterSetup(req)
+            }
+            
+            // FILTER demand
+            // CHECK FOR MATCHES
+            _demands.forEach(function(_demand, index) {
+
+                req.session.myData.hasAMatchcount = 0
+
+                // Reset each demand
+                _demand.search = false
+
+                _demand.totalApprentices = 0
+                _demand.totalEmployers = 0
+
+                // For each employer in demand - CONTACTED?
+                _demand.employers.forEach(function(_employer, index) {
+                    _employer.selected = false
+                    if(!_employer.contacted){
+                        _demand.totalEmployers++
+                        _demand.totalApprentices = _demand.totalApprentices + _employer.apprentices
+                    }
+                });
+                if(_demand.totalEmployers > 0){
+                    req.session.myData.hasAMatchcount++
+                }
+    
+                //LOCATION
+                if(req.session.myData.locationapplied) {
+                    if(req.session.myData.radius == "england"){
+                        req.session.myData.hasAMatchcount++
+                    } else {
+                        _demand.employers.forEach(function(_employer, index) {
+                            if(!_employer.contacted && !_employer.locationmatch) {
+                                _demand.totalEmployers--
+                                _demand.totalApprentices = _demand.totalApprentices - _employer.apprentices
+                            }
+                        });
+                        if(_demand.totalEmployers > 0){
+                            req.session.myData.hasAMatchcount++
+                        }
+                    }
+                }
+
+                //STANDARD 
+                if(req.session.myData.standardsearchapplied) {
+                    if(_demand.larsCode == req.session.myData.selectedStandard.larsCode){
+                        req.session.myData.hasAMatchcount++
+                    }
+                }
+
+                //ROUTE
+                if(req.session.myData.routefilterapplied) {
+                    var _route = req.session.myData.routefilters.find(obj => obj === _demand.routecode.toString())
+                    if(_route){
+                        req.session.myData.hasAMatchcount++
+                    }
+                }
+    
+                //MATCHES ALL IT NEEDS TO?
+                if(req.session.myData.needToMatchCount == req.session.myData.hasAMatchcount){
+                    _demand.search = true
+                    req.session.myData.displaycount++
+                }
+    
+            });
+    
+            res.render(version + '/aed-provider-demand', {
+                myData:req.session.myData
+            });
+        }
+
     });
     // AED Provider - standard
     router.get('/' + version + '/aed-provider-standard', function (req, res) {
-        res.render(version + '/aed-provider-standard', {
-            myData:req.session.myData
-        });
+
+        //Selected standard
+        setSelectedStandard(req,req.query.demand)
+
+        var _employers = req.session.myData.selectedDemand.employers
+
+        req.session.myData.searchfilters = []
+        req.session.myData.displaycount = 0
+        req.session.myData.needToMatchCount = 1
+
+        //Radius label
+        req.session.myData.radius = req.query.radius || req.session.myData.radius
+        var _radiusLabel = " <br>(within " + req.session.myData.radius + " miles)"
+        if(req.session.myData.radius == "england"){
+            _radiusLabel = " <br>(across England)"
+        }
+
+        //Location filter reset/setup
+        if(req.query.location || (req.session.myData.location != "" && req.session.myData.location)){
+            req.session.myData.locationTemp = req.session.myData.location
+            if(req.query.location == ""){
+                req.session.myData.locationTemp = ""
+            } else if (req.query.location) {
+                req.session.myData.locationTemp = req.query.location.trim()
+            }
+            require("request").get('https://api.postcodes.io/postcodes/' + req.session.myData.locationTemp + '/autocomplete', (error, response, body) => {
+                var _postCodeMatch = (JSON.parse(body).result && req.session.myData.locationTemp.length > 1)
+                if(cityMatch(req) || _postCodeMatch) {
+                    req.session.myData.displaycount = 0
+                    req.session.myData.needToMatchCount++
+                    req.session.myData.locationapplied = true
+                    req.session.myData.location = req.session.myData.locationTemp
+                    req.session.myData.searchfilters.push({"value": req.session.myData.location + _radiusLabel, "type": "location", "typeText": "Location"})
+                } else {
+                    req.session.myData.radius = "5"
+                    req.session.myData.locationapplied = false
+                    req.session.myData.location = ""
+                }
+                continueRendering()
+            });
+        } else {
+            req.session.myData.radius = "5"
+            continueRendering()
+        }
+
+        function continueRendering(){
+
+            req.session.myData.selectedDemand.totalApprentices = 0
+            req.session.myData.selectedDemand.totalEmployers = 0
+
+            // FILTER employers
+            // CHECK FOR MATCHES
+            _employers.forEach(function(_employer, index) {
+
+                req.session.myData.hasAMatchcount = 0
+
+                // Reset each demand
+                _employer.search = false
+
+                // For each employer in demand
+                if(!_employer.contacted){
+                    req.session.myData.selectedDemand.totalEmployers++
+                    req.session.myData.selectedDemand.totalApprentices = req.session.myData.selectedDemand.totalApprentices + _employer.apprentices
+                    req.session.myData.hasAMatchcount++
+                }
+    
+                //LOCATION
+                if(req.session.myData.locationapplied) {
+                    if(req.session.myData.radius == "england"){
+                        req.session.myData.hasAMatchcount++
+                    } else {
+                        if(!_employer.contacted && !_employer.locationmatch) {
+                            req.session.myData.selectedDemand.totalEmployers--
+                            req.session.myData.selectedDemand.totalApprentices = req.session.myData.selectedDemand.totalApprentices - _employer.apprentices
+                        } else {
+                            req.session.myData.hasAMatchcount++
+                        }
+                    }
+                }
+    
+                //MATCHES ALL IT NEEDS TO?
+                if(req.session.myData.needToMatchCount == req.session.myData.hasAMatchcount){
+                    _employer.search = true
+                    req.session.myData.displaycount++
+                }
+    
+            });
+    
+            res.render(version + '/aed-provider-standard', {
+                myData:req.session.myData
+            });
+        }
+        
     });
     router.post('/' + version + '/aed-provider-standard', function (req, res) {
 
@@ -3081,7 +3287,7 @@ module.exports = function (router,_myData) {
             req.session.myData.selectedEmployersAnswerTemp = ''
 
             req.session.myData.selectedEmployers = []
-            req.session.myData.aedemployers.forEach(function(_employer, index) {
+            req.session.myData.selectedDemand.employers.forEach(function(_employer, index) {
                 if(req.session.myData.selectedEmployersAnswer.indexOf(_employer.id.toString()) != -1){
                     _employer.selected = true
                     req.session.myData.selectedEmployers.push(_employer)
@@ -3089,6 +3295,15 @@ module.exports = function (router,_myData) {
                     _employer.selected = false
                 }
             });
+
+            // req.session.myData.aedemployers.forEach(function(_employer, index) {
+            //     if(req.session.myData.selectedEmployersAnswer.indexOf(_employer.id.toString()) != -1){
+            //         _employer.selected = true
+            //         req.session.myData.selectedEmployers.push(_employer)
+            //     } else {
+            //         _employer.selected = false
+            //     }
+            // });
 
             res.redirect(301, '/' + version + '/aed-provider-contact-details');
         }
@@ -3164,6 +3379,15 @@ module.exports = function (router,_myData) {
         });
     });
     router.post('/' + version + '/aed-provider-check-answers', function (req, res) {
+
+        req.session.myData.selectedDemand.employers.forEach(function(_employer, index) {
+            if(_employer.selected){
+                _employer.contacted = true
+            }
+            _employer.selected = false
+        });
+        req.session.myData.selectedEmployers = []
+
         res.redirect(301, '/' + version + '/aed-provider-confirmation');
     })
     // AED Provider - confirmation

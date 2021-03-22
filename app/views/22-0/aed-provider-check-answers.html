@@ -1,0 +1,125 @@
+{% extends "layout-as-pro.html" %}
+
+{% set serviceName = "Apprenticeships" %}
+
+{% block pageTitle %} 
+
+{% endblock %}
+
+{% set _selectedDemand = myData.selectedDemand %}
+{% set _selectedEmployers = myData.selectedEmployers or myData.defaultSelectedEmployers %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+	<div class="govuk-grid-column-two-thirds">
+
+		<h1 class="govuk-heading-xl govuk-!-margin-bottom-6">
+			Check your answers
+		</h1>
+
+		<dl class="govuk-summary-list">
+
+			<div class="govuk-summary-list__row">
+			  <dt class="govuk-summary-list__key" >
+				  Apprenticeship <br>training course
+			  </dt>
+			  <dd class="govuk-summary-list__value" >
+				{{_selectedDemand.name|safe}}
+			  </dd>
+			  <dd class="govuk-summary-list__actions">
+				
+			  </dd>
+			</div>
+  
+			<div class="govuk-summary-list__row">
+			  <dt class="govuk-summary-list__key" >
+				Employers
+			  </dt>
+			  <dd class="govuk-summary-list__value" >
+				{% for _employer in _selectedEmployers %}
+					{{_employer.location}}<br>
+					{{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}
+					<br><br>
+				{% endfor %}
+			  </dd>
+			  <dd class="govuk-summary-list__actions">
+					<a class="govuk-link govuk-link--no-visited-state" href="aed-provider-standard">
+						Change<span class="govuk-visually-hidden"> employers</span>
+				  	</a>
+			  </dd>
+			</div>
+
+		</dl>
+
+		<h2 class="govuk-heading-m">OUTSTANDING TRAINING LTD’s contact details</h2>
+
+		<dl class="govuk-summary-list">
+
+			<div class="govuk-summary-list__row">
+			  <dt class="govuk-summary-list__key" >
+				Email address
+			  </dt>
+			  <dd class="govuk-summary-list__value" >
+				<span style="white-space: nowrap">{{myData.emailProviderAnswer}}</span>
+			  </dd>
+			  <dd class="govuk-summary-list__actions">
+				<a class="govuk-link govuk-link--no-visited-state" href="aed-provider-contact-details-edit">
+					Change<span class="govuk-visually-hidden"> email address</span>
+				</a>
+			  </dd>
+			</div>
+
+			<div class="govuk-summary-list__row">
+				<dt class="govuk-summary-list__key" >
+					Telephone number
+				</dt>
+				<dd class="govuk-summary-list__value" >
+					{{myData.telephoneProviderAnswer}}
+				</dd>
+				<dd class="govuk-summary-list__actions">
+					<a class="govuk-link govuk-link--no-visited-state" href="aed-provider-contact-details-edit">
+						Change<span class="govuk-visually-hidden"> telephone number</span>
+					</a>
+				</dd>
+			</div>
+
+			<div class="govuk-summary-list__row">
+				<dt class="govuk-summary-list__key" >
+					Website
+				</dt>
+				<dd class="govuk-summary-list__value" >
+					{% if myData.websiteProviderAnswer == "" %}
+					No website provided.
+					{% else %}
+					{{myData.websiteProviderAnswer}}
+					{% endif %}
+				</dd>
+				<dd class="govuk-summary-list__actions">
+					<a class="govuk-link govuk-link--no-visited-state" href="aed-provider-contact-details-edit">
+						Change<span class="govuk-visually-hidden"> website</span>
+					</a>
+				</dd>
+			</div>
+		
+		</dl>
+
+		<p class="govuk-body">We’ll share these contact details with the employers you’re showing interest in.</p>
+
+		<form method="post">
+			{{govukButton({
+				text: "Confirm"
+			})}}
+		</form>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+{% endblock %}

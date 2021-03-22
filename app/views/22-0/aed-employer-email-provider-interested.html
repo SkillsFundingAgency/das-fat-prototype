@@ -1,0 +1,94 @@
+{% extends myData.layout %}
+{% set serviceName = "" %}
+{% set serviceUrl = "" %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block pageTitle %} 
+{% endblock %}
+
+{% set _email = true %}
+{% set _showAEDEmployerLinks2 = true %}
+{% set _showAEDEmployerLinks3 = true %}
+{% set _currentAEDEmployerLink = "aed-employer-email-provider-interested" %}
+
+{% set _orgNameAnswer = myData.orgNameAnswer or "ABC LTD" %}
+{% set _locationAnswer = myData.location or "Coventry, Warwickshire" %}
+{% set _apprenticesAnswer = myData.apprenticesAnswer or "yes" %}
+{% set _apprenticesCountAnswer = myData.apprenticesCountAnswer or 1 %}
+
+{% block beforeContent %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+      <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-6" style="border-bottom: 1px solid grey; padding-bottom:20px">
+        <span class="govuk-!-font-weight-bold">From:</span> The Apprenticeship Service &lt;the.apprenticeship.service@notifications.service.gov.uk&gt;
+        <br><span class="govuk-!-font-weight-bold">Subject:</span> A training provider is interested in offering your apprenticeship training
+      </p>
+
+      <h1 class="govuk-heading-l">
+        A training provider is interested in offering your apprenticeship training
+      </h1>
+
+      <p class="govuk-body">To {{_orgNameAnswer}},</p>
+
+      <p class="govuk-body">
+        Apprenticeship training course <br>
+        <span>{{_standardTitle|safe}}</span>
+      </p>
+  
+      <p class="govuk-body">
+        Apprenticeship location <br>
+        <span>{{_locationAnswer}}</span>
+      </p>
+  
+      <p class="govuk-body">
+        Number of apprentices <br>
+        {% if _apprenticesAnswer == "yes" %}
+        <span>{{_apprenticesCountAnswer}}</span>
+        {% else %}
+        <span>Not sure</span>
+        {% endif %}
+      </p>
+
+      <h2 class="govuk-heading-l">Contact the training provider</h2>
+
+      <p class="govuk-body">We’ve not shared your organisation name or email address with this training provider.</p>
+
+      <p class="govuk-body">
+        Training provider <br>
+        <span>TRAINING UK LTD</span>
+      </p>
+
+      <p class="govuk-body">
+        Email address<br>
+        <span><a href="#" target="_blank" class="govuk-link govuk-link--no-visited-state">name@example.com</a></span>
+      </p>
+
+      <p class="govuk-body">
+        Telephone number<br>
+        <span>07700 900 982</span>
+      </p>
+
+      <p class="govuk-body">
+        Website <br>
+        <span><a href="#" target="_blank" class="govuk-link govuk-link--no-visited-state">www.website.com</a></span>
+      </p>
+
+      <p class="govuk-body">You can find out more about this training provider at <a href="provider?r=t&standard=370&provider=100&location=" target="_blank" class="govuk-link govuk-link--no-visited-state">https://findapprenticeshiptraining.apprenticeships.education.gov.uk/courses/274/providers/10027269</a></p>
+      
+      <p class="govuk-body">From</p>
+      
+      <p class="govuk-body">The Apprenticeship Service</p>
+
+      <p class="govuk-body">Stop sharing your interest in this apprenticeship training course at <a href="aed-employer-removed" target="_blank" class="govuk-link govuk-link--no-visited-state">https://findapprenticeshiptraining.apprenticeships.education.gov.uk/stop-sharing?id=1234567890123456789</a></p>
+
+  </div>
+</div>
+
+{% endblock %}

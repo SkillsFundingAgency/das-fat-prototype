@@ -335,18 +335,19 @@ Training providers for - {{_standardTitle|safe}}
             <!-- IF ONLY location filter applied AND 0 results -->
             {% if myData.locationapplied and myData.trainingoptionsapplied != true and myData.employerreviewsapplied != true and myData.ofstedratingsapplied != true %}
             <h2 class="govuk-heading-m">0 results at {{myData.location}}</h2>
-            <p class="govuk-body">You can either:</p>
 
-            {% set _aedLink = "https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" %}
-            {% if myData.aedinfat == "true" %}
-                {% set _aedLink = "aed-employer-form?standard=" + myData.standard + "&location=" + myData.location %}
-            {% endif %}
+            <p class="govuk-body">You can try:</p>
 
             <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
-                <li><a href="providers?{{_sortQuery}}{{_searchQuery}}{{_standardQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}{{_trainingOptionsQuery}}&location" class="govuk-link govuk-link--no-visited-state" >remove the location</a></li>
-                <li><a href="training" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
-                <li><a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
+                <li><a href="providers?{{_sortQuery}}{{_searchQuery}}{{_standardQuery}}{{_empReviewsQuery}}{{_ofstedRatingsQuery}}{{_trainingOptionsQuery}}&location" class="govuk-link govuk-link--no-visited-state" >removing the location</a></li>
+                <li><a href="training" class="govuk-link govuk-link--no-visited-state">searching for another course</a></li>
             </ul>
+
+            {% set _aedLink = "aed-employer-start?standard=" + myData.standard + "&location=" + myData.location %}
+
+            <p class="govuk-body">You can also share your interest in {{_standardTitle | safe}} with potential training providers.</p>
+
+            <a href="{{_aedLink}}" class="govuk-button">Share interest</a>
 
             {% else %}
             <!-- IF any other filter applied AND 0 results -->
@@ -385,7 +386,9 @@ Training providers for - {{_standardTitle|safe}}
         {% endif %}
         {% endif %}
 
+        {% if myData.displaycount != 0 %}
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+        {% endif %}
        
         <!-- 
             Providers list OR No results
@@ -604,8 +607,13 @@ Training providers for - {{_standardTitle|safe}}
         {% endfor %}
 
         {% if myData.aedinfat == "true" and myData.displaycount != 0 %}
-        <hr class="govuk-section-break govuk-section-break--m">
-        {% include "includes/aed-cta-v2.html" %}
+            <hr class="govuk-section-break govuk-section-break--m">
+            {% set _aedLink = "aed-employer-start?standard=" + myData.standard + "&location=" + myData.location %}
+            <div class="fat-panel fat-panel-blocked">
+                <p class="govuk-body">
+                    <a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">Share your interest</a> in {{_standardTitle | safe}} with other potential training providers.
+                </p>
+            </div>
         {% endif %}
 
     </div>

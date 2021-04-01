@@ -2733,6 +2733,15 @@ module.exports = function (router,_myData) {
 
     // AED 
 
+    // AED Employer start
+    router.get('/' + version + '/aed-employer-start', function (req, res) {
+        
+        res.render(version + '/aed-employer-start', {
+            myData:req.session.myData
+        });
+        
+    });
+
     // AED Employer form
     router.get('/' + version + '/aed-employer-form', function (req, res) {
         

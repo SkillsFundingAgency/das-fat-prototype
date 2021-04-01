@@ -351,9 +351,9 @@ Shortlist
                                 <p class="govuk-body govuk-!-margin-bottom-6"><a href="providers?location={{_location.id}}&standard={{_selectedStandard.larsCode}}" class="govuk-link govuk-link--no-visited-state">Add more training providers</a></p>
 
                                 {% if myData.aedinfat == "true" and myData.displaycount != 0 %}
-                                {% set _aedLink = "aed-employer-form?standard=" + _selectedStandard.larsCode + "&location=" + _location.id %}
+                                {% set _aedLink = "aed-employer-start?standard=" + _selectedStandard.larsCode + "&location=" + _location.id %}
                                 <p class="govuk-body">
-                                    <a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">Get help with finding a training provider</a>
+                                    You can also <a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">share your interest</a> in {{_standardTitle|safe}} with other potential training providers.
                                 </p>
                                 {% endif %}
 

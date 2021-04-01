@@ -54,10 +54,8 @@ Enter the apprenticeship training and contact details
 		{% endif %}
 
         <h1 class="govuk-heading-xl" >
-            Get help with finding a training provider
+            {{_standardTitle|safe}}
 		</h1>
-
-		<p class="govuk-body">We will share your apprenticeship training interest with all training providers. If a training provider can offer you training, we will send you their contact details.</p>
 
         <form method="post">
 
@@ -67,16 +65,13 @@ Enter the apprenticeship training and contact details
 				<h2 class="govuk-heading-l govuk-!-margin-top-3">Apprenticeship training details</h2>
 				<!-- <p class="govuk-body">We will share the apprenticeship training details with training providers.</p> -->
 
-				<div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
+				<!-- <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
 					<p class="govuk-body govuk-!-margin-bottom-5">
 						Apprenticeship training course <br>
 						<span class="govuk-!-font-weight-bold">{{_standardTitle|safe}}</span>
 					</p>
-					<!-- <p class="govuk-body govuk-!-margin-bottom-5">
-						Apprenticeship location <br>
-						<span class="govuk-!-font-weight-bold">{{myData.location}}</span>
-					</p> -->
-				</div>
+					
+				</div> -->
 
 				<!-- Location -->
 				<div class="govuk-form-group {% if myData.validationErrors.aedLocationAnswer %}govuk-form-group--error{% endif %}" >

@@ -284,7 +284,7 @@
 
         {% set _aedLink = "https://help.apprenticeships.education.gov.uk/hc/en-gb#contact-us" %}
         {% if myData.aedinfat == "true" %}
-            {% set _aedLink = "aed-employer-form?standard=" + myData.standard + "&location=" + myData.location %}
+            {% set _aedLink = "aed-employer-start?standard=" + myData.standard + "&location=" + myData.location %}
         {% endif %}
         
         {% set _displaycountproviders = myData.displaycountproviders %}
@@ -292,14 +292,14 @@
         {% if myData.countproviders == 0 %}
 
             <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-8" >
-                <h2 class="govuk-heading-l" >Find training providers for this course</h2>
-                
-                <p class="govuk-body">There are no training providers available for this course.</p>
-                <p class="govuk-body">You can either:</p>
-                <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
-                    <li><a href="training" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
-                    <li><a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
-                </ul>
+
+                <h2 class="govuk-heading-l" >No training providers available for this course yet</h2>
+
+                <p class="govuk-body">Try <a href="training" class="govuk-link govuk-link--no-visited-state">searching for another course</a>.</p>
+
+                <p class="govuk-body">You can also share your interest in {{_standardTitle | safe}} with potential training providers.</p>
+
+                <a href="{{_aedLink}}" class="govuk-button">Share interest</a>
 
             </div>
 
@@ -355,13 +355,19 @@
                 {% endif %}
 
                 {% if myData.locationapplied and _displaycountproviders == 0 %}
-                    <p class="govuk-body">You can either:</p>
-                    <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-6">
-                        <li><a href="training" class="govuk-link govuk-link--no-visited-state">search for another course</a></li>
-                        <li><a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">get help with finding a training provider</a></li>
-                    </ul>
-                    <p class="govuk-body">{{myData.countproviders}} providers available at other locations.</p>
-                    <p class="govuk-body govuk-!-margin-bottom-6"><a href="providers?standard={{myData.standard}}&location" class="govuk-button govuk-link--no-visited-state govuk-!-margin-bottom-0">View all providers for this course</a></p>
+
+                    {% if myData.countproviders == 1 %}
+                    <p class="govuk-body"><a href="providers?standard={{myData.standard}}&location" class="govuk-link govuk-link--no-visited-state">One provider available</a> at other locations.</p>
+                    {% else %}
+                    <p class="govuk-body"><a href="providers?standard={{myData.standard}}&location" class="govuk-link govuk-link--no-visited-state">{{myData.countproviders}} providers available</a> at other locations.</p>
+                    {% endif %}
+
+                    <p class="govuk-body">Try <a href="training" class="govuk-link govuk-link--no-visited-state">searching for another course</a>.</p>
+
+                    <p class="govuk-body">You can also share your interest in {{_standardTitle | safe}} with potential training providers.</p>
+
+                    <a href="{{_aedLink}}" class="govuk-button">Share interest</a>
+
                 {% endif %}
 
             </div>

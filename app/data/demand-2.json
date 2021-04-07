@@ -1,0 +1,800 @@
+{
+    "list": [
+
+        {
+            "larsCode": 119,
+            "employers": [
+                {
+                    "apprentices": 3,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Hammersmith and Fulham, NW10 0AA",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                }
+            ],
+            "name": "Adult care worker (level&nbsp;2)",
+            "routecode": 8,
+            "route": "Care services"
+        },
+        {
+            "larsCode": 252,
+            "employers": [
+                {
+                    "apprentices": 3,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                },
+                {
+                    "apprentices": 1,
+                    "location": "Hammersmith and Fulham, NW10 0AA",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-4"
+                },
+                {
+                    "apprentices": 1,
+                    "location": "Newcastle-under-Lyme, Staffordshire",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-5"
+                }
+            ],
+            "name": "Advanced clinical practitioner (degree) (level&nbsp;7)",
+            "routecode": 3,
+            "route": "Health and science"
+        },
+        {
+            "larsCode": 99,
+            "employers": [
+                {
+                    "apprentices": 2,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-2"
+                }
+            ],
+            "name": "Healthcare science assistant (level&nbsp;2)",
+            "routecode": 3,
+            "route": "Health and science"
+        },
+        {
+            "larsCode": 118,
+            "employers": [
+                {
+                    "apprentices": 1,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Hammersmith and Fulham, NW10 0AA",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 3,
+                    "location": "Newcastle-under-Lyme, Staffordshire",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                }
+            ],
+            "name": "Lead adult care worker (level&nbsp;3)",
+            "routecode": 8,
+            "route": "Care services"
+        },
+        {
+            "larsCode": 102,
+            "employers": [
+                {
+                    "apprentices": 5,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 1,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 1,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                },
+                {
+                    "apprentices": 1,
+                    "location": "Hammersmith and Fulham, NW10 0AA",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-4"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Newcastle-under-Lyme, Staffordshire",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-5"
+                }
+            ],
+            "name": "Healthcare assistant practitioner (level&nbsp;5)",
+            "routecode": 3,
+            "route": "Health and science"
+        },
+        {
+            "larsCode": 274,
+            "employers": [
+                {
+                    "apprentices": 2,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 5,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 3,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                },
+                {
+                    "apprentices": 3,
+                    "location": "Hammersmith and Fulham, NW10 0AA",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-4"
+                }
+            ],
+            "name": "Abattoir worker (level&nbsp;2)",
+            "routecode": 1,
+            "route": "Engineering and manufacturing"
+        },
+        {
+            "larsCode": 34,
+            "employers": [
+                {
+                    "apprentices": 1,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 1,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 5,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                },
+                {
+                    "apprentices": 5,
+                    "location": "Hammersmith and Fulham, NW10 0AA",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-4"
+                },
+                {
+                    "apprentices": 4,
+                    "location": "Newcastle-under-Lyme, Staffordshire",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-5"
+                }
+            ],
+            "name": "Able seafarer (deck) (level&nbsp;2)",
+            "routecode": 4,
+            "route": "Transport and logistics"
+        },
+        {
+            "larsCode": 240,
+            "employers": [
+                {
+                    "apprentices": 3,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                }
+            ],
+            "name": "Advanced carpentry and joinery (level&nbsp;3)",
+            "routecode": 6,
+            "route": "Construction"
+        },
+        {
+            "larsCode": 148,
+            "employers": [
+                {
+                    "apprentices": 5,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 4,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 3,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                },
+                {
+                    "apprentices": 4,
+                    "location": "Hammersmith and Fulham, NW10 0AA",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-4"
+                }
+            ],
+            "name": "Advanced credit controller / debt collection specialist (level&nbsp;3)",
+            "routecode": 5,
+            "route": "Legal, finance and accounting"
+        },
+        {
+            "larsCode": 37,
+            "employers": [
+                {
+                    "apprentices": 5,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 5,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Hammersmith and Fulham, NW10 0AA",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-4"
+                }
+            ],
+            "name": "Aerospace engineer (degree) (level&nbsp;6)",
+            "routecode": 1,
+            "route": "Engineering and manufacturing"
+        },
+        {
+            "larsCode": 490,
+            "employers": [
+                {
+                    "apprentices": 2,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 5,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-2"
+                }
+            ],
+            "name": "Air traffic controller (level&nbsp;5)",
+            "routecode": 4,
+            "route": "Transport and logistics"
+        },
+        {
+            "larsCode": 180,
+            "employers": [
+                {
+                    "apprentices": 3,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                }
+            ],
+            "name": "Arborist (level&nbsp;2)",
+            "routecode": 9,
+            "route": "Agriculture, environmental and animal care"
+        },
+        {
+            "larsCode": 299,
+            "employers": [
+                {
+                    "apprentices": 3,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 1,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 4,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                }
+            ],
+            "name": "Architectural assistant (degree) (level&nbsp;6)",
+            "routecode": 6,
+            "route": "Construction"
+        },
+        {
+            "larsCode": 198,
+            "employers": [
+                {
+                    "apprentices": 4,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 4,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 4,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                },
+                {
+                    "apprentices": 1,
+                    "location": "Hammersmith and Fulham, NW10 0AA",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-4"
+                },
+                {
+                    "apprentices": 5,
+                    "location": "Newcastle-under-Lyme, Staffordshire",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-5"
+                }
+            ],
+            "name": "Building services design engineer (degree) (level&nbsp;6)",
+            "routecode": 6,
+            "route": "Construction"
+        },
+        {
+            "larsCode": 77,
+            "employers": [
+                {
+                    "apprentices": 4,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 3,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 3,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                }
+            ],
+            "name": "Credit controller / collector (level&nbsp;2)",
+            "routecode": 5,
+            "route": "Legal, finance and accounting"
+        },
+        {
+            "larsCode": 469,
+            "employers": [
+                {
+                    "apprentices": 4,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-2"
+                }
+            ],
+            "name": "Dietitian (degree) (level&nbsp;6)",
+            "routecode": 3,
+            "route": "Health and science"
+        },
+        {
+            "larsCode": 377,
+            "employers": [
+                {
+                    "apprentices": 4,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                }
+            ],
+            "name": "Engineering fitter (level&nbsp;3)",
+            "routecode": 1,
+            "route": "Engineering and manufacturing"
+        },
+        {
+            "larsCode": 245,
+            "employers": [
+                {
+                    "apprentices": 1,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 4,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 5,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                },
+                {
+                    "apprentices": 4,
+                    "location": "Hammersmith and Fulham, NW10 0AA",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-4"
+                },
+                {
+                    "apprentices": 4,
+                    "location": "Newcastle-under-Lyme, Staffordshire",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-5"
+                }
+            ],
+            "name": "Food and drink advanced engineer (degree) (level&nbsp;6)",
+            "routecode": 1,
+            "route": "Engineering and manufacturing"
+        },
+        {
+            "larsCode": 124,
+            "employers": [
+                {
+                    "apprentices": 4,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                },
+                {
+                    "apprentices": 3,
+                    "location": "Hammersmith and Fulham, NW10 0AA",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-4"
+                },
+                {
+                    "apprentices": 4,
+                    "location": "Newcastle-under-Lyme, Staffordshire",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-5"
+                }
+            ],
+            "name": "Highways electrician / service operative (level&nbsp;3)",
+            "routecode": 6,
+            "route": "Construction"
+        },
+        {
+            "larsCode": 223,
+            "employers": [
+                {
+                    "apprentices": 4,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 3,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 5,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                },
+                {
+                    "apprentices": 5,
+                    "location": "Hammersmith and Fulham, NW10 0AA",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-4"
+                },
+                {
+                    "apprentices": 3,
+                    "location": "Newcastle-under-Lyme, Staffordshire",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-5"
+                }
+            ],
+            "name": "Hospitality manager (level&nbsp;4)",
+            "routecode": 15,
+            "route": "Catering and hospitality"
+        },
+        {
+            "larsCode": 493,
+            "employers": [
+                {
+                    "apprentices": 2,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 5,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 4,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Hammersmith and Fulham, NW10 0AA",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-4"
+                }
+            ],
+            "name": "Lean manufacturing operative (level&nbsp;2)",
+            "routecode": 1,
+            "route": "Engineering and manufacturing"
+        },
+        {
+            "larsCode": 394,
+            "employers": [
+                {
+                    "apprentices": 3,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 3,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 4,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                }
+            ],
+            "name": "Marina and boatyard operative (level&nbsp;2)",
+            "routecode": 4,
+            "route": "Transport and logistics"
+        },
+        {
+            "larsCode": 365,
+            "employers": [
+                {
+                    "apprentices": 1,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-2"
+                },
+                {
+                    "apprentices": 2,
+                    "location": "Telford and Wrekin, TF1",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-3"
+                }
+            ],
+            "name": "Metal casting, foundry and patternmaking technician (level&nbsp;3)",
+            "routecode": 1,
+            "route": "Engineering and manufacturing"
+        },
+        {
+            "larsCode": 387,
+            "employers": [
+                {
+                    "apprentices": 2,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                }
+            ],
+            "name": "Midwife (degree) (level&nbsp;6)",
+            "routecode": 3,
+            "route": "Health and science"
+        },
+        {
+            "larsCode": 515,
+            "employers": [
+                {
+                    "apprentices": 2,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-1"
+                },
+                {
+                    "apprentices": 3,
+                    "location": "Nuneaton and Bedworth, CV11",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-2"
+                }
+            ],
+            "name": "New furniture product developer (level&nbsp;3)",
+            "routecode": 1,
+            "route": "Engineering and manufacturing"
+        }
+    ]
+}

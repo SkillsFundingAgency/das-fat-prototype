@@ -5,6 +5,7 @@ const router = express.Router()
 // Base session data
 var _myData = {
     "demands": require(__dirname + '/data/demand.json').list,
+    "demands2": require(__dirname + '/data/demand-2.json').list,
     "passrates": [
         {
             "provider": 1788,
@@ -1003,6 +1004,18 @@ _myData.citiesAutocompleteList.sort(function(a,b){
         return 1
     }
     return 0;
+});
+
+//Sort demands2
+_myData.demands2.forEach(function(_demand, index) {
+    _demand.employers.sort(function(a,b){
+        if (a.location.toUpperCase() < b.location.toUpperCase()){
+            return -1
+        } else if(a.location.toUpperCase() > b.location.toUpperCase()){
+            return 1
+        }
+        return 0;
+    });
 });
 
 require('./routes/1-0/routes.js')(router,JSON.parse(JSON.stringify(_myData)));

@@ -623,8 +623,8 @@ module.exports = function (router,_myData) {
     function setSelectedDemand(req, _demandParameter){
         req.session.myData.demandsearchapplied = true
         if(_demandParameter){
-            for (var i = 0; i < req.session.myData["demands"].length; i++) {
-                var _thisDemand = req.session.myData["demands"][i]
+            for (var i = 0; i < req.session.myData["demands2"].length; i++) {
+                var _thisDemand = req.session.myData["demands2"][i]
                 if(_thisDemand.larsCode.toString() == _demandParameter.toString() || _thisDemand.name.toUpperCase() == _demandParameter.toString().toUpperCase()){
                     req.session.myData.demandsearchapplied = true
                     req.session.myData.selectedDemand = _thisDemand
@@ -3069,7 +3069,7 @@ module.exports = function (router,_myData) {
     // AED Provider - demand
     router.get('/' + version + '/aed-provider-demand', function (req, res) {
 
-        var _demands = req.session.myData["demands"]
+        var _demands = req.session.myData["demands2"]
 
         req.session.myData.searchfilters = []
         req.session.myData.displaycount = 0

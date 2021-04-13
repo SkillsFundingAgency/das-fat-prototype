@@ -1007,6 +1007,14 @@ _myData.citiesAutocompleteList.sort(function(a,b){
 });
 
 //Sort demands2
+_myData.demands2.sort(function(a,b){
+    if (a.name.toUpperCase() < b.name.toUpperCase()){
+        return -1
+    } else if(a.name.toUpperCase() > b.name.toUpperCase()){
+        return 1
+    }
+    return 0;
+});
 _myData.demands2.forEach(function(_demand, index) {
     _demand.employers.sort(function(a,b){
         if (a.location.toUpperCase() < b.location.toUpperCase()){

@@ -70,7 +70,7 @@ Enter the apprenticeship training and contact details
 						Apprenticeship training course <br>
 						<span class="govuk-!-font-weight-bold">{{_standardTitle|safe}}</span>
 					</p>
-					
+
 				</div> -->
 
 				<!-- Location -->
@@ -138,7 +138,7 @@ Enter the apprenticeship training and contact details
 			<fieldset class="govuk-fieldset" >
 
 				<h2 class="govuk-heading-l govuk-!-margin-top-3">Contact details</h2>
-				<p class="govuk-body">We will not share any contact details with training providers.</p>
+				<p class="govuk-body">We will not share the organisation name or email address with training providers.</p>
 
 				<!-- Org name -->
 				<div class="govuk-form-group {% if myData.validationErrors.orgNameAnswer %}govuk-form-group--error{% endif %}">
@@ -192,8 +192,8 @@ Enter the apprenticeship training and contact details
 
 {% block pageScripts %}
 <script>
-    
-    // Locations 
+
+    // Locations
     function suggestLocations(query, populateResults) {
         var _allSuggestions = []
 
@@ -225,7 +225,7 @@ Enter the apprenticeship training and contact details
         var locationInputID = locationInput.id,
             locationElement = document.createElement('div'),
 			defaultLocationSearchvalue = {{_defaultLocationSearchvalue | dump | safe }}
-			
+
         locationElement.className = "autocomplete__parent_wrapper govuk-!-width-three-quarters";
         locationInput.parentNode.insertBefore(locationElement, locationInput)
         accessibleAutocomplete({

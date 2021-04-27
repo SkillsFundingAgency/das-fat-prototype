@@ -11,7 +11,7 @@
 {% set _apprenticesAnswer = myData.apprenticesAnswer or "yes" %}
 {% set _apprenticesCountAnswer = myData.apprenticesCountAnswer or 1 %}
 
-{% block pageTitle %} 
+{% block pageTitle %}
 {% endblock %}
 
 {% set _email = true %}
@@ -42,12 +42,12 @@
           Apprenticeship training course <br>
           <span>{{_standardTitle|safe}}</span>
         </p>
-    
+
         <p class="govuk-body">
           Apprenticeship location <br>
           <span>{{_locationAnswer}}</span>
         </p>
-    
+
         <p class="govuk-body">
           Number of apprentices <br>
           {% if _apprenticesAnswer == "yes" %}
@@ -57,14 +57,14 @@
           {% endif %}
         </p>
 
-        <p class="govuk-body">We’ll send you the details of any training providers who can offer the apprenticeship training.</p>
+        <p class="govuk-body">For the next 12 weeks we'll send you the details of any training providers who can offer the apprenticeship training.</p>
 
         <p class="govuk-body">We’ve not shared your organisation name or email address with training providers.</p>
-        
+
         <p class="govuk-body">From</p>
-        
+
         <p class="govuk-body">The Apprenticeship Service</p>
-        
+
         <p class="govuk-body">Stop sharing your interest in this apprenticeship training course at <a href="aed-employer-removed" target="_blank" class="govuk-link govuk-link--no-visited-state">https://findapprenticeshiptraining.apprenticeships.education.gov.uk/stop-sharing?id=1234567890123456789</a></p>
 
     </div>

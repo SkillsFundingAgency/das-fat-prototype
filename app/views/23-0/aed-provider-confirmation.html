@@ -1,0 +1,73 @@
+{% extends "layout-as-pro.html" %}
+
+{% set serviceName = "Apprenticeships" %}
+
+{% block pageTitle %} 
+
+{% endblock %}
+
+{% set _selectedDemand = myData.selectedDemand %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+	<div class="govuk-grid-column-two-thirds">
+		{{ govukPanel({
+			titleText: "We’ve shared your contact details with employers"
+		}) }}
+
+		<p class="govuk-body">
+			Apprenticeship training course <br>
+			<span class="govuk-!-font-weight-bold">{{_selectedDemand.name|safe}}</span>
+		</p>
+
+		<p class="govuk-body">
+			Email address <br>
+			<span class="govuk-!-font-weight-bold">{{myData.emailProviderAnswer}}</span>
+		</p>
+
+		<p class="govuk-body">
+			Telephone number <br>
+			<span class="govuk-!-font-weight-bold">{{myData.telephoneProviderAnswer}}</span>
+		</p>
+
+		{% if myData.websiteProviderAnswer == "" %}
+		{% else %}
+		<p class="govuk-body">
+			Website <br>
+			<span class="govuk-!-font-weight-bold">{{myData.websiteProviderAnswer}}</span>
+		</p>
+		{% endif %}
+
+		<h2 class="govuk-heading-m">What happens next</h2>
+
+		<p class="govuk-body">
+			We’ve shared your contact details with the employers you showed interest in.
+		</p>
+		<p class="govuk-body">
+			We will not show you these employers when you use this service again.
+		</p>
+
+		{% if myData.cd == "true" %}
+			<p class="govuk-body">We’ve also shared a link to your organisation on <a href="provider?provider=1419&standard={{_selectedDemand.larsCode}}&s=fat" target="_blank" class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>. You can <a href="https://coursedirectory.nationalcareersservice.org.uk/" target="_blank" class="govuk-link govuk-link--no-visited-state">publish to the course directory</a> to update your courses.</p>
+		{% else %}
+			<h2 class="govuk-heading-m">Publish to the course directory</h2>
+			<p class="govuk-body">OUTSTANDING TRAINING LTD is not on the course directory for {{_selectedDemand.name|safe}}. <a href="https://coursedirectory.nationalcareersservice.org.uk/" target="_blank" class="govuk-link govuk-link--no-visited-state">Publish to the course directory</a>, so that employers can find you in the search results for this course on <a href="home?s=fat" target="_blank" class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>.</p>
+		{% endif %}
+
+		{{govukButton({
+			text: "View other employers",
+			href: "aed-provider-demand"
+		})}}
+
+	</div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+{% endblock %}

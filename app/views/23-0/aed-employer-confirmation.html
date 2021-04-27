@@ -1,0 +1,81 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block pageTitle %}
+We’ve shared your interest with training providers
+{% endblock %}
+
+{% set _showAEDEmployerLinks2 = true %}
+{% set _showAEDEmployerLinks3 = true %}
+{% set _currentAEDEmployerLink = "aed-employer-confirmation" %}
+
+{% set _orgNameAnswer = myData.orgNameAnswer or "ABC LTD" %}
+{% set _emailAnswer = myData.emailAnswer or "name@example.com" %}
+{% set _locationAnswer = myData.location or "Coventry, Warwickshire" %}
+{% set _apprenticesAnswer = myData.apprenticesAnswer or "yes" %}
+{% set _apprenticesCountAnswer = myData.apprenticesCountAnswer or 1 %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .govuk-input-background,
+    .autocomplete__input {
+        background-color: white;
+    }
+</style>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        {{ govukPanel({
+			titleText: "We’ve shared this interest with training providers"
+		}) }}
+
+		<p class="govuk-body">We’ve sent a confirmation email to {{_emailAnswer}}.</p>
+
+		<p class="govuk-body">
+			Apprenticeship training course <br>
+			<span class="govuk-!-font-weight-bold">{{_standardTitle|safe}}</span>
+		</p>
+
+		<p class="govuk-body">
+			Apprenticeship location <br>
+			<span class="govuk-!-font-weight-bold">{{_locationAnswer}}</span>
+		</p>
+
+		<p class="govuk-body">
+			Number of apprentices <br>
+			{% if _apprenticesAnswer == "yes" %}
+			<span class="govuk-!-font-weight-bold">{{_apprenticesCountAnswer}}</span>
+			{% else %}
+			<span class="govuk-!-font-weight-bold">Not sure</span>
+			{% endif %}
+		</p>
+
+		<h2 class="govuk-heading-m">What happens next</h2>
+
+		<p class="govuk-body">We’ll send the details of any training providers who can offer the apprenticeship training to {{_emailAnswer}}.</p>
+			
+		<p class="govuk-body">We’ve not shared the organisation name or email address with training providers.</p>
+		
+		<a href="training" class="govuk-button" >Search for another course</a>
+
+		<p class="govuk-body"><a href="#" class="govuk-link">What did you think of this service?</a></p>
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+        &nbsp;
+    </div>
+
+</div>
+
+{% endblock %}

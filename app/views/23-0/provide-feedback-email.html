@@ -1,0 +1,99 @@
+{% extends myData.layout %}
+{% set serviceName = "" %}
+{% set serviceUrl = "" %}
+
+{% block pageTitle %} 
+
+{% endblock %}
+
+{% block beforeContent %}
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <!-- <p class="govuk-body-l govuk-!-font-weight-bold" style="border-bottom: 1px solid grey; padding-bottom:30px">
+          Give feedback about your training provider
+        </p> -->
+
+        <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-6" style="border-bottom: 1px solid grey; padding-bottom:20px">
+          <span class="govuk-!-font-weight-bold">From:</span> The Apprenticeship Service &lt;the.apprenticeship.service@notifications.service.gov.uk&gt;
+          <br><span class="govuk-!-font-weight-bold">Sent:</span> Tue 08/12/2020 09:20
+          <br><span class="govuk-!-font-weight-bold">To:</span> You
+          <br><span class="govuk-!-font-weight-bold">Subject:</span> Answer 3 multiple choice questions about your training provider
+        </p>
+
+        <p class="govuk-body">Dear Mark,</p>
+
+        {% if myData.pfemail == "one" %}
+
+          <p class="govuk-body">Please answer 3 multiple choice questions about TRAINING UK LTD.</p>
+
+          <p class="govuk-body">We’ll use it to help other employers choose a training provider and to help TRAINING UK LTD improve.</p>
+
+          <p class="govuk-body">Your feedback is anonymous. </p>
+
+          <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="#">https://feedback.apprenticeships.gov.uk/cbd78f5f-80e2-44a3-bb9d-88ed4fa6c5e0</a></p>
+
+
+        {% elif myData.pfemail == "two" %}
+
+          <p class="govuk-body">Please answer 3 multiple choice questions about each of your training providers.</p>
+
+          <p class="govuk-body">We’ll use it to help other employers choose a training provider and to help your training providers improve.</p>
+
+          <p class="govuk-body">Your feedback is anonymous. </p>
+
+          <p class="govuk-body">
+            BIRMINGHAM COLLEGE<br>
+            <a class="govuk-link govuk-link--no-visited-state" href="#">https://feedback.apprenticeships.gov.uk/a9plv5f-30e2-42a3-cb9d-18ed4sfg5e2</a>
+          </p>
+
+          <p class="govuk-body">
+            TRAINING UK LTD<br>
+            <a class="govuk-link govuk-link--no-visited-state" href="#">https://feedback.apprenticeships.gov.uk/cbd78f5f-80e2-44a3-bb9d-88ed4fa6c5e0</a>
+          </p>
+
+
+        {% else %}
+
+          <p class="govuk-body">Please answer 3 multiple choice questions about your training provider.</p>
+
+          <p class="govuk-body">We’ll use it to help other employers choose a training provider and to help your training provider improve.</p>
+
+          <p class="govuk-body">Your feedback is anonymous.</p>
+
+          <p class="govuk-body">
+            BIRMINGHAM COLLEGE<br>
+            <a class="govuk-link govuk-link--no-visited-state" href="#">https://feedback.apprenticeships.gov.uk/a9plv5f-30e2-42a3-cb9d-18ed4sfg5e2</a>
+          </p>
+
+          <p class="govuk-body">
+            TRAINING UK LTD<br>
+            <a class="govuk-link govuk-link--no-visited-state" href="#">https://feedback.apprenticeships.gov.uk/cbd78f5f-80e2-44a3-bb9d-88ed4fa6c5e0</a>
+          </p>
+
+        {% endif %}
+
+        <p class="govuk-body">Forward this email to a colleague if you think they are the right person to give feedback.</p>
+
+        <p class="govuk-body">From</p>
+
+        <p class="govuk-body">Apprenticeship Service</p>
+
+        <p class="govuk-body">If you want to stop these type of emails, you can change your notification settings (<a class="govuk-link govuk-link--no-visited-state" href="http://manage-apprenticeships.service.gov.uk/settings/notifications" target="_blank">http://manage-apprenticeships.service.gov.uk/settings/notifications</a>).</p>
+
+        
+
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

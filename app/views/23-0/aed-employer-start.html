@@ -1,0 +1,46 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% set _aedLink = "aed-employer-form?standard=" + myData.standard + "&location=" + myData.location %}
+
+{% block pageTitle %}
+Share your interest with training providers
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+	{% include "includes/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl" >
+            Share your interest with training providers
+		</h1>
+
+		<p class="govuk-body">We will share your interest in {{_standardTitle|safe}} with all training providers.</p>
+
+		<p class="govuk-body">If a training provider can offer you training, we will send you their contact details.</p>
+		
+		<p class="govuk-body"><a href="{{_aedLink}}" class="govuk-button">Start now</a></p>
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+        &nbsp;
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+
+{% endblock %}

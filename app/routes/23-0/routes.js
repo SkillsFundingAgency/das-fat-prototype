@@ -2851,9 +2851,9 @@ module.exports = function (router,_myData) {
                 req.session.myData.apprenticesAnswer = req.session.myData.apprenticesAnswerTemp
                 req.session.myData.apprenticesCountAnswer = req.session.myData.apprenticesCountAnswerTemp
 
-                res.redirect(301, '/' + version + '/aed-employer-email-form?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
+                //res.redirect(301, '/' + version + '/aed-employer-email-form?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
 
-                // res.redirect(301, '/' + version + '/aed-employer-check-answers?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
+                 res.redirect(301, '/' + version + '/aed-employer-check-answers?standard=' + req.session.myData.standard + "&location=" + req.session.myData.location);
 
             }
         }

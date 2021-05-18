@@ -97,7 +97,7 @@
         </details>
         {% endif %}
         {% endif %}
-        
+
         <!-- Summary -->
         <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
@@ -188,7 +188,7 @@
                             </span>
                         </summary>
                         <div class="govuk-details__text">
-                            
+
                             {% for _option in _selectedStandard.options %}
                             <h3 class="govuk-heading-s">{{_option.name}}</h3>
                             <ul class="govuk-list govuk-list--bullet">
@@ -286,7 +286,7 @@
         {% if myData.aedinfat == "true" %}
             {% set _aedLink = "aed-employer-start?standard=" + myData.standard + "&location=" + myData.location %}
         {% endif %}
-        
+
         {% set _displaycountproviders = myData.displaycountproviders %}
 
         {% if myData.countproviders == 0 %}
@@ -297,7 +297,7 @@
 
                 <p class="govuk-body">Try <a href="training" class="govuk-link govuk-link--no-visited-state">searching for another course</a>.</p>
 
-                <p class="govuk-body">You can also share your interest in {{_standardTitle | safe}} with potential training providers.</p>
+              <p class="govuk-body"><strong>Can't find a training provider?</strong><br/>We can let other training providers know you are interested in {{_standardTitle | safe}} </p>
 
                 <a href="{{_aedLink}}" class="govuk-button">Share interest</a>
 
@@ -316,12 +316,12 @@
                     <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Regulated occupation</h2>
                     <p class="govuk-body">{{_standardTitle | safe}} needs a training provider who is approved by {{_selectedStandard.regulatedBody}}.</p>
                 {% endif %}
-                
+
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Apprenticeship location</h2>
-                
+
                 {% if myData.locationapplied %}
 
-                    
+
                     <p class="govuk-body govuk-!-margin-bottom-5"><span style="margin-right: 10px">{{myData.location}}</span> <a href="standard?standard={{myData.standard}}&location" class="govuk-link govuk-link--no-visited-state" >Remove&nbsp;location</a></p>
 
 
@@ -331,7 +331,7 @@
                     <p class="govuk-body fat-availability fat-cross-2" >There are no training providers available for this course at the apprenticeship location.</p>
                     {% endif %}
 
-                    
+
                     {% if _displaycountproviders != 0 %}
                         <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-0"><a href="providers?standard={{myData.standard}}" class="govuk-button govuk-link--no-visited-state">View providers for this course</a></p>
                     {% endif %}
@@ -364,7 +364,8 @@
 
                     <p class="govuk-body">Try <a href="training" class="govuk-link govuk-link--no-visited-state">searching for another course</a>.</p>
 
-                    <p class="govuk-body">You can also share your interest in {{_standardTitle | safe}} with potential training providers.</p>
+
+                    <p class="govuk-body"><strong>Can't find a training provider?</strong><br/>We can let other training providers know you are interested in {{_standardTitle | safe}} </p>
 
                     <a href="{{_aedLink}}" class="govuk-button">Share interest</a>
 
@@ -389,7 +390,7 @@
                     {% if _selectedStandard.epaos.inprinciple %}
                         <p class="govuk-body">Currently there are no end-point assessment organisations (EPAO) available; we are working with potential EPAOs to assess {{_standardTitle | safe}}.</p>
                     {% else %}
-                        <p class="govuk-body">Currently there are no end-point assessment organisations available to assess {{_standardTitle | safe}}.</p>  
+                        <p class="govuk-body">Currently there are no end-point assessment organisations available to assess {{_standardTitle | safe}}.</p>
                     {% endif %}
                     <p class="govuk-body">If you have any queries please contact the <a href="https://help.apprenticeships.education.gov.uk/hc/en-gb" class="govuk-link govuk-link--no-visited-state">helpdesk</a>.</p>
                 {% else %}
@@ -414,7 +415,7 @@
     shortlistingSticky(30)
     shortlisting({{myData.clearLocalStorage}},{{myData.populateShortlist}})
 
-    // Locations 
+    // Locations
     function suggestLocations(query, populateResults) {
         var _allSuggestions = []
 

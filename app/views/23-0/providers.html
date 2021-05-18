@@ -12,7 +12,7 @@
 
 {% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
 
-{% set _providerAutocompleteList = myData.providerAutocompleteList %} 
+{% set _providerAutocompleteList = myData.providerAutocompleteList %}
 {% set _providers = myData["providers-new"].list %}
 
 {% set _defaultSearchvalue = "" %}
@@ -97,7 +97,7 @@ Training providers for - {{_standardTitle|safe}}
         </div>
         {% include "includes/shortlist-2.html" %}
     </div>
-    
+
 {% endblock %}
 
 {% block content %}
@@ -105,7 +105,7 @@ Training providers for - {{_standardTitle|safe}}
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        {% if myData.showNotification != "false" %} 
+        {% if myData.showNotification != "false" %}
         <div class="alert-blue alert-blue-no-heading govuk-!-margin-bottom-7">
 			<p class="govuk-body">
 				{{myData.notifications.message}}
@@ -117,7 +117,7 @@ Training providers for - {{_standardTitle|safe}}
             <span class="govuk-caption-xl">Training providers for</span>
             {{_standardTitle|safe}}
         </h1>
-      
+
     </div>
 </div>
 
@@ -148,7 +148,7 @@ Training providers for - {{_standardTitle|safe}}
                         </div>
                     </div>
 
-          
+
                     <!-- For each filter type -->
                     {% for _filter in myData.searchfilters %}
                         {% set _url = "providers?" + _sortQuery + _locationQuery + _standardQuery + _empReviewsQuery + _ofstedRatingsQuery + _trainingOptionsQuery %}
@@ -174,7 +174,7 @@ Training providers for - {{_standardTitle|safe}}
                             {% endif %}
                         </ul>
                     {% endfor %}
-                    
+
                 </div>
                 {% endif %}
 
@@ -194,7 +194,7 @@ Training providers for - {{_standardTitle|safe}}
                             <input type="search" value="{% if myData.locationapplied == true %}{{myData.location}}{% endif %}" id="search-location" name="location" class="govuk-input">
                         </div>
                         {% endif %}
-                        
+
                         <!-- Training options -->
                         {% if myData.cmppfd != "false" %}
                             {% set _trainingOptions = [
@@ -328,8 +328,8 @@ Training providers for - {{_standardTitle|safe}}
     </div>
     <div class="govuk-grid-column-two-thirds">
 
-        <!-- 
-            0 results for filters 
+        <!--
+            0 results for filters
         -->
         {% if myData.displaycount == 0 %}
             <!-- IF ONLY location filter applied AND 0 results -->
@@ -389,11 +389,11 @@ Training providers for - {{_standardTitle|safe}}
         {% if myData.displaycount != 0 %}
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
         {% endif %}
-       
-        <!-- 
+
+        <!--
             Providers list OR No results
         -->
-        
+
         <!-- Providers -->
         {% set _renderedRows = 0 %}
         {% for _provider in _providers %}
@@ -471,7 +471,7 @@ Training providers for - {{_standardTitle|safe}}
             {% if _provider.search == true and _renderedRows < myData.maxrows  %}
 
                 {% set _renderedRows = _renderedRows + 1 %}
-                
+
                 <div class="govuk-grid-row govuk-!-margin-left-0 govuk-!-margin-right-0 govuk-!-margin-top-3">
 
                     <div class="govuk-grid-column-two-thirds govuk-!-padding-0" >
@@ -510,9 +510,9 @@ Training providers for - {{_standardTitle|safe}}
                             <!-- <li class="govuk-!-font-size-16 govuk-!-margin-bottom-2">
                                 <a href="#search-location" class="focus-field-prompt govuk-link govuk-link--no-visited-state" >Enter&nbsp;location</a>
                             </li> -->
-                            
+
                             <li class="govuk-!-margin-top-2">
-                                
+
                                 <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-2" >
 
                                     <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
@@ -566,7 +566,7 @@ Training providers for - {{_standardTitle|safe}}
                             <!-- <li class="govuk-!-font-size-16 govuk-!-margin-top-2">
                                 {{_provider.qualityPoints.total}} total points
                             </li> -->
-                            
+
                             <!-- National -->
                             {% if _provider.national %}
                             <!-- <li class="govuk-!-font-size-16" ><span class="govuk-secondary-colour" style="color:red">National</span></li> -->
@@ -606,18 +606,19 @@ Training providers for - {{_standardTitle|safe}}
 
         {% endfor %}
 
+<!--appears at bottom of results page-->
         {% if myData.aedinfat == "true" and myData.displaycount != 0 %}
             <hr class="govuk-section-break govuk-section-break--m">
             {% set _aedLink = "aed-employer-start?standard=" + myData.standard + "&location=" + myData.location %}
             <div class="fat-panel fat-panel-blocked">
-                <p class="govuk-body">
+                <p class="govuk-body"><strong>Can't find a training provider?</strong><br />
                     <a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">Share your interest</a> in {{_standardTitle | safe}} with other potential training providers.
                 </p>
             </div>
         {% endif %}
 
     </div>
-    
+
 </div>
 
 {% endblock %}
@@ -680,7 +681,7 @@ Training providers for - {{_standardTitle|safe}}
         })
         populateResults(filteredResults)
     }
-    
+
     var providerInput = document.querySelector('#search-providers')
     if (providerInput) {
         var providerInputID = providerInput.id,
@@ -707,7 +708,7 @@ Training providers for - {{_standardTitle|safe}}
     }
 
 
-    // Locations 
+    // Locations
     function suggestLocations(query, populateResults) {
         var _allSuggestions = []
 

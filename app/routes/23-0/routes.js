@@ -3069,6 +3069,12 @@ module.exports = function (router,_myData) {
             myData:req.session.myData
         });
     });
+    router.get('/' + version + '/aed-employer-email-stopped-by-employer', function (req, res) {
+        res.render(version + '/aed-employer-email-stopped-by-employer', {
+            myData:req.session.myData
+        });
+    });
+
     // AED Employer EMAIL provider interested
     router.get('/' + version + '/aed-employer-email-provider-interested', function (req, res) {
         res.render(version + '/aed-employer-email-provider-interested', {

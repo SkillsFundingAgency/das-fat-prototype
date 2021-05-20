@@ -141,6 +141,13 @@
         {% endif %}
       </li>
       <li>
+        {% if _currentAEDEmployerLink == "aed-employer-email-stopped-by-employer" %}
+          <span class="govuk-!-font-weight-bold">Employer email - stopped sharing manually</span>
+        {% else %}
+          <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-stopped-by-employer">Employer email - stopped sharing manually</a>
+        {% endif %}
+      </li>
+      <li>
         {% if _currentAEDEmployerLink == "aed-employer-email-expired" %}
           <span class="govuk-!-font-weight-bold">Employer - email - 2</span>
         {% else %}
@@ -201,10 +208,20 @@
           {% if _currentAEDEmployerLink == "aed-employer-email-expired-2" %}
             <span class="govuk-!-font-weight-bold">Employer - email - 2 (closed)</span>
           {% else %}
-            <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-expired-2">Employer - email - 2 (closed)</a>
+            <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-expired-2">Employer - email - standard closed</a>
           {% endif %}
         </li>
       {% endif %}
+
+      <li>
+        {% if _currentAEDEmployerLink == "aed-employer-email-stopped-by-employer" %}
+          <span class="govuk-!-font-weight-bold">Employer email - stopped sharing manually</span>
+        {% else %}
+          <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-email-stopped-by-employer">Employer email - stopped sharing manually</a>
+        {% endif %}
+      </li>
+
+
       <li>
         {% if _currentAEDEmployerLink == "aed-employer-email-provider-interested" %}
           <span class="govuk-!-font-weight-bold">Employer - email - provider interested</span>

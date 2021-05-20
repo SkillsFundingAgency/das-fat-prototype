@@ -2987,6 +2987,7 @@ module.exports = function (router,_myData) {
         res.redirect(301, '/' + version + '/aed-employer-check-email');
     });
 
+//Ricky HUB
     router.get('/' + version + '/dashboard/index', function (req, res) {
         res.render(version + '/dashboard/index', {
             myData:req.session.myData
@@ -2998,6 +2999,15 @@ module.exports = function (router,_myData) {
             myData:req.session.myData
         });
     });
+
+    router.get('/' + version + '/dashboard/pending', function (req, res) {
+        res.render(version + '/dashboard/pending', {
+            myData:req.session.myData
+        });
+    });
+
+
+
 
     // AED Employer check email
     router.get('/' + version + '/aed-employer-check-email', function (req, res) {

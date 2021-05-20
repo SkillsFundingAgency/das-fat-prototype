@@ -2986,6 +2986,19 @@ module.exports = function (router,_myData) {
         req.session.myData.emailAnswerTemp = ''
         res.redirect(301, '/' + version + '/aed-employer-check-email');
     });
+
+    router.get('/' + version + '/dashboard/index', function (req, res) {
+        res.render(version + '/dashboard/index', {
+            myData:req.session.myData
+        });
+    });
+
+    router.get('/' + version + '/dashboard', function (req, res) {
+        res.render(version + '/dashboard/index', {
+            myData:req.session.myData
+        });
+    });
+
     // AED Employer check email
     router.get('/' + version + '/aed-employer-check-email', function (req, res) {
         res.render(version + '/aed-employer-check-email', {

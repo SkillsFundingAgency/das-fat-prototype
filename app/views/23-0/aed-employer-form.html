@@ -113,14 +113,28 @@ Enter the apprenticeship training and contact details
 							<div class="govuk-radios__conditional govuk-radios__conditional--hidden {% if myData.validationErrors.apprenticesCountAnswer %}govuk-form-group--error{% endif %}" id="conditional-apprenticesAnswer">
 								<div class="govuk-form-group">
 								<label class="govuk-label" for="apprenticesCountAnswer">
-									Enter the number of apprentices
+									Enter the number of apprentices currently employed by you
 								</label>
 								{% if myData.validationErrors.apprenticesCountAnswer %}
 								<span id="apprenticesCountAnswer-error" class="govuk-error-message">
 									<span class="govuk-visually-hidden">Error:</span> {{myData.validationErrors.apprenticesCountAnswer.message}}
 								</span>
 								{% endif %}
-								<input class="govuk-input govuk-input--width-4 {% if myData.validationErrors.apprenticesCountAnswer %}govuk-input--error{% endif %}" id="apprenticesCountAnswer" name="apprenticesCountAnswer" type="number" spellcheck="false" pattern="[0-9]*" inputmode="numeric" value="{{myData.apprenticesCountAnswerTemp}}"></div>
+								<input class="govuk-input govuk-input--width-4 {% if myData.validationErrors.apprenticesCountAnswer %}govuk-input--error{% endif %}" id="apprenticesCountAnswer" name="apprenticesCountAnswer" type="number" spellcheck="false" pattern="[0-9]*" inputmode="numeric" value="{{myData.apprenticesCountAnswerTemp}}">
+              </div>
+
+              <div class="govuk-form-group">
+              <label class="govuk-label" for="apprenticesCountAnswer">
+                Enter the number of apprentices you will be recruiting
+              </label>
+              {% if myData.validationErrors.apprenticesCountAnswer %}
+              <span id="apprenticesCountAnswer-error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> {{myData.validationErrors.apprenticesCountAnswer.message}}
+              </span>
+              {% endif %}
+              <input class="govuk-input govuk-input--width-4 {% if myData.validationErrors.apprenticesCountAnswer %}govuk-input--error{% endif %}" id="apprenticesCountAnswer" name="apprenticesCountAnswer" type="number" spellcheck="false" pattern="[0-9]*" inputmode="numeric" value="{{myData.apprenticesCountAnswerTemp}}">
+            </div>
+
 							</div>
 							<div class="govuk-radios__item">
 								<input class="govuk-radios__input" id="apprenticesAnswer-2" name="apprenticesAnswer" type="radio" value="no" {% if myData.apprenticesAnswerTemp == "no" %}checked{% endif %} >

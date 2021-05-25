@@ -2,7 +2,7 @@
 
 {% set serviceName = "Apprenticeships" %}
 
-{% block pageTitle %} 
+{% block pageTitle %}
 Meet employer demand for apprenticeships
 {% endblock %}
 
@@ -41,7 +41,7 @@ Meet employer demand for apprenticeships
 				Website <br>
 				{% if myData.websiteProviderAnswer == "" %}
 				<a href="aed-provider-contact-details-edit" class="govuk-link govuk-link--no-visited-state">
-					Add website
+					Add website 
 				</a>
 				{% else %}
 				<span class="govuk-!-font-weight-bold">{{myData.websiteProviderAnswer}}</span>
@@ -53,7 +53,7 @@ Meet employer demand for apprenticeships
 					Edit contact details
 				</a>
 			</p>
-		
+
 			{{govukButton({
 				text: "Continue"
 			})}}

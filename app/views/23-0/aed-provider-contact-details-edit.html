@@ -4,7 +4,7 @@
 
 {% set _inError = myData.validationError %}
 
-{% block pageTitle %} 
+{% block pageTitle %}
 Meet employer demand for apprenticeships
 {% endblock %}
 
@@ -87,7 +87,7 @@ Meet employer demand for apprenticeships
 			</div>
 
 			<!-- Website -->
-			
+
 			{% set _websiteValueToShow = myData.websiteProviderAnswerTemp or myData.websiteProviderAnswer %}
 			{% if myData.websiteProviderAnswerTemp == "" %}
 				{% set _websiteValueToShow = myData.websiteProviderAnswerTemp %}
@@ -97,9 +97,16 @@ Meet employer demand for apprenticeships
 				<label class="govuk-label govuk-label--m" for="websiteProviderAnswer">
 					Website (optional)
 				</label>
+        <div id="event-name-hint" class="govuk-hint">
+   You can link to any page you like to advertise to employers.
+ </div>
+        {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+
+
 				<input class="govuk-input govuk-input--width-20" id="websiteProviderAnswer" name="websiteProviderAnswer" type="text" value="{{_websiteValueToShow}}">
 			</div>
-		
+
 			{{govukButton({
 				text: "Continue"
 			})}}

@@ -2,16 +2,16 @@
 
 
 
-{% extends myData.layout %}
+{% extends "layout-as-pro.html" %}
 
-{% set serviceName = "Find apprenticeship training for your apprentice" %}
-{% if myData.service == "epao" %}
-    {% set serviceName = "Find an end-point assessment organisation for your apprentice" %}
-{% endif %}
+{% set serviceName = "Apprenticeships" %}
 
 {% block pageTitle %}
-Page not found
+
 {% endblock %}
+
+{% set _selectedDemand = myData.selectedDemand %}
+{% set _selectedEmployers = myData.selectedEmployers or myData.defaultSelectedEmployers %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}

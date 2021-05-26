@@ -9,9 +9,9 @@
 {% set _emailAnswer = myData.emailAnswer or "name@example.com" %}
 {% set _locationAnswer = myData.location or "Coventry, Warwickshire" %}
 {% set _apprenticesAnswer = myData.apprenticesAnswer or "yes" %}
-{% set _apprenticesCountAnswer = myData.apprenticesCountAnswer or 1 %}
+{% set _apprenticesCountAnswer = myData.apprenticesCountAnswer[0] | float + myData.apprenticesCountAnswer[1] | float or 1 %}
 
-{% block pageTitle %} 
+{% block pageTitle %}
 Check your answers
 {% endblock %}
 
@@ -40,7 +40,7 @@ Check your answers
 			  {{_standardTitle|safe}}
 			</dd>
 			<dd class="govuk-summary-list__actions">
-			  
+
 			</dd>
 		  </div>
 

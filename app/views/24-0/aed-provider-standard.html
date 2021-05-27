@@ -4,7 +4,7 @@
 
 {% set _inError = myData.validationError %}
 
-{% block pageTitle %} 
+{% block pageTitle %}
 
 {% endblock %}
 
@@ -65,7 +65,7 @@
 
 			<h1 class="govuk-heading-xl">
 				<span class="govuk-caption-xl">{{_selectedDemand.name|safe}}</span>
-				Which employers are you interested in?
+				Select the requests you are interested in
 			</h1>
 
 	</div>
@@ -78,10 +78,10 @@
 
 	<div class="govuk-grid-row">
 		<div class="govuk-grid-column-two-thirds" >
-			<h3 class="govuk-heading-s govuk-!-margin-bottom-2">Filter employers by location</h3>
+			<h3 class="govuk-heading-s govuk-!-margin-bottom-2">Filter requests by location</h3>
 		</div>
 	</div>
-	
+
 	<div class="govuk-grid-row">
 
         <form method="GET">
@@ -123,11 +123,11 @@
                     </select>
                 </div>
             </div>
-            
+
         </form>
 
 	</div>
-	
+
 	<!-- <div class="govuk-grid-row">
 		<div class="govuk-grid-column-one-third" >
 			<button type="submit" class="govuk-button" style="margin-bottom: 20px">Apply filters</button>
@@ -151,7 +151,7 @@
         {% if myData.displaycount > 0 %}
 		<form method="POST">
 
-			<p class="govuk-body">Select all employers that apply.</p>
+			<p class="govuk-body">Select all that apply.</p>
 
 			<div class="govuk-form-group {% if myData.validationErrors.selectedEmployersAnswer %}govuk-form-group--error{% endif %}">
 				<fieldset class="govuk-fieldset" >
@@ -170,16 +170,20 @@
                         {{myData.validationErrors.selectedEmployersAnswer.message}}
                     </span>
 					{% endif %}
-					
+
                     {% for _employer in _employers %}
                         {% if _employer.search %}
                         <div class="govuk-checkboxes">
                             <div class="govuk-checkboxes__item">
                                 <input {% if _employer.selected %}checked{% endif %} class="govuk-checkboxes__input" id="{{_employer.id}}" name="employer" type="checkbox" value="{{_employer.id}}">
                                 <label class="govuk-label govuk-checkboxes__label" for="{{_employer.id}}">
-                                    <span class="govuk-!-font-weight-bold">Employer</span><br>
+                                <!--    <span class="govuk-!-font-weight-bold">Employer</span><br>-->
+                                <strong>{{_employer.apprentices}} Apprentice{% if _employer.apprentices != 1 %}s{% endif %}</strong>
+                                ({{_employer.apprentices-1}} current, 1 to be recruited)<br />
                                     {{_employer.location}}<br>
-                                    {{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}
+
+                                  <!--  <strong>{{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}</strong>
+                                    ({{_employer.apprentices-1}} current, 1 to be recruited)-->
                                 </label>
                             </div>
                         </div>
@@ -187,7 +191,7 @@
 					{% endfor %}
 				</fieldset>
 			</div>
-		
+
 			{{govukButton({
 				text: "Continue"
 			})}}
@@ -211,7 +215,7 @@
 
     function fireApplyFilters(){setTimeout(function(){ $("#search-location-submit").trigger("click") },200);}
 
-    // Locations 
+    // Locations
     function suggestLocations(query, populateResults) {
         var _allSuggestions = []
 
@@ -237,7 +241,7 @@
             populateResults(_allSuggestions)
         })
     }
-    
+
     var locationInput = document.querySelector('#search-location')
     if (locationInput) {
         var locationInputID = locationInput.id,

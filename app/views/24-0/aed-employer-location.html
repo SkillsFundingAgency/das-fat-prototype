@@ -1,0 +1,158 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+
+{% set _inError = myData.validationError %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+<!-- Location search -->
+{% set _citiesAutocompleteList = myData.citiesAutocompleteList %}
+{% set _defaultLocationSearchvalue = "" %}
+{% if myData.locationapplied == true %}
+    {% set _defaultLocationSearchvalue = myData.location %}
+{% endif %}
+
+{% block pageTitle %}
+{% if _inError == "true" %}Error: {% endif %}
+Where is the apprenticeship location?
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+	{% include "includes/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+	.govuk-input-background,
+    .autocomplete__input {
+		background-color: white;
+	}
+    .autocomplete__hint {
+        height: 40px;
+    }
+</style>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+		{% if _inError == "true" %}
+		<div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+			<h2 class="govuk-error-summary__title" id="error-summary-title">
+				There is a problem
+			</h2>
+			<div class="govuk-error-summary__body">
+				<ul class="govuk-list govuk-error-summary__list">
+					{% for name, item in myData.validationErrors %}
+					<li>
+						<a href="#{{item.anchor}}">{{item.message}}</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		{% endif %}
+
+        <h1 class="govuk-heading-xl" >
+            Where is the apprenticeship location?
+		</h1>
+
+		<!-- <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5"> -->
+            <!-- <p class="govuk-body govuk-!-margin-bottom-5">
+				<span class="govuk-!-font-weight-bold">Apprenticeship training course </span><br>
+				{{_standardTitle|safe}}
+			</p> -->
+			<p class="govuk-body govuk-!-margin-bottom-5">
+				Apprenticeship training course <br>
+				<span class="govuk-!-font-weight-bold">{{_standardTitle|safe}}</span>
+			</p>
+        <!-- </div> -->
+
+		<form method="POST" class="govuk-!-width-three-quarters" >
+			<div class="govuk-form-group {% if myData.validationErrors.aedLocationAnswer %}govuk-form-group--error{% endif %}" >
+				<label for="search-location" class="govuk-label" >
+					Enter a town, city or postcode
+				</label>
+				{% if myData.validationErrors.aedLocationAnswer %}
+				<span id="aedlocationAnswer-error" class="govuk-error-message">
+					<span class="govuk-visually-hidden">Error:</span>
+					{{myData.validationErrors.aedLocationAnswer.message}}
+				</span>
+				{% endif %}
+				<input type="search" value="{{myData.aedLocationAnswer}}" id="search-location" name="aedLocationAnswer" title="Search" class="govuk-input govuk-input-background {% if myData.validationErrors.aedLocationAnswer %}govuk-input--error{% endif %} ">
+			</div>
+			<button class="govuk-button location-submit" id="location-submit" data-module="govuk-button">
+				Continue
+			</button>
+		</form>
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+        &nbsp;
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block pageScripts %}
+<script>
+    
+    // Locations 
+    function suggestLocations(query, populateResults) {
+        var _allSuggestions = []
+
+        // Cities
+        var _citiesResults = {{_citiesAutocompleteList | dump | safe }},
+            _filteredCitiesResults = _citiesResults.filter(
+                result => result.toUpperCase().startsWith(query.trim().toUpperCase())
+            )
+        _filteredCitiesResults.sort(function(a,b){
+            var returnValue = 0;
+            if (a.toUpperCase() < b.toUpperCase()){
+                returnValue = -1
+            } else if(a.toUpperCase() > b.toUpperCase()){
+                returnValue = 1
+            }
+            return returnValue
+        });
+
+        // Postcodes
+        $.getJSON('https://api.postcodes.io/postcodes/' + query + '/autocomplete', function(body){
+            var _postcodes = body.result || []
+            _allSuggestions = _allSuggestions.concat(_filteredCitiesResults,_postcodes)
+            populateResults(_allSuggestions)
+        })
+    }
+    function fireLocationSearch(){setTimeout(function(){ $("#location-submit").trigger("click") },200);}
+    var locationInput = document.querySelector('#search-location')
+    if (locationInput) {
+        var locationInputID = locationInput.id,
+            locationElement = document.createElement('div'),
+            defaultLocationSearchvalue = {{_defaultLocationSearchvalue | dump | safe }}
+        locationElement.className = "autocomplete__parent_wrapper";
+        locationInput.parentNode.insertBefore(locationElement, locationInput)
+        accessibleAutocomplete({
+            // other options
+            element: locationElement,
+            id: locationInputID,
+            name: locationInput.name,
+            source: suggestLocations,
+            defaultValue: defaultLocationSearchvalue,
+            minLength: 1,
+            confirmOnBlur: false,
+            autoselect: true,
+            onConfirm: fireLocationSearch,
+            displayMenu: 'overlay'
+        })
+        locationInput.style.display = 'none'
+        locationInput.id = locationInputID + '-old'
+        locationInput.name = ''
+    }
+</script>
+{% endblock %}

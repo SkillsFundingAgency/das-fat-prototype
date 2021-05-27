@@ -1,0 +1,155 @@
+{% extends "layout-as-pro.html" %}
+
+{% set serviceName = "Apprenticeships" %}
+
+{% block pageTitle %} 
+Meet employer demand for apprenticeships
+{% endblock %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="aed-provider-standard" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+	<div class="govuk-grid-column-two-thirds">
+		<h1 class="govuk-heading-xl">
+			Add details of the training you could offer
+		</h1>
+		
+		<div class="govuk-inset-text govuk-!-margin-bottom-8">
+			{{ govukSummaryList({
+				classes: "govuk-summary-list--no-border",
+				rows: [
+				{
+					key: 
+					{
+						text: "Apprenticeship training course"
+					},
+					value: 
+					{
+						text: _standardTitle|safe
+					}
+				}
+				]
+			}) }}
+		</div>
+
+		{% set locationHtml %}
+		<div class="govuk-form-group govuk-!-margin-bottom-3" data-list-search-filter="">
+			<div class="govuk-form-group">
+				<label for="search-location" class="govuk-label">
+					Enter the postcode where the training will take place
+				</label>
+				<input type="search" value="" id="search-location" name="request[location]" title="Search" class="govuk-input govuk-input-background govuk-input--width-10">
+			</div>
+		</div>
+		{% endset %}
+
+		{{ govukCheckboxes({
+			idPrefix: "training-location",
+			name: "request[training-location]",
+			fieldset:
+			{
+				legend:
+				{
+					text: "Training location",
+					isPageHeading: true,
+					classes: "govuk-fieldset__legend--m"
+				}
+			},
+			hint:
+			{
+				text: "Select all that apply."
+			},
+			items: [
+			{
+				value: "location",
+				text: "In a specific location",
+				conditional:
+				{
+					html: locationHtml
+				}
+			},
+			{
+				value: "apprentices-workplace",
+				text: "At apprentice's workplace"
+			}
+			]
+		}) }}
+
+		<div class="govuk-form-group">
+			<fieldset class="govuk-fieldset" role="group">
+				<legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+					<h1 class="govuk-fieldset__heading">
+						Start date
+					</h1>
+				</legend>
+
+				<div class="govuk-date-input" id="event-name">
+					<div id="start-date-hint" class="govuk-hint">
+						For example, 03 2021
+					</div>
+					<div class="govuk-date-input__item">
+						<div class="govuk-form-group">
+							<label class="govuk-label govuk-date-input__label" for="event-name-month">
+								Month
+							</label>
+
+							<input class="govuk-input govuk-date-input__input govuk-input--width-2" id="event-name-month" name="month" type="text" pattern="[0-9]*" inputmode="numeric">
+						</div>
+					</div>
+
+					<div class="govuk-date-input__item">
+						<div class="govuk-form-group">
+							<label class="govuk-label govuk-date-input__label" for="event-name-year">
+								Year
+							</label>
+
+							<input class="govuk-input govuk-date-input__input govuk-input--width-4" id="event-name-year" name="year" type="text" pattern="[0-9]*" inputmode="numeric">
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+
+		{{ govukInput({
+			label:
+			{
+				text: "Cost per apprentice",
+				classes: "govuk-label--m",
+				isPageHeading: true
+			},
+			id: "apprenticeship-cost",
+			name: "apprenticeship-cost",
+			prefix:
+			{
+				text: "£"
+			},
+			hint:
+			{
+				text: ""
+			},
+			classes: "govuk-input--width-10",
+			spellcheck: false
+		}) }}
+
+		<form method="post">
+			<p>
+				{{govukButton({
+					text: "Save and continue"
+				})}}
+			</p>
+		</form>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+{% endblock %}

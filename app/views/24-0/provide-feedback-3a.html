@@ -1,0 +1,102 @@
+{% extends myData.layout %}
+{% set serviceName = "Manage apprenticeships" %}
+{% set serviceUrl = "provide-feedback-approvals-a" %}
+
+{% set _inError = myData.validationError %}
+
+{% block pageTitle %} 
+{% if _inError == "true" %}Error: {% endif %}
+Overall rating
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="provide-feedback-2a" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        
+
+        <form method="POST" class="form">
+
+            {% if _inError == "true" %}
+            <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+                <h2 class="govuk-error-summary__title" id="error-summary-title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        {% for name, item in myData.validationErrors %}
+                        <li>
+                            <a href="#{{item.anchor}}">{{item.message}}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- <h1 class="govuk-heading-xl">
+                Overall rating
+            </h1> -->
+
+            <div class="govuk-form-group {% if myData.validationErrors.overallRatingAnswer %}govuk-form-group--error{% endif %}">
+                <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
+                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                    <h1 class="govuk-fieldset__heading">
+                        How would you rate TRAINING UK LTD’s onboarding and approval process?
+                    </h1>
+                  </legend>
+                  <!-- <div id="waste-hint" class="govuk-hint">
+                    It's optional. You can choose up to 3.
+                  </div> -->
+
+                  {% set _ratings = [
+                        {
+                            "name": "Excellent"
+                        },
+                        {
+                            "name": "Good"
+                        },
+                        {
+                            "name": "Poor"
+                        },
+                        {
+                            "name": "Very poor"
+                        }
+                    ] %}
+
+                {% if myData.validationErrors.overallRatingAnswer %}
+                <span id="overallRatingAnswer-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span>
+                    {{myData.validationErrors.overallRatingAnswer.message}}
+                </span>
+                {% endif %}
+
+                  <div class="govuk-radios">
+                    {% for _rating in _ratings %}
+                    {% set _itemID = "rating-" + loop.index %}
+                    <div class="govuk-radios__item">
+                      <input class="govuk-radios__input" id="{{_itemID}}" name="overallRating" type="radio" value="{{_rating.name}}" {% if _rating.name == myData.overallRatingAnswer %}checked{% endif %}>
+                      <label class="govuk-label govuk-radios__label" for="{{_itemID}}">
+                        {{_rating.name}}
+                      </label>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </fieldset>
+              </div>
+            
+            <button type="submit" class="govuk-button">
+                Continue
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

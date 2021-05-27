@@ -1,0 +1,53 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block pageTitle %}
+Click the link we’ve sent to {{_emailAnswer}}
+{% endblock %}
+
+{% set _showAEDEmployerLinks2 = true %}
+{% set _showAEDEmployerLinks3 = true %}
+{% set _currentAEDEmployerLink = "aed-employer-check-email" %}
+
+{% set _emailAnswer = myData.emailAnswer or "name@example.com" %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+		<h1 class="govuk-heading-xl" >
+			Click the link we’ve sent to {{_emailAnswer}}
+		</h1>
+
+		<p class="govuk-body">We’ve sent an email to {{_emailAnswer}}. Click on the link in the email to confirm the address.</p>
+		<!-- <p class="govuk-body">We will not share any interest with training providers until someone clicks the link in the email.</p> -->
+		<div class="govuk-warning-text">
+			<span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+			<strong class="govuk-warning-text__text">
+				<span class="govuk-warning-text__assistive">Warning</span>
+				We will not share any interest with training providers until someone clicks the link in the email.
+			</strong>
+		</div>
+		<p class="govuk-body">If you can't find the email, please check the spam or junk mail folders. If you haven't received the email, please check your email address is correct.</p>
+<p><a href="aed-employer-check-answers">Update details</a></p>
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+        &nbsp;
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends myData.layout %}
+{% set serviceName = "" %}
+{% set serviceUrl = "" %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% block pageTitle %} 
+{% endblock %}
+
+{% set _email = true %}
+{% set _showAEDEmployerLinks = true %}
+{% set _currentAEDEmployerLink = "aed-employer-email-reminder-3" %}
+
+{% block beforeContent %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-6" style="border-bottom: 1px solid grey; padding-bottom:20px">
+          <span class="govuk-!-font-weight-bold">From:</span> The Apprenticeship Service &lt;the.apprenticeship.service@notifications.service.gov.uk&gt;
+          <br><span class="govuk-!-font-weight-bold">Sent:</span> Tue 08/12/2020 09:20
+          <br><span class="govuk-!-font-weight-bold">To:</span> You
+          <br><span class="govuk-!-font-weight-bold">Subject:</span> We haven’t found a training provider for you yet
+        </p>
+
+        <img src="/public/images/esfa-logo.png" width="180px" style="margin-bottom:40px; display:block">
+
+        <h1 class="govuk-heading-l">
+          We haven’t found a training provider for you yet
+        </h1>
+      
+        <p>
+          If you're still interested in finding a training provider for {{_standardTitle|safe}}, let us know and we’ll share your interest with training providers for another 12 weeks.
+        </p>
+        <p>
+          <a href="#" class="govuk-button">Keep sharing my interest</a>
+        </p>
+        
+        <p>
+          If we don't hear from you within 7 days we'll automatically stop sharing your interest.
+        </p>
+      
+      
+        <h3 class="govuk-heading-s govuk-!-margin-top-7">
+          Try searching for other courses
+        </h3>
+        <p>
+          You could try looking for a different course in the same sector, or consider expanding your location preferences.
+        </p>
+        <p>
+          <a href="home" class="govuk-button">Search for training</a>
+        </p>
+      
+
+
+        <!-- AED footer -->
+        <p class="govuk-body">Kind regards</p>
+        <p class="govuk-body">Apprenticeship service team</p>
+        <p class="govuk-body">Education and Skills Funding Agency</p>
+        <p class="govuk-body"><a href="https://www.apprenticeships.gov.uk/employers" class="govuk-link govuk-link--no-visited-state">www.apprenticeships.gov.uk/employers</a></p>
+        <p class="govuk-body">This is an automated message. Please don’t reply to this email.</p>
+
+       
+        
+        <!-- Registered account footer style -->
+        <!-- <p class="govuk-body">From</p>
+        <p class="govuk-body">Apprenticeship Service</p>
+        <p class="govuk-body">If you want to stop these type of emails, you can change your notification settings (<a class="govuk-link govuk-link--no-visited-state" href="http://manage-apprenticeships.service.gov.uk/settings/notifications" target="_blank">http://manage-apprenticeships.service.gov.uk/settings/notifications</a>).</p> -->
+
+        
+
+
+    </div>
+</div>
+
+{% endblock %}

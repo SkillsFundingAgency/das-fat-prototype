@@ -1,0 +1,34 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find an apprenticeship assessment organisation" %}
+{% set serviceUrl = "home-epao" %}
+
+{% block pageTitle %}
+This end-point assessment organisation is currently unavailable for the course
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    <a href="epao-home" class="govuk-back-link">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl" >
+            This end-point assessment organisation is currently unavailable for the course
+        </h1>
+        
+        <p class="govuk-body"><a class="govuk-button" href="home-epao">Find another end-point assessment organisation</a></p>
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+        &nbsp;
+    </div>
+
+</div>
+
+{% endblock %}

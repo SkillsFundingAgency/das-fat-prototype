@@ -1,0 +1,138 @@
+{% extends myData.layout %}
+
+{% set serviceName = "Find apprenticeship training for your apprentice" %}
+
+{% set _selectedStandard = myData.selectedStandard %}
+{% set _standardTitle = _selectedStandard.title + " (level&nbsp;" + _selectedStandard.level + ")" %}
+
+{% set _orgNameAnswer = myData.orgNameAnswer or "ABC LTD" %}
+{% set _emailAnswer = myData.emailAnswer or "name@example.com" %}
+{% set _locationAnswer = myData.location or "Coventry, Warwickshire" %}
+{% set _apprenticesAnswer = myData.apprenticesAnswer or "yes" %}
+{% set _apprenticesCountAnswer = myData.apprenticesCountAnswer[0] | float + myData.apprenticesCountAnswer[1] | float or 1 %}
+
+{% block pageTitle %}
+Check your answers
+{% endblock %}
+
+{% block beforeContent %}
+    {% include "includes/alpha-banner.html" %}
+    {% include "includes/back-link.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+	<div class="govuk-grid-column-two-thirds">
+
+		<h1 class="govuk-heading-xl govuk-!-margin-bottom-6">
+			Check your answers
+		</h1>
+
+		<h2 class="govuk-heading-m">Apprenticeship training details</h2>
+		<dl class="govuk-summary-list">
+
+		  <div class="govuk-summary-list__row">
+			<dt class="govuk-summary-list__key" style="width:50%">
+				Apprenticeship training course
+			</dt>
+			<dd class="govuk-summary-list__value" style="width:30%;">
+			  {{_standardTitle|safe}}
+			</dd>
+			<dd class="govuk-summary-list__actions">
+
+			</dd>
+		  </div>
+
+		  <div class="govuk-summary-list__row">
+			<dt class="govuk-summary-list__key" style="width:50%">
+				Where is the apprenticeship location?
+			</dt>
+			<dd class="govuk-summary-list__value" style="width:30%;">
+			  {{_locationAnswer}}
+			</dd>
+			<dd class="govuk-summary-list__actions">
+			  <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-form">
+				Change<span class="govuk-visually-hidden"> apprenticeship location</span>
+			  </a>
+			</dd>
+		  </div>
+
+			<div class="govuk-summary-list__row">
+				<dt class="govuk-summary-list__key" style="width:50%">
+					Do you know how many apprentices will take this apprenticeship training?
+				</dt>
+				<dd class="govuk-summary-list__value" style="width:30%;">
+					{{_apprenticesAnswer | capitalize}}
+				</dd>
+				<dd class="govuk-summary-list__actions">
+					<a class="govuk-link govuk-link--no-visited-state" href="aed-employer-form">
+					Change<span class="govuk-visually-hidden"> [to do]</span>
+					</a>
+				</dd>
+			</div>
+
+			{% if _apprenticesAnswer == "yes" %}
+			<div class="govuk-summary-list__row">
+				<dt class="govuk-summary-list__key" style="width:50%">
+					Number of apprentices
+				</dt>
+				<dd class="govuk-summary-list__value" style="width:30%;">
+					{{_apprenticesCountAnswer}}
+				</dd>
+				<dd class="govuk-summary-list__actions">
+					<a class="govuk-link govuk-link--no-visited-state" href="aed-employer-form">
+					Change<span class="govuk-visually-hidden"> [to do]</span>
+					</a>
+				</dd>
+			</div>
+			{% endif %}
+
+		</dl>
+
+		<h2 class="govuk-heading-m">Contact details</h2>
+		<dl class="govuk-summary-list">
+
+		  <div class="govuk-summary-list__row">
+			<dt class="govuk-summary-list__key" style="width:50%">
+				What is the organisation’s name?
+			</dt>
+			<dd class="govuk-summary-list__value" style="width:30%;">
+			  {{_orgNameAnswer}}
+			</dd>
+			<dd class="govuk-summary-list__actions">
+			  <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-form">
+				Change<span class="govuk-visually-hidden"> [to do]</span>
+			  </a>
+			</dd>
+		  </div>
+
+		  <div class="govuk-summary-list__row">
+			<dt class="govuk-summary-list__key" style="width:50%">
+				What email address should we contact?
+			</dt>
+			<dd class="govuk-summary-list__value" style="width:30%;">
+			  {{_emailAnswer}}
+			</dd>
+			<dd class="govuk-summary-list__actions">
+			  <a class="govuk-link govuk-link--no-visited-state" href="aed-employer-form">
+				Change<span class="govuk-visually-hidden"> [to do]</span>
+			  </a>
+			</dd>
+		  </div>
+
+		</dl>
+
+		<form method="post">
+			<button type="submit" class="govuk-button">
+				Confirm
+			</button>
+		</form>
+
+	</div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+{% endblock %}

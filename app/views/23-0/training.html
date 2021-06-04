@@ -42,9 +42,11 @@ Apprenticeship training courses
 {% endif %}
 
 {% set _fullURL = "training?" + _searchQuery + _routefilterQuery + _levelfilterQuery + _sortQuery %}
+{% set _aedLink = "aed-employer-start?standard=" + myData.standard + "&location=" + myData.location %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
+
 
     <div class="govuk-grid-row">
 		<div class="govuk-grid-column-three-quarters">

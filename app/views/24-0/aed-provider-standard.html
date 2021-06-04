@@ -171,24 +171,28 @@
                     </span>
 					{% endif %}
 
-                    {% for _employer in _employers %}
-                        {% if _employer.search %}
-                        <div class="govuk-checkboxes">
-                            <div class="govuk-checkboxes__item">
-                                <input {% if _employer.selected %}checked{% endif %} class="govuk-checkboxes__input" id="{{_employer.id}}" name="employer" type="checkbox" value="{{_employer.id}}">
-                                <label class="govuk-label govuk-checkboxes__label" for="{{_employer.id}}">
-                                <!--    <span class="govuk-!-font-weight-bold">Employer</span><br>-->
-                                <strong>{{_employer.apprentices}} Apprentice{% if _employer.apprentices != 1 %}s{% endif %}</strong>
-                                ({{_employer.apprentices-1}} current, 1 to be recruited)<br />
-                                    {{_employer.location}}<br>
-
-                                  <!--  <strong>{{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}</strong>
-                                    ({{_employer.apprentices-1}} current, 1 to be recruited)-->
-                                </label>
-                            </div>
-                        </div>
-                        {% endif %}
-					{% endfor %}
+          {% for _employer in _employers %}
+              {% if _employer.search %}
+              <div class="govuk-checkboxes">
+                  <div class="govuk-checkboxes__item">
+                      <input {% if _employer.selected %}checked{% endif %} class="govuk-checkboxes__input" id="{{_employer.id}}" name="employer" type="checkbox" value="{{_employer.id}}">
+                      <label class="govuk-label govuk-checkboxes__label" for="{{_employer.id}}">
+                          <span class="govuk-!-font-weight-bold">Employer</span><br>
+                          {{_employer.location}}<br>
+                          {{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}
+                      </label>
+                  </div>
+                  {% endif %}
+    {% endfor %}
+                  <div class="govuk-checkboxes__item">
+                      <input {% if _employer.selected %}checked{% endif %} class="govuk-checkboxes__input" id="{{_employer.id}}" name="employer" type="checkbox" value="{{_employer.id}}">
+                      <label class="govuk-label govuk-checkboxes__label" for="{{_employer.id}}">
+                          <span class="govuk-!-font-weight-bold">Employer</span><br>
+                          Poole, Dorset<br />
+                          Apprentice number unknown
+                      </label>
+                  </div>
+              </div>
 				</fieldset>
 			</div>
 

@@ -1,4 +1,4 @@
-{% extends myData.layout %} 
+{% extends myData.layout %}
 
 {% set serviceName = "Find apprenticeship training for your apprentice" %}
 
@@ -42,9 +42,11 @@ Apprenticeship training courses
 {% endif %}
 
 {% set _fullURL = "training?" + _searchQuery + _routefilterQuery + _levelfilterQuery + _sortQuery %}
+{% set _aedLink = "aed-employer-start?standard=" + myData.standard + "&location=" + myData.location %}
 
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
+
 
     <div class="govuk-grid-row">
 		<div class="govuk-grid-column-three-quarters">
@@ -100,7 +102,7 @@ Apprenticeship training courses
                             <p><a class="govuk-link govuk-link--no-visited-state" href="training?{{_sortQuery}}">Clear</a></p>
                         </div>
                     </div>
-          
+
                     <!-- For each filter type -->
                     {% for _filter in myData.searchfilters %}
                         {% set _url = "training?" + _sortQuery + _levelfilterQuery + _routefilterQuery %}
@@ -117,7 +119,7 @@ Apprenticeship training courses
                             {% endif %}
                         </ul>
                     {% endfor %}
-                    
+
                 </div>
                 {% endif %}
 
@@ -217,10 +219,10 @@ Apprenticeship training courses
         {% if myData.searchapplied == true and _displayCount > 1 %}
         <p class="govuk-body govuk-!-margin-bottom-6">Sort by:
             {% if myData.sortby == "name" %}
-            <a class="govuk-link govuk-link--no-visited-state" href="training?{{_levelfilterQuery}}{{_routefilterQuery}}{{_searchQuery}}&sort=relevance">Relevance</a>, 
+            <a class="govuk-link govuk-link--no-visited-state" href="training?{{_levelfilterQuery}}{{_routefilterQuery}}{{_searchQuery}}&sort=relevance">Relevance</a>,
             <span class="govuk-!-font-weight-bold">Name</span>
             {% else %}
-            <span class="govuk-!-font-weight-bold">Relevance</span>, 
+            <span class="govuk-!-font-weight-bold">Relevance</span>,
             <a class="govuk-link govuk-link--no-visited-state" href="training?{{_levelfilterQuery}}{{_routefilterQuery}}{{_searchQuery}}&sort=name">Name</a>
             {% endif %}
         </p>
@@ -231,9 +233,9 @@ Apprenticeship training courses
         {% endif %}
 
         <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 ">
-       
 
-        <!-- 
+
+        <!--
             Standards list OR No results
         -->
         {% if _displayCount > 0 %}
@@ -242,7 +244,7 @@ Apprenticeship training courses
             {% set _renderedRows = 0 %}
             {% for _standard in myData.standards.list %}
                 {% if _standard.search == true  and _renderedRows < myData.maxrows  %}
-                
+
                     {% set _renderedRows = _renderedRows + 1 %}
                     {% set _standardData = [{"searchOn": _standard.autoCompleteString,"within": true,"exact": true},{"searchOn": _standard.jobRoles,"within": true,"exact": true}] %}
 
@@ -263,17 +265,19 @@ Apprenticeship training courses
                 {% endif %}
             {% endfor %}
         </div>
-       
+
         {% else %}
 
-        <p class="govuk-body govuk-!-margin-top-4">No apprenticeship training courses for the selected filters.</p>
+        <p class="govuk-body"><strong>Can't find a training provider?</strong><br />  We can let other training providers know you are interested in {{_standardTitle | safe}}.</p>
+
+        <a href="{{_aedLink}}" class="govuk-button">Share interest</a>
         <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="training?{{_sortQuery}}">Clear filters</a></p>
 
         {% endif %}
 
 
     </div>
-    
+
 </div>
 
 {% endblock %}

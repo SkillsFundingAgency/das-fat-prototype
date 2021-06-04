@@ -117,7 +117,7 @@
         </div>
         {% include "includes/shortlist-2.html" %}
 	</div>
-    
+
 {% endblock %}
 
 {% block content %}
@@ -156,7 +156,7 @@
 			</p>
 		</div> -->
         {% endif %}
-        {% if myData.showNotification != "false" %} 
+        {% if myData.showNotification != "false" %}
         <div class="alert-blue alert-blue-no-heading govuk-!-margin-bottom-7">
 			<p class="govuk-body">
 				{{myData.notifications.message}}
@@ -170,7 +170,7 @@
         </h1>
         <!-- <p class="govuk-body">{{myData.favourites|dump|safe}}</p> -->
         <!-- <p class="govuk-body">{{_selectedProvider|dump|safe}}</p> -->
-        
+
 
         {% if _selectedProvider.tradingNames.length > 0 %}
         <p class="govuk-body">
@@ -200,9 +200,9 @@
             <span class="govuk-details__summary-text">
                 Employer review details
             </span>
-            </summary> 
+            </summary>
             <div class="govuk-details__text">
-                
+
                 <h3 class="govuk-heading-s govuk-!-margin-bottom-2">Overall <span class="govuk-body" style="margin-left: 5px;">({{_totalRatings}} reviews)</span></h3>
 
                 <!-- Overall table -->
@@ -328,7 +328,7 @@
         <!-- Course panel -->
         {% if myData.standardsearchapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
-            
+
             <span class="govuk-caption-l">Apprenticeship training course</span>
             <h2 class="govuk-heading-l govuk-!-margin-bottom-3">{{_standardTitle | safe}}</h2>
             <!-- <p class="govuk-body govuk-!-margin-bottom-5"><a class="govuk-link govuk-link--no-visited-state" href="standard?standard={{_selectedStandard.larsCode}}">Overview of {{_standardTitle | safe}}</a></p> -->
@@ -349,7 +349,7 @@
                     <span class="govuk-details__summary-text govuk-!-font-size">
                         Explain pass rate
                     </span>
-                    </summary> 
+                    </summary>
                     <div class="govuk-details__text">
                         The percentage of apprentices who successfully passed a similar apprenticeship with this training provider in the 2018 to 2019 academic year.
                     </div>
@@ -384,9 +384,8 @@
                 <p class="govuk-body"><a href="providers?standard={{myData.standard}}&location" class="govuk-link govuk-link--no-visited-state">{{myData.countproviders}} providers available</a> at other locations.</p>
                 {% endif %}
                 <p class="govuk-body">Try <a href="training" class="govuk-link govuk-link--no-visited-state">searching for another course</a>.</p>
-                <p class="govuk-body">You can also share your interest in {{_standardTitle | safe}} with potential training providers.</p>
+                <p class="govuk-body"><strong>Can't find a training provider?</strong><br />  We can let other training providers know you are interested in {{_standardTitle | safe}}.</p>
                 <a href="{{_aedLink}}" class="govuk-button">Share interest</a>
-
                 {% endif %}
 
             {% endif %}
@@ -395,7 +394,7 @@
             {% if (myData.locationapplied and _selectedMatchesLocation) or myData.locationapplied != true %}
             <div class="govuk-!-margin-bottom-6">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-3 govuk-!-margin-top-6">{{_providerTitle | safe}}’s training options</h2>
-                
+
                 {% set _dayRelease = _selectedProvider.distance > 11 %}
                 {% set _blockRelease = _selectedProvider.distance > 20 %}
                 {% set _inWorkplace = _selectedProvider.distance < 11 or _selectedProvider.national %}
@@ -541,7 +540,7 @@
                 {% endif %}
             {% endif %}
         </div>
-        
+
         {% elif myData.locationapplied %}
         <div class="fat-panel fat-panel-blocked govuk-!-margin-bottom-5">
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-">Apprenticeship location</h2>
@@ -574,7 +573,7 @@
             </form>
         </div>
         {% endif %}
-        
+
         {% if myData.standardsearchapplied != true %}
         <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Contact details</h2>
         <dl class="govuk-summary-list govuk-!-margin-bottom-5">
@@ -610,7 +609,7 @@
             <span class="govuk-details__summary-text govuk-!-font-size">
                 View all {{myData.displaycount}} courses offered by this provider
             </span>
-            </summary> 
+            </summary>
             <div class="govuk-details__text">
                 <p class="govuk-body ">Select a course to view locations, training options and contact details.</p>
                 <table class="govuk-table">
@@ -647,8 +646,8 @@
 
     shortlistingSticky(30)
     shortlisting({{myData.clearLocalStorage}},{{myData.populateShortlist}})
-    
-    // Locations 
+
+    // Locations
     function suggestLocations(query, populateResults) {
         var _allSuggestions = []
 

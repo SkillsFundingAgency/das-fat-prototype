@@ -18,7 +18,7 @@ Shortlist
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-        {% if myData.showNotification != "false" %} 
+        {% if myData.showNotification != "false" %}
         <div class="alert-blue alert-blue-no-heading govuk-!-margin-bottom-7">
 			<p class="govuk-body">
 				{{myData.notifications.message}}
@@ -109,7 +109,7 @@ Shortlist
                             {{_location.providers.length}} training provider{% if _location.providers.length != 1 %}s{% endif %}
                         </h2>
                         {% endif %}
-                                
+
                                 <table class="govuk-table responsive-shortlist">
                                     <thead class="govuk-table__head">
                                         <tr class="govuk-table__row">
@@ -127,7 +127,7 @@ Shortlist
                                             <th scope="col" class="govuk-table__header app-custom-class"></th>
                                         </tr>
                                     </thead>
-                            
+
                                     <tbody class="govuk-table__body">
 
                                     {% for _provider in _location.providers %}
@@ -140,7 +140,7 @@ Shortlist
                                             {% endif %}
                                         {% endfor %}
                                         {% set _providerTitle = _selectedProvider.name %}
-                                        {% set _providerTitleForContact = _providerTitle|lower|replace(" ", "")|replace(".", "")|replace("(", "")|replace(")", "")|replace("/", "")|truncate(15, true, "") %}       
+                                        {% set _providerTitleForContact = _providerTitle|lower|replace(" ", "")|replace(".", "")|replace("(", "")|replace(")", "")|replace("/", "")|truncate(15, true, "") %}
 
                                         <!-- Employer Ratings -->
                                         {% set _rating = _selectedProvider.averageEmpRatingPlus1 | string %}
@@ -213,7 +213,7 @@ Shortlist
 
                                         <tr class="govuk-table__row">
                                             <th scope="row" class="govuk-table__header">
-                                
+
                                                 <!-- Contact details -->
                                                 <div class="fat-panel fat-panel-small fat-panel-blocked govuk-!-margin-bottom-2">
 
@@ -239,8 +239,8 @@ Shortlist
                                                 </div>
 
                                             </th>
-                                            <td class="govuk-table__cell" >  
-                                                
+                                            <td class="govuk-table__cell" >
+
                                                 {% set _dayRelease = _selectedProvider.distance > 11 %}
                                                 {% set _blockRelease = _selectedProvider.distance > 20 %}
                                                 {% set _inWorkplace = _selectedProvider.distance < 11 or _provider.national %}
@@ -264,7 +264,7 @@ Shortlist
                                                     {% set _release = true %}
                                                     {% set _closestReleaseDistance = _dayDistance %}
                                                 {% endif %}
-                                            
+
                                                 <ul class="govuk-list fat-training-options govuk-!-font-size-16 govuk-!-margin-bottom-2" >
 
                                                     <li class="{% if _inWorkplace %}fat-tick-2{% else %}fat-cross-2{% endif %}" style="display: block;">
@@ -278,18 +278,18 @@ Shortlist
                                                     <li class="{% if _blockRelease %}fat-tick-2{% else %}fat-cross-2{% endif %} govuk-!-margin-bottom-2" style="display: block;">
                                                         Block&nbsp;release{% if _blockRelease and _locationfav != "" %}: {{_blockDistance | round(2)}} mile{% if _blockDistance != 1 %}s{% endif %} away{% endif %}
                                                     </li>
-                                                </ul>   
+                                                </ul>
                                                 {% if _release and _locationfav != "" %}
                                                 <!-- <p class="govuk-body govuk-!-font-size-16">
                                                     {{_closestReleaseDistance | round(2)}} mile{% if _closestReleaseDistance != 1 %}s{% endif %} away
                                                 </p>  -->
-                                                {% endif %}             
+                                                {% endif %}
                                             </td>
 
                                             <!-- Employer reviews -->
                                             {% if myData.cmppde != "false" %}
                                             <td class="govuk-table__cell" >
-                                                
+
                                                 {% set _zeroEmployerReviews = false %}
                                                 {% if _selectedProvider.distance > 5 and _selectedProvider.distance < 10 %}
                                                     {% set _zeroEmployerReviews = true %}
@@ -353,9 +353,10 @@ Shortlist
                                 {% if myData.aedinfat == "true" and myData.displaycount != 0 %}
                                 {% set _aedLink = "aed-employer-start?standard=" + _selectedStandard.larsCode + "&location=" + _location.id %}
                                 <p class="govuk-body">
-                                    You can also <a href="{{_aedLink}}" class="govuk-link govuk-link--no-visited-state">share your interest</a> in {{_standardTitle|safe}} with other potential training providers.
-                                </p>
-                                {% endif %}
+
+                                  <p class="govuk-body"><strong>Can't find a training provider?</strong><br />  We can let other training providers know you are interested in {{_standardTitle | safe}}.</p>
+                                  <a href="{{_aedLink}}" class="govuk-button">Share interest</a>
+                                  {% endif %}
 
                         {% if myData.favourites2.length > 1 or _favourite.locations.length > 1 %}
                             </div>
@@ -364,7 +365,7 @@ Shortlist
 
                     </div>
                 </div>
-                
+
             {% endif %}
 
             {% if loop.last %}

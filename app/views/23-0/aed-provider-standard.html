@@ -4,7 +4,7 @@
 
 {% set _inError = myData.validationError %}
 
-{% block pageTitle %} 
+{% block pageTitle %}
 
 {% endblock %}
 
@@ -81,7 +81,7 @@
 			<h3 class="govuk-heading-s govuk-!-margin-bottom-2">Filter employers by location</h3>
 		</div>
 	</div>
-	
+
 	<div class="govuk-grid-row">
 
         <form method="GET">
@@ -123,11 +123,11 @@
                     </select>
                 </div>
             </div>
-            
+
         </form>
 
 	</div>
-	
+
 	<!-- <div class="govuk-grid-row">
 		<div class="govuk-grid-column-one-third" >
 			<button type="submit" class="govuk-button" style="margin-bottom: 20px">Apply filters</button>
@@ -170,7 +170,7 @@
                         {{myData.validationErrors.selectedEmployersAnswer.message}}
                     </span>
 					{% endif %}
-					
+
                     {% for _employer in _employers %}
                         {% if _employer.search %}
                         <div class="govuk-checkboxes">
@@ -182,12 +182,21 @@
                                     {{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}
                                 </label>
                             </div>
+                            {% endif %}
+              {% endfor %}
+                            <div class="govuk-checkboxes__item">
+                                <input {% if _employer.selected %}checked{% endif %} class="govuk-checkboxes__input" id="{{_employer.id}}" name="employer" type="checkbox" value="{{_employer.id}}">
+                                <label class="govuk-label govuk-checkboxes__label" for="{{_employer.id}}">
+                                    <span class="govuk-!-font-weight-bold">Employer</span><br>
+                                    Poole, Dorset BH12<br />
+                                    Apprentice number unknown
+                                </label>
+                            </div>
                         </div>
-                        {% endif %}
-					{% endfor %}
+
 				</fieldset>
 			</div>
-		
+
 			{{govukButton({
 				text: "Continue"
 			})}}
@@ -211,7 +220,7 @@
 
     function fireApplyFilters(){setTimeout(function(){ $("#search-location-submit").trigger("click") },200);}
 
-    // Locations 
+    // Locations
     function suggestLocations(query, populateResults) {
         var _allSuggestions = []
 
@@ -237,7 +246,7 @@
             populateResults(_allSuggestions)
         })
     }
-    
+
     var locationInput = document.querySelector('#search-location')
     if (locationInput) {
         var locationInputID = locationInput.id,

@@ -37,13 +37,8 @@ Meet employer demand for apprenticeships
 				<span class="govuk-!-font-weight-bold">{{myData.telephoneProviderAnswer}}</span>
 			</p>
 
-      <div class="govuk-form-group">
-				<label class="govuk-label govuk-label--m" for="websiteProviderAnswer">
-					Website (optional)
-				</label>
-        <div id="event-name-hint" class="govuk-hint">
-   You can link to any page you like to advertise to employers.
- </div>
+			<p class="govuk-body">
+				Website <br>
 				{% if myData.websiteProviderAnswer == "" %}
 				<a href="aed-provider-contact-details-edit" class="govuk-link govuk-link--no-visited-state">
 					Add website
@@ -52,6 +47,17 @@ Meet employer demand for apprenticeships
 				<span class="govuk-!-font-weight-bold">{{myData.websiteProviderAnswer}}</span>
 				{% endif %}
 			</p>
+
+
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--m" for="websiteProviderAnswer">
+          Website (optional)
+        </label>
+        <div id="event-name-hint" class="govuk-hint">
+      You can link to any page you like to advertise to employers.
+      </div>
+
+
 
 			<p class="govuk-body govuk-!-margin-top-6">
 				<a href="aed-provider-contact-details-edit" class="govuk-link govuk-link--no-visited-state">

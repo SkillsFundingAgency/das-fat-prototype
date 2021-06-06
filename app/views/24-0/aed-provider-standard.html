@@ -177,9 +177,9 @@
                   <div class="govuk-checkboxes__item">
                       <input {% if _employer.selected %}checked{% endif %} class="govuk-checkboxes__input" id="{{_employer.id}}" name="employer" type="checkbox" value="{{_employer.id}}">
                       <label class="govuk-label govuk-checkboxes__label" for="{{_employer.id}}">
-                          <span class="govuk-!-font-weight-bold">Employer</span><br>
+                            <span class="govuk-!-font-weight-bold">{{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}</span><br />
                           {{_employer.location}}<br>
-                          {{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}
+
                       </label>
                   </div>
                   {% endif %}
@@ -187,9 +187,9 @@
                   <div class="govuk-checkboxes__item">
                       <input {% if _employer.selected %}checked{% endif %} class="govuk-checkboxes__input" id="{{_employer.id}}" name="employer" type="checkbox" value="{{_employer.id}}">
                       <label class="govuk-label govuk-checkboxes__label" for="{{_employer.id}}">
-                          <span class="govuk-!-font-weight-bold">Employer</span><br>
+                          <span class="govuk-!-font-weight-bold">Apprentice number unknown</span><br>
                           Poole, Dorset<br />
-                          Apprentice number unknown
+
                       </label>
                   </div>
               </div>

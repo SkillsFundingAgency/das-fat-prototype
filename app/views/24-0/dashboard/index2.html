@@ -23,7 +23,7 @@
 <div class="govuk-grid-row">
 
 
-  <h1 class="govuk-heading-xl">Manage your apprentices</h1>
+  <h1 class="govuk-heading-xl">View your requests</h1>
 
   <form method="get" action="/10005760/apprentices">
       <div class="govuk-grid-row">
@@ -46,11 +46,16 @@
                       <div class="govuk-grid-column-one-third">
                           <div class="govuk-form-group">
                               <label class="govuk-label" for="selectedEmployer">Standard</label>
-                              <select class="govuk-select govuk-!-width-full" id="selectedEmployer" name="selectedEmployer">
-                                  <option label="All" aria-label="All employers" value="">All</option>
-                                          <option label="AUTOMATION &amp; OPTIMISATION LTD" value="AUTOMATION &amp; OPTIMISATION LTD">AUTOMATION &amp; OPTIMISATION LTD</option>
+
+
+                              <select class="govuk-select govuk-!-width-full" id="selectedCourse" name="selectedCourse">
+                                  <option label="All" aria-label="All courses" value="">All</option>
+                                          <option label="Abattoir worker, Level: 2 (Standard)" value="Abattoir worker, Level: 2 (Standard)">Abattoir worker, Level: 2 (Standard)</option>
 
                               </select>
+
+
+
                           </div>
                       </div>
                       <div class="govuk-grid-column-one-third">
@@ -58,49 +63,25 @@
                               <label class="govuk-label" for="selectedCourse">Location</label>
                               <select class="govuk-select govuk-!-width-full" id="selectedCourse" name="selectedCourse">
                                   <option label="All" aria-label="All courses" value="">All</option>
-                                          <option label="Abattoir worker, Level: 2 (Standard)" value="Abattoir worker, Level: 2 (Standard)">Abattoir worker, Level: 2 (Standard)</option>
+                                          <option label="Coventry, West Midlands" value="Coventry">Coventry, West Midlands</option>
+                                          <option label="Northampton, Northamptonshire" value="Coventry">Northampton, Northamptonshire</option>
+                                          <option label="Southampton, Hampshire" value="Coventry">Southampton, Hampshire</option>
 
                               </select>
                           </div>
                       </div>
-                      <div class="govuk-grid-column-one-third">
-                          <div class="govuk-form-group">
-                              <label class="govuk-label" for="selectedStatus">Status</label>
-                              <select class="govuk-select govuk-!-width-full" id="selectedStatus" name="selectedStatus">
-                                  <option label="All" aria-label="All statuses" value="">All</option>
-                                          <option label="Waiting to start" value="WaitingToStart">Pending</option>
-                                          <option label="Live" value="Live">Accepted</option>
-                                          <option label="Stopped" value="Stopped">Agreed</option>
-                                          <option label="Paused" value="Paused">Declined</option>
-                                          <option label="Completed" value="Completed">Archived</option>
-                              </select>
-                          </div>
-                      </div>
+
                   </div><div class="govuk-grid-row">
                       <div class="govuk-grid-column-one-third">
-                          <div class="govuk-form-group">
-                              <label class="govuk-label" for="selectedStartDate">Date </label>
-                              <select class="govuk-select govuk-!-width-full" id="selectedStartDate" name="selectedStartDate">
-                                  <option label="All" aria-label="All start dates" value="">All</option>
 
-                                          <option label="Jun 2022" value="2022-06-01">2022-06-01</option>
-                              </select>
-                          </div>
                       </div>
                   </div>
                   <button class="govuk-button govuk-!-margin-0" type="submit">Apply filters</button>
               </div>
           </div>
       </div>
-  </form>
-  <div class="govuk-grid-row govuk-!-margin-bottom-2">
-      <div class="govuk-grid-column-two-thirds">
-              <p class="govuk-body">1321 apprentice records, 21 with alerts</p>
+  </form><br />
 
-      </div>
-      <div class="govuk-grid-column-one-third das-!-text-align-right--from-tablet">
-          <a class="govuk-body govuk-link" aria-label="Download all data" href="/10005760/apprentices/download">Download all data (CSV)</a>
-      </div>
   </div>
   <table class="govuk-table das-table--responsive das-table--double-arrows das-table--condensed">
       <thead class="govuk-table__head">
@@ -125,45 +106,87 @@
                       Location
                   </a>
               </th>
-              <th scope="col" class="govuk-table__header">
-                  <a class="das-table__sort" title="Sort the table by name" href="/10005760/apprentices?ReverseSort=False&amp;SortField=CourseName">
-                      Status
-                  </a>
-              </th>
+
 
           </tr>
       </thead>
       <tbody class="govuk-table__body">
               <tr class="govuk-table__row">
-                  <td class="govuk-table__cell" data-label="Apprentice name">
-                      <a class="govuk-link" href="/10005760/apprentices/66KBYK">
-                          Con-2770 2770
-                      </a>
+                    <td class="govuk-table__cell" data-label="Planned start date">
+                        3 June 2021
+                    </td>
+                  </td>
+                  <td class="govuk-table__cell" data-label="Apprenticeship training course">
+                      Abattoir worker (level 2)
                   </td>
                   <td class="govuk-table__cell" data-label="ULN">
-                      6902033160
+                      4
                   </td>
-                  <td class="govuk-table__cell" data-label="Employer">
-                      DEPARTMENT OF EDUCATION  LTD
+                  <td class="govuk-table__cell" data-label="Apprenticeship training course">
+                      Coventry
+                  </td>
+              </tr>
+
+
+              <tr class="govuk-table__row">
+                    <td class="govuk-table__cell" data-label="Planned start date">
+                        2 June 2021
+                    </td>
+                  </td>
+                  <td class="govuk-table__cell" data-label="Apprenticeship training course">
+                      Software tester (level 4)
+                  </td>
+                  <td class="govuk-table__cell" data-label="ULN">
+                      3
+                  </td>
+                  <td class="govuk-table__cell" data-label="Apprenticeship training course">
+                      Coventry
+                  </td>
+              </tr>
+
+
+
+              <tr class="govuk-table__row">
+                    <td class="govuk-table__cell" data-label="Planned start date">
+                        1 June 2021
+                    </td>
                   </td>
                   <td class="govuk-table__cell" data-label="Apprenticeship training course">
                       Advanced carpentry and joinery, Level: 3 (Standard)
                   </td>
-                  <td class="govuk-table__cell" data-label="Planned start date">
-                      Jul 2021
+                  <td class="govuk-table__cell" data-label="ULN">
+                      Unknown
                   </td>
-
-
+                  <td class="govuk-table__cell" data-label="Apprenticeship training course">
+                      Northampton, Northamptonshire
+                  </td>
               </tr>
 
+
+
+              <tr class="govuk-table__row">
+                    <td class="govuk-table__cell" data-label="Planned start date">
+                        7 April 2021
+                    </td>
+                  </td>
+                  <td class="govuk-table__cell" data-label="Apprenticeship training course">
+                      Midwife (degree) (level 6)
+                  </td>
+                  <td class="govuk-table__cell" data-label="ULN">
+                      1
+                  </td>
+                  <td class="govuk-table__cell" data-label="Apprenticeship training course">
+                      Southampton, Hampshire
+                  </td>
+              </tr>
       </tbody>
   </table>
 
 <nav role="navigation" aria-label="Pagination">
       <div class="das-pagination__summary">
-          Showing 1 to 100 of 132
-          request records
-      </div>
+          Showing 1 to 12 of 12
+          requests
+      </div><!--
   <ul class="das-pagination">
           <li class="das-pagination__item">
               <a class="das-pagination__link current" aria-current="aria-current" aria-label="Page 1" href="/10005760/apprentices?PageNumber=1">
@@ -198,7 +221,7 @@
   </ul>
 </nav>
 
-  </div>
+  </div>-->
 </div>
 
 {% endblock %}

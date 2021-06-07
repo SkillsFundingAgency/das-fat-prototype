@@ -13,3 +13,6 @@ node_modules/*
 package-lock.json
 
 .idea/
+app/views/24-0/aed-employer-form-old.html
+app/views/24-0/aed-provider-contact-details-edit-old.html
+app/views/24-0/aed-provider-contact-details-old.html

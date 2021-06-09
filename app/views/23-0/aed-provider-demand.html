@@ -3,7 +3,7 @@
 
 {% set serviceName = "Apprenticeships" %}
 
-{% block pageTitle %} 
+{% block pageTitle %}
 
 {% endblock %}
 
@@ -30,7 +30,7 @@
 {% endif %}
 
 <!-- Training search -->
-{% set _standardAutocompleteList = myData.standardAutocompleteList %} 
+{% set _standardAutocompleteList = myData.standardAutocompleteList %}
 {% set _defaultStandardSearchvalue = "" %}
 {% if myData.standardsearchapplied == true %}
     {% set _defaultStandardSearchvalue = myData.standardSearchTerm %}
@@ -67,7 +67,7 @@
         </h1>
         <p class="govuk-body">Employers are trying to find a training provider for the following apprenticeship training courses.</p>
         <p class="govuk-body govuk-!-margin-bottom-8">We can share your contact details with employers that you’re interested in.</p>
-      
+
     </div>
 </div>
 
@@ -97,7 +97,7 @@
                         </div>
                     </div>
 
-          
+
                     <!-- For each filter type -->
                     {% for _filter in myData.searchfilters %}
                         {% set _url = "aed-provider-demand?" + _locationQuery + _standardQuery + _routefilterQuery %}
@@ -120,7 +120,7 @@
                             {% endif %}
                         </ul>
                     {% endfor %}
-                    
+
                 </div>
                 {% endif %}
 
@@ -220,10 +220,40 @@
 
             <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
 
-            <!-- 
+            <!--
                 List
             -->
-            
+
+<!--
+            <div class="govuk-grid-row govuk-!-margin-left-0 govuk-!-margin-right-0 govuk-!-margin-top-3">
+                <div class="govuk-grid-column-two-thirds govuk-!-padding-0" >
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+                        Abattoir worker (level 1)
+                    </h2>
+                    <ul class="govuk-list">
+                        <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Apprenticeship category:</span> Engineering and manufacturing</li>
+                        <li class="govuk-!-font-size-16">
+                            <span class="govuk-secondary-colour">Apprentices:</span>
+                            Unknown
+                        </li>
+                        <li class="govuk-!-font-size-16">
+                            <span class="govuk-secondary-colour">Employers:</span>
+                            1
+                        </li>
+                    </ul>
+                </div>
+                <div class="govuk-grid-column-one-third govuk-!-padding-0">
+                    <p class="govuk-body opportunities-label" >
+                        <a href="aed-provider-standard?standard={{_demand.larsCode}}&demand={{_demand.larsCode}}" class="govuk-link govuk-link--no-visited-state">View employers</a>
+                    </p>
+                </div>
+                <hr class="govuk-section-break govuk-section-break--visible" style="clear:both">
+            </div>-->
+
+
+
+
+
             <!-- Standards -->
             {% for _demand in myData.demands2 %}
 
@@ -236,11 +266,13 @@
                         <ul class="govuk-list">
                             <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Apprenticeship category:</span> {{_demand.route}}</li>
                             <li class="govuk-!-font-size-16">
-                                <span class="govuk-secondary-colour">Apprentices:</span> 
+                                <span class="govuk-secondary-colour">Apprentices:</span>
+                                  {% if _demand.totalApprentices==0 %}Unknown {% else%}
                                 {{_demand.totalApprentices}}
+                                {% endif %}
                             </li>
                             <li class="govuk-!-font-size-16">
-                                <span class="govuk-secondary-colour">Employers:</span> 
+                                <span class="govuk-secondary-colour">Employers:</span>
                                 {{_demand.totalEmployers}}
                             </li>
                         </ul>
@@ -257,9 +289,9 @@
             {% endfor %}
 
         {% endif %}
-       
+
     </div>
-    
+
 </div>
 
 {% endblock %}
@@ -308,7 +340,7 @@
         trainingInput.name = ''
     }
 
-    // Locations 
+    // Locations
     function suggestLocations(query, populateResults) {
         var _allSuggestions = []
 
@@ -334,7 +366,7 @@
             populateResults(_allSuggestions)
         })
     }
-    
+
     var locationInput = document.querySelector('#search-location')
     if (locationInput) {
         var locationInputID = locationInput.id,

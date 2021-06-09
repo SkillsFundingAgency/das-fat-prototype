@@ -11,6 +11,13 @@
                     "id": "_employer-1"
                 },
                 {
+                    "apprentices": 3,
+                    "location": "Coventry, West Midlands",
+                    "contacted": false,
+                    "locationmatch": true,
+                    "id": "_employer-1"
+                },
+                {
                     "apprentices": 2,
                     "location": "Nuneaton and Bedworth, CV11",
                     "contacted": false,
@@ -127,19 +134,27 @@
                     "id": "_employer-1"
                 },
                 {
+                    "apprentices": 0,
+                    "location": "Walsall, West Midlands",
+                    "contacted": false,
+                    "locationmatch": false,
+                    "id": "_employer-2"
+                },
+                {
                     "apprentices": 2,
                     "location": "Nuneaton and Bedworth, CV11",
                     "contacted": false,
                     "locationmatch": true,
-                    "id": "_employer-2"
+                    "id": "_employer-3"
                 },
                 {
                     "apprentices": 2,
                     "location": "Hammersmith and Fulham, NW10 0AA",
                     "contacted": false,
                     "locationmatch": false,
-                    "id": "_employer-3"
+                    "id": "_employer-4"
                 }
+
             ],
             "name": "Adult care worker (level&nbsp;2)",
             "routecode": 8,
@@ -286,33 +301,27 @@
             "larsCode": 274,
             "employers": [
                 {
-                    "apprentices": 2,
-                    "location": "Coventry, West Midlands",
+                    "apprentices": 0,
+                    "location": "Walsall, West Midlands",
                     "contacted": false,
                     "locationmatch": false,
                     "id": "_employer-1"
                 },
                 {
-                    "apprentices": 5,
-                    "location": "Nuneaton and Bedworth, CV11",
-                    "contacted": false,
-                    "locationmatch": false,
-                    "id": "_employer-2"
+                  "apprentices": 0,
+                  "location": "Nuneaton and Bedworth, CV11",
+                  "contacted": false,
+                  "locationmatch": false,
+                  "id": "_employer-2"
                 },
                 {
-                    "apprentices": 3,
-                    "location": "Telford and Wrekin, TF1",
+                    "apprentices": 0,
+                    "location": "Coventry, West Midlands",
                     "contacted": false,
                     "locationmatch": false,
-                    "id": "_employer-3"
-                },
-                {
-                    "apprentices": 3,
-                    "location": "Hammersmith and Fulham, NW10 0AA",
-                    "contacted": false,
-                    "locationmatch": false,
-                    "id": "_employer-4"
+                    "id": "_employer-1"
                 }
+
             ],
             "name": "Abattoir worker (level&nbsp;2)",
             "routecode": 1,
@@ -321,41 +330,15 @@
         {
             "larsCode": 34,
             "employers": [
+
                 {
-                    "apprentices": 1,
-                    "location": "Coventry, West Midlands",
-                    "contacted": false,
-                    "locationmatch": false,
-                    "id": "_employer-1"
-                },
-                {
-                    "apprentices": 1,
+                    "apprentices": 0,
                     "location": "Nuneaton and Bedworth, CV11",
                     "contacted": false,
                     "locationmatch": false,
                     "id": "_employer-2"
-                },
-                {
-                    "apprentices": 5,
-                    "location": "Telford and Wrekin, TF1",
-                    "contacted": false,
-                    "locationmatch": false,
-                    "id": "_employer-3"
-                },
-                {
-                    "apprentices": 5,
-                    "location": "Hammersmith and Fulham, NW10 0AA",
-                    "contacted": false,
-                    "locationmatch": false,
-                    "id": "_employer-4"
-                },
-                {
-                    "apprentices": 4,
-                    "location": "Newcastle-under-Lyme, Staffordshire",
-                    "contacted": false,
-                    "locationmatch": false,
-                    "id": "_employer-5"
                 }
+
             ],
             "name": "Able seafarer (deck) (level&nbsp;2)",
             "routecode": 4,

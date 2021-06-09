@@ -179,11 +179,16 @@
                                 <label class="govuk-label govuk-checkboxes__label" for="{{_employer.id}}">
                                     <span class="govuk-!-font-weight-bold">Employer</span><br>
                                     {{_employer.location}}<br>
-                                    {{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}
+
+                                {% if _employer.apprentices == 0 %}Apprentice number unknown
+                                  {% else %}
+                                    {{_employer.apprentices}} apprentice{% if _employer.apprentices > 1 %}s{% endif %}
+                                  {% endif %}
                                 </label>
                             </div>
                             {% endif %}
-              {% endfor %}
+              {% endfor %}<br />
+              <!--
                             <div class="govuk-checkboxes__item">
                                 <input {% if _employer.selected %}checked{% endif %} class="govuk-checkboxes__input" id="{{_employer.id}}" name="employer" type="checkbox" value="{{_employer.id}}">
                                 <label class="govuk-label govuk-checkboxes__label" for="{{_employer.id}}">
@@ -192,7 +197,7 @@
                                     Apprentice number unknown
                                 </label>
                             </div>
-                        </div>
+                        </div>-->
 
 				</fieldset>
 			</div>

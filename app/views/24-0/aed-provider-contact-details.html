@@ -41,17 +41,17 @@ Meet employer demand for apprenticeships
 				Website  <br />
         {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 				{% if myData.websiteProviderAnswer == "" %}
-				<a href="aed-provider-contact-details-edit" class="govuk-link govuk-link--no-visited-state">
-					Add website
-				</a>
+
+          <div id="event-name-hint" class="govuk-hint">
+          You can link to any page on your website about this course.<br />
+          <a href="aed-provider-contact-details-edit" class="govuk-link govuk-link--no-visited-state">
+  					Add website</a>
+          </div>
+
 				{% else %}
 				<span class="govuk-!-font-weight-bold">{{myData.websiteProviderAnswer}}</span>
 				{% endif %}
 			</p>
-      <div id="event-name-hint" class="govuk-hint">
-      You can link to any page on your website about this course.
-      </div>
-
 
 
 

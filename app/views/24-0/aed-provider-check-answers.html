@@ -44,8 +44,14 @@
 			  <dd class="govuk-summary-list__value" >
 				{% for _employer in _selectedEmployers %}
 					{{_employer.location}}<br>
-					{{_employer.apprentices}} apprentice{% if _employer.apprentices != 1 %}s{% endif %}
-					<br><br>
+
+
+        {% if _employer.apprentices == 0 %}Apprentice number unknown
+            {% else %}
+              {{_employer.apprentices}} apprentice{% if _employer.apprentices > 1 %}s{% endif %}
+            {% endif %}</span><br />
+
+					<br>
 				{% endfor %}
 			  </dd>
 			  <dd class="govuk-summary-list__actions">

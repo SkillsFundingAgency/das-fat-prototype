@@ -16,6 +16,8 @@
 {% block beforeContent %}
     {% include "includes/alpha-banner.html" %}
     {% include "includes/back-link.html" %}
+
+
 {% endblock %}
 
 {% block content %}
@@ -37,9 +39,32 @@
               </div>-->
           </div>
       </div>
+
+
+      <form method="get" action="#">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                  <!--  <div class="govuk-form-group">
+                        <label for="searchTerm" class="govuk-label">Search apprentice name or unique learner number (ULN)</label>
+                        <div class="das-search-form__group">
+                            <input class="govuk-input das-search-form__input" id="searchTerm" name="searchTerm" type="text">
+                            <div class="das-search-form__button-wrap">
+                                <button class="govuk-button das-search-form__button" type="submit">Search</button>
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+
+
+
+
+
+
+
       <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
-              <div class="das-pane govuk-!-margin-bottom-3">
+              <div class="das-pane govuk-!-margin-bottom-3"  style="background: #f3f2f1;">
                   <div class="govuk-grid-row">
                       <div class="govuk-grid-column-one-third">
                           <div class="govuk-form-group">
@@ -69,6 +94,19 @@
                           </div>
                       </div>
 
+
+                      <div class="govuk-grid-column-one-third">
+                          <div class="govuk-form-group">
+                              <label class="govuk-label" for="selectedCourse">Status</label>
+                              <select class="govuk-select govuk-!-width-full" id="selectedCourse" name="selectedCourse">
+                                  <option label="All" aria-label="Status" value="">Status</option>
+                                          <option label="Active" value="Coventry">Active</option>
+                                          <option label="Inactive" value="Coventry">Inactive</option>
+
+
+                              </select>
+                          </div>
+                      </div>
                   </div><div class="govuk-grid-row">
                       <div class="govuk-grid-column-one-third">
 
@@ -84,29 +122,31 @@
   <table class="govuk-table das-table--responsive das-table--double-arrows das-table--condensed">
       <thead class="govuk-table__head">
           <tr class="govuk-table__row">
-              <th scope="col" class="govuk-table__header">
+              <th scope="col" class="govuk-table__header" width="20%">
+                <!--
                   <a class="das-table__sort" title="Sort the table by name" href="/10005760/apprentices?ReverseSort=False&amp;SortField=FirstName">
-                    Date
+                  -->
+                  <a class="das-table__sort" title="Sort the table by name" href="#">Date sent<br /> to employer
                   </a>
               </th>
               <th scope="col" class="govuk-table__header">
-                  <a class="das-table__sort" title="Sort the table by name" href="/10005760/apprentices?ReverseSort=False&amp;SortField=Uln">
+                  <a class="das-table__sort" title="Sort the table by name" href="/#">
                       Standard
                   </a>
               </th>
               <th scope="col" class="govuk-table__header">
-                  <a class="das-table__sort" title="Sort the table by name" href="/10005760/apprentices?ReverseSort=False&amp;SortField=Uln">
+                  <a class="das-table__sort" title="Sort the table by name" href="#">
                       Apprentices
                   </a>
               </th>
               <th scope="col" class="govuk-table__header">
-                  <a class="das-table__sort" title="Sort the table by name" href="/10005760/apprentices?ReverseSort=False&amp;SortField=Name">
+                  <a class="das-table__sort" title="Sort the table by name" href="#">
                       Location
                   </a>
               </th>
-              <th scope="col" class="govuk-table__header">
-                  <a class="das-table__sort" title="Sort the table by name" href="/10005760/apprentices?ReverseSort=False&amp;SortField=Name">
-                      Status
+              <th scope="col" class="govuk-table__header" width="17%">
+                  <a class="das-table__sort" title="Sort the table by name" href="#">
+                      Status of<br /> employer request
                   </a>
               </th>
 

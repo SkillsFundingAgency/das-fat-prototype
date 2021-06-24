@@ -268,11 +268,7 @@ Apprenticeship training courses
 
         {% else %}
 
-        <p class="govuk-body"><strong>Can't find a training provider?</strong><br />  We can let other training providers know you are interested in
-          {{_standardTitle | safe}}
-          {% if myData.searchTerm %}
-            {{ myData.searchTerm }}
-          {% endif %}.</p>
+        <p class="govuk-body"><strong>Can't find a training provider?</strong><br />  We can let other training providers know you are interested in{{_standardTitle | safe}}{% if myData.searchTerm %}{{ myData.searchTerm }}{% endif %}.</p>
 
         <a href="{{_aedLink}}" class="govuk-button">Share interest</a>
         <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="training?{{_sortQuery}}">Clear filters</a></p>
